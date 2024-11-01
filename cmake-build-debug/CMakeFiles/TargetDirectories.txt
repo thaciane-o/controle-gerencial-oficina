@@ -1,3 +1,0 @@
-C:/Users/Thaciane/CLionProjects/controle-gerencial-oficina/cmake-build-debug/CMakeFiles/controle_gerencial_oficina.dir
-C:/Users/Thaciane/CLionProjects/controle-gerencial-oficina/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Thaciane/CLionProjects/controle-gerencial-oficina/cmake-build-debug/CMakeFiles/rebuild_cache.dir

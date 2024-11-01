@@ -1,6 +1,14 @@
 #include <stdio.h>
+#include "models/clientes/modelClientes.h"
+#include "views/clientes/viewClientes.h"
+#include <locale.h>
+#include <stdlib.h>
 
 int main() {
+    system("chcp 65001");
+    system("cls");
+    setlocale(LC_ALL, "PT-BR");
+
     int opcaoMenu, opcaoSubmenus;
 
     printf("=================================\n"
@@ -38,6 +46,7 @@ int main() {
                     case 1:
                         break;
                     case 2:
+                        cadastrarCliente();
                         break;
                     case 3:
                         break;

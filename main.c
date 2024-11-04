@@ -1,3 +1,5 @@
+
+// Include de bibliotecas do C
 #include <stdio.h>
 #include <stdlib.h>
 #include "./views/fornecedores/viewFornecedores.h"
@@ -6,6 +8,12 @@
 #include "./views/clientes/viewClientes.h"
 #include <locale.h>
 
+// Include de models e views
+#include "models/oficina/modelOficina.h"
+#include "views/oficina/viewOficina.h"
+#include "models/clientes/modelClientes.h"
+#include "views/clientes/viewClientes.h"
+
 int main() {
     system("chcp 65001");
     system("cls");
@@ -13,6 +21,9 @@ int main() {
 
     struct ListaClientes listaClientes;
     listaClientes.qtdClientes = 0;
+    // Declaração de variáveis dos dados do sistema
+    struct ListaOficinas listaOficinas;
+    listaOficinas.qtdOficinas = 0;
 
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;

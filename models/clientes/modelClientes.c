@@ -9,16 +9,22 @@ int gerarIdUnico() {
 }
 
 void cadastrar(struct clientes *cliente) {
-    cliente->id = (int) malloc(sizeof(int));
 
-    if (!cliente->id) {
-        printf("Erro ao cadastrar fornecedor");
-        exit(1);
+    FILE *dados;
+    dados = fopen("DadosClientes.bin", "rb+");
+
+    if (dados == NULL) {
+        dados = fopen("DadosClientes.bin", "wb");
+        if (dados == NULL) {
+            printf("Erro ao cadastrar cliente\n");
+            exit(1);
+        }
     }
 
-    cliente->id = gerarIdUnico();
+    fseek(dados, 0, SEEK_END);
+
+    fprintf(dados, "%d\n%s%s%s%s%s", cliente->id, cliente->nome, cliente->telefone, cliente->CPF_CNPJ, cliente->email, cliente->endereco);
 
     printf("Cliente cadastrado com sucesso!\n");
-    printf("%d \n%s \n%d \n%d \n%s \n%s", cliente->id, cliente->nome, cliente->telefone, cliente->CPF_CNPJ, cliente->email, cliente->endereco);
-    free(cliente);
+    fclose(dados);
 }

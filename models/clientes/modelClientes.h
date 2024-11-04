@@ -5,11 +5,11 @@
 
 struct clientes {
     int id;
-    int telefone;
-    int CPF_CNPJ;
-    char nome[250];
-    char email[100];
-    char endereco[200];
+    char telefone[15];
+    char CPF_CNPJ[15];
+    char nome[255];
+    char email[255];
+    char endereco[255];
 };
 
 

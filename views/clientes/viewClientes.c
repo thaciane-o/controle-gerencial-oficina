@@ -18,10 +18,12 @@ void cadastrarCliente() {
     fgets(cliente.nome, sizeof(cliente.nome), stdin);
 
     printf("Insira o telefone do cliente: ");
-    scanf("%d", &cliente.telefone);
+    setbuf(stdin, NULL);
+    fgets(cliente.telefone, sizeof(cliente.telefone), stdin);
 
     printf("Insira o cpf/cnpj do cliente: ");
-    scanf("%d", &cliente.CPF_CNPJ);
+    setbuf(stdin, NULL);
+    fgets(cliente.CPF_CNPJ, sizeof(cliente.CPF_CNPJ), stdin);
 
     printf("Insira o email do cliente: ");
     setbuf(stdin, NULL);

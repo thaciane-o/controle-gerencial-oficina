@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "./views/viewFornecedores.h"
 
 int main() {
     int opcaoMenu, opcaoSubmenus;
@@ -46,6 +47,7 @@ int main() {
                     case 5:
                         break;
                     case 6:
+                        cadastrarFornecedor();
                         break;
                     case 7:
                         break;

@@ -1,10 +1,14 @@
 #include <stdio.h>
-#include "./views/viewFornecedores.h"
+#include "./views/fornecedores/viewFornecedores.h"
+#include "./models/fornecedores/modelFornecedores.h"
 
 int main() {
+    struct ListaFornecedores listaFornecedores;
+    listaFornecedores.qtdFornecedores = 0;
     int opcaoMenu, opcaoSubmenus;
 
-    printf("=================================\n"
+    do {
+        printf("=================================\n"
            "|        MENU PRINCIPAL         |\n"
            "=================================\n"
            "|  1  | Cadastrar               |\n"
@@ -14,9 +18,8 @@ int main() {
            "|  5  | Sair                    |\n"
            "=================================\n"
            "Escolha uma opção: ");
-    scanf("%d", &opcaoMenu);
+        scanf("%d", &opcaoMenu);
 
-    do {
          switch (opcaoMenu) {
             case 1:
                 printf("\n=================================\n"
@@ -24,13 +27,12 @@ int main() {
                    "=================================\n"
                    "|  1  | Oficina                 |\n"
                    "|  2  | Clientes                |\n"
-                   "|  3  | Veículos                |\n"
-                   "|  4  | Veículos                |\n"
-                   "|  5  | Peças                   |\n"
-                   "|  6  | Fornecedores            |\n"
-                   "|  7  | Serviços                |\n"
-                   "|  8  | Funcionários            |\n"
-                   "|  9  | Voltar                  |\n"
+                   "|  3  | Veículos               |\n"
+                   "|  4  | Peças                  |\n"
+                   "|  5  | Fornecedores            |\n"
+                   "|  6  | Serviços               |\n"
+                   "|  7  | Funcionários           |\n"
+                   "|  8  | Voltar                  |\n"
                    "=================================\n"
                     "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
@@ -45,9 +47,9 @@ int main() {
                     case 4:
                         break;
                     case 5:
+                        cadastrarFornecedor(&listaFornecedores);
                         break;
                     case 6:
-                        cadastrarFornecedor();
                         break;
                     case 7:
                         break;
@@ -55,7 +57,7 @@ int main() {
                         break;
                     case 9:
                         break;
-                    default: printf("\nOpção inválida!");
+                    default: printf("Opção inválida!\n\n");
                 };
                 break;
             case 2:
@@ -64,13 +66,12 @@ int main() {
                    "=================================\n"
                    "|  1  | Oficina                 |\n"
                    "|  2  | Clientes                |\n"
-                   "|  3  | Veículos                |\n"
-                   "|  4  | Veículos                |\n"
-                   "|  5  | Peças                   |\n"
-                   "|  6  | Fornecedores            |\n"
-                   "|  7  | Serviços                |\n"
-                   "|  8  | Funcionários            |\n"
-                   "|  9  | Voltar                  |\n"
+                   "|  3  | Veículos               |\n"
+                   "|  4  | Peças                  |\n"
+                   "|  5  | Fornecedores            |\n"
+                   "|  6  | Serviços               |\n"
+                   "|  7  | Funcionários           |\n"
+                   "|  8  | Voltar                  |\n"
                    "=================================\n"
                     "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
@@ -94,7 +95,7 @@ int main() {
                         break;
                     case 9:
                         break;
-                    default: printf("\nOpção inválida!");
+                    default: printf("Opção inválida!\n\n");
                 };
 
                 break;
@@ -103,14 +104,13 @@ int main() {
                     "|      MENU DE DELEÇÕES       |\n"
                     "=================================\n"
                     "|  1  | Oficina                 |\n"
-                    "|  2  | Clientes                |\n"
-                    "|  3  | Veículos                |\n"
-                    "|  4  | Veículos                |\n"
-                    "|  5  | Peças                   |\n"
-                    "|  6  | Fornecedores            |\n"
-                    "|  7  | Serviços                |\n"
-                    "|  8  | Funcionários            |\n"
-                    "|  9  | Voltar                  |\n"
+                   "|  2  | Clientes                |\n"
+                   "|  3  | Veículos               |\n"
+                   "|  4  | Peças                  |\n"
+                   "|  5  | Fornecedores            |\n"
+                   "|  6  | Serviços               |\n"
+                   "|  7  | Funcionários           |\n"
+                   "|  8  | Voltar                  |\n"
                     "=================================\n"
                      "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
@@ -125,6 +125,7 @@ int main() {
                      case 4:
                          break;
                      case 5:
+                         deletarFornecedor(&listaFornecedores);
                          break;
                      case 6:
                          break;
@@ -134,7 +135,7 @@ int main() {
                          break;
                      case 9:
                          break;
-                     default: printf("\nOpção inválida!");
+                     default: printf("Opção inválida!\n\n");
                 };
                 break;
             case 4:
@@ -142,14 +143,13 @@ int main() {
                     "|       MENU DE LISTAGEM        |\n"
                     "=================================\n"
                     "|  1  | Oficina                 |\n"
-                     "|  2  | Clientes                |\n"
-                     "|  3  | Veículos                |\n"
-                     "|  4  | Veículos                |\n"
-                     "|  5  | Peças                   |\n"
-                     "|  6  | Fornecedores            |\n"
-                     "|  7  | Serviços                |\n"
-                     "|  8  | Funcionários            |\n"
-                     "|  9  | Voltar                  |\n"
+                   "|  2  | Clientes                |\n"
+                   "|  3  | Veículos               |\n"
+                   "|  4  | Peças                  |\n"
+                   "|  5  | Fornecedores            |\n"
+                   "|  6  | Serviços               |\n"
+                   "|  7  | Funcionários           |\n"
+                   "|  8  | Voltar                  |\n"
                     "=================================\n"
                      "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
@@ -164,6 +164,7 @@ int main() {
                      case 4:
                          break;
                      case 5:
+                         listarFornecedor(&listaFornecedores);
                          break;
                      case 6:
                          break;
@@ -173,13 +174,13 @@ int main() {
                          break;
                      case 9:
                          break;
-                default: printf("\nOpção inválida!");
+                default: printf("Opção inválida!\n\n");
                 };
 
                 break;
             case 5:
                 return 0;
-            default: printf("\nOpção inválida!");
+            default: printf("Opção inválida!\n\n");
         }
     } while(opcaoMenu != 5);
 

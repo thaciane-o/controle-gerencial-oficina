@@ -49,6 +49,26 @@ void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Forneced
     printf("Fornecedor cadastrada com sucesso!\n\n");
 }
 
+struct Fornecedores atualizarFornecedosModel(struct ListaFornecedores *lista, int id) {
+    int encontrado = 0;
+    if (lista->qtdFornecedores == 0) {
+        printf("Nenhum fornecedor foi cadastrado!\n\n");
+        return;
+    }
+
+    for (int i = 0; i < lista->qtdFornecedores; i++) {
+        if (lista->listaFornecedores[i].id == id) {
+            encontrado = 1;
+
+            return lista->listaFornecedores[i];
+        }
+    }
+
+    if (!encontrado) {
+        printf("Fornecedor não encontrado!\n\n");
+    }
+}
+
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
     if (lista->qtdFornecedores > 0) {
         for (int i = 0; i < lista->qtdFornecedores; i++) {
@@ -64,7 +84,7 @@ void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
                    lista->listaFornecedores->id, lista->listaFornecedores->nomeFantasia,
                    lista->listaFornecedores->inscricaoEstadual, lista->listaFornecedores->cnpj,
                    lista->listaFornecedores->endereco, lista->listaFornecedores->ddd,
-                   lista->listaFornecedores->telefone, lista->listaFornecedores->email,
+                   lista->listaFornecedores->telefone, lista->listaFornecedores->email);
         }
     } else {
         printf("Nenhum fornecedor foi cadastrado!\n\n");
@@ -93,7 +113,7 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
                  lista->listaFornecedores->id, lista->listaFornecedores->nomeFantasia,
                  lista->listaFornecedores->inscricaoEstadual, lista->listaFornecedores->cnpj,
                  lista->listaFornecedores->endereco, lista->listaFornecedores->ddd,
-                 lista->listaFornecedores->telefone, lista->listaFornecedores->email,
+                 lista->listaFornecedores->telefone, lista->listaFornecedores->email);
             break;
         }
     }

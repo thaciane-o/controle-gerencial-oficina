@@ -86,6 +86,7 @@ int main() {
                     case 4:
                         break;
                     case 5:
+                        atualizarFornecedor(&listaFornecedores);
                         break;
                     case 6:
                         break;

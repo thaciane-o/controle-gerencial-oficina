@@ -23,6 +23,7 @@ void alocarFornecedoresModel(struct ListaFornecedores *lista);
 void realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor);
 void deletarFornecedoresModel(struct ListaFornecedores *lista, int id);
+struct Fornecedores atualizarFornecedoresModel(struct ListaFornecedores *lista, int id);
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista);
 void listarFornecedoresModel(struct ListaFornecedores *lista, int id);
 

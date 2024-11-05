@@ -12,38 +12,80 @@ void cadastrarFornecedor(struct ListaFornecedores *lista) {
     fornecedor.id = gerarIdUnico();
 
     printf("Insira o nome fantasia do fornecedor: ");
-    setbuf(stdin, NULL);
-    fgets(fornecedor.nomeFantasia, sizeof(fornecedor.nomeFantasia), stdin);
+    scanf(" %[^\n]", fornecedor.nomeFantasia);
 
     printf("Insira a razão social do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.razaoSocial, sizeof(fornecedor.razaoSocial), stdin);
+    scanf(" %[^\n]", fornecedor.razaoSocial);
 
     printf("Insira a inscrição estadual do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.inscricaoEstadual, sizeof(fornecedor.inscricaoEstadual), stdin);
+    scanf(" %[^\n]", fornecedor.inscricaoEstadual);
 
     printf("Insira o CNPJ do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.cnpj, sizeof(fornecedor.cnpj), stdin);
+    scanf(" %[^\n]", fornecedor.cnpj);
 
-    printf("Insira o endereço do fornecedor: ");
+    printf("Insira o endereço completo do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.endereco, sizeof(fornecedor.endereco), stdin);
+    scanf(" %[^\n]", fornecedor.endereco);
 
     printf("Insira o DDD do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.ddd, sizeof(fornecedor.ddd), stdin);
+    scanf(" %[^\n]", fornecedor.ddd);
 
     printf("Insira o telefone do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.telefone, sizeof(fornecedor.telefone), stdin);
+    scanf(" %[^\n]", fornecedor.telefone);
 
     printf("Insira o email do fornecedor: ");
     setbuf(stdin, NULL);
-    fgets(fornecedor.email, sizeof(fornecedor.email), stdin);
+    scanf(" %[^\n]", fornecedor.email);
 
     cadastrarFornecedoresModel(lista, &fornecedor);
+}
+
+void atualizarFornecedor(struct ListaFornecedores *lista) {
+    int id;
+    struct Fornecedores fornecedor;
+
+    printf("\n=================================\n"
+          "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
+          "=================================\n"
+          "Insira o fornecedor que deseja atualizar: ");
+    scanf("%d", &id);
+    fornecedor = atualizarFornecedoresModel(lista, id);
+
+    printf("Insira o nome fantasia do fornecedor: ");
+    scanf(" %[^\n]", fornecedor.nomeFantasia);
+
+    printf("Insira a razão social do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.razaoSocial);
+
+    printf("Insira a inscrição estadual do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.inscricaoEstadual);
+
+    printf("Insira o CNPJ do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.cnpj);
+
+    printf("Insira o endereço completo do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.endereco);
+
+    printf("Insira o DDD do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.ddd);
+
+    printf("Insira o telefone do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.telefone);
+
+    printf("Insira o email do fornecedor: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", fornecedor.email);
 }
 
 void listarFornecedor(struct ListaFornecedores *lista) {

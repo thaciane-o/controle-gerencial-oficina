@@ -12,9 +12,6 @@ struct clientes {
     char endereco[255];
 };
 
-
-int gerarIdUnico();
-
 void cadastrar(struct clientes *cliente);
 
 #endif //MODELCLIENTES_H

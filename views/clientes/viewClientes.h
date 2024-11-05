@@ -4,5 +4,5 @@
 
 void cadastrarCliente();
 
-
+void listarClientes();
 #endif //CLIENTES_H

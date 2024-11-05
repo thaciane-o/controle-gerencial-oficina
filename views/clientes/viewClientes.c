@@ -1,4 +1,4 @@
-#include "C:/TrabalhoAlg2/controle-gerencial-oficina/models/clientes/modelClientes.h"
+#include "../../models/clientes/modelClientes.h"
 #include "viewClientes.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,27 +11,55 @@ void cadastrarCliente() {
              "|     CADASTRO DE CLIENTE    |\n"
              "=================================\n");
 
-    cliente.id = gerarIdUnico();
 
     printf("Insira o nome do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.nome, sizeof(cliente.nome), stdin);
+    scanf("%[^\n]", &cliente.nome);
 
     printf("Insira o telefone do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.telefone, sizeof(cliente.telefone), stdin);
+    scanf("%[^\n]", &cliente.telefone);
+
 
     printf("Insira o cpf/cnpj do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.CPF_CNPJ, sizeof(cliente.CPF_CNPJ), stdin);
+    scanf("%[^\n]", &cliente.CPF_CNPJ);
+
 
     printf("Insira o email do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.email, sizeof(cliente.email), stdin);
+    scanf("%[^\n]", &cliente.email);
+
 
     printf("Insira o endereço do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.endereco, sizeof(cliente.endereco), stdin);
+    scanf("%[^\n]", &cliente.endereco);
 
     cadastrar(&cliente);
+}
+
+void listarClientes() {
+    struct clientes *cliente;
+
+    FILE *dados;
+    dados = fopen("DadosClientes.bin", "rb");
+
+    if (dados == NULL) {
+        printf("Erro ao listar Clientes");
+        exit(1);
+    }
+
+    printf("\n===================================\n");
+    printf("|     LISTA DE CLIENTES    |\n");
+    printf("===================================\n");
+
+    while (ftell(dados) != EOF) {
+
+        fscanf_s(dados, "%d", &cliente);
+    }
+
+    printf("===================================\n");
+
+    fclose(dados);
+    free(cliente);
 }

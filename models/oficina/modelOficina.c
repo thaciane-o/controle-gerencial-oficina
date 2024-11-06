@@ -23,7 +23,6 @@ void alocarMemoriaOficina(struct ListaOficinas *lista) {
      }
 }
 
-
 // Realoca memória da oficina de acordo com a quantidade que deseja alocar (qtdAloca)
 void realocarMemoriaOficina(struct ListaOficinas *lista, int qtdAloca) {
 
@@ -51,7 +50,6 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
           lista->qtdOficinas++;
           alocarMemoriaOficina(lista);
           lista->listaOficinas[lista->qtdOficinas-1] = *oficinaCadastrando;
-          return;
      } else {
           // Se já tiver, aumenta a alocação em 1
           realocarMemoriaOficina(lista, 1);
@@ -59,14 +57,71 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
      }
 
      printf("Oficina cadastrada com sucesso!\n");
-     printf("Id: %d \nNome: %s \nEndereço: %s \nDDD: %s \nTelefone: %s \nEmail: %s",
-            lista->listaOficinas[lista->qtdOficinas-1].id,
-            lista->listaOficinas[lista->qtdOficinas-1].nome,
-            lista->listaOficinas[lista->qtdOficinas-1].endereco,
-            lista->listaOficinas[lista->qtdOficinas-1].ddd,
-            lista->listaOficinas[lista->qtdOficinas-1].telefone,
-            lista->listaOficinas[lista->qtdOficinas-1].email);
+}
 
+// Lista todas as oficinas cadastradas
+void listarTodosOficinaModel(struct ListaOficinas *lista) {
 
+     // Verifica se há pelo menos um cadastro
+     if (lista->qtdOficinas > 0) {
+          // Se há um ou mais cadastros, exibe todos
+          for (int i = 0; i < lista->qtdOficinas; i++) {
+
+               printf("====================\n"
+                      "Id: %d\n"
+                      "Nome: %s\n"
+                      "Endereço: %s\n"
+                      "DDD + Telefone: %d %s\n"
+                      "Email: %s\n",
+                      lista->listaOficinas[i].id,
+                      lista->listaOficinas[i].nome,
+                      lista->listaOficinas[i].endereco,
+                      lista->listaOficinas[i].ddd,
+                      lista->listaOficinas[i].telefone,
+                      lista->listaOficinas[i].email);
+          }
+          printf("====================\n");
+
+     } else {
+          // Se não houver, avisa que não há cadastros
+          printf("Nenhuma oficina foi cadastrada\n");
+     }
+}
+
+// Busca uma oficina cadastrada pelo seu id
+void buscarIdOficinaModel(struct ListaOficinas *lista, int id) {
+
+     // Verifica se há pelo menos um cadastro
+     if (lista->qtdOficinas > 0) {
+          // Se há um ou mais cadastros, procura pela oficina com o id desejado
+          int encontrado = -1;
+          for (int i = 0; i < lista->qtdOficinas; i++) {
+               if (lista->listaOficinas[i].id == id) {
+                    encontrado = i;
+                    break;
+               }
+          }
+
+          if (encontrado != -1) {
+               printf("====================\n"
+                      "Id: %d\n"
+                      "Nome: %s\n"
+                      "Endereço: %s\n"
+                      "DDD + Telefone: %d %s\n"
+                      "Email: %s\n"
+                      "====================\n",
+                      lista->listaOficinas[encontrado].id,
+                      lista->listaOficinas[encontrado].nome,
+                      lista->listaOficinas[encontrado].endereco,
+                      lista->listaOficinas[encontrado].ddd,
+                      lista->listaOficinas[encontrado].telefone,
+                      lista->listaOficinas[encontrado].email);
+          } else {
+               printf("Nenhuma oficina encontrada.\n");
+          }
+     } else {
+          // Se não houver, avisa que não há cadastros
+          printf("Nenhuma oficina foi cadastrada\n");
+     }
 
 }

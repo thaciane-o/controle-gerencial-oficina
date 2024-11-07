@@ -81,10 +81,10 @@ void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
                    "\nTELEFONE: (%s)%s"
                    "\nEMAIL: %s"
                    "\nRELATÓRIO: %s\n\n",
-                   lista->listaFornecedores->id, lista->listaFornecedores->nomeFantasia,
-                   lista->listaFornecedores->inscricaoEstadual, lista->listaFornecedores->cnpj,
-                   lista->listaFornecedores->endereco, lista->listaFornecedores->ddd,
-                   lista->listaFornecedores->telefone, lista->listaFornecedores->email);
+                   lista->listaFornecedores[i].id, lista->listaFornecedores[i].nomeFantasia,
+                   lista->listaFornecedores[i].inscricaoEstadual, lista->listaFornecedores[i].cnpj,
+                   lista->listaFornecedores[i].endereco, lista->listaFornecedores[i].ddd,
+                   lista->listaFornecedores[i].telefone, lista->listaFornecedores[i].email);
         }
     } else {
         printf("Nenhum fornecedor foi cadastrado!\n\n");
@@ -101,6 +101,8 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
 
     for (int i = 0; i < lista->qtdFornecedores; i++) {
         if (lista->listaFornecedores[i].id == id) {
+            encontrado = 1;
+
             printf("ID: %d"
                  "\nNOME FANTASIA: %s"
                  "\nRAZÃO SOCIAL: %s"
@@ -110,11 +112,10 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
                  "\nTELEFONE: (%s)%s"
                  "\nEMAIL: %s"
                  "\nRELATÓRIO: %s\n\n",
-                 lista->listaFornecedores->id, lista->listaFornecedores->nomeFantasia,
-                 lista->listaFornecedores->inscricaoEstadual, lista->listaFornecedores->cnpj,
-                 lista->listaFornecedores->endereco, lista->listaFornecedores->ddd,
-                 lista->listaFornecedores->telefone, lista->listaFornecedores->email);
-            break;
+                 lista->listaFornecedores[i].id, lista->listaFornecedores->nomeFantasia,
+                 lista->listaFornecedores[i].inscricaoEstadual, lista->listaFornecedores->cnpj,
+                 lista->listaFornecedores[i].endereco, lista->listaFornecedores->ddd,
+                 lista->listaFornecedores[i].telefone, lista->listaFornecedores->email);
         }
     }
 

@@ -2,35 +2,34 @@
 
 int main() {
     int opcaoMenu, opcaoSubmenus;
-
-    printf("=================================\n"
-           "|        MENU PRINCIPAL         |\n"
-           "=================================\n"
-           "|  1  | Cadastrar               |\n"
-           "|  2  | Atualizar               |\n"
-           "|  3  | Deletar                 |\n"
-           "|  4  | Listar                  |\n"
-           "|  5  | Sair                    |\n"
-           "=================================\n"
-           "Escolha uma opção: ");
+    printf("\n=================================\n"
+       "|         MENU PRINCIPAL        |\n"
+       "=================================\n"
+       "|  1  | Oficina                 |\n"
+       "|  2  | Clientes                |\n"
+       "|  3  | Veículos                |\n"
+       "|  4  | Veículos                |\n"
+       "|  5  | Peças                   |\n"
+       "|  6  | Fornecedores            |\n"
+       "|  7  | Serviços                |\n"
+       "|  8  | Funcionários            |\n"
+       "|  9  | Sair                    |\n"
+       "=================================\n"
+        "Escolha uma opção: ");
     scanf("%d", &opcaoMenu);
 
     do {
          switch (opcaoMenu) {
             case 1:
-                printf("\n=================================\n"
-                   "|       MENU DE CADASTROS       |\n"
-                   "=================================\n"
-                   "|  1  | Oficina                 |\n"
-                   "|  2  | Clientes                |\n"
-                   "|  3  | Veículos                |\n"
-                   "|  4  | Veículos                |\n"
-                   "|  5  | Peças                   |\n"
-                   "|  6  | Fornecedores            |\n"
-                   "|  7  | Serviços                |\n"
-                   "|  8  | Funcionários            |\n"
-                   "|  9  | Voltar                  |\n"
-                   "=================================\n"
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
+                    "=================================\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
+                    "=================================\n"
                     "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
 
@@ -45,140 +44,202 @@ int main() {
                         break;
                     case 5:
                         break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                    case 8:
-                        break;
-                    case 9:
-                        break;
                     default: printf("\nOpção inválida!");
                 };
-                break;
+            break;
             case 2:
-                printf("\n=================================\n"
-                   "|     MENU DE ATUALIZAÇÕES    |\n"
-                   "=================================\n"
-                   "|  1  | Oficina                 |\n"
-                   "|  2  | Clientes                |\n"
-                   "|  3  | Veículos                |\n"
-                   "|  4  | Veículos                |\n"
-                   "|  5  | Peças                   |\n"
-                   "|  6  | Fornecedores            |\n"
-                   "|  7  | Serviços                |\n"
-                   "|  8  | Funcionários            |\n"
-                   "|  9  | Voltar                  |\n"
-                   "=================================\n"
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
+                    "=================================\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
+                    "=================================\n"
                     "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
 
                 switch (opcaoSubmenus) {
                     case 1:
-                        break;
+                    break;
                     case 2:
-                        break;
+                    break;
                     case 3:
-                        break;
+                    break;
                     case 4:
-                        break;
+                    break;
                     case 5:
-                        break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                    case 8:
-                        break;
-                    case 9:
-                        break;
+                    break;
                     default: printf("\nOpção inválida!");
                 };
-
-                break;
+            break;
             case 3:
-                printf("\n=================================\n"
-                    "|      MENU DE DELEÇÕES       |\n"
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
                     "=================================\n"
-                    "|  1  | Oficina                 |\n"
-                    "|  2  | Clientes                |\n"
-                    "|  3  | Veículos                |\n"
-                    "|  4  | Veículos                |\n"
-                    "|  5  | Peças                   |\n"
-                    "|  6  | Fornecedores            |\n"
-                    "|  7  | Serviços                |\n"
-                    "|  8  | Funcionários            |\n"
-                    "|  9  | Voltar                  |\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
                     "=================================\n"
-                     "Escolha uma opção: ");
+                    "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
 
                 switch (opcaoSubmenus) {
-                     case 1:
-                         break;
-                     case 2:
-                         break;
-                     case 3:
-                         break;
-                     case 4:
-                         break;
-                     case 5:
-                         break;
-                     case 6:
-                         break;
-                     case 7:
-                         break;
-                     case 8:
-                         break;
-                     case 9:
-                         break;
-                     default: printf("\nOpção inválida!");
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    case 4:
+                    break;
+                    case 5:
+                    break;
+                    default: printf("\nOpção inválida!");
                 };
-                break;
+            break;
             case 4:
-                printf("\n=================================\n"
-                    "|       MENU DE LISTAGEM        |\n"
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
                     "=================================\n"
-                    "|  1  | Oficina                 |\n"
-                     "|  2  | Clientes                |\n"
-                     "|  3  | Veículos                |\n"
-                     "|  4  | Veículos                |\n"
-                     "|  5  | Peças                   |\n"
-                     "|  6  | Fornecedores            |\n"
-                     "|  7  | Serviços                |\n"
-                     "|  8  | Funcionários            |\n"
-                     "|  9  | Voltar                  |\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
                     "=================================\n"
-                     "Escolha uma opção: ");
+                    "Escolha uma opção: ");
                 scanf("%d", &opcaoSubmenus);
 
                 switch (opcaoSubmenus) {
-                     case 1:
-                         break;
-                     case 2:
-                         break;
-                     case 3:
-                         break;
-                     case 4:
-                         break;
-                     case 5:
-                         break;
-                     case 6:
-                         break;
-                     case 7:
-                         break;
-                     case 8:
-                         break;
-                     case 9:
-                         break;
-                default: printf("\nOpção inválida!");
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    case 4:
+                    break;
+                    case 5:
+                    break;
+                    default: printf("\nOpção inválida!");
                 };
-
-                break;
+            break;
             case 5:
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
+                    "=================================\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
+                    "=================================\n"
+                    "Escolha uma opção: ");
+                scanf("%d", &opcaoSubmenus);
+
+                switch (opcaoSubmenus) {
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    case 4:
+                    break;
+                    case 5:
+                    break;
+                    default: printf("\nOpção inválida!");
+                };
+            break;
+            case 6:
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
+                    "=================================\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
+                    "=================================\n"
+                    "Escolha uma opção: ");
+                scanf("%d", &opcaoSubmenus);
+
+                switch (opcaoSubmenus) {
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    case 4:
+                    break;
+                    case 5:
+                    break;
+                    default: printf("\nOpção inválida!");
+                };
+            break;
+            case 7:
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
+                    "=================================\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
+                    "=================================\n"
+                    "Escolha uma opção: ");
+                scanf("%d", &opcaoSubmenus);
+
+                switch (opcaoSubmenus) {
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    case 4:
+                    break;
+                    case 5:
+                    break;
+                    default: printf("\nOpção inválida!");
+                };
+            break;
+            case 8:
+                printf("=================================\n"
+                    "|        MENU PRINCIPAL         |\n"
+                    "=================================\n"
+                    "|  1  | Cadastrar               |\n"
+                    "|  2  | Atualizar               |\n"
+                    "|  3  | Deletar                 |\n"
+                    "|  4  | Listar                  |\n"
+                    "|  5  | Voltar                  |\n"
+                    "=================================\n"
+                    "Escolha uma opção: ");
+                scanf("%d", &opcaoSubmenus);
+
+                switch (opcaoSubmenus) {
+                    case 1:
+                    break;
+                    case 2:
+                    break;
+                    case 3:
+                    break;
+                    case 4:
+                    break;
+                    case 5:
+                    break;
+                    default: printf("\nOpção inválida!");
+                };
+            break;
+            case 9:
                 return 0;
             default: printf("\nOpção inválida!");
         }
-    } while(opcaoMenu != 5);
+    } while(opcaoMenu != 9);
 
 }

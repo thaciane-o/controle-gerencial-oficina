@@ -1,18 +1,19 @@
 #include <stdio.h>
 #include "./views/fornecedores/viewFornecedores.h"
 #include "./models/fornecedores/modelFornecedores.h"
-#include "models/clientes/modelClientes.h"
-#include "views/clientes/viewClientes.h"
+#include "./models/clientes/modelClientes.h"
+#include "./views/clientes/viewClientes.h"
 #include <locale.h>
 #include <stdlib.h>
+
+
 
 int main() {
     system("chcp 65001");
     system("cls");
     setlocale(LC_ALL, "PT-BR");
 
-    struct ListaFornecedores listaFornecedores;
-    listaFornecedores.qtdFornecedores = 0;
+
     int opcaoMenu, opcaoSubmenus;
     printf("\n=================================\n"
        "|         MENU PRINCIPAL        |\n"
@@ -60,6 +61,9 @@ int main() {
                 };
             break;
             case 2:
+                struct ListaClientes listaClientes;
+                buscarDadosClientesModel(listaClientes);
+
                 printf("=================================\n"
                     "|        MENU PRINCIPAL         |\n"
                     "=================================\n"
@@ -74,14 +78,19 @@ int main() {
 
                 switch (opcaoSubmenus) {
                     case 1:
+                        cadastrarCliente(listaClientes);
                     break;
                     case 2:
+                        atualizarCliente(listaClientes);
                     break;
                     case 3:
+                        deletarCliente(listaClientes);
                     break;
                     case 4:
+                        listarClientes(listaClientes);
                     break;
                     case 5:
+                        armazenarDadosClienteModel(listaClientes);
                     break;
                     default: printf("\nOpção inválida!");
                 };

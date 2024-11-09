@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 
-void cadastrarCliente() {
-    struct clientes cliente;
+void cadastrarCliente(struct ListaClientes *lista) {
+    struct Clientes cliente;
 
     printf("\n=================================\n"
              "|     CADASTRO DE CLIENTE    |\n"
@@ -14,52 +14,99 @@ void cadastrarCliente() {
 
     printf("Insira o nome do cliente: ");
     setbuf(stdin, NULL);
-    scanf("%[^\n]", &cliente.nome);
+    scanf(" %[^\n]", cliente.nome);
 
-    printf("Insira o telefone do cliente: ");
+    printf("Insira o DDD do cliente: ");
     setbuf(stdin, NULL);
-    scanf("%[^\n]", &cliente.telefone);
+    scanf(" %[^\n]", cliente.DDD);
 
-
-    printf("Insira o cpf/cnpj do cliente: ");
+    printf("Insira número de telefone do cliente: ");
     setbuf(stdin, NULL);
-    scanf("%[^\n]", &cliente.CPF_CNPJ);
+    scanf(" %[^\n]", cliente.telefone);
 
+    printf("Insira o CPF do cliente: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", cliente.CPF);
 
     printf("Insira o email do cliente: ");
     setbuf(stdin, NULL);
-    scanf("%[^\n]", &cliente.email);
-
+    scanf(" %[^\n]", cliente.email);
 
     printf("Insira o endereço do cliente: ");
     setbuf(stdin, NULL);
-    scanf("%[^\n]", &cliente.endereco);
+    fgets(cliente.endereco, sizeof(cliente.endereco), stdin);
 
-    cadastrar(&cliente);
+    cadastrarClientesModel(lista, &cliente);
 }
 
-void listarClientes() {
-    struct clientes *cliente;
+void atualizarCliente(struct ListaClientes *lista) {
+    int id;
+    struct Clientes cliente;
 
-    FILE *dados;
-    dados = fopen("DadosClientes.bin", "rb");
+    printf("\n=================================\n"
+          "|     ATUALIZAÇÃO DE CLIENTE    |\n"
+          "=================================\n"
+          "Insira o cliente que deseja atualizar: ");
+    scanf("%d", &id);
 
-    if (dados == NULL) {
-        printf("Erro ao listar Clientes");
-        exit(1);
+    printf("Insira o nome do cliente: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", cliente.nome);
+
+    printf("Insira o DDD do cliente: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", cliente.DDD);
+
+    printf("Insira número de telefone do cliente: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", cliente.telefone);
+
+    printf("Insira o CPF do cliente: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", cliente.CPF);
+
+    printf("Insira o email do cliente: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", cliente.email);
+
+    printf("Insira o endereço do cliente: ");
+    setbuf(stdin, NULL);
+    fgets(cliente.endereco, sizeof(cliente.endereco), stdin);
+
+    atualizarClientesModel(lista, id, &cliente);
+}
+
+void listarClientes(struct ListaClientes *lista) {
+    int opcao, id;
+
+    printf("\n=================================\n"
+            "|     LISTAGEM DE CLIENTE    |\n"
+            "=================================\n"
+            "1. Listar um único cliente"
+            "\n2. Listar todos\n");
+    scanf("%d", &opcao);
+
+    switch (opcao) {
+        case 1:
+            printf("Insira o cliente que deseja lista: ");
+            scanf("%d", &id);
+            listarClienteModel(lista, id);
+            break;
+        case 2:
+            listarTodosClientesModel(lista);
+            break;
+        default: printf("Opção inválida!\n\n");
     }
 
-    printf("\n===================================\n");
-    printf("|     LISTA DE CLIENTES    |\n");
-    printf("===================================\n");
+}
 
-    while (ftell(dados) != EOF) {
+void deletarCliente(struct ListaClientes *lista) {
+    int id;
 
-        fscanf_s(dados, "%d", &cliente);
-    }
-
-    printf("===================================\n");
-
-    fclose(dados);
-    free(cliente);
+    printf("\n=================================\n"
+             "|     DELEÇÃO DE CLIENTE    |\n"
+             "=================================\n");
+    printf("Insira o cliente que deseja deletar:");
+    scanf("%d", &id);
+    deletarClientesModel(lista, id);
 }

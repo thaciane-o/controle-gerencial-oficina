@@ -20,7 +20,7 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
     for (int i = 0; i < lista->qtdClientes;i++) {
 
         //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-        fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s",lista->listaClientes->isDeleted, lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD, lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
+        fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s", lista->listaClientes[i].isDeleted, lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD, lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
                 lista->listaClientes[i].endereco);
 
         /***Após isso, os dados devem estar no seguinte formato dentro do arquivo***
@@ -28,13 +28,12 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
             isDeleted;id;nome;telefone;CPF_CNPJ;email;endereço\n
          */
     }
-    printf("Clientes cadastrados com sucesso!\n");
+
     fclose(dadosClientes);
 }
 
 void buscarDadosClientesModel(struct ListaClientes *lista) {
 
-    lista->qtdClientes = 0;
     int i = 0;
     char linha[sizeof(struct Clientes)];
 
@@ -45,6 +44,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
         printf("Nenhum cliente armazenado\n");
         return;
     }
+
 
     while (fgets(linha, sizeof(linha), dadosClientes)) {
         lista->qtdClientes++;
@@ -146,18 +146,15 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
     lista->listaClientes[lista->qtdClientes-1].isDeleted = 0;
 
     //Gerando ID unico para o Cliente
-    if (!lista->listaClientes[0].id) {
-        lista->listaClientes[0].id = 1;
-    }
-    else {
-        int temp;
-        for (int i = 0; i < lista->qtdClientes; i++) {
-            if (lista->listaClientes[i+1].id > lista->listaClientes[i].id) {
-                temp = lista->listaClientes[i].id;
-            }
+    int temp = 0;
+    for (int i = 0; i < lista->qtdClientes; i++) {
+        if (lista->listaClientes[i].id > lista->listaClientes[i-1].id) {
+            temp = lista->listaClientes[i].id;
         }
-        lista->listaClientes[lista->qtdClientes-1].id = temp+1;
     }
+
+    lista->listaClientes[lista->qtdClientes-1].id = temp+1;
+
 
     printf("Cliente cadastrada com sucesso!\n\n");
 }

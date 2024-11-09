@@ -49,7 +49,7 @@ void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Forneced
     printf("Fornecedor cadastrada com sucesso!\n\n");
 }
 
-struct Fornecedores atualizarFornecedosModel(struct ListaFornecedores *lista, int id) {
+struct Fornecedores atualizarFornecedoresModel(struct ListaFornecedores *lista, int id) {
     int encontrado = 0;
     if (lista->qtdFornecedores == 0) {
         printf("Nenhum fornecedor foi cadastrado!\n\n");

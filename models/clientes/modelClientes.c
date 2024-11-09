@@ -8,99 +8,178 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
 
     //Abrindo ou criando arquivo para adicionar cadastros
     FILE *dadosClientes;
-    dadosClientes = fopen("DadosClientes.txt", "w");
+    int opcaoArquivo;
+    printf("Qual arquivo deseja abrir?\n"
+        "1: TEXTO\n"
+        "2: BINARIO\n"
+    );
+    scanf("%d", &opcaoArquivo);
+    switch (opcaoArquivo) {
+        case 1:
+            dadosClientes = fopen("DadosClientes.txt", "w");
 
-    if (dadosClientes == NULL) {
-        printf("Erro ao armazenar clientes\n");
-        exit(1);
+            if (dadosClientes == NULL) {
+                printf("Erro ao armazenar clientes (TXT)\n");
+                exit(1);
+            }
+
+
+            for (int i = 0; i < lista->qtdClientes;i++) {
+
+                //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
+                fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s", lista->listaClientes[i].isDeleted,
+                        lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD,
+                        lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
+                        lista->listaClientes[i].endereco);
+
+
+                /***Após isso, os dados devem estar no seguinte formato dentro do arquivo***
+
+                    isDeleted;id;nome;telefone;CPF_CNPJ;email;endereço\n
+                 */
+            }
+            fclose(dadosClientes);
+            break;
+        case 2:
+            dadosClientes = fopen("DadosClientes.bin", "wb");
+
+            if (dadosClientes == NULL) {
+                printf("Erro ao armazenar clientes (BIN)\n");
+                exit(1);
+            }
+
+
+            for (int i = 0; i < lista->qtdClientes;i++) {
+
+                struct Clientes *linhaCliente = malloc(sizeof(struct Clientes));
+                *linhaCliente = lista->listaClientes[i];
+
+                fwrite(linhaCliente, sizeof(struct Clientes), 1, dadosClientes);
+
+
+            }
+            fclose(dadosClientes);
+            break;
+        default:
+            break;
+
     }
-
-    //Considerando o ID como a ultima posição do ponteiro do Arquivo
-
-    for (int i = 0; i < lista->qtdClientes;i++) {
-
-        //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-        fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s", lista->listaClientes[i].isDeleted, lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD, lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
-                lista->listaClientes[i].endereco);
-
-        /***Após isso, os dados devem estar no seguinte formato dentro do arquivo***
-
-            isDeleted;id;nome;telefone;CPF_CNPJ;email;endereço\n
-         */
-    }
-
-    fclose(dadosClientes);
+    free(lista->listaClientes);
 }
 
 void buscarDadosClientesModel(struct ListaClientes *lista) {
 
     int i = 0;
-    char linha[sizeof(struct Clientes)];
 
     FILE *dadosClientes;
-    dadosClientes = fopen("DadosClientes.txt", "r");
+    int opcaoArquivo;
+    printf("Qual arquivo deseja abrir?\n"
+        "1: TEXTO\n"
+        "2: BINARIO\n"
+    );
+    scanf("%d", &opcaoArquivo);
 
-    if (dadosClientes == NULL) {
-        printf("Nenhum cliente armazenado\n");
-        return;
+    switch (opcaoArquivo) {
+        case 1:
+            dadosClientes = fopen("DadosClientes.txt", "r");
+
+            if (dadosClientes == NULL) {
+                printf("Nenhum cliente armazenado (TXT)\n");
+                return;
+            }
+
+            char linha[sizeof(struct Clientes)];
+
+            while (fgets(linha, sizeof(linha), dadosClientes)) {
+                lista->qtdClientes++;
+            }
+
+
+            //Alocando memoria para receber o arquivo
+            lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
+
+            if (lista->listaClientes == NULL) {
+                printf("Erro ao alocar memoria\n");
+                exit(1);
+            }
+
+            fseek(dadosClientes, 0, SEEK_SET);
+
+            while (fgets(linha, sizeof(linha), dadosClientes)) {
+
+                char *token = strtok(linha, ";");
+
+                if (token != NULL) {
+                    lista->listaClientes[i].isDeleted = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaClientes[i].id = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaClientes[i].nome, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaClientes[i].DDD, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaClientes[i].telefone, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaClientes[i].CPF, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaClientes[i].email, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaClientes[i].endereco, token);
+                }
+
+                i++;
+            }
+            fclose(dadosClientes);
+            break;
+        case 2:
+            dadosClientes = fopen("DadosClientes.bin", "rb");
+
+            if (dadosClientes == NULL) {
+                printf("Nenhum cliente armazenado (BIN)\n");
+                return;
+            }
+
+            struct Clientes *linhaCliente = malloc(sizeof(struct Clientes));
+
+            while (fread(linhaCliente, sizeof(linhaCliente), 1, dadosClientes)) {
+                lista->qtdClientes++;
+            }
+
+            lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
+            if (lista->listaClientes == NULL) {
+                printf("Erro ao alocar memoria\n");
+                exit(1);
+            }
+
+            fseek(dadosClientes, 0, SEEK_SET);
+
+            while (fread(linhaCliente, sizeof(linhaCliente), 1, dadosClientes)) {
+                lista->listaClientes[i] = *linhaCliente;
+                i++;
+            }
+
+
+            fclose(dadosClientes);
+            free(linhaCliente);
+            break;
+        default:
+            printf("Opcao invalida\n");
+            break;
     }
-
-
-    while (fgets(linha, sizeof(linha), dadosClientes)) {
-        lista->qtdClientes++;
-    }
-
-
-    //Alocando memoria para receber o arquivo
-    lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
-
-    if (lista->listaClientes == NULL) {
-        printf("Erro ao alocar memoria\n");
-        exit(1);
-    }
-
-    fseek(dadosClientes, 0, SEEK_SET);
-
-    while (fgets(linha, sizeof(linha), dadosClientes)) {
-
-        char *token = strtok(linha, ";");
-
-        if (token != NULL) {
-            lista->listaClientes[i].isDeleted = atoi(token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            lista->listaClientes[i].id = atoi(token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            strcpy(lista->listaClientes[i].nome, token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            strcpy(lista->listaClientes[i].DDD, token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            strcpy(lista->listaClientes[i].telefone, token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            strcpy(lista->listaClientes[i].CPF, token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            strcpy(lista->listaClientes[i].email, token);
-            token = strtok(NULL, ";");
-        }
-        if (token != NULL) {
-            strcpy(lista->listaClientes[i].endereco, token);
-        }
-
-        i++;
-    }
-
-    fclose(dadosClientes);
 }
 
 void alocarClientesModel(struct ListaClientes *lista) {

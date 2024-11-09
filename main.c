@@ -18,6 +18,7 @@ int main() {
 
     int opcaoMenu, opcaoSubmenus;
 
+
     do {
         printf("\n=================================\n"
        "|         MENU PRINCIPAL        |\n"

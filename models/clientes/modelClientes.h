@@ -3,7 +3,7 @@
 
 
 struct Clientes {
-    int isDeleted;
+    int Deletado;
     int id;
     char DDD[3];
     char telefone[11];

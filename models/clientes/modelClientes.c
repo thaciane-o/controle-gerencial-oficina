@@ -9,10 +9,12 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
     //Abrindo ou criando arquivo para adicionar cadastros
     FILE *dadosClientes;
     int opcaoArquivo;
+
     printf("Qual arquivo deseja abrir?\n"
         "1: TEXTO\n"
         "2: BINARIO\n"
     );
+
     scanf("%d", &opcaoArquivo);
     switch (opcaoArquivo) {
         case 1:
@@ -27,7 +29,7 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
             for (int i = 0; i < lista->qtdClientes;i++) {
 
                 //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s", lista->listaClientes[i].isDeleted,
+                fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s", lista->listaClientes[i].Deletado,
                         lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD,
                         lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
                         lista->listaClientes[i].endereco);
@@ -106,7 +108,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
                 char *token = strtok(linha, ";");
 
                 if (token != NULL) {
-                    lista->listaClientes[i].isDeleted = atoi(token);
+                    lista->listaClientes[i].Deletado = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -217,7 +219,7 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
 
     //Cadastrando cliente na memoria
     lista->listaClientes[lista->qtdClientes-1] = *cliente;
-    lista->listaClientes[lista->qtdClientes-1].isDeleted = 0;
+    lista->listaClientes[lista->qtdClientes-1].Deletado = 0;
 
     //Gerando ID unico para o Cliente
     int temp = 0;
@@ -242,10 +244,10 @@ void atualizarClientesModel(struct ListaClientes *lista, int id, struct Clientes
     }
 
     for (int i = 0; i < lista->qtdClientes; i++) {
-        if (lista->listaClientes[i].id == id && lista->listaClientes[i].isDeleted == 0) {
+        if (lista->listaClientes[i].id == id && lista->listaClientes[i].Deletado == 0) {
             encontrado = 1;
             cliente->id = lista->listaClientes[i].id;
-            cliente->isDeleted = lista->listaClientes[i].isDeleted;
+            cliente->Deletado = lista->listaClientes[i].Deletado;
 
             lista->listaClientes[i] = *cliente;
         }
@@ -262,7 +264,7 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
         for (int i = 0; i < lista->qtdClientes; i++) {
 
             //Verifica se o cliente esta deletado
-            if (lista->listaClientes[i].isDeleted == 0) {
+            if (lista->listaClientes[i].Deletado == 0) {
                 printf("ID: %d"
                        "\nNOME: %s"
                        "\nCPF: %s"
@@ -292,7 +294,7 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
     for (int i = 0; i < lista->qtdClientes; i++) {
 
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
-        if (lista->listaClientes[i].id == id && lista->listaClientes[i].isDeleted == 0) {
+        if (lista->listaClientes[i].id == id && lista->listaClientes[i].Deletado == 0) {
             printf("ID: %d"
                    "\nNOME: %s"
                    "\nCPF: %s"
@@ -331,7 +333,7 @@ void deletarClientesModel(struct ListaClientes *lista, int id) {
         if (lista->listaClientes[i].id == id) {
             encontrado = 1;
 
-            lista->listaClientes[i].isDeleted = 1;
+            lista->listaClientes[i].Deletado = 1;
 
             printf("Cliente deletado com sucesso!\n\n");
 

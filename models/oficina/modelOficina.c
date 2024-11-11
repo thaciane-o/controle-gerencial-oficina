@@ -13,7 +13,7 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista) {
      dadosOficinas = fopen("DadosOficinas.txt", "r");
 
      if (dadosOficinas == NULL) {
-          printf("Nenhuma oficina armazenado!\n");
+          printf("Erro ao abrir o arquivo!\n");
           return;
      }
 
@@ -21,7 +21,9 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista) {
           lista->qtdOficinas++;
      }
 
-     lista->listaOficinas = malloc(lista->qtdOficinas * sizeof(struct Oficinas));
+     if (lista->qtdOficinas > 0) {
+          lista->listaOficinas = malloc(lista->qtdOficinas * sizeof(struct Oficinas));
+     }
 
      if (lista->listaOficinas == NULL) {
           printf("Erro ao alocar memória!\n");
@@ -93,6 +95,8 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista) {
 
      free(lista->listaOficinas);
      lista->listaOficinas = NULL;
+
+     lista->qtdOficinas = 0;
 }
 
 // Aloca a memória inicial para a lista de oficinas
@@ -131,19 +135,19 @@ void realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
 // Cadastra uma nova oficina
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando) {
 
-     oficinaCadastrando->id = lista->qtdOficinas;
-     oficinaCadastrando->deletado = 0;
-
      // Se nenhuma oficina cadastrada, inicia a alocação
      if (lista->qtdOficinas == 0) {
           lista->qtdOficinas++;
           alocarMemoriaOficinaModel(lista);
-          lista->listaOficinas[lista->qtdOficinas-1] = *oficinaCadastrando;
      } else {
           // Se já tiver, aumenta a alocação em 1
           realocarMemoriaOficinaModel(lista, 1);
-          lista->listaOficinas[lista->qtdOficinas-1] = *oficinaCadastrando;
      }
+
+     oficinaCadastrando->id = lista->qtdOficinas;
+     oficinaCadastrando->deletado = 0;
+
+     lista->listaOficinas[lista->qtdOficinas-1] = *oficinaCadastrando;
 
      printf("Oficina cadastrada com sucesso!\n");
 }
@@ -166,7 +170,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, int id) {
 
                encontrado = 1;
                lista->listaOficinas[i].deletado = 1;
-               printf("Oficina deletada com sucesso!");
+               printf("Oficina deletada com sucesso!\n");
 
                break;
           }
@@ -206,7 +210,6 @@ void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas 
      if (!encontrado) {
           printf("Fornecedor não encontrado!\n\n");
      }
-
 }
 
 // Lista todas as oficinas cadastradas

@@ -12,7 +12,7 @@ void gerenciarOficina(struct ListaOficinas *lista) {
             buscarDadosOficinaModel(lista);
         }
 
-        printf("=================================\n"
+        printf("\n=================================\n"
             "|            SUBMENU            |\n"
             "=================================\n"
             "|  1  | Cadastrar               |\n"
@@ -56,26 +56,26 @@ void cadastrarOficina(struct ListaOficinas *lista) {
 
     printf("Insira o nome da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", oficinaCadastrando.nome);
+    scanf(" %[^\n]s", oficinaCadastrando.nome);
     // fgets(oficinaCadastrando.nome, sizeof(oficinaCadastrando.nome), stdin);
 
     printf("Insira o endereço da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", oficinaCadastrando.endereco);
+    scanf(" %[^\n]s", oficinaCadastrando.endereco);
     // fgets(oficinaCadastrando.endereco, sizeof(oficinaCadastrando.endereco), stdin);
 
     printf("Insira o DDD do telefone da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", &oficinaCadastrando.ddd);
+    scanf(" %[^\n]s", &oficinaCadastrando.ddd);
 
     printf("Insira o telefone da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", &oficinaCadastrando.telefone);
+    scanf(" %[^\n]s", &oficinaCadastrando.telefone);
     // fgets(oficinaCadastrando.telefone, sizeof(oficinaCadastrando.telefone), stdin);
 
     printf("Insira o email da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", oficinaCadastrando.email);
+    scanf(" %[^\n]s", oficinaCadastrando.email);
     // fgets(oficinaCadastrando.email, sizeof(oficinaCadastrando.email), stdin);
 
     cadastrarOficinaModel(lista, &oficinaCadastrando);

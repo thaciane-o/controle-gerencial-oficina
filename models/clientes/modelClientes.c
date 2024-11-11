@@ -51,11 +51,7 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
 
             for (int i = 0; i < lista->qtdClientes;i++) {
 
-                struct Clientes *linhaCliente = malloc(sizeof(struct Clientes));
-                *linhaCliente = lista->listaClientes[i];
-
-                fwrite(linhaCliente, sizeof(struct Clientes), 1, dadosClientes);
-
+                fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
 
             }
             fclose(dadosClientes);
@@ -153,9 +149,9 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
                 return;
             }
 
-            struct Clientes *linhaCliente = malloc(sizeof(struct Clientes));
+            struct Clientes linhaCliente;
 
-            while (fread(linhaCliente, sizeof(linhaCliente), 1, dadosClientes)) {
+            while (fread(&linhaCliente, sizeof(linhaCliente), 1, dadosClientes)) {
                 lista->qtdClientes++;
             }
 
@@ -167,14 +163,13 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
 
             fseek(dadosClientes, 0, SEEK_SET);
 
-            while (fread(linhaCliente, sizeof(linhaCliente), 1, dadosClientes)) {
-                lista->listaClientes[i] = *linhaCliente;
+            while (fread(&linhaCliente, sizeof(linhaCliente), 1, dadosClientes)) {
+                lista->listaClientes[i] = linhaCliente;
                 i++;
             }
 
 
             fclose(dadosClientes);
-            free(linhaCliente);
             break;
         default:
             printf("Opcao invalida\n");

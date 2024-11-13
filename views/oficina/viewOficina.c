@@ -95,6 +95,12 @@ void atualizarOficina(struct ListaOficinas *lista) {
     scanf("%d", &id);
     // fgets(oficinaAtualizando.nome, sizeof(oficinaAtualizando.nome), stdin);
 
+    // Verifica se o ID inserido existe
+    int encontrado = verificarIDOficinaModel(lista, id);
+    if (encontrado == 0) {
+        return;
+    }
+
     printf("Insira o nome da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %s", oficinaAtualizando.nome);

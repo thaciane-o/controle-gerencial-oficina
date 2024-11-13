@@ -185,31 +185,44 @@ void deletarOficinaModel(struct ListaOficinas *lista, int id) {
 // Atualiza uma oficina cadastrada
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando) {
 
-     // Auxiliar para saber se encontrou o id.
-     int encontrado = 0;
-
-     // Verifica se há alguma oficina cadastrada.
-     if (lista->qtdOficinas == 0) {
-          printf("Nenhuma oficina foi cadastrada.\n");
-          return;
-     }
-
      // Busca pelo id para fazer a alteração.
      for (int i = 0; i < lista->qtdOficinas; i++) {
           if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
-               encontrado = 1;
-
                lista->listaOficinas[i] = *oficinaAlterando;
                lista->listaOficinas[i].id = id;
                lista->listaOficinas[i].deletado = 0;
-
                break;
           }
      }
+}
 
-     if (!encontrado) {
-          printf("Fornecedor não encontrado!\n\n");
+// Verifica se o ID que deseja atualizar existe
+int verificarIDOficinaModel(struct ListaOficinas *lista, int id) {
+
+     int encontrado = -1;
+
+     // Procura a oficina com o id inserido
+     if (lista->qtdOficinas > 0) {
+          for (int i = 0; i < lista->qtdOficinas; i++) {
+               if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
+                    encontrado = i;
+                    break;
+               }
+          }
+     } else {
+          printf("Nenhuma oficina foi cadastrada!");
+          return 0;
      }
+
+     // Retorna se achou ou não o id
+     if (encontrado != -1) {
+          return 1;
+     } else {
+          printf("Oficina não encontrada");
+          return 0;
+     }
+
+
 }
 
 // Lista todas as oficinas cadastradas

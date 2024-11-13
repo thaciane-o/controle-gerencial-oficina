@@ -29,6 +29,7 @@ void realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando);
 void deletarOficinaModel(struct ListaOficinas *lista, int id);
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando);
+int verificarIDOficinaModel(struct ListaOficinas *lista, int id);
 void listarTodosOficinaModel(struct ListaOficinas *lista);
 void buscarIdOficinaModel(struct ListaOficinas *lista, int id);
 

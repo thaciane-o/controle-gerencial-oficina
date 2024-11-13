@@ -3,7 +3,47 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void gerenciarClientes(struct ListaClientes *lista) {
+    int opcaoSubmenus;
+    lista->qtdClientes = 0;
 
+    do {
+        if (lista->qtdClientes == 0) {
+            buscarDadosClientesModel(lista);
+        }
+        printf("=================================\n"
+            "|        MENU PRINCIPAL         |\n"
+            "=================================\n"
+            "|  1  | Cadastrar               |\n"
+            "|  2  | Atualizar               |\n"
+            "|  3  | Deletar                 |\n"
+            "|  4  | Listar                  |\n"
+            "|  5  | Voltar                  |\n"
+            "=================================\n"
+            "Escolha uma opção: ");
+        scanf("%d", &opcaoSubmenus);
+
+        switch (opcaoSubmenus) {
+            case 1:
+                cadastrarCliente(lista);
+            break;
+            case 2:
+                atualizarCliente(lista);
+            break;
+            case 3:
+                deletarCliente(lista);
+            break;
+            case 4:
+                listarClientes(lista);
+            break;
+            case 5:
+                armazenarDadosClienteModel(lista);
+            break;
+            default: printf("\nOpção inválida!");
+            break;
+        }
+    }while (opcaoSubmenus != 5);
+}
 void cadastrarCliente(struct ListaClientes *lista) {
     struct Clientes cliente;
 
@@ -34,7 +74,7 @@ void cadastrarCliente(struct ListaClientes *lista) {
 
     printf("Insira o endereço do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.endereco, sizeof(cliente.endereco), stdin);
+    scanf(" %[^\n]", cliente.endereco);
 
     cadastrarClientesModel(lista, &cliente);
 }
@@ -71,7 +111,7 @@ void atualizarCliente(struct ListaClientes *lista) {
 
     printf("Insira o endereço do cliente: ");
     setbuf(stdin, NULL);
-    fgets(cliente.endereco, sizeof(cliente.endereco), stdin);
+    scanf(" %[^\n]", cliente.endereco);
 
     atualizarClientesModel(lista, id, &cliente);
 }

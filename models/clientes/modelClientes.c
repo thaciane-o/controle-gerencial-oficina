@@ -29,10 +29,9 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
             for (int i = 0; i < lista->qtdClientes;i++) {
 
                 //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosClientes, "%d;%d;%s;%s;%s;%s;%s;%s", lista->listaClientes[i].Deletado,
-                        lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD,
+                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d\n", lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD,
                         lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
-                        lista->listaClientes[i].endereco);
+                        lista->listaClientes[i].endereco, lista->listaClientes[i].Deletado);
 
 
                 /***Após isso, os dados devem estar no seguinte formato dentro do arquivo***
@@ -108,10 +107,6 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
                 char *token = strtok(linha, ";");
 
                 if (token != NULL) {
-                    lista->listaClientes[i].Deletado = atoi(token);
-                    token = strtok(NULL, ";");
-                }
-                if (token != NULL) {
                     lista->listaClientes[i].id = atoi(token);
                     token = strtok(NULL, ";");
                 }
@@ -137,6 +132,10 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
                 }
                 if (token != NULL) {
                     strcpy(lista->listaClientes[i].endereco, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaClientes[i].Deletado = atoi(token);
                 }
 
                 i++;

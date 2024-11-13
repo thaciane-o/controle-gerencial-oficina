@@ -2,14 +2,54 @@
 #include "viewFornecedores.h"
 #include <stdio.h>
 
+void gerenciarFornecedor(struct ListaFornecedores *lista) {
+    int opcaoSubmenus;
+
+    do {
+        if (lista->qtdFornecedores == 0) {
+            buscarDadosFornecedoresModel(lista);
+        }
+
+        printf("=================================\n"
+            "|            SUBMENU            |\n"
+            "=================================\n"
+            "|  1  | Cadastrar               |\n"
+            "|  2  | Atualizar               |\n"
+            "|  3  | Deletar                 |\n"
+            "|  4  | Listar                  |\n"
+            "|  5  | Voltar                  |\n"
+            "=================================\n"
+            "Escolha uma opção: ");
+        scanf("%d", &opcaoSubmenus);
+
+        switch (opcaoSubmenus) {
+            case 1:
+                cadastrarFornecedor(lista);
+            break;
+            case 2:
+                atualizarFornecedor(lista);
+            break;
+            case 3:
+                deletarFornecedor(lista);
+            break;
+            case 4:
+                listarFornecedor(lista);
+            break;
+            case 5:
+                armazenarDadosFornecedoresModel(lista);
+                return;
+            default: printf("\nOpção inválida!");
+            break;
+        };
+    } while (opcaoSubmenus != 5);
+}
+
 void cadastrarFornecedor(struct ListaFornecedores *lista) {
     struct Fornecedores fornecedor;
 
     printf("\n=================================\n"
              "|     CADASTRO DE FORNECEDOR    |\n"
              "=================================\n");
-
-    fornecedor.id = gerarIdUnico();
 
     printf("Insira o nome fantasia do fornecedor: ");
     scanf(" %[^\n]", fornecedor.nomeFantasia);
@@ -54,7 +94,6 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
           "=================================\n"
           "Insira o fornecedor que deseja atualizar: ");
     scanf("%d", &id);
-    fornecedor = atualizarFornecedoresModel(lista, id);
 
     printf("Insira o nome fantasia do fornecedor: ");
     scanf(" %[^\n]", fornecedor.nomeFantasia);
@@ -86,6 +125,8 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     printf("Insira o email do fornecedor: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", fornecedor.email);
+
+    atualizarFornecedoresModel(lista, id, &fornecedor);
 }
 
 void listarFornecedor(struct ListaFornecedores *lista) {

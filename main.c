@@ -9,6 +9,8 @@
 
 
 int main() {
+    struct ListaFornecedores listaFornecedores;
+    listaFornecedores.qtdFornecedores = 0;
     system("chcp 65001");
     system("cls");
     setlocale(LC_ALL, "PT-BR");
@@ -17,23 +19,22 @@ int main() {
 
     int opcaoMenu, opcaoSubmenus;
 
-
     do {
         printf("\n=================================\n"
-       "|         MENU PRINCIPAL        |\n"
-       "=================================\n"
-       "|  1  | Oficina                 |\n"
-       "|  2  | Clientes                |\n"
-       "|  3  | Veículos                |\n"
-       "|  4  | Veículos                |\n"
-       "|  5  | Peças                   |\n"
-       "|  6  | Fornecedores            |\n"
-       "|  7  | Serviços                |\n"
-       "|  8  | Funcionários            |\n"
-       "|  9  | Sair                    |\n"
-       "=================================\n"
+            "|         MENU PRINCIPAL        |\n"
+            "=================================\n"
+            "|  1  | Oficina                 |\n"
+            "|  2  | Clientes                |\n"
+            "|  3  | Veículos               |\n"
+            "|  4  | Peças                  |\n"
+            "|  5  | Fornecedores            |\n"
+            "|  6  | Serviços               |\n"
+            "|  7  | Funcionários           |\n"
+            "|  8  | Sair                    |\n"
+            "=================================\n"
         "Escolha uma opção: ");
         scanf("%d", &opcaoMenu);
+
          switch (opcaoMenu) {
             case 1:
             break;
@@ -45,18 +46,19 @@ int main() {
             case 4:
             break;
             case 5:
+                gerenciarFornecedor(&listaFornecedores);
             break;
             case 6:
             break;
             case 7:
             break;
             case 8:
-            break;
-            case 9:
-                return 0;
-            default: printf("\nOpção inválida!");
+            return 0;
+            default: printf("Opção inválida!\n\n");
              break;
         }
-    } while(opcaoMenu != 9);
+    } while(opcaoMenu != 8);
+
+    return 0;
 
 }

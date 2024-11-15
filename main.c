@@ -7,7 +7,7 @@
 int main() {
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;
-    int opcaoMenu, opcaoSubmenus, opcaoArmazenamento = 0;
+    int opcaoMenu, opcaoSubmenus, opcaoArmazenamento;
 
     do {
         printf("Como deseja armazenar?\n"
@@ -16,7 +16,7 @@ int main() {
            "3. Memória\n"
             "Escolha uma opção: \n");
         scanf("%d", &opcaoArmazenamento);
-    } while (opcaoArmazenamento < 1 && opcaoArmazenamento > 3);
+    } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
 
     do {
         printf("\n=================================\n"

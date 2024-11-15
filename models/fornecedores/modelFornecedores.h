@@ -1,5 +1,5 @@
-#ifndef MODELCLIENTES_H
-#define MODELCLIENTES_H
+#ifndef MODELFORNECEDORES_H
+#define MODELFORNECEDORES_H
 
 struct Fornecedores {
     int id;
@@ -11,6 +11,7 @@ struct Fornecedores {
     char ddd[3];
     char telefone[11];
     char email[255];
+    int deletado;
 };
 
 struct ListaFornecedores {
@@ -18,13 +19,15 @@ struct ListaFornecedores {
     struct Fornecedores *listaFornecedores;
 };
 
-int gerarIdUnico();
+void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento);
+void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento);
 void alocarFornecedoresModel(struct ListaFornecedores *lista);
 void realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor);
 void deletarFornecedoresModel(struct ListaFornecedores *lista, int id);
-struct Fornecedores atualizarFornecedoresModel(struct ListaFornecedores *lista, int id);
+int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id);
+void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct Fornecedores *fornecedor);
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista);
 void listarFornecedoresModel(struct ListaFornecedores *lista, int id);
 
-#endif //MODELCLIENTES_H
+#endif //MODELFORNECEDORES_H

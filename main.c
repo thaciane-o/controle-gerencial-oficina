@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "./models/clientes/modelClientes.h"
 #include "./views/clientes/viewClientes.h"
-#include "./views/fornecedores/viewFornecedores.h"
-#include "./models/fornecedores/modelFornecedores.h"
 #include <locale.h>
 #include <stdlib.h>
 
@@ -13,8 +11,6 @@ int main() {
     system("cls");
     setlocale(LC_ALL, "PT-BR");
 
-    struct ListaFornecedores listaFornecedores;
-    listaFornecedores.qtdFornecedores = 0;
 
     struct ListaClientes listaClientes;
     listaClientes.qtdClientes = 0;
@@ -59,16 +55,15 @@ int main() {
             case 4:
             break;
             case 5:
-                gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
             break;
             case 6:
             break;
             case 7:
             break;
             case 8:
-                if (listaFornecedores.qtdFornecedores > 0) {
-                    free(listaFornecedores.listaFornecedores);
-                    listaFornecedores.listaFornecedores = NULL;
+                if (listaClientes.qtdClientes > 0) {
+                    free(listaClientes.listaClientes);
+                    listaClientes.listaClientes = NULL;
                 }
             break;
             default: printf("Opção inválida!\n\n");

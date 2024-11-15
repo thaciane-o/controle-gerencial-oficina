@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void gerenciarClientes(struct ListaClientes *lista) {
+void gerenciarClientes(struct ListaClientes *lista, int opcaoArmazenamento) {
     int opcaoSubmenus;
-    lista->qtdClientes = 0;
+
 
     do {
-        if (lista->qtdClientes == 0) {
-            buscarDadosClientesModel(lista);
+        if (lista->qtdClientes == 0 && opcaoArmazenamento != 3) {
+            buscarDadosClientesModel(lista, opcaoArmazenamento);
         }
         printf("=================================\n"
             "|        MENU PRINCIPAL         |\n"
@@ -37,8 +37,10 @@ void gerenciarClientes(struct ListaClientes *lista) {
                 listarClientes(lista);
             break;
             case 5:
-                armazenarDadosClienteModel(lista);
-            break;
+                if (opcaoArmazenamento != 3) {
+                    armazenarDadosClienteModel(lista, opcaoArmazenamento);
+                }
+            return;
             default: printf("\nOpção inválida!");
             break;
         }

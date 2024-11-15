@@ -18,8 +18,8 @@ struct ListaClientes {
     struct Clientes *listaClientes;
 };
 
-void buscarDadosClientesModel(struct ListaClientes *lista);
-void armazenarDadosClienteModel(struct ListaClientes *lista);
+void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenamento);
+void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento);
 void alocarClientesModel(struct ListaClientes *lista);
 void realocarClientesModel(struct ListaClientes *lista, int qtdAlocada);
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente);

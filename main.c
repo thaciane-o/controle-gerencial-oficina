@@ -9,15 +9,28 @@
 
 
 int main() {
-    struct ListaFornecedores listaFornecedores;
-    listaFornecedores.qtdFornecedores = 0;
     system("chcp 65001");
     system("cls");
     setlocale(LC_ALL, "PT-BR");
 
-    struct ListaClientes listaClientes;
+    struct ListaFornecedores listaFornecedores;
+    listaFornecedores.qtdFornecedores = 0;
 
-    int opcaoMenu, opcaoSubmenus;
+    struct ListaClientes listaClientes;
+    listaClientes.qtdClientes = 0;
+
+    int opcaoMenu, opcaoArmazenamento = 0;
+
+    do {
+        printf("Como deseja armazenar?\n"
+           "1. Texto\n"
+           "2. Binário\n"
+           "3. Memória\n"
+            "Escolha uma opção: \n");
+        scanf("%d", &opcaoArmazenamento);
+    } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
+
+
 
     do {
         printf("\n=================================\n"
@@ -32,28 +45,32 @@ int main() {
             "|  7  | Funcionários           |\n"
             "|  8  | Sair                    |\n"
             "=================================\n"
-        "Escolha uma opção: ");
+        "Escolha uma opção:\n");
         scanf("%d", &opcaoMenu);
 
          switch (opcaoMenu) {
             case 1:
             break;
             case 2:
-                gerenciarClientes(&listaClientes);
+                gerenciarClientes(&listaClientes, opcaoArmazenamento);
             break;
             case 3:
             break;
             case 4:
             break;
             case 5:
-                gerenciarFornecedor(&listaFornecedores);
+                gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
             break;
             case 6:
             break;
             case 7:
             break;
             case 8:
-            return 0;
+                if (listaFornecedores.qtdFornecedores > 0) {
+                    free(listaFornecedores.listaFornecedores);
+                    listaFornecedores.listaFornecedores = NULL;
+                }
+            break;
             default: printf("Opção inválida!\n\n");
              break;
         }

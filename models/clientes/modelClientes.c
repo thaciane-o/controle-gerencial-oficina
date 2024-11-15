@@ -4,19 +4,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void armazenarDadosClienteModel(struct ListaClientes *lista) {
+void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento) {
 
     //Abrindo ou criando arquivo para adicionar cadastros
     FILE *dadosClientes;
-    int opcaoArquivo;
 
-    printf("Qual arquivo deseja abrir?\n"
-        "1: TEXTO\n"
-        "2: BINARIO\n"
-    );
-
-    scanf("%d", &opcaoArquivo);
-    switch (opcaoArquivo) {
+    switch (opcaoArmazenamento) {
         case 1:
             dadosClientes = fopen("DadosClientes.txt", "w");
 
@@ -55,28 +48,21 @@ void armazenarDadosClienteModel(struct ListaClientes *lista) {
                 fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
 
             }
-            fclose(dadosClientes);
-            break;
-        default:
             break;
 
     }
+    fclose(dadosClientes);
     free(lista->listaClientes);
+    lista->qtdClientes = 0;
 }
 
-void buscarDadosClientesModel(struct ListaClientes *lista) {
+void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenamento) {
 
     int i = 0;
 
     FILE *dadosClientes;
-    int opcaoArquivo;
-    printf("Qual arquivo deseja abrir?\n"
-        "1: TEXTO\n"
-        "2: BINARIO\n"
-    );
-    scanf("%d", &opcaoArquivo);
 
-    switch (opcaoArquivo) {
+    switch (opcaoArmazenamento) {
         case 1:
             dadosClientes = fopen("DadosClientes.txt", "r");
 
@@ -140,7 +126,6 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
 
                 i++;
             }
-            fclose(dadosClientes);
             break;
         case 2:
             dadosClientes = fopen("DadosClientes.bin", "rb");
@@ -170,12 +155,10 @@ void buscarDadosClientesModel(struct ListaClientes *lista) {
             }
 
 
-            fclose(dadosClientes);
-            break;
-        default:
-            printf("Opcao invalida\n");
             break;
     }
+    fclose(dadosClientes);
+
 }
 
 void alocarClientesModel(struct ListaClientes *lista) {
@@ -259,11 +242,15 @@ void atualizarClientesModel(struct ListaClientes *lista, int id, struct Clientes
 
 void listarTodosClientesModel(struct ListaClientes *lista) {
 
+    //variavel para verificar se algum cliente foi listado
+    int listado = 0;
+
     if (lista->qtdClientes > 0) {
         for (int i = 0; i < lista->qtdClientes; i++) {
 
             //Verifica se o cliente esta deletado
             if (lista->listaClientes[i].Deletado == 0) {
+                listado = 1;
                 printf("ID: %d"
                        "\nNOME: %s"
                        "\nCPF: %s"
@@ -276,10 +263,15 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
                        lista->listaClientes[i].endereco);
             }
         }
-    } else {
-        printf("Nenhum cliente foi cadastrado!\n\n");
     }
 
+    /*
+     Caso nenhum cliente seja listado, será considerado que nenhum cliente foi cadastrado
+     mesmo se a quantidade for maior que 0
+    */
+    if (listado == 0) {
+        printf("Nenhum cliente cadastrado\n\n");
+    }
 }
 
 void listarClienteModel(struct ListaClientes *lista, int id) {

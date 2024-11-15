@@ -35,185 +35,25 @@ int main() {
 
          switch (opcaoMenu) {
             case 1:
-                do {
-                    printf("=================================\n"
-                        "|            SUBMENU            |\n"
-                        "=================================\n"
-                        "|  1  | Cadastrar               |\n"
-                        "|  2  | Atualizar               |\n"
-                        "|  3  | Deletar                 |\n"
-                        "|  4  | Listar                  |\n"
-                        "|  5  | Voltar                  |\n"
-                        "=================================\n"
-                        "Escolha uma opção: ");
-                    scanf("%d", &opcaoSubmenus);
 
-                    switch (opcaoSubmenus) {
-                        case 1:
-                        break;
-                        case 2:
-                        break;
-                        case 3:
-                        break;
-                        case 4:
-                        break;
-                        case 5:
-                        break;
-                        default: printf("\nOpção inválida!");
-                        break;
-                    };
-                } while (opcaoSubmenus != 5);
             break;
             case 2:
-                do {
-                    printf("=================================\n"
-                        "|            SUBMENU            |\n"
-                        "=================================\n"
-                        "|  1  | Cadastrar               |\n"
-                        "|  2  | Atualizar               |\n"
-                        "|  3  | Deletar                 |\n"
-                        "|  4  | Listar                  |\n"
-                        "|  5  | Voltar                  |\n"
-                        "=================================\n"
-                        "Escolha uma opção: ");
-                    scanf("%d", &opcaoSubmenus);
 
-                    switch (opcaoSubmenus) {
-                        case 1:
-                        break;
-                        case 2:
-                        break;
-                        case 3:
-                        break;
-                        case 4:
-                        break;
-                        case 5:
-                        break;
-                        default: printf("\nOpção inválida!");
-                        break;
-                    };
-                } while (opcaoSubmenus != 5);
             break;
             case 3:
-                do {
-                    printf("=================================\n"
-                        "|            SUBMENU            |\n"
-                        "=================================\n"
-                        "|  1  | Cadastrar               |\n"
-                        "|  2  | Atualizar               |\n"
-                        "|  3  | Deletar                 |\n"
-                        "|  4  | Listar                  |\n"
-                        "|  5  | Voltar                  |\n"
-                        "=================================\n"
-                        "Escolha uma opção: ");
-                    scanf("%d", &opcaoSubmenus);
 
-                    switch (opcaoSubmenus) {
-                        case 1:
-                        break;
-                        case 2:
-                        break;
-                        case 3:
-                        break;
-                        case 4:
-                        break;
-                        case 5:
-                        break;
-                        default: printf("\nOpção inválida!");
-                        break;
-                    };
-                } while (opcaoSubmenus != 5);
             break;
             case 4:
-                do {
-                    printf("=================================\n"
-                        "|            SUBMENU            |\n"
-                        "=================================\n"
-                        "|  1  | Cadastrar               |\n"
-                        "|  2  | Atualizar               |\n"
-                        "|  3  | Deletar                 |\n"
-                        "|  4  | Listar                  |\n"
-                        "|  5  | Voltar                  |\n"
-                        "=================================\n"
-                        "Escolha uma opção: ");
-                    scanf("%d", &opcaoSubmenus);
 
-                    switch (opcaoSubmenus) {
-                        case 1:
-                        break;
-                        case 2:
-                        break;
-                        case 3:
-                        break;
-                        case 4:
-                        break;
-                        default: printf("\nOpção inválida!");
-                        break;
-                    };
-                } while (opcaoSubmenus != 5);
             break;
             case 5:
                 gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
             break;
             case 6:
-                do {
-                    printf("=================================\n"
-                        "|            SUBMENU            |\n"
-                        "=================================\n"
-                        "|  1  | Cadastrar               |\n"
-                        "|  2  | Atualizar               |\n"
-                        "|  3  | Deletar                 |\n"
-                        "|  4  | Listar                  |\n"
-                        "|  5  | Voltar                  |\n"
-                        "=================================\n"
-                        "Escolha uma opção: ");
-                    scanf("%d", &opcaoSubmenus);
 
-                    switch (opcaoSubmenus) {
-                        case 1:
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
-                        case 4:
-                            break;
-                        case 5:
-                            break;
-                        default: printf("\nOpção inválida!");
-                        break;
-                    };
-                } while (opcaoSubmenus != 5);
             break;
             case 7:
-                do {
-                    printf("=================================\n"
-                        "|            SUBMENU            |\n"
-                        "=================================\n"
-                        "|  1  | Cadastrar               |\n"
-                        "|  2  | Atualizar               |\n"
-                        "|  3  | Deletar                 |\n"
-                        "|  4  | Listar                  |\n"
-                        "|  5  | Voltar                  |\n"
-                        "=================================\n"
-                        "Escolha uma opção: ");
-                    scanf("%d", &opcaoSubmenus);
 
-                    switch (opcaoSubmenus) {
-                        case 1:
-                        break;
-                        case 2:
-                        break;
-                        case 3:
-                        break;
-                        case 4:
-                        break;
-                        case 5:
-                        break;
-                        default: printf("\nOpção inválida!");
-                        break;
-                    };
-                } while (opcaoSubmenus != 5);
             break;
             case 8:
                 if (listaFornecedores.qtdFornecedores > 0) {

@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include "./views/fornecedores/viewFornecedores.h"
 #include "./models/fornecedores/modelFornecedores.h"
-#include "./models/clientes/modelClientes.h"
 #include "./views/clientes/viewClientes.h"
+#include "./models/clientes/modelClientes.h"
+#include "./views/funcionarios/viewFuncionarios.h"
+#include "./models/funcionarios/modelFuncionarios.h"
 #include <locale.h>
 
 int main() {
@@ -16,6 +18,9 @@ int main() {
 
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;
+
+    struct ListaFuncionarios listaFuncionarios;
+    listaFuncionarios.qtdFuncionarios = 0;
 
     int opcaoMenu, opcaoArmazenamento = 0;
 
@@ -34,11 +39,11 @@ int main() {
             "=================================\n"
             "|  1  | Oficina                 |\n"
             "|  2  | Clientes                |\n"
-            "|  3  | Veículos               |\n"
-            "|  4  | Peças                  |\n"
+            "|  3  | Veículos                |\n"
+            "|  4  | Peças                   |\n"
             "|  5  | Fornecedores            |\n"
-            "|  6  | Serviços               |\n"
-            "|  7  | Funcionários           |\n"
+            "|  6  | Serviços                |\n"
+            "|  7  | Funcionários            |\n"
             "|  8  | Sair                    |\n"
             "=================================\n"
         "Escolha uma opção:\n");
@@ -60,6 +65,7 @@ int main() {
             case 6:
             break;
             case 7:
+                gerenciarFuncionario(&listaFuncionarios, opcaoArmazenamento);
             break;
             case 8:
                 if (listaFornecedores.qtdFornecedores > 0) {

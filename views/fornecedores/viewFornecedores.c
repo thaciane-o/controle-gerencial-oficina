@@ -40,7 +40,7 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento
                     armazenarDadosFornecedoresModel(lista, opcaoArmazenamento);
                 }
                 return;
-            default: printf("\nOpção inválida!");
+            default: printf("Opção inválida!\n\n");
             break;
         };
     } while (opcaoSubmenus != 5);
@@ -95,7 +95,7 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     printf("\n======================================\n"
           "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
           "======================================\n"
-          "Insira o fornecedor que deseja atualizar:\n");
+          "Insira o ID do fornecedor que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
 

@@ -5,12 +5,12 @@
 void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento) {
     int opcaoSubmenus;
 
-    do {
-        if (lista->qtdFornecedores == 0 && opcaoArmazenamento != 3) {
-            buscarDadosFornecedoresModel(lista, opcaoArmazenamento);
-        }
+    if (lista->qtdFornecedores == 0 && opcaoArmazenamento != 3) {
+        buscarDadosFornecedoresModel(lista, opcaoArmazenamento);
+    }
 
-        printf("=================================\n"
+    do {
+        printf("\n=================================\n"
             "|    SUBMENU DE FORNECEDORES    |\n"
             "=================================\n"
             "|  1  | Cadastrar               |\n"

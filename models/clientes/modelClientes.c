@@ -5,7 +5,6 @@
 #include <string.h>
 
 void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento) {
-
     //Abrindo ou criando arquivo para adicionar cadastros
     FILE *dadosClientes;
 
@@ -14,50 +13,40 @@ void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazename
             dadosClientes = fopen("DadosClientes.txt", "w");
 
             if (dadosClientes == NULL) {
-                printf("Erro ao armazenar clientes (TXT)\n");
+                printf("Erro ao armazenar clientes\n");
                 exit(1);
             }
 
-
-            for (int i = 0; i < lista->qtdClientes;i++) {
-
+            for (int i = 0; i < lista->qtdClientes; i++) {
                 //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d\n", lista->listaClientes[i].id, lista->listaClientes[i].nome, lista->listaClientes[i].DDD,
-                        lista->listaClientes[i].telefone, lista->listaClientes[i].CPF, lista->listaClientes[i].email,
-                        lista->listaClientes[i].endereco, lista->listaClientes[i].Deletado);
-
-
-                /***Após isso, os dados devem estar no seguinte formato dentro do arquivo***
-
-                    isDeleted;id;nome;telefone;CPF_CNPJ;email;endereço\n
-                 */
+                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d\n", lista->listaClientes[i].id,
+                        lista->listaClientes[i].nome, lista->listaClientes[i].ddd,
+                        lista->listaClientes[i].telefone, lista->listaClientes[i].cpf, lista->listaClientes[i].email,
+                        lista->listaClientes[i].endereco, lista->listaClientes[i].deletado);
             }
-            fclose(dadosClientes);
             break;
         case 2:
             dadosClientes = fopen("DadosClientes.bin", "wb");
 
             if (dadosClientes == NULL) {
-                printf("Erro ao armazenar clientes (BIN)\n");
+                printf("Erro ao armazenar clientes\n");
                 exit(1);
             }
 
-
-            for (int i = 0; i < lista->qtdClientes;i++) {
-
+            for (int i = 0; i < lista->qtdClientes; i++) {
                 fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
-
             }
             break;
-
     }
     fclose(dadosClientes);
+
     free(lista->listaClientes);
+    lista->listaClientes = NULL;
+
     lista->qtdClientes = 0;
 }
 
 void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenamento) {
-
     int i = 0;
 
     FILE *dadosClientes;
@@ -67,7 +56,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             dadosClientes = fopen("DadosClientes.txt", "r");
 
             if (dadosClientes == NULL) {
-                printf("Nenhum cliente armazenado (TXT)\n");
+                printf("Nenhum cliente armazenado\n");
                 return;
             }
 
@@ -78,7 +67,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             }
 
 
-            //Alocando memoria para receber o arquivo
+        //Alocando memoria para receber o arquivo
             lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
 
             if (lista->listaClientes == NULL) {
@@ -89,7 +78,6 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             fseek(dadosClientes, 0, SEEK_SET);
 
             while (fgets(linha, sizeof(linha), dadosClientes)) {
-
                 char *token = strtok(linha, ";");
 
                 if (token != NULL) {
@@ -101,7 +89,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    strcpy(lista->listaClientes[i].DDD, token);
+                    strcpy(lista->listaClientes[i].ddd, token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -109,7 +97,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    strcpy(lista->listaClientes[i].CPF, token);
+                    strcpy(lista->listaClientes[i].cpf, token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -121,7 +109,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaClientes[i].Deletado = atoi(token);
+                    lista->listaClientes[i].deletado = atoi(token);
                 }
 
                 i++;
@@ -131,7 +119,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             dadosClientes = fopen("DadosClientes.bin", "rb");
 
             if (dadosClientes == NULL) {
-                printf("Nenhum cliente armazenado (BIN)\n");
+                printf("Nenhum cliente armazenado\n");
                 return;
             }
 
@@ -141,7 +129,12 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                 lista->qtdClientes++;
             }
 
-            lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
+            if (lista->qtdClientes > 0) {
+                lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
+            } else {
+                return;
+            }
+
             if (lista->listaClientes == NULL) {
                 printf("Erro ao alocar memoria\n");
                 exit(1);
@@ -158,11 +151,10 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             break;
     }
     fclose(dadosClientes);
-
 }
 
 void alocarClientesModel(struct ListaClientes *lista) {
-    lista->listaClientes = malloc(sizeof(struct  Clientes));
+    lista->listaClientes = malloc(sizeof(struct Clientes));
 
     if (lista->listaClientes == NULL) {
         printf("Erro: Memória insuficiente!\n\n");
@@ -191,7 +183,6 @@ void realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
 }
 
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente) {
-
     if (lista->qtdClientes == 0) {
         lista->qtdClientes++;
         alocarClientesModel(lista);
@@ -200,56 +191,50 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
     }
 
     //Cadastrando cliente na memoria
-    lista->listaClientes[lista->qtdClientes-1] = *cliente;
-    lista->listaClientes[lista->qtdClientes-1].Deletado = 0;
+    cliente->id = lista->qtdClientes;
+    cliente->deletado = 0;
 
-    //Gerando ID unico para o Cliente
-    int temp = 0;
-    for (int i = 0; i < lista->qtdClientes; i++) {
-        if (lista->listaClientes[i].id > lista->listaClientes[i-1].id) {
-            temp = lista->listaClientes[i].id;
-        }
-    }
+    lista->listaClientes[lista->qtdClientes - 1] = *cliente;
 
-    lista->listaClientes[lista->qtdClientes-1].id = temp+1;
-
-
-    printf("Cliente cadastrada com sucesso!\n\n");
+    printf("Cliente cadastrado com sucesso!\n\n");
 }
 
 void atualizarClientesModel(struct ListaClientes *lista, int id, struct Clientes *cliente) {
-
-    int encontrado = 0;
-    if (lista->qtdClientes == 0) {
-        printf("Nenhum cliente foi cadastrado!\n\n");
-        return;
-    }
-
     for (int i = 0; i < lista->qtdClientes; i++) {
-        if (lista->listaClientes[i].id == id && lista->listaClientes[i].Deletado == 0) {
-            encontrado = 1;
+        if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
             cliente->id = lista->listaClientes[i].id;
-            cliente->Deletado = lista->listaClientes[i].Deletado;
-
+            cliente->deletado = lista->listaClientes[i].deletado;
             lista->listaClientes[i] = *cliente;
+            break;
         }
-    }
-
-    if (!encontrado) {
-        printf("Cliente não encontrado!\n\n");
     }
 }
 
-void listarTodosClientesModel(struct ListaClientes *lista) {
+// Verifica se o ID que deseja atualizar existe
+int verificarIDClienteModel(struct ListaClientes *lista, int id) {
+    if (lista->qtdClientes > 0) {
+        for (int i = 0; i < lista->qtdClientes; i++) {
+            if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
+                return 1;
+            }
+        }
+    } else {
+        printf("Nenhum cliente foi cadastrado!\n");
+        return 0;
+    }
 
+    printf("Cliente não encontrado!\n");
+    return 0;
+}
+
+void listarTodosClientesModel(struct ListaClientes *lista) {
     //variavel para verificar se algum cliente foi listado
     int listado = 0;
 
     if (lista->qtdClientes > 0) {
         for (int i = 0; i < lista->qtdClientes; i++) {
-
             //Verifica se o cliente esta deletado
-            if (lista->listaClientes[i].Deletado == 0) {
+            if (lista->listaClientes[i].deletado == 0) {
                 listado = 1;
                 printf("ID: %d"
                        "\nNOME: %s"
@@ -258,7 +243,7 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
                        "\nEMAIL: %s"
                        "\nENDEREÇO: %s\n\n",
                        lista->listaClientes[i].id, lista->listaClientes[i].nome,
-                       lista->listaClientes[i].CPF, lista->listaClientes[i].DDD,
+                       lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
                        lista->listaClientes[i].telefone, lista->listaClientes[i].email,
                        lista->listaClientes[i].endereco);
             }
@@ -283,9 +268,8 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
     }
 
     for (int i = 0; i < lista->qtdClientes; i++) {
-
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
-        if (lista->listaClientes[i].id == id && lista->listaClientes[i].Deletado == 0) {
+        if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
             printf("ID: %d"
                    "\nNOME: %s"
                    "\nCPF: %s"
@@ -293,7 +277,7 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
                    "\nEMAIL: %s"
                    "\nENDEREÇO: %s\n\n",
                    lista->listaClientes[i].id, lista->listaClientes[i].nome,
-                   lista->listaClientes[i].CPF, lista->listaClientes[i].DDD,
+                   lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
                    lista->listaClientes[i].telefone, lista->listaClientes[i].email,
                    lista->listaClientes[i].endereco);
             encontrado = 1;
@@ -324,7 +308,7 @@ void deletarClientesModel(struct ListaClientes *lista, int id) {
         if (lista->listaClientes[i].id == id) {
             encontrado = 1;
 
-            lista->listaClientes[i].Deletado = 1;
+            lista->listaClientes[i].deletado = 1;
 
             printf("Cliente deletado com sucesso!\n\n");
 

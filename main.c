@@ -1,20 +1,29 @@
+// Include de bibliotecas do C
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
+// Include de models e views
+#include "models/oficina/modelOficina.h"
+#include "views/oficina/viewOficina.h"
 #include "./views/fornecedores/viewFornecedores.h"
 #include "./models/fornecedores/modelFornecedores.h"
 #include "./views/clientes/viewClientes.h"
 #include "./models/clientes/modelClientes.h"
 #include "./views/funcionarios/viewFuncionarios.h"
 #include "./models/funcionarios/modelFuncionarios.h"
-#include <locale.h>
 
 int main() {
+    // Configuração para caracteres especiais
     system("chcp 65001");
     system("cls");
     setlocale(LC_ALL, "PT-BR");
 
+    // Declaração de variáveis dos dados do sistema
     struct ListaClientes listaClientes;
     listaClientes.qtdClientes = 0;
+
+    struct ListaOficinas listaOficinas;
+    listaOficinas.qtdOficinas = 0;
 
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;
@@ -22,17 +31,20 @@ int main() {
     struct ListaFuncionarios listaFuncionarios;
     listaFuncionarios.qtdFuncionarios = 0;
 
+    // Variáveis de controle do sistema
     int opcaoMenu, opcaoArmazenamento = 0;
 
+    // Configuração de armazenamento inicial
     do {
         printf("Como deseja armazenar?\n"
-           "1. Texto\n"
-           "2. Binário\n"
-           "3. Memória\n"
-            "Escolha uma opção: \n");
+            "1. Texto\n"
+            "2. Binário\n"
+            "3. Memória\n"
+            "Escolha uma opção: ");
         scanf("%d", &opcaoArmazenamento);
     } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
 
+    // Menu principal do sistema
     do {
         printf("\n=================================\n"
             "|         MENU PRINCIPAL        |\n"
@@ -46,24 +58,25 @@ int main() {
             "|  7  | Funcionários            |\n"
             "|  8  | Sair                    |\n"
             "=================================\n"
-        "Escolha uma opção:\n");
+            "Escolha uma opção:\n");
         scanf("%d", &opcaoMenu);
 
-         switch (opcaoMenu) {
+        switch (opcaoMenu) {
             case 1:
-            break;
+                gerenciarOficina(&listaOficinas, opcaoArmazenamento);
+                break;
             case 2:
                 gerenciarClientes(&listaClientes, opcaoArmazenamento);
-            break;
+                break;
             case 3:
-            break;
+                break;
             case 4:
-            break;
+                break;
             case 5:
                 gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
-            break;
+                break;
             case 6:
-            break;
+                break;
             case 7:
                 gerenciarFuncionario(&listaFuncionarios, opcaoArmazenamento);
             break;
@@ -77,12 +90,11 @@ int main() {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
                 }
-            break;
+                break;
             default: printf("Opção inválida!\n\n");
-             break;
+                break;
         }
-    } while(opcaoMenu != 8);
+    } while (opcaoMenu != 8);
 
     return 0;
-
 }

@@ -6,7 +6,7 @@
 void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento) {
     FILE *dadosFornecedores;
 
-    switch(opcaoArmazenamento) {
+    switch (opcaoArmazenamento) {
         case 1:
             dadosFornecedores = fopen("DadosFornecedores.txt", "w");
 
@@ -15,21 +15,21 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
                 exit(1);
             }
 
-            for (int i = 0; i < lista->qtdFornecedores;i++) {
+            for (int i = 0; i < lista->qtdFornecedores; i++) {
                 fprintf(dadosFornecedores, "%d;%s;%s;%s;%s;%s;%s;%s;%s;%d\n",
-                    lista->listaFornecedores[i].id,
-                    lista->listaFornecedores[i].nomeFantasia,
-                    lista->listaFornecedores[i].razaoSocial,
-                    lista->listaFornecedores[i].inscricaoEstadual,
-                    lista->listaFornecedores[i].cnpj,
-                    lista->listaFornecedores[i].endereco,
-                    lista->listaFornecedores[i].ddd,
-                    lista->listaFornecedores[i].telefone,
-                    lista->listaFornecedores[i].email,
-                    lista->listaFornecedores[i].deletado);
+                        lista->listaFornecedores[i].id,
+                        lista->listaFornecedores[i].nomeFantasia,
+                        lista->listaFornecedores[i].razaoSocial,
+                        lista->listaFornecedores[i].inscricaoEstadual,
+                        lista->listaFornecedores[i].cnpj,
+                        lista->listaFornecedores[i].endereco,
+                        lista->listaFornecedores[i].ddd,
+                        lista->listaFornecedores[i].telefone,
+                        lista->listaFornecedores[i].email,
+                        lista->listaFornecedores[i].deletado);
             }
 
-        break;
+            break;
         case 2:
             dadosFornecedores = fopen("DadosFornecedores.bin", "wb");
 
@@ -38,14 +38,17 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
                 exit(1);
             }
 
-            for (int i = 0; i < lista->qtdFornecedores;i++) {
+            for (int i = 0; i < lista->qtdFornecedores; i++) {
                 fwrite(&lista->listaFornecedores[i], sizeof(struct Fornecedores), 1, dadosFornecedores);
             }
-        break;
+            break;
     }
 
     fclose(dadosFornecedores);
+
     free(lista->listaFornecedores);
+    lista->listaFornecedores = NULL;
+
     lista->qtdFornecedores = 0;
 }
 
@@ -54,7 +57,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
     FILE *dadosFornecedores;
     char linha[sizeof(struct Fornecedores)];
 
-    switch(opcaoArmazenamento) {
+    switch (opcaoArmazenamento) {
         case 1:
             dadosFornecedores = fopen("DadosFornecedores.txt", "r");
 
@@ -81,52 +84,51 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             fseek(dadosFornecedores, 0, SEEK_SET);
 
             while (fgets(linha, sizeof(linha), dadosFornecedores)) {
+                char *token = strtok(linha, ";");
 
-            char *token = strtok(linha, ";");
+                if (token != NULL) {
+                    lista->listaFornecedores[i].id = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].nomeFantasia, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].razaoSocial, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].inscricaoEstadual, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].cnpj, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].endereco, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].ddd, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].telefone, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFornecedores[i].email, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaFornecedores[i].deletado = atoi(token);
+                }
 
-            if (token != NULL) {
-                lista->listaFornecedores[i].id = atoi(token);
-                token = strtok(NULL, ";");
+                i++;
             }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].nomeFantasia, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].razaoSocial, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].inscricaoEstadual, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].cnpj, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].endereco, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].ddd, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].telefone, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFornecedores[i].email, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                lista->listaFornecedores[i].deletado = atoi(token);
-            }
-
-            i++;
-        }
-        break;
+            break;
         case 2:
             dadosFornecedores = fopen("DadosFornecedores.bin", "rb");
 
@@ -141,7 +143,12 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
                 lista->qtdFornecedores++;
             }
 
-            lista->listaFornecedores = malloc(lista->qtdFornecedores * sizeof(struct Fornecedores));
+            if (lista->qtdFornecedores > 0) {
+                lista->listaFornecedores = malloc(lista->qtdFornecedores * sizeof(struct Fornecedores));
+            } else {
+                return;
+            }
+
             if (lista->listaFornecedores == NULL) {
                 printf("Erro ao alocar memoria!\n");
                 exit(1);
@@ -153,7 +160,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
                 lista->listaFornecedores[i] = linhaFornecedor;
                 i++;
             }
-        break;
+            break;
     }
 
     fclose(dadosFornecedores);
@@ -161,7 +168,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
 
 void alocarFornecedoresModel(struct ListaFornecedores *lista) {
     lista->qtdFornecedores = 1;
-    lista->listaFornecedores = malloc(sizeof(struct  Fornecedores));
+    lista->listaFornecedores = malloc(sizeof(struct Fornecedores));
 
     if (lista->listaFornecedores == NULL) {
         printf("Erro: Memória insuficiente!\n\n");
@@ -195,8 +202,7 @@ void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Forneced
     fornecedor->id = lista->qtdFornecedores;
     fornecedor->deletado = 0;
 
-
-    lista->listaFornecedores[lista->qtdFornecedores-1] = *fornecedor;
+    lista->listaFornecedores[lista->qtdFornecedores - 1] = *fornecedor;
 
     printf("Fornecedor cadastrado com sucesso!\n\n");
 }
@@ -218,26 +224,14 @@ int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id) {
 }
 
 void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct Fornecedores *fornecedor) {
-    int encontrado = 0;
-
-    if (lista->qtdFornecedores == 0) {
-        printf("Nenhum fornecedor foi cadastrado!\n\n");
-        return;
-    }
-
     for (int i = 0; i < lista->qtdFornecedores; i++) {
         if (lista->listaFornecedores[i].id == id && lista->listaFornecedores[i].deletado == 0) {
-            encontrado = 1;
             lista->listaFornecedores[i] = *fornecedor;
             lista->listaFornecedores[i].id = id;
             lista->listaFornecedores[i].deletado = 0;
 
             break;
         }
-    }
-
-    if (!encontrado) {
-        printf("Fornecedor não encontrado!\n\n");
     }
 }
 
@@ -282,22 +276,22 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
             encontrado = 1;
             if (lista->listaFornecedores[i].deletado == 0) {
                 printf("ID: %d"
-                     "\nNOME FANTASIA: %s"
-                     "\nRAZÃO SOCIAL: %s"
-                     "\nINSCRIÇÃO ESTADUAL: %s"
-                     "\nCNPJ: %s"
-                     "\nENDEREÇO COMPLETO: %s"
-                     "\nTELEFONE: (%s)%s"
-                     "\nEMAIL: %s\n\n",
-                     lista->listaFornecedores[i].id,
-                     lista->listaFornecedores[i].nomeFantasia,
-                     lista->listaFornecedores[i].razaoSocial,
-                     lista->listaFornecedores[i].inscricaoEstadual,
-                     lista->listaFornecedores[i].cnpj,
-                     lista->listaFornecedores[i].endereco,
-                     lista->listaFornecedores[i].ddd,
-                     lista->listaFornecedores[i].telefone,
-                     lista->listaFornecedores[i].email);
+                       "\nNOME FANTASIA: %s"
+                       "\nRAZÃO SOCIAL: %s"
+                       "\nINSCRIÇÃO ESTADUAL: %s"
+                       "\nCNPJ: %s"
+                       "\nENDEREÇO COMPLETO: %s"
+                       "\nTELEFONE: (%s)%s"
+                       "\nEMAIL: %s\n\n",
+                       lista->listaFornecedores[i].id,
+                       lista->listaFornecedores[i].nomeFantasia,
+                       lista->listaFornecedores[i].razaoSocial,
+                       lista->listaFornecedores[i].inscricaoEstadual,
+                       lista->listaFornecedores[i].cnpj,
+                       lista->listaFornecedores[i].endereco,
+                       lista->listaFornecedores[i].ddd,
+                       lista->listaFornecedores[i].telefone,
+                       lista->listaFornecedores[i].email);
                 break;
             }
         }

@@ -6,11 +6,11 @@
 void gerenciarClientes(struct ListaClientes *lista, int opcaoArmazenamento) {
     int opcaoSubmenus;
 
+    if (lista->qtdClientes == 0 && opcaoArmazenamento != 3) {
+        buscarDadosClientesModel(lista, opcaoArmazenamento);
+    }
 
     do {
-        if (lista->qtdClientes == 0 && opcaoArmazenamento != 3) {
-            buscarDadosClientesModel(lista, opcaoArmazenamento);
-        }
         printf("=================================\n"
             "|        MENU PRINCIPAL         |\n"
             "=================================\n"
@@ -26,32 +26,34 @@ void gerenciarClientes(struct ListaClientes *lista, int opcaoArmazenamento) {
         switch (opcaoSubmenus) {
             case 1:
                 cadastrarCliente(lista);
-            break;
+                break;
             case 2:
                 atualizarCliente(lista);
-            break;
+                break;
             case 3:
                 deletarCliente(lista);
-            break;
+                break;
             case 4:
                 listarClientes(lista);
-            break;
+                break;
             case 5:
                 if (opcaoArmazenamento != 3) {
                     armazenarDadosClienteModel(lista, opcaoArmazenamento);
                 }
-            return;
-            default: printf("\nOpção inválida!");
-            break;
+                return;
+            default:
+                printf("\nOpção inválida!");
+                break;
         }
-    }while (opcaoSubmenus != 5);
+    } while (opcaoSubmenus != 5);
 }
+
 void cadastrarCliente(struct ListaClientes *lista) {
     struct Clientes cliente;
 
     printf("\n=================================\n"
-             "|     CADASTRO DE CLIENTE    |\n"
-             "=================================\n");
+        "|     CADASTRO DE CLIENTE    |\n"
+        "=================================\n");
 
 
     printf("Insira o nome do cliente: ");
@@ -60,7 +62,7 @@ void cadastrarCliente(struct ListaClientes *lista) {
 
     printf("Insira o DDD do cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", cliente.DDD);
+    scanf(" %[^\n]", cliente.ddd);
 
     printf("Insira número de telefone do cliente: ");
     setbuf(stdin, NULL);
@@ -68,7 +70,7 @@ void cadastrarCliente(struct ListaClientes *lista) {
 
     printf("Insira o CPF do cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", cliente.CPF);
+    scanf(" %[^\n]", cliente.cpf);
 
     printf("Insira o email do cliente: ");
     setbuf(stdin, NULL);
@@ -86,10 +88,15 @@ void atualizarCliente(struct ListaClientes *lista) {
     struct Clientes cliente;
 
     printf("\n=================================\n"
-          "|     ATUALIZAÇÃO DE CLIENTE    |\n"
-          "=================================\n"
-          "Insira o cliente que deseja atualizar: ");
+        "|     ATUALIZAÇÃO DE CLIENTE    |\n"
+        "=================================\n"
+        "Insira o cliente que deseja atualizar: ");
     scanf("%d", &id);
+
+    int encontrado = verificarIDClienteModel(lista, id);
+    if (encontrado == 0) {
+        return;
+    }
 
     printf("Insira o nome do cliente: ");
     setbuf(stdin, NULL);
@@ -97,7 +104,7 @@ void atualizarCliente(struct ListaClientes *lista) {
 
     printf("Insira o DDD do cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", cliente.DDD);
+    scanf(" %[^\n]", cliente.ddd);
 
     printf("Insira número de telefone do cliente: ");
     setbuf(stdin, NULL);
@@ -105,7 +112,7 @@ void atualizarCliente(struct ListaClientes *lista) {
 
     printf("Insira o CPF do cliente: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", cliente.CPF);
+    scanf(" %[^\n]", cliente.cpf);
 
     printf("Insira o email do cliente: ");
     setbuf(stdin, NULL);
@@ -121,11 +128,13 @@ void atualizarCliente(struct ListaClientes *lista) {
 void listarClientes(struct ListaClientes *lista) {
     int opcao, id;
 
-    printf("\n=================================\n"
-            "|     LISTAGEM DE CLIENTE    |\n"
-            "=================================\n"
-            "1. Listar um único cliente"
-            "\n2. Listar todos\n");
+    printf("==================\n"
+        "| 1 | Busca por ID\n"
+        "| 2 | Listar todos\n"
+        "| 3 | Voltar\n"
+        "==================\n"
+        "Opção desejada: ");
+    setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
     switch (opcao) {
@@ -137,17 +146,20 @@ void listarClientes(struct ListaClientes *lista) {
         case 2:
             listarTodosClientesModel(lista);
             break;
-        default: printf("Opção inválida!\n\n");
+        case 3:
+            break;
+        default:
+            printf("Opção inválida, voltando ao menu principal.\n");
+            break;
     }
-
 }
 
 void deletarCliente(struct ListaClientes *lista) {
     int id;
 
     printf("\n=================================\n"
-             "|     DELEÇÃO DE CLIENTE    |\n"
-             "=================================\n");
+        "|     DELEÇÃO DE CLIENTE    |\n"
+        "=================================\n");
     printf("Insira o cliente que deseja deletar:");
     scanf("%d", &id);
     deletarClientesModel(lista, id);

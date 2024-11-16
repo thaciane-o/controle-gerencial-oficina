@@ -4,16 +4,16 @@
 #include <stdlib.h>
 
 // Menu de funcionalidades para oficina
-void gerenciarOficina(struct ListaOficinas *lista) {
+void gerenciarOficina(struct ListaOficinas *lista, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
 
-    while (opcaoSubmenus != 5) {
-        if (lista->qtdOficinas == 0) {
-            buscarDadosOficinaModel(lista);
-        }
+    if (lista->qtdOficinas == 0 && opcaoArmazenamento != 3) {
+        buscarDadosOficinaModel(lista, opcaoArmazenamento);
+    }
 
+    while (opcaoSubmenus != 5) {
         printf("\n=================================\n"
-            "|            SUBMENU            |\n"
+            "|      SUBMENU DE OFICINAS      |\n"
             "=================================\n"
             "|  1  | Cadastrar               |\n"
             "|  2  | Atualizar               |\n"
@@ -38,7 +38,9 @@ void gerenciarOficina(struct ListaOficinas *lista) {
                 listarOficina(lista);
                 break;
             case 5:
-                armazenarDadosOficinaModel(lista);
+                if (opcaoArmazenamento != 3) {
+                    armazenarDadosOficinaModel(lista, opcaoArmazenamento);
+                }
                 break;
             default: printf("Opção inválida!\n");
                 break;
@@ -57,12 +59,10 @@ void cadastrarOficina(struct ListaOficinas *lista) {
     printf("Insira o nome da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaCadastrando.nome);
-    // fgets(oficinaCadastrando.nome, sizeof(oficinaCadastrando.nome), stdin);
 
     printf("Insira o endereço da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaCadastrando.endereco);
-    // fgets(oficinaCadastrando.endereco, sizeof(oficinaCadastrando.endereco), stdin);
 
     printf("Insira o DDD do telefone da oficina: ");
     setbuf(stdin, NULL);
@@ -71,12 +71,10 @@ void cadastrarOficina(struct ListaOficinas *lista) {
     printf("Insira o telefone da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", &oficinaCadastrando.telefone);
-    // fgets(oficinaCadastrando.telefone, sizeof(oficinaCadastrando.telefone), stdin);
 
     printf("Insira o email da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaCadastrando.email);
-    // fgets(oficinaCadastrando.email, sizeof(oficinaCadastrando.email), stdin);
 
     cadastrarOficinaModel(lista, &oficinaCadastrando);
 }
@@ -93,7 +91,6 @@ void atualizarOficina(struct ListaOficinas *lista) {
     printf("Insira o ID da oficina que deseja alterar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    // fgets(oficinaAtualizando.nome, sizeof(oficinaAtualizando.nome), stdin);
 
     // Verifica se o ID inserido existe
     int encontrado = verificarIDOficinaModel(lista, id);
@@ -103,27 +100,23 @@ void atualizarOficina(struct ListaOficinas *lista) {
 
     printf("Insira o nome da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", oficinaAtualizando.nome);
-    // fgets(oficinaAtualizando.nome, sizeof(oficinaAtualizando.nome), stdin);
+    scanf(" %[^\n]s", oficinaAtualizando.nome);
 
     printf("Insira o endereço da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", oficinaAtualizando.endereco);
-    // fgets(oficinaAtualizando.endereco, sizeof(oficinaAtualizando.endereco), stdin);
+    scanf(" %[^\n]s", oficinaAtualizando.endereco);
 
     printf("Insira o DDD do telefone da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", &oficinaAtualizando.ddd);
+    scanf(" %[^\n]s", oficinaAtualizando.ddd);
 
     printf("Insira o telefone da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", &oficinaAtualizando.telefone);
-    // fgets(oficinaAtualizando.telefone, sizeof(oficinaAtualizando.telefone), stdin);
+    scanf(" %[^\n]s", oficinaAtualizando.telefone);
 
     printf("Insira o email da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %s", oficinaAtualizando.email);
-    // fgets(oficinaAtualizando.email, sizeof(oficinaAtualizando.email), stdin);
+    scanf(" %[^\n]s", oficinaAtualizando.email);
 
     atualizarOficinaModel(lista, id, &oficinaAtualizando);
 }
@@ -139,7 +132,6 @@ void deletarOficina(struct ListaOficinas *lista) {
     printf("Insira o ID da oficina que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    // fgets(oficinaAtualizando.nome, sizeof(oficinaAtualizando.nome), stdin);
 
     deletarOficinaModel(lista, id);
 }
@@ -170,9 +162,9 @@ void listarOficina(struct ListaOficinas *lista) {
             listarTodosOficinaModel(lista);
             break;
         case 3:
-            return;
             break;
         default:
             printf("Opção inválida, voltando ao menu principal.\n");
+            break;
     }
 }

@@ -18,8 +18,8 @@ struct ListaOficinas {
 };
 
 // Controles de armazenamento
-void buscarDadosOficinaModel(struct ListaOficinas *lista);
-void armazenarDadosOficinaModel(struct ListaOficinas *lista);
+void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento);
+void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento);
 
 // Controles de alocação de memória
 void alocarMemoriaOficinaModel(struct ListaOficinas *lista);

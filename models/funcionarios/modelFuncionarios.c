@@ -6,7 +6,7 @@
 void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArmazenamento) {
     FILE *dadosFuncionarios;
 
-    switch(opcaoArmazenamento) {
+    switch (opcaoArmazenamento) {
         case 1:
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
 

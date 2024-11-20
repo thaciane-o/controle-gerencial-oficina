@@ -203,6 +203,7 @@ void atualizarVeiculosModel(struct ListaVeiculos *lista, int id, struct Veiculos
         if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
             veiculo->id = lista->listaVeiculos[i].id;
             veiculo->deletado = lista->listaVeiculos[i].deletado;
+            veiculo->idProprietario = lista->listaVeiculos[i].idProprietario;
             lista->listaVeiculos[i] = *veiculo;
             break;
         }

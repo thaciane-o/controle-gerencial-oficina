@@ -60,10 +60,13 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     setbuf(stdin, NULL);
     scanf("%d", &veiculo.idProprietario);
 
+
+    //buscar dados dos clientes nos arquivos
     if (listaProprietarios->qtdClientes == 0 && opcaoArmazenamento != 3) {
         buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
     }
 
+    //verificando existencia de cliente
     if (verificarIDClienteModel(listaProprietarios, veiculo.idProprietario) == 0) {
         if (opcaoArmazenamento != 3) {
             free(listaProprietarios->listaClientes);

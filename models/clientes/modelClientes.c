@@ -68,7 +68,11 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
 
 
         //Alocando memoria para receber o arquivo
-            lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
+            if (lista->qtdClientes > 0) {
+                lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
+            }else {
+                return;
+            }
 
             if (lista->listaClientes == NULL) {
                 printf("Erro ao alocar memoria\n");

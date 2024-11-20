@@ -67,7 +67,11 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
 
 
         //Alocando memoria para receber o arquivo
-            lista->listaVeiculos = malloc(lista->qtdVeiculos * sizeof(struct Veiculos));
+            if (lista->qtdVeiculos > 0) {
+                lista->listaVeiculos = malloc(lista->qtdVeiculos * sizeof(struct Veiculos));
+            } else {
+                return;
+            }
 
             if (lista->listaVeiculos == NULL) {
                 printf("Erro ao alocar memoria\n");

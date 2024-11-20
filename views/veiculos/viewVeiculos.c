@@ -90,7 +90,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 
     printf("Insira o ano de fabricação do veiculo: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", &veiculo.anoFabricacao);
+    scanf(" %d", &veiculo.anoFabricacao);
 
 
     cadastrarVeiculosModel(lista, &veiculo);
@@ -129,7 +129,7 @@ void atualizarVeiculo(struct ListaVeiculos *lista) {
 
     printf("Insira o ano de fabricação do veiculo: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", &veiculo.anoFabricacao);
+    scanf(" %d", &veiculo.anoFabricacao);
 
 
     atualizarVeiculosModel(lista, id, &veiculo);

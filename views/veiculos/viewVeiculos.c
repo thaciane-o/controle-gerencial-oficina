@@ -64,6 +64,11 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     //buscar dados dos clientes nos arquivos
     if (listaProprietarios->qtdClientes == 0 && opcaoArmazenamento != 3) {
         buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
+
+        if (listaProprietarios->listaClientes == NULL) {
+            printf("Nenhum cliente cadastrado\n\n");
+            return;
+        }
     }
 
     //verificando existencia de cliente

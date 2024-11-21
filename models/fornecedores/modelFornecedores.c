@@ -49,7 +49,6 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
 
     free(lista->listaFornecedores);
     lista->listaFornecedores = NULL;
-
     lista->qtdFornecedores = 0;
 }
 
@@ -303,7 +302,7 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
     }
 }
 
-void deletarFornecedoresModel(struct ListaFornecedores *lista, int id, struct ListaPecas *pecasRelacionadas) {
+void deletarFornecedoresModel(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas, int id) {
     int encontrado = 0;
 
     if (lista->qtdFornecedores == 0) {
@@ -314,7 +313,7 @@ void deletarFornecedoresModel(struct ListaFornecedores *lista, int id, struct Li
     if (pecasRelacionadas->qtdPecas > 0) {
         for (int i = 0; i < pecasRelacionadas->qtdPecas; i++) {
             if (pecasRelacionadas->listaPecas[i].idFornecedor == id && pecasRelacionadas->listaPecas[i].deletado == 0) {
-                printf("Deleção cancelada: Os dados desse fornecedor é utilizado em uma peça registrada.\n\n");
+                printf("Não foi possível deletar o fornecedor, pois os seus dados estão sendo utilizados em uma peça que já está cadastrada.\n\n");
                 return;
             }
         }

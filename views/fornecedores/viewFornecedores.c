@@ -1,10 +1,11 @@
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "viewFornecedores.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "../../models/pecas/modelPecas.h"
 
-void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento,
-                         struct ListaPecas *pecasRelacionadas) {
+void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas,
+                         int opcaoArmazenamento) {
     int opcaoSubmenus;
 
     if (opcaoArmazenamento != 3) {
@@ -50,10 +51,11 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento
 
                     if (pecasRelacionadas->qtdPecas > 0) {
                         free(pecasRelacionadas);
+                        pecasRelacionadas->qtdPecas = 0;
                         pecasRelacionadas = NULL;
                     }
                 }
-                return;
+                break;
             default: printf("\nOpção inválida!");
                 break;
         };
@@ -193,5 +195,5 @@ void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecas
     printf("Insira o ID do fornecedor que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    deletarFornecedoresModel(lista, id, pecasRelacionadas);
+    deletarFornecedoresModel(lista, pecasRelacionadas, id);
 }

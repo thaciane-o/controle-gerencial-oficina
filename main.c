@@ -84,7 +84,7 @@ int main() {
                 gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
                 break;
             case 5:
-                gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento, &listaPecas);
+                gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
                 break;
             case 6:
                 break;

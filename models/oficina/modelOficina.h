@@ -1,4 +1,3 @@
-
 #ifndef MODELOFICINA_H
 #define MODELOFICINA_H
 
@@ -19,18 +18,25 @@ struct ListaOficinas {
 
 // Controles de armazenamento
 void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento);
+
 void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento);
 
 // Controles de alocação de memória
 void alocarMemoriaOficinaModel(struct ListaOficinas *lista);
+
 void realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
 
 // Controles de CRUD
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando);
+
 void deletarOficinaModel(struct ListaOficinas *lista, int id);
+
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando);
+
 int verificarIDOficinaModel(struct ListaOficinas *lista, int id);
+
 void listarTodosOficinaModel(struct ListaOficinas *lista);
+
 void buscarIdOficinaModel(struct ListaOficinas *lista, int id);
 
 #endif //MODELOFICINA_H

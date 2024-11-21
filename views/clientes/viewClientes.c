@@ -1,7 +1,6 @@
 #include "../../models/clientes/modelClientes.h"
 #include "viewClientes.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 void gerenciarClientes(struct ListaClientes *lista, int opcaoArmazenamento) {
     int opcaoSubmenus;

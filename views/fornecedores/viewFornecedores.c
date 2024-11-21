@@ -1,8 +1,6 @@
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "viewFornecedores.h"
 #include <stdio.h>
-#include <stdlib.h>
-
 #include "../../models/pecas/modelPecas.h"
 
 void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento,

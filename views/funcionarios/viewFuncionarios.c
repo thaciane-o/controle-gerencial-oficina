@@ -1,12 +1,21 @@
 #include "../../models/funcionarios/modelFuncionarios.h"
+#include "../../models/oficina/modelOficina.h"
 #include "viewFuncionarios.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-void gerenciarFuncionario(struct ListaFuncionarios *lista, int opcaoArmazenamento) {
+void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas,
+                          int opcaoArmazenamento) {
     int opcaoSubmenus;
 
-    if (lista->qtdFuncionarios == 0 && opcaoArmazenamento != 3) {
-        buscarDadosFuncionariosModel(lista, opcaoArmazenamento);
+    if (opcaoArmazenamento != 3) {
+        if (lista->qtdFuncionarios == 0) {
+            buscarDadosFuncionariosModel(lista, opcaoArmazenamento);
+        }
+
+        if (listaOficinas->qtdOficinas == 0) {
+            buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
+        }
     }
 
     do {
@@ -18,40 +27,59 @@ void gerenciarFuncionario(struct ListaFuncionarios *lista, int opcaoArmazenament
             "|  3  | Deletar                |\n"
             "|  4  | Listar                 |\n"
             "|  5  | Voltar                 |\n"
-            "=================================\n"
+            "================================\n"
             "Escolha uma opção: \n");
         scanf("%d", &opcaoSubmenus);
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarFuncionario(lista);
-            break;
+                cadastrarFuncionario(lista, listaOficinas);
+                break;
             case 2:
-                atualizarFuncionario(lista);
-            break;
+                atualizarFuncionario(lista, listaOficinas);
+                break;
             case 3:
                 deletarFuncionario(lista);
-            break;
+                break;
             case 4:
                 listarFuncionario(lista);
-            break;
+                break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    armazenarDadosFuncionariosModel(lista, opcaoArmazenamento);
+                    if (lista->qtdFuncionarios > 0) {
+                        armazenarDadosFuncionariosModel(lista, opcaoArmazenamento);
+                    }
+
+                    if (listaOficinas->qtdOficinas > 0) {
+                        free(listaOficinas->listaOficinas);
+                        listaOficinas->listaOficinas = NULL;
+                        listaOficinas->qtdOficinas = 0;
+                    }
                 }
-                return;
+                break;
             default: printf("Opção inválida!\n\n");
-            break;
+                break;
         };
     } while (opcaoSubmenus != 5);
 }
 
-void cadastrarFuncionario(struct ListaFuncionarios *lista) {
+void cadastrarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas) {
     struct Funcionarios funcionario;
+    int idOficina;
 
     printf("\n================================\n"
-             "|    CADASTRO DE FUNCIONÁRIO   |\n"
-             "================================\n");
+        "|    CADASTRO DE FUNCIONÁRIO   |\n"
+        "================================\n");
+
+    printf("Insira o ID da oficina onde o funcionário trabalha: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idOficina);
+
+    if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
+        return;
+    }
+
+    funcionario.idOficina = idOficina;
 
     printf("Insira o nome do funcionário: ");
     setbuf(stdin, NULL);
@@ -65,21 +93,21 @@ void cadastrarFuncionario(struct ListaFuncionarios *lista) {
     setbuf(stdin, NULL);
     scanf(" %[^\n]", funcionario.cargo);
 
-    printf("Insira o salário do funcionário: ");
+    printf("Insira o salário do funcionário: R$");
     setbuf(stdin, NULL);
     scanf("%f", &funcionario.salario);
 
     cadastrarFuncionariosModel(lista, &funcionario);
 }
 
-void atualizarFuncionario(struct ListaFuncionarios *lista) {
-    int id;
+void atualizarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas) {
+    int id, idOficina;
     struct Funcionarios funcionario;
 
     printf("\n======================================\n"
-          "|     ATUALIZAÇÃO DE FUNCIONÁRIO    |\n"
-          "======================================\n"
-          "Insira o ID do funcionário que deseja atualizar:\n");
+        "|     ATUALIZAÇÃO DE FUNCIONÁRIO    |\n"
+        "======================================\n"
+        "Insira o ID do funcionário que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
@@ -88,6 +116,16 @@ void atualizarFuncionario(struct ListaFuncionarios *lista) {
         return;
     }
 
+    printf("Insira o ID da oficina onde o funcionário trabalha: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idOficina);
+
+    if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
+        return;
+    }
+
+    funcionario.idOficina = idOficina;
+
     printf("Insira o nome do funcionário: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", funcionario.nome);
@@ -100,7 +138,7 @@ void atualizarFuncionario(struct ListaFuncionarios *lista) {
     setbuf(stdin, NULL);
     scanf(" %[^\n]", funcionario.cargo);
 
-    printf("Insira o salário do funcionário: ");
+    printf("Insira o salário do funcionário: R$");
     setbuf(stdin, NULL);
     scanf("%f", &funcionario.salario);
 
@@ -111,11 +149,14 @@ void listarFuncionario(struct ListaFuncionarios *lista) {
     int opcao, id;
 
     printf("\n=================================\n"
-            "|     LISTAGEM DE FUNCIONÁRIO    |\n"
-            "=================================\n"
-            "1. Listar um único funcionário"
-            "\n2. Listar todos"
-            "\n3. Voltar\n");
+        "|    LISTAGEM DE FUNCIONÁRIO    |\n"
+        "=================================\n"
+        "| 1 | Busca por ID              |\n"
+        "| 2 | Busca por ID da oficina   |\n"
+        "| 3 | Listar todos              |\n"
+        "| 4 | Voltar                    |\n"
+        "=================================\n"
+        "Escolha uma opção: ");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
@@ -127,22 +168,26 @@ void listarFuncionario(struct ListaFuncionarios *lista) {
             listarFuncionariosModel(lista, id);
             break;
         case 2:
-            listarTodosFuncionariosModel(lista);
+            printf("Insira o ID da oficina desejado para a busca: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            buscarFuncionarioPorOficinaModel(lista, id);
             break;
         case 3:
-            return;
+            listarTodosFuncionariosModel(lista);
+            break;
+        case 4:
             break;
         default: printf("Opção inválida!\n\n");
     }
-    
 }
 
 void deletarFuncionario(struct ListaFuncionarios *lista) {
     int id;
 
-    printf("\n================================\n"
-             "|    DELEÇÃO DE FUNCIONÁRIO   |\n"
-             "================================\n");
+    printf("\n===============================\n"
+        "|    DELEÇÃO DE FUNCIONÁRIO   |\n"
+        "===============================\n");
     printf("Insira o ID do funcionário que deseja deletar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);

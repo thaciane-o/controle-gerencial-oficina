@@ -25,23 +25,23 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento
         switch (opcaoSubmenus) {
             case 1:
                 cadastrarFornecedor(lista);
-            break;
+                break;
             case 2:
                 atualizarFornecedor(lista);
-            break;
+                break;
             case 3:
                 deletarFornecedor(lista);
-            break;
+                break;
             case 4:
                 listarFornecedor(lista);
-            break;
+                break;
             case 5:
                 if (opcaoArmazenamento != 3) {
                     armazenarDadosFornecedoresModel(lista, opcaoArmazenamento);
                 }
                 return;
             default: printf("Opção inválida!\n\n");
-            break;
+                break;
         };
     } while (opcaoSubmenus != 5);
 }
@@ -50,8 +50,8 @@ void cadastrarFornecedor(struct ListaFornecedores *lista) {
     struct Fornecedores fornecedor;
 
     printf("\n=================================\n"
-             "|     CADASTRO DE FORNECEDOR    |\n"
-             "=================================\n");
+        "|     CADASTRO DE FORNECEDOR    |\n"
+        "=================================\n");
 
     printf("Insira o nome fantasia do fornecedor: ");
     setbuf(stdin, NULL);
@@ -93,9 +93,9 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     struct Fornecedores fornecedor;
 
     printf("\n======================================\n"
-          "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
-          "======================================\n"
-          "Insira o ID do fornecedor que deseja atualizar:\n");
+        "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
+        "======================================\n"
+        "Insira o ID do fornecedor que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
@@ -143,11 +143,11 @@ void listarFornecedor(struct ListaFornecedores *lista) {
     int opcao, id;
 
     printf("\n=================================\n"
-            "|     LISTAGEM DE FORNECEDOR    |\n"
-            "=================================\n"
-            "1. Listar um único fornecedor"
-            "\n2. Listar todos"
-            "\n3. Voltar\n");
+        "|     LISTAGEM DE FORNECEDOR    |\n"
+        "=================================\n"
+        "1. Listar um único fornecedor"
+        "\n2. Listar todos"
+        "\n3. Voltar\n");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
@@ -166,15 +166,14 @@ void listarFornecedor(struct ListaFornecedores *lista) {
             break;
         default: printf("Opção inválida!\n\n");
     }
-
 }
 
 void deletarFornecedor(struct ListaFornecedores *lista) {
     int id;
 
     printf("\n================================\n"
-             "|    DELEÇÃO DE FORNECEDOR   |\n"
-             "================================\n");
+        "|    DELEÇÃO DE FORNECEDOR   |\n"
+        "================================\n");
     printf("Insira o ID do fornecedor que deseja deletar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);

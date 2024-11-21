@@ -21,18 +21,25 @@ struct ListaFornecedores {
 
 // Controles de armazenamento
 void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento);
+
 void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento);
 
 // Controles de alocação de memória
 void alocarFornecedoresModel(struct ListaFornecedores *lista);
+
 void realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
 
 // Controles de CRUD
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor);
+
 void deletarFornecedoresModel(struct ListaFornecedores *lista, int id);
+
 int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id);
+
 void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct Fornecedores *fornecedor);
+
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista);
+
 void listarFornecedoresModel(struct ListaFornecedores *lista, int id);
 
 #endif //MODELFORNECEDORES_H

@@ -4,13 +4,18 @@
 #include <locale.h>
 
 // Include de models e views
-#include "models/oficina/modelOficina.h"
-#include "views/oficina/viewOficina.h"
-#include "models/clientes/modelClientes.h"
 #include "views/clientes/viewClientes.h"
+#include "models/clientes/modelClientes.h"
+
+#include "views/oficina/viewOficina.h"
+#include "models/oficina/modelOficina.h"
+
 #include "views/pecas/viewPecas.h"
+#include "models/pecas/modelPecas.h"
+
 #include "views/fornecedores/viewFornecedores.h"
 #include "models/fornecedores/modelFornecedores.h"
+
 #include "./views/funcionarios/viewFuncionarios.h"
 #include "./models/funcionarios/modelFuncionarios.h"
 
@@ -84,14 +89,9 @@ int main() {
             case 6:
                 break;
             case 7:
-                gerenciarFuncionario(&listaFuncionarios, opcaoArmazenamento);
-            break;
+                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
+                break;
             case 8:
-                if (listaFornecedores.qtdFornecedores > 0) {
-                    free(listaFornecedores.listaFornecedores);
-                    listaFornecedores.listaFornecedores = NULL;
-                }
-
                 if (listaClientes.qtdClientes > 0) {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
@@ -100,6 +100,21 @@ int main() {
                 if (listaOficinas.qtdOficinas > 0) {
                     free(listaOficinas.listaOficinas);
                     listaOficinas.listaOficinas = NULL;
+                }
+
+                if (listaPecas.qtdPecas > 0) {
+                    free(listaPecas.listaPecas);
+                    listaPecas.listaPecas = NULL;
+                }
+
+                if (listaFornecedores.qtdFornecedores > 0) {
+                    free(listaFornecedores.listaFornecedores);
+                    listaFornecedores.listaFornecedores = NULL;
+                }
+
+                if (listaFuncionarios.qtdFuncionarios > 0) {
+                    free(listaFuncionarios.listaFuncionarios);
+                    listaFuncionarios.listaFuncionarios = NULL;
                 }
                 break;
             default: printf("Opção inválida!\n\n");

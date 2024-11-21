@@ -11,33 +11,34 @@ void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoA
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
 
             if (dadosFuncionarios == NULL) {
-                printf("Erro ao armazenar funcionários!\n");
+                printf("Erro ao armazenar funcionários!\n\n");
                 exit(1);
             }
 
-            for (int i = 0; i < lista->qtdFuncionarios;i++) {
-                fprintf(dadosFuncionarios, "%d;%s;%s;%s;%.2f;%d\n",
-                    lista->listaFuncionarios[i].id,
-                    lista->listaFuncionarios[i].nome,
-                    lista->listaFuncionarios[i].cpf,
-                    lista->listaFuncionarios[i].cargo,
-                    lista->listaFuncionarios[i].salario,
-                    lista->listaFuncionarios[i].deletado);
+            for (int i = 0; i < lista->qtdFuncionarios; i++) {
+                fprintf(dadosFuncionarios, "%d;%s;%s;%s;%.2f;%d;%d\n",
+                        lista->listaFuncionarios[i].id,
+                        lista->listaFuncionarios[i].nome,
+                        lista->listaFuncionarios[i].cpf,
+                        lista->listaFuncionarios[i].cargo,
+                        lista->listaFuncionarios[i].salario,
+                        lista->listaFuncionarios[i].idOficina,
+                        lista->listaFuncionarios[i].deletado);
             }
 
-        break;
+            break;
         case 2:
             dadosFuncionarios = fopen("DadosFuncionarios.bin", "wb");
 
             if (dadosFuncionarios == NULL) {
-                printf("Erro ao armazenar funcionários!\n");
+                printf("Erro ao armazenar funcionários!\n\n");
                 exit(1);
             }
 
-            for (int i = 0; i < lista->qtdFuncionarios;i++) {
+            for (int i = 0; i < lista->qtdFuncionarios; i++) {
                 fwrite(&lista->listaFuncionarios[i], sizeof(struct Funcionarios), 1, dadosFuncionarios);
             }
-        break;
+            break;
     }
 
     fclose(dadosFuncionarios);
@@ -50,12 +51,12 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
     FILE *dadosFuncionarios;
     char linha[sizeof(struct Funcionarios)];
 
-    switch(opcaoArmazenamento) {
+    switch (opcaoArmazenamento) {
         case 1:
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "r");
 
             if (dadosFuncionarios == NULL) {
-                printf("Nenhum funcionário armazenado!\n");
+                printf("Erro ao abrir o arquivo!\n\n");
                 return;
             }
 
@@ -70,48 +71,51 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
             }
 
             if (lista->listaFuncionarios == NULL) {
-                printf("Erro ao alocar memória!\n");
+                printf("Erro ao alocar memória!\n\n");
                 exit(1);
             }
 
             fseek(dadosFuncionarios, 0, SEEK_SET);
 
             while (fgets(linha, sizeof(linha), dadosFuncionarios)) {
+                char *token = strtok(linha, ";");
 
-            char *token = strtok(linha, ";");
+                if (token != NULL) {
+                    lista->listaFuncionarios[i].id = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFuncionarios[i].nome, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFuncionarios[i].cpf, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaFuncionarios[i].cargo, token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaFuncionarios[i].salario = atof(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaFuncionarios[i].idOficina = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaFuncionarios[i].deletado = atoi(token);
+                }
 
-            if (token != NULL) {
-                lista->listaFuncionarios[i].id = atoi(token);
-                token = strtok(NULL, ";");
+                i++;
             }
-            if (token != NULL) {
-                strcpy(lista->listaFuncionarios[i].nome, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFuncionarios[i].cpf, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                strcpy(lista->listaFuncionarios[i].cargo, token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                lista->listaFuncionarios[i].salario = atof(token);
-                token = strtok(NULL, ";");
-            }
-            if (token != NULL) {
-                lista->listaFuncionarios[i].deletado = atoi(token);
-            }
-
-            i++;
-        }
-        break;
+            break;
         case 2:
             dadosFuncionarios = fopen("DadosFuncionarios.bin", "rb");
 
             if (dadosFuncionarios == NULL) {
-                printf("Nenhum funcionário armazenado!\n");
+                printf("Nenhum funcionário armazenado!\n\n");
                 return;
             }
 
@@ -123,7 +127,7 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
 
             lista->listaFuncionarios = malloc(lista->qtdFuncionarios * sizeof(struct Funcionarios));
             if (lista->listaFuncionarios == NULL) {
-                printf("Erro ao alocar memoria!\n");
+                printf("Erro ao alocar memoria!\n\n");
                 exit(1);
             }
 
@@ -133,7 +137,7 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
                 lista->listaFuncionarios[i] = linhaFuncionario;
                 i++;
             }
-        break;
+            break;
     }
 
     fclose(dadosFuncionarios);
@@ -141,7 +145,7 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
 
 void alocarFuncionariosModel(struct ListaFuncionarios *lista) {
     lista->qtdFuncionarios = 1;
-    lista->listaFuncionarios = malloc(sizeof(struct  Funcionarios));
+    lista->listaFuncionarios = malloc(sizeof(struct Funcionarios));
 
     if (lista->listaFuncionarios == NULL) {
         printf("Erro: Memória insuficiente!\n\n");
@@ -176,7 +180,7 @@ void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funciona
     funcionario->deletado = 0;
 
 
-    lista->listaFuncionarios[lista->qtdFuncionarios-1] = *funcionario;
+    lista->listaFuncionarios[lista->qtdFuncionarios - 1] = *funcionario;
 
     printf("Funcionário cadastrado com sucesso!\n\n");
 }
@@ -229,12 +233,14 @@ void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
                        "\nNOME: %s"
                        "\nCPF: %s"
                        "\nCARGO: %s"
-                       "\nSALÁRIO: %.2f\n\n",
+                       "\nSALÁRIO: %.2f"
+                       "\nOFICINA: %d\n\n",
                        lista->listaFuncionarios[i].id,
                        lista->listaFuncionarios[i].nome,
                        lista->listaFuncionarios[i].cpf,
                        lista->listaFuncionarios[i].cargo,
-                       lista->listaFuncionarios[i].salario);
+                       lista->listaFuncionarios[i].salario,
+                       lista->listaFuncionarios[i].idOficina);
             }
         }
     } else {
@@ -258,12 +264,14 @@ void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
                        "\nNOME: %s"
                        "\nCPF: %s"
                        "\nCARGO: %s"
-                       "\nSALÁRIO: %.2f\n\n",
+                       "\nSALÁRIO: %.2f"
+                       "\nOFICINA: %d\n\n",
                        lista->listaFuncionarios[i].id,
                        lista->listaFuncionarios[i].nome,
                        lista->listaFuncionarios[i].cpf,
                        lista->listaFuncionarios[i].cargo,
-                       lista->listaFuncionarios[i].salario);
+                       lista->listaFuncionarios[i].salario,
+                       lista->listaFuncionarios[i].idOficina);
                 break;
             }
         }
@@ -271,6 +279,36 @@ void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
 
     if (!encontrado) {
         printf("Funcionário não encontrado!\n\n");
+    }
+}
+
+void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOficina) {
+    int encontrado = 0;
+
+    if (lista->qtdFuncionarios > 0) {
+        for (int i = 0; i < lista->qtdFuncionarios; i++) {
+            if (lista->listaFuncionarios[i].idOficina == idOficina && lista->listaFuncionarios[i].deletado == 0) {
+                encontrado = 1;
+                printf("ID: %d"
+                       "\nNOME: %s"
+                       "\nCPF: %s"
+                       "\nCARGO: %s"
+                       "\nSALÁRIO: %.2f"
+                       "\nOFICINA: %d\n\n",
+                       lista->listaFuncionarios[i].id,
+                       lista->listaFuncionarios[i].nome,
+                       lista->listaFuncionarios[i].cpf,
+                       lista->listaFuncionarios[i].cargo,
+                       lista->listaFuncionarios[i].salario,
+                       lista->listaFuncionarios[i].idOficina);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum funcionário encontrado.\n\n");
+        }
+    } else {
+        printf("Nenhuma funcionário foi cadastrado.\n\n");
     }
 }
 

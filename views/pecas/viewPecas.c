@@ -46,14 +46,15 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
                 break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
+                    if (listaPecas->qtdPecas > 0) {
+                        armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
+                    }
 
                     if (listaFornecedores->qtdFornecedores > 0) {
                         free(listaFornecedores->listaFornecedores);
                         listaFornecedores->listaFornecedores = NULL;
                         listaFornecedores->qtdFornecedores = 0;
                     }
-
                 }
                 break;
             default: printf("Opção inválida!\n");

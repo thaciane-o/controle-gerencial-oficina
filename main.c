@@ -4,8 +4,12 @@
 #include <locale.h>
 
 // Include de models e views
-#include "views/clientes/viewClientes.h"
+
 #include "models/clientes/modelClientes.h"
+#include "views/clientes/viewClientes.h"
+
+#include "views/veiculos/viewVeiculos.h"
+#include "models/veiculos/modelVeiculos.h"
 
 #include "views/oficina/viewOficina.h"
 #include "models/oficina/modelOficina.h"
@@ -28,6 +32,10 @@ int main() {
     // Declaração de variáveis dos dados do sistema
     struct ListaClientes listaClientes;
     listaClientes.qtdClientes = 0;
+
+    struct ListaVeiculos listaVeiculos;
+    listaVeiculos.listaVeiculos = NULL;
+    listaVeiculos.qtdVeiculos = 0;
 
     struct ListaOficinas listaOficinas;
     listaOficinas.qtdOficinas = 0;
@@ -79,6 +87,7 @@ int main() {
                 gerenciarClientes(&listaClientes, opcaoArmazenamento);
                 break;
             case 3:
+                gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
                 break;
             case 4:
                 gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);

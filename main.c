@@ -81,10 +81,10 @@ int main() {
 
         switch (opcaoMenu) {
             case 1:
-                gerenciarOficina(&listaOficinas, opcaoArmazenamento);
+                gerenciarOficina(&listaOficinas, &listaFuncionarios, opcaoArmazenamento);
                 break;
             case 2:
-                gerenciarClientes(&listaClientes, opcaoArmazenamento);
+                gerenciarClientes(&listaClientes, &listaVeiculos, opcaoArmazenamento);
                 break;
             case 3:
                 gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);

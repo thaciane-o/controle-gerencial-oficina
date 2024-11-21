@@ -1,5 +1,6 @@
 #ifndef MODELOFICINA_H
 #define MODELOFICINA_H
+#include "../../models/funcionarios/modelFuncionarios.h"
 
 struct Oficinas {
     int id;
@@ -29,7 +30,7 @@ void realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
 // Controles de CRUD
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando);
 
-void deletarOficinaModel(struct ListaOficinas *lista, int id);
+void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, int id);
 
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando);
 

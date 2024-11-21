@@ -1,4 +1,5 @@
 #include "modelOficina.h"
+#include "../../models/funcionarios/modelFuncionarios.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -207,7 +208,7 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
 }
 
 // Deleta uma oficina cadastrada
-void deletarOficinaModel(struct ListaOficinas *lista, int id) {
+void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0;
 
@@ -215,6 +216,15 @@ void deletarOficinaModel(struct ListaOficinas *lista, int id) {
     if (lista->qtdOficinas == 0) {
         printf("Nenhuma oficina foi cadastrada.\n");
         return;
+    }
+
+    if (listaFuncionarios->qtdFuncionarios > 0) {
+        for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
+            if (listaFuncionarios->listaFuncionarios[i].idOficina == id && listaFuncionarios->listaFuncionarios[i].deletado == 0) {
+                printf("Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um funcionário que já está cadastrado.\n\n");
+                return;
+            }
+        }
     }
 
     // Busca pelo id para fazer a deleção.

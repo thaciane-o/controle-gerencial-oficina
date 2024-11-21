@@ -1,5 +1,5 @@
 #include "modelClientes.h"
-#include "../../views/clientes/viewClientes.h"
+#include "../../models/veiculos/modelVeiculos.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -296,12 +296,21 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
 
 
 //Utilizei um modelo de deleção logica
-void deletarClientesModel(struct ListaClientes *lista, int id) {
+void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, int id) {
     int encontrado = 0;
 
     if (lista->qtdClientes == 0) {
         printf("Nenhum cliente foi cadastrado!\n\n");
         return;
+    }
+
+    if (listaVeiculos->qtdVeiculos > 0) {
+        for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
+            if (listaVeiculos->listaVeiculos[i].idProprietario == id && listaVeiculos->listaVeiculos[i].deletado == 0) {
+                printf("Não foi possível deletar o cliente, pois os seus dados estão sendo utilizados em um veículo que já está cadastrado.\n\n");
+                return;
+            }
+        }
     }
 
     /*

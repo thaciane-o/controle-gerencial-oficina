@@ -1,14 +1,19 @@
 #include "viewOficina.h"
 #include "../../models/oficina/modelOficina.h"
+#include "../../models/funcionarios/modelFuncionarios.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 // Menu de funcionalidades para oficina
-void gerenciarOficina(struct ListaOficinas *lista, int opcaoArmazenamento) {
+void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
 
-    if (lista->qtdOficinas == 0 && opcaoArmazenamento != 3) {
-        buscarDadosOficinaModel(lista, opcaoArmazenamento);
+    if (opcaoArmazenamento != 3) {
+        if (lista->qtdOficinas == 0) {
+            buscarDadosOficinaModel(lista, opcaoArmazenamento);
+        }
+        if (lista->qtdOficinas > 0) {
+            buscarDadosFuncionariosModel(listaFuncionarios, opcaoArmazenamento);
+        }
     }
 
     while (opcaoSubmenus != 5) {
@@ -32,7 +37,7 @@ void gerenciarOficina(struct ListaOficinas *lista, int opcaoArmazenamento) {
                 atualizarOficina(lista);
                 break;
             case 3:
-                deletarOficina(lista);
+                deletarOficina(lista, listaFuncionarios);
                 break;
             case 4:
                 listarOficina(lista);
@@ -124,7 +129,7 @@ void atualizarOficina(struct ListaOficinas *lista) {
 }
 
 // Formulário de deleção de oficina
-void deletarOficina(struct ListaOficinas *lista) {
+void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios) {
     int id;
 
     printf("\n==============================\n"
@@ -135,7 +140,7 @@ void deletarOficina(struct ListaOficinas *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
-    deletarOficinaModel(lista, id);
+    deletarOficinaModel(lista, listaFuncionarios, id);
 }
 
 // Listagem de oficinas

@@ -1,6 +1,6 @@
 #ifndef MODELCLIENTES_H
 #define MODELCLIENTES_H
-
+#include "../../models/veiculos/modelVeiculos.h"
 
 struct Clientes {
     int id;
@@ -28,7 +28,7 @@ void realocarClientesModel(struct ListaClientes *lista, int qtdAlocada);
 
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente);
 
-void deletarClientesModel(struct ListaClientes *lista, int id);
+void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, int id);
 
 void atualizarClientesModel(struct ListaClientes *lista, int id, struct Clientes *cliente);
 

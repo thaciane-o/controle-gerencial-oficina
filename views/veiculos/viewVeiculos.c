@@ -29,7 +29,7 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
                 cadastrarVeiculo(listaProprietarios, lista, opcaoArmazenamento);
                 break;
             case 2:
-                atualizarVeiculo(lista);
+                atualizarVeiculo(listaProprietarios, lista, opcaoArmazenamento);
                 break;
             case 3:
                 deletarVeiculo(lista);
@@ -104,7 +104,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     cadastrarVeiculosModel(lista, &veiculo);
 }
 
-void atualizarVeiculo(struct ListaVeiculos *lista) {
+void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
     int id;
     struct Veiculos veiculo;
 
@@ -114,6 +114,26 @@ void atualizarVeiculo(struct ListaVeiculos *lista) {
         "Insira o veiculo que deseja atualizar: ");
     scanf("%d", &id);
 
+    printf("\nQual o ID do proprietario? ");
+    setbuf(stdin, NULL);
+    scanf("%d", &veiculo.idProprietario);
+
+    if (listaProprietarios->qtdClientes == 0 && opcaoArmazenamento != 3) {
+        buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
+
+        if (listaProprietarios->listaClientes == NULL) {
+            printf("Nenhum cliente cadastrado\n\n");
+            return;
+        }
+    }
+
+    //verificando existencia de cliente
+    if (verificarIDClienteModel(listaProprietarios, veiculo.idProprietario) == 0) {
+        if (opcaoArmazenamento != 3) {
+            free(listaProprietarios->listaClientes);
+        }
+        return;
+    }
     int encontrado = verificarIDVeiculoModel(lista, id);
     if (encontrado == 0) {
         return;

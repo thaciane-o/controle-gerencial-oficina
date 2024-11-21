@@ -48,8 +48,12 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
                 if (opcaoArmazenamento != 3) {
                     armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
 
-                    free(listaFornecedores->listaFornecedores);
-                    listaFornecedores->listaFornecedores = NULL;
+                    if (listaFornecedores->qtdFornecedores > 0) {
+                        free(listaFornecedores->listaFornecedores);
+                        listaFornecedores->listaFornecedores = NULL;
+                        listaFornecedores->qtdFornecedores = 0;
+                    }
+
                 }
                 break;
             default: printf("Opção inválida!\n");
@@ -128,6 +132,8 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
     if (verificarIDFornecedoresModel(listaFornecedores, idFornecedor) == 0) {
         return;
     }
+
+    pecaAtualizando.idFornecedor = idFornecedor;
 
     printf("Insira a descrição da peça: ");
     setbuf(stdin, NULL);

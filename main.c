@@ -1,10 +1,6 @@
 // Include de bibliotecas do C
 #include <stdio.h>
 #include <stdlib.h>
-#include "./views/fornecedores/viewFornecedores.h"
-#include "./models/fornecedores/modelFornecedores.h"
-#include "./models/clientes/modelClientes.h"
-#include "./views/clientes/viewClientes.h"
 #include <locale.h>
 
 // Include de models e views
@@ -12,6 +8,9 @@
 #include "views/oficina/viewOficina.h"
 #include "models/clientes/modelClientes.h"
 #include "views/clientes/viewClientes.h"
+#include "views/pecas/viewPecas.h"
+#include "views/fornecedores/viewFornecedores.h"
+#include "models/fornecedores/modelFornecedores.h"
 
 int main() {
     // Configuração para caracteres especiais
@@ -25,6 +24,9 @@ int main() {
 
     struct ListaOficinas listaOficinas;
     listaOficinas.qtdOficinas = 0;
+
+    struct ListaPecas listaPecas;
+    listaPecas.qtdPecas = 0;
 
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;
@@ -69,6 +71,7 @@ int main() {
             case 3:
                 break;
             case 4:
+                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
                 break;
             case 5:
                 gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
@@ -86,6 +89,11 @@ int main() {
                 if (listaClientes.qtdClientes > 0) {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
+                }
+
+                if (listaOficinas.qtdOficinas > 0) {
+                    free(listaOficinas.listaOficinas);
+                    listaOficinas.listaOficinas = NULL;
                 }
                 break;
             default: printf("Opção inválida!\n\n");

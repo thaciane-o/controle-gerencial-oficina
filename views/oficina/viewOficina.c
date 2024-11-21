@@ -39,7 +39,9 @@ void gerenciarOficina(struct ListaOficinas *lista, int opcaoArmazenamento) {
                 break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    armazenarDadosOficinaModel(lista, opcaoArmazenamento);
+                    if (lista->qtdOficinas) {
+                        armazenarDadosOficinaModel(lista, opcaoArmazenamento);
+                    }
                 }
                 break;
             default: printf("Opção inválida!\n");

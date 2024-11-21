@@ -38,7 +38,9 @@ void gerenciarClientes(struct ListaClientes *lista, int opcaoArmazenamento) {
                 break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    armazenarDadosClienteModel(lista, opcaoArmazenamento);
+                    if (lista->qtdClientes > 0) {
+                        armazenarDadosClienteModel(lista, opcaoArmazenamento);
+                    }
                 }
                 return;
             default:

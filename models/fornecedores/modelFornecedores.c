@@ -1,4 +1,5 @@
 #include "modelFornecedores.h"
+#include "../pecas/modelPecas.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -302,7 +303,7 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
     }
 }
 
-void deletarFornecedoresModel(struct ListaFornecedores *lista, int id) {
+void deletarFornecedoresModel(struct ListaFornecedores *lista, int id, struct ListaPecas *pecasRelacionadas) {
     int encontrado = 0;
 
     if (lista->qtdFornecedores == 0) {
@@ -310,12 +311,21 @@ void deletarFornecedoresModel(struct ListaFornecedores *lista, int id) {
         return;
     }
 
+    if (pecasRelacionadas->qtdPecas > 0) {
+        for (int i = 0; i < pecasRelacionadas->qtdPecas; i++) {
+            if (pecasRelacionadas->listaPecas[i].idFornecedor == id && pecasRelacionadas->listaPecas[i].deletado == 0) {
+                printf("Deleção cancelada: Os dados desse fornecedor é utilizado em uma peça registrada.\n\n");
+                return;
+            }
+        }
+    }
+
     for (int i = 0; i < lista->qtdFornecedores; i++) {
         if (lista->listaFornecedores[i].id == id && lista->listaFornecedores[i].deletado == 0) {
             encontrado = 1;
             lista->listaFornecedores[i].deletado = 1;
             printf("Fornecedor deletado com sucesso!\n\n");
-            break;
+            return;
         }
     }
 

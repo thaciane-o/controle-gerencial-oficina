@@ -17,7 +17,6 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
         }
     }
 
-
     while (opcaoSubmenus != 5) {
         printf("\n=================================\n"
             "|       SUBMENU DE PEÇAS        |\n"
@@ -46,14 +45,15 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
                 break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
+                    if (listaPecas->qtdPecas > 0) {
+                        armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
+                    }
 
                     if (listaFornecedores->qtdFornecedores > 0) {
                         free(listaFornecedores->listaFornecedores);
                         listaFornecedores->listaFornecedores = NULL;
                         listaFornecedores->qtdFornecedores = 0;
                     }
-
                 }
                 break;
             default: printf("Opção inválida!\n");
@@ -169,7 +169,6 @@ void deletarPeca(struct ListaPecas *lista) {
     printf("\n==============================\n"
         "|      DELEÇÃO DE PEÇA       |\n"
         "==============================\n");
-
     printf("Insira o ID da peça que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);
@@ -181,12 +180,14 @@ void deletarPeca(struct ListaPecas *lista) {
 void listarPeca(struct ListaPecas *listaPecas) {
     // Pergunta se deseja listar todos, ou buscar por id
     int resp;
-    printf("================================\n"
-        "| 1 | Busca por ID\n"
-        "| 2 | Busca por ID do Fornecedor\n"
-        "| 3 | Listar todos\n"
-        "| 4 | Voltar\n"
-        "================================\n"
+    printf("\n==================================\n"
+        "|     LISTAGEM DE FORNECEDOR     |\n"
+        "==================================\n"
+        "| 1 | Busca por ID               |\n"
+        "| 2 | Busca por ID do Fornecedor |\n"
+        "| 3 | Listar todos               |\n"
+        "| 4 | Voltar                     |\n"
+        "==================================\n"
         "Opção desejada: ");
     setbuf(stdin, NULL);
     scanf("%d", &resp);

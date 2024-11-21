@@ -1,12 +1,21 @@
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "viewFornecedores.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento) {
+#include "../../models/pecas/modelPecas.h"
+
+void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento,
+                         struct ListaPecas *pecasRelacionadas) {
     int opcaoSubmenus;
 
-    if (lista->qtdFornecedores == 0 && opcaoArmazenamento != 3) {
-        buscarDadosFornecedoresModel(lista, opcaoArmazenamento);
+    if (opcaoArmazenamento != 3) {
+        if (lista->qtdFornecedores == 0) {
+            buscarDadosFornecedoresModel(lista, opcaoArmazenamento);
+        }
+        if (lista->qtdFornecedores > 0) {
+            buscarDadosPecaModel(pecasRelacionadas, opcaoArmazenamento);
+        }
     }
 
     do {
@@ -25,23 +34,30 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, int opcaoArmazenamento
         switch (opcaoSubmenus) {
             case 1:
                 cadastrarFornecedor(lista);
-            break;
+                break;
             case 2:
                 atualizarFornecedor(lista);
-            break;
+                break;
             case 3:
-                deletarFornecedor(lista);
-            break;
+                deletarFornecedor(lista, pecasRelacionadas);
+                break;
             case 4:
                 listarFornecedor(lista);
-            break;
+                break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    armazenarDadosFornecedoresModel(lista, opcaoArmazenamento);
+                    if (lista->qtdFornecedores > 0) {
+                        armazenarDadosFornecedoresModel(lista, opcaoArmazenamento);
+                    }
+
+                    if (pecasRelacionadas->qtdPecas > 0) {
+                        free(pecasRelacionadas);
+                        pecasRelacionadas = NULL;
+                    }
                 }
                 return;
             default: printf("\nOpção inválida!");
-            break;
+                break;
         };
     } while (opcaoSubmenus != 5);
 }
@@ -50,8 +66,8 @@ void cadastrarFornecedor(struct ListaFornecedores *lista) {
     struct Fornecedores fornecedor;
 
     printf("\n=================================\n"
-             "|     CADASTRO DE FORNECEDOR    |\n"
-             "=================================\n");
+        "|     CADASTRO DE FORNECEDOR    |\n"
+        "=================================\n");
 
     printf("Insira o nome fantasia do fornecedor: ");
     setbuf(stdin, NULL);
@@ -93,9 +109,9 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     struct Fornecedores fornecedor;
 
     printf("\n======================================\n"
-          "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
-          "======================================\n"
-          "Insira o fornecedor que deseja atualizar:\n");
+        "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
+        "======================================\n"
+        "Insira o fornecedor que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
@@ -142,12 +158,14 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
 void listarFornecedor(struct ListaFornecedores *lista) {
     int opcao, id;
 
-    printf("\n=================================\n"
-            "|     LISTAGEM DE FORNECEDOR    |\n"
-            "=================================\n"
-            "1. Listar um único fornecedor"
-            "\n2. Listar todos"
-            "\n3. Voltar\n");
+    printf("\n==================================\n"
+        "|     LISTAGEM DE FORNECEDOR     |\n"
+        "==================================\n"
+        "| 1 | Listar um único fornecedor |\n"
+        "| 2 | Listar todos               |\n"
+        "| 3 | Voltar                     |\n"
+        "==================================\n"
+        "Opção desejada: ");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
@@ -166,17 +184,16 @@ void listarFornecedor(struct ListaFornecedores *lista) {
             break;
         default: printf("Opção inválida!\n\n");
     }
-
 }
 
-void deletarFornecedor(struct ListaFornecedores *lista) {
+void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas) {
     int id;
 
-    printf("\n================================\n"
-             "|    DELEÇÃO DE FORNECEDOR   |\n"
-             "================================\n");
-    printf("Insira o ID do fornecedor que deseja deletar:\n");
+    printf("\n==============================\n"
+        "|    DELEÇÃO DE FORNECEDOR   |\n"
+        "==============================\n");
+    printf("Insira o ID do fornecedor que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    deletarFornecedoresModel(lista, id);
+    deletarFornecedoresModel(lista, id, pecasRelacionadas);
 }

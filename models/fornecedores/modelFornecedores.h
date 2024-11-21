@@ -1,5 +1,6 @@
 #ifndef MODELFORNECEDORES_H
 #define MODELFORNECEDORES_H
+#include "../../models/pecas/modelPecas.h"
 
 struct Fornecedores {
     int id;
@@ -29,7 +30,7 @@ void realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
 
 // Controles de CRUD
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor);
-void deletarFornecedoresModel(struct ListaFornecedores *lista, int id);
+void deletarFornecedoresModel(struct ListaFornecedores *lista, int id, struct ListaPecas *pecasRelacionadas);
 int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id);
 void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct Fornecedores *fornecedor);
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista);

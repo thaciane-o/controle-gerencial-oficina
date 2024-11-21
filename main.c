@@ -75,7 +75,7 @@ int main() {
                 gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
                 break;
             case 5:
-                gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
+                gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento, &listaPecas);
                 break;
             case 6:
                 break;
@@ -90,6 +90,11 @@ int main() {
                 if (listaClientes.qtdClientes > 0) {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
+                }
+
+                if (listaPecas.qtdPecas > 0) {
+                    free(listaPecas.listaPecas);
+                    listaPecas.listaPecas = NULL;
                 }
 
                 if (listaOficinas.qtdOficinas > 0) {

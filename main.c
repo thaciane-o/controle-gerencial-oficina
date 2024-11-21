@@ -2,13 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+
 // Include de models e views
 #include "models/oficina/modelOficina.h"
 #include "views/oficina/viewOficina.h"
-#include "./views/fornecedores/viewFornecedores.h"
-#include "./models/fornecedores/modelFornecedores.h"
-#include "./views/clientes/viewClientes.h"
-#include "./models/clientes/modelClientes.h"
+#include "models/clientes/modelClientes.h"
+#include "views/clientes/viewClientes.h"
+#include "views/pecas/viewPecas.h"
+#include "views/fornecedores/viewFornecedores.h"
+#include "models/fornecedores/modelFornecedores.h"
 #include "./views/funcionarios/viewFuncionarios.h"
 #include "./models/funcionarios/modelFuncionarios.h"
 
@@ -24,6 +26,9 @@ int main() {
 
     struct ListaOficinas listaOficinas;
     listaOficinas.qtdOficinas = 0;
+
+    struct ListaPecas listaPecas;
+    listaPecas.qtdPecas = 0;
 
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;
@@ -71,6 +76,7 @@ int main() {
             case 3:
                 break;
             case 4:
+                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
                 break;
             case 5:
                 gerenciarFornecedor(&listaFornecedores, opcaoArmazenamento);
@@ -89,6 +95,11 @@ int main() {
                 if (listaClientes.qtdClientes > 0) {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
+                }
+
+                if (listaOficinas.qtdOficinas > 0) {
+                    free(listaOficinas.listaOficinas);
+                    listaOficinas.listaOficinas = NULL;
                 }
                 break;
             default: printf("Opção inválida!\n\n");

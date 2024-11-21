@@ -66,11 +66,11 @@ void cadastrarOficina(struct ListaOficinas *lista) {
 
     printf("Insira o DDD do telefone da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]s", &oficinaCadastrando.ddd);
+    scanf(" %[^\n]s", oficinaCadastrando.ddd);
 
     printf("Insira o telefone da oficina: ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]s", &oficinaCadastrando.telefone);
+    scanf(" %[^\n]s", oficinaCadastrando.telefone);
 
     printf("Insira o email da oficina: ");
     setbuf(stdin, NULL);

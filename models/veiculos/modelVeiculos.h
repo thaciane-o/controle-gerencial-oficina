@@ -7,8 +7,8 @@ struct Veiculos {
     int idProprietario;
     char modelo[255];
     char marca[255];
-    char chassi[17];
-    char placa[7];
+    char chassi[18];
+    char placa[8];
     int anoFabricacao;
     int deletado;
 };
@@ -36,7 +36,7 @@ int verificarIDVeiculoModel(struct ListaVeiculos *lista, int id);
 
 void listarTodosVeiculosModel(struct ListaVeiculos *lista);
 
-void listarVeiculoModel(struct ListaVeiculos *lista, int id);
+void buscarIdClienteModel(struct ListaVeiculos *lista, int id);
 
 void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id);
 

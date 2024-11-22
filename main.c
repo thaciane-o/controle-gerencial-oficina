@@ -23,6 +23,9 @@
 #include "./views/funcionarios/viewFuncionarios.h"
 #include "./models/funcionarios/modelFuncionarios.h"
 
+#include "./views/servicos/viewServicos.h"
+#include "./models/servicos/modelServicos.h"
+
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
@@ -45,6 +48,9 @@ int main() {
 
     struct ListaFornecedores listaFornecedores;
     listaFornecedores.qtdFornecedores = 0;
+
+    struct ListaServicos listaServicos;
+    listaServicos.qtdServicos = 0;
 
     struct ListaFuncionarios listaFuncionarios;
     listaFuncionarios.qtdFuncionarios = 0;
@@ -84,7 +90,7 @@ int main() {
                 gerenciarOficina(&listaOficinas, &listaFuncionarios, opcaoArmazenamento);
                 break;
             case 2:
-                gerenciarClientes(&listaClientes, &listaVeiculos, opcaoArmazenamento);
+                gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
                 break;
             case 3:
                 gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
@@ -96,6 +102,7 @@ int main() {
                 gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
                 break;
             case 6:
+                gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
                 break;
             case 7:
                 gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
@@ -124,6 +131,11 @@ int main() {
                 if (listaFornecedores.qtdFornecedores > 0) {
                     free(listaFornecedores.listaFornecedores);
                     listaFornecedores.listaFornecedores = NULL;
+                }
+
+                if (listaServicos.qtdServicos > 0) {
+                    free(listaServicos.listaServicos);
+                    listaServicos.listaServicos = NULL;
                 }
 
                 if (listaFuncionarios.qtdFuncionarios > 0) {

@@ -65,6 +65,10 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
+                    lista->listaOficinas[i].porcentagemLucro = atof(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
                     lista->listaOficinas[i].deletado = atoi(token);
                 }
 
@@ -123,13 +127,14 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
             }
 
             for (int i = 0; i < lista->qtdOficinas; i++) {
-                fprintf(dadosOficinas, "%d;%s;%s;%s;%s;%s;%d\n",
+                fprintf(dadosOficinas, "%d;%s;%s;%s;%s;%s;%f;%d\n",
                         lista->listaOficinas[i].id,
                         lista->listaOficinas[i].nome,
                         lista->listaOficinas[i].endereco,
                         lista->listaOficinas[i].ddd,
                         lista->listaOficinas[i].telefone,
                         lista->listaOficinas[i].email,
+                        lista->listaOficinas[i].porcentagemLucro,
                         lista->listaOficinas[i].deletado);
             }
             break;
@@ -287,13 +292,15 @@ void listarTodosOficinaModel(struct ListaOficinas *lista) {
                        "Nome: %s\n"
                        "Endereço: %s\n"
                        "DDD + Telefone: %s %s\n"
-                       "Email: %s\n",
+                       "Email: %s\n"
+                       "Porcentagem de Lucro: %.2f\n",
                        lista->listaOficinas[i].id,
                        lista->listaOficinas[i].nome,
                        lista->listaOficinas[i].endereco,
                        lista->listaOficinas[i].ddd,
                        lista->listaOficinas[i].telefone,
-                       lista->listaOficinas[i].email);
+                       lista->listaOficinas[i].email,
+                       lista->listaOficinas[i].porcentagemLucro);
             }
         }
         printf("====================\n");
@@ -323,13 +330,15 @@ void buscarIdOficinaModel(struct ListaOficinas *lista, int id) {
                    "Endereço: %s\n"
                    "DDD + Telefone: %s %s\n"
                    "Email: %s\n"
+                   "Porcentagem de Lucro: %.2f"
                    "====================\n",
                    lista->listaOficinas[encontrado].id,
                    lista->listaOficinas[encontrado].nome,
                    lista->listaOficinas[encontrado].endereco,
                    lista->listaOficinas[encontrado].ddd,
                    lista->listaOficinas[encontrado].telefone,
-                   lista->listaOficinas[encontrado].email);
+                   lista->listaOficinas[encontrado].email,
+                   lista->listaOficinas[encontrado].porcentagemLucro);
         } else {
             printf("Nenhuma oficina encontrada.\n");
         }

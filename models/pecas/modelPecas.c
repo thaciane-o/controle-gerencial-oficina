@@ -221,9 +221,9 @@ void deletarPecaModel(struct ListaPecas *lista, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0;
 
-    // Verifica se há alguma oficina cadastrada.
+    // Verifica se há alguma peça cadastrada.
     if (lista->qtdPecas == 0) {
-        printf("Nenhuma oficina foi cadastrada.\n");
+        printf("Nenhuma peça foi cadastrada.\n");
         return;
     }
 
@@ -232,14 +232,14 @@ void deletarPecaModel(struct ListaPecas *lista, int id) {
         if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
             encontrado = 1;
             lista->listaPecas[i].deletado = 1;
-            printf("Peca deletada com sucesso!\n");
+            printf("Peça deletada com sucesso!\n");
             break;
         }
     }
 
     // Se não encontrar o id para deleção, avisa o usuário.
     if (!encontrado) {
-        printf("Peca não encontrada.\n");
+        printf("Peça não encontrada.\n");
     }
 }
 
@@ -258,7 +258,7 @@ void atualizarPecaModel(struct ListaPecas *lista, int id, struct Pecas *pecaAlte
 
 // Verifica se o ID que deseja atualizar existe
 int verificarIDPecaModel(struct ListaPecas *lista, int id) {
-    // Procura a oficina com o id inserido
+    // Procura a peça com o id inserido
     if (lista->qtdPecas > 0) {
         for (int i = 0; i < lista->qtdPecas; i++) {
             if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {

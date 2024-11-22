@@ -83,6 +83,10 @@ void cadastrarOficina(struct ListaOficinas *lista) {
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaCadastrando.email);
 
+    printf("Insira a porcentagem de lucro: %");
+    setbuf(stdin, NULL);
+    scanf("%f", &oficinaCadastrando.porcentagemLucro);
+
     cadastrarOficinaModel(lista, &oficinaCadastrando);
 }
 
@@ -124,6 +128,10 @@ void atualizarOficina(struct ListaOficinas *lista) {
     printf("Insira o email da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaAtualizando.email);
+
+    printf("Insira a porcentagem de lucro: %");
+    setbuf(stdin, NULL);
+    scanf("%f", &oficinaAtualizando.porcentagemLucro);
 
     atualizarOficinaModel(lista, id, &oficinaAtualizando);
 }

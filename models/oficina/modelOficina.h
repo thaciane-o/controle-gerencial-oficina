@@ -9,6 +9,7 @@ struct Oficinas {
     char ddd[3];
     char telefone[11];
     char email[255];
+    float porcentagemLucro;
     int deletado;
 };
 

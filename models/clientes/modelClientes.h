@@ -6,10 +6,11 @@ struct Clientes {
     int id;
     char ddd[3];
     char telefone[11];
-    char cpf[12];
+    char cpf_cnpj[15];
     char nome[255];
     char email[255];
     char endereco[255];
+    int idOficina;
     int deletado;
 };
 
@@ -37,5 +38,7 @@ int verificarIDClienteModel(struct ListaClientes *lista, int id);
 void listarTodosClientesModel(struct ListaClientes *lista);
 
 void listarClienteModel(struct ListaClientes *lista, int id);
+
+void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina);
 
 #endif //MODELCLIENTES_H

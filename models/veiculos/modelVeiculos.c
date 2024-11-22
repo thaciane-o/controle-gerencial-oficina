@@ -263,7 +263,7 @@ void listarTodosVeiculosModel(struct ListaVeiculos *lista) {
     }
 }
 
-void listarVeiculoModel(struct ListaVeiculos *lista, int id) {
+void buscarIdClienteModel(struct ListaVeiculos *lista, int id) {
     int encontrado = 0;
 
     if (lista->qtdVeiculos == 0) {

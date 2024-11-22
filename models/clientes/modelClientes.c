@@ -19,10 +19,10 @@ void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazename
 
             for (int i = 0; i < lista->qtdClientes; i++) {
                 //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d\n", lista->listaClientes[i].id,
+                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n", lista->listaClientes[i].id,
                         lista->listaClientes[i].nome, lista->listaClientes[i].ddd,
-                        lista->listaClientes[i].telefone, lista->listaClientes[i].cpf, lista->listaClientes[i].email,
-                        lista->listaClientes[i].endereco, lista->listaClientes[i].deletado);
+                        lista->listaClientes[i].telefone, lista->listaClientes[i].cpf_cnpj, lista->listaClientes[i].email,
+                        lista->listaClientes[i].endereco, lista->listaClientes->idOficina, lista->listaClientes[i].deletado);
             }
             break;
         case 2:
@@ -101,7 +101,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    strcpy(lista->listaClientes[i].cpf, token);
+                    strcpy(lista->listaClientes[i].cpf_cnpj, token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -111,6 +111,9 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                 if (token != NULL) {
                     strcpy(lista->listaClientes[i].endereco, token);
                     token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaClientes[i].idOficina = atoi(token);
                 }
                 if (token != NULL) {
                     lista->listaClientes[i].deletado = atoi(token);
@@ -245,11 +248,16 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
                        "\nCPF: %s"
                        "\nTELEFONE: (%s)%s"
                        "\nEMAIL: %s"
-                       "\nENDEREÇO: %s\n\n",
-                       lista->listaClientes[i].id, lista->listaClientes[i].nome,
-                       lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
-                       lista->listaClientes[i].telefone, lista->listaClientes[i].email,
-                       lista->listaClientes[i].endereco);
+                       "\nENDEREÇO: %s\n"
+                       "\nID DA OFICINA: %d\n\n",
+                       lista->listaClientes[i].id,
+                       lista->listaClientes[i].nome,
+                       lista->listaClientes[i].cpf_cnpj,
+                       lista->listaClientes[i].ddd,
+                       lista->listaClientes[i].telefone,
+                       lista->listaClientes[i].email,
+                       lista->listaClientes[i].endereco,
+                       lista->listaClientes[i].idOficina);
             }
         }
     }
@@ -279,11 +287,16 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
                    "\nCPF: %s"
                    "\nTELEFONE: (%s)%s"
                    "\nEMAIL: %s"
-                   "\nENDEREÇO: %s\n\n",
-                   lista->listaClientes[i].id, lista->listaClientes[i].nome,
-                   lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
-                   lista->listaClientes[i].telefone, lista->listaClientes[i].email,
-                   lista->listaClientes[i].endereco);
+                   "\nENDEREÇO: %s"
+                   "\nID DA OFICINA: %d\n\n",
+                   lista->listaClientes[i].id,
+                   lista->listaClientes[i].nome,
+                   lista->listaClientes[i].cpf_cnpj,
+                   lista->listaClientes[i].ddd,
+                   lista->listaClientes[i].telefone,
+                   lista->listaClientes[i].email,
+                   lista->listaClientes[i].endereco,
+                   lista->listaClientes[i].idOficina);
             encontrado = 1;
             break;
         }
@@ -291,6 +304,39 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
 
     if (!encontrado) {
         printf("Cliente não encontrado!\n\n");
+    }
+}
+
+void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina) {
+    int encontrado = 0;
+
+    if (lista->qtdClientes > 0) {
+        for (int i = 0; i < lista->qtdClientes; i++) {
+            if (lista->listaClientes[i].idOficina == idOficina && lista->listaClientes[i].deletado == 0) {
+                encontrado = 1;
+                printf("ID: %d"
+                   "\nNOME: %s"
+                   "\nCPF: %s"
+                   "\nTELEFONE: (%s)%s"
+                   "\nEMAIL: %s"
+                   "\nENDEREÇO: %s"
+                   "\nID DA OFICINA: %d\n\n",
+                   lista->listaClientes[i].id,
+                   lista->listaClientes[i].nome,
+                   lista->listaClientes[i].cpf_cnpj,
+                   lista->listaClientes[i].ddd,
+                   lista->listaClientes[i].telefone,
+                   lista->listaClientes[i].email,
+                   lista->listaClientes[i].endereco,
+                   lista->listaClientes[i].idOficina);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum cliente encontrado.\n\n");
+        }
+    } else {
+        printf("Nenhum cliente foi cadastrado.\n\n");
     }
 }
 

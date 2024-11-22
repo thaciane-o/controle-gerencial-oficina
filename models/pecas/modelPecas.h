@@ -26,7 +26,7 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento);
 // Controles de alocação de memória
 void alocarMemoriaPecaModel(struct ListaPecas *lista);
 
-void realocarMemoriaPecaModel(struct ListaPecas *oficinas, int qtdAloca);
+void realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca);
 
 // Controles de CRUD
 void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando);

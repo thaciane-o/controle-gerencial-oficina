@@ -11,7 +11,7 @@ void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoA
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
 
             if (dadosFuncionarios == NULL) {
-                printf("Erro ao armazenar funcionários!\n\n");
+                printf("Erro ao abrir arquivo.\n\n");
                 exit(1);
             }
 
@@ -229,18 +229,20 @@ void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
     if (lista->qtdFuncionarios > 0) {
         for (int i = 0; i < lista->qtdFuncionarios; i++) {
             if (lista->listaFuncionarios[i].deletado == 0) {
-                printf("ID: %d"
-                       "\nNOME: %s"
-                       "\nCPF: %s"
-                       "\nCARGO: %s"
-                       "\nSALÁRIO: %.2f"
-                       "\nOFICINA: %d\n\n",
-                       lista->listaFuncionarios[i].id,
-                       lista->listaFuncionarios[i].nome,
-                       lista->listaFuncionarios[i].cpf,
-                       lista->listaFuncionarios[i].cargo,
-                       lista->listaFuncionarios[i].salario,
-                       lista->listaFuncionarios[i].idOficina);
+                printf("\n======================="
+                         "\n| FUNCIONÁRIO %d       |"
+                         "\n======================="
+                         "\nNOME: %s"
+                         "\nCPF: %s"
+                         "\nCARGO: %s"
+                         "\nSALÁRIO: %.2f"
+                         "\nOFICINA: %d\n",
+                         lista->listaFuncionarios[i].id,
+                         lista->listaFuncionarios[i].nome,
+                         lista->listaFuncionarios[i].cpf,
+                         lista->listaFuncionarios[i].cargo,
+                         lista->listaFuncionarios[i].salario,
+                         lista->listaFuncionarios[i].idOficina);
             }
         }
     } else {
@@ -260,12 +262,14 @@ void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
         if (lista->listaFuncionarios[i].id == id && lista->listaFuncionarios[i].deletado == 0) {
             encontrado = 1;
             if (lista->listaFuncionarios[i].deletado == 0) {
-                printf("ID: %d"
+                printf("\n======================="
+                       "\n| FUNCIONÁRIO %d       |"
+                       "\n======================="
                        "\nNOME: %s"
                        "\nCPF: %s"
                        "\nCARGO: %s"
                        "\nSALÁRIO: %.2f"
-                       "\nOFICINA: %d\n\n",
+                       "\nOFICINA: %d\n",
                        lista->listaFuncionarios[i].id,
                        lista->listaFuncionarios[i].nome,
                        lista->listaFuncionarios[i].cpf,
@@ -289,18 +293,20 @@ void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOfi
         for (int i = 0; i < lista->qtdFuncionarios; i++) {
             if (lista->listaFuncionarios[i].idOficina == idOficina && lista->listaFuncionarios[i].deletado == 0) {
                 encontrado = 1;
-                printf("ID: %d"
-                       "\nNOME: %s"
-                       "\nCPF: %s"
-                       "\nCARGO: %s"
-                       "\nSALÁRIO: %.2f"
-                       "\nOFICINA: %d\n\n",
-                       lista->listaFuncionarios[i].id,
-                       lista->listaFuncionarios[i].nome,
-                       lista->listaFuncionarios[i].cpf,
-                       lista->listaFuncionarios[i].cargo,
-                       lista->listaFuncionarios[i].salario,
-                       lista->listaFuncionarios[i].idOficina);
+                printf("\n======================="
+                        "\n| FUNCIONÁRIO %d       |"
+                        "\n======================="
+                        "\nNOME: %s"
+                        "\nCPF: %s"
+                        "\nCARGO: %s"
+                        "\nSALÁRIO: %.2f"
+                        "\nOFICINA: %d\n",
+                        lista->listaFuncionarios[i].id,
+                        lista->listaFuncionarios[i].nome,
+                        lista->listaFuncionarios[i].cpf,
+                        lista->listaFuncionarios[i].cargo,
+                        lista->listaFuncionarios[i].salario,
+                        lista->listaFuncionarios[i].idOficina);
             }
         }
 

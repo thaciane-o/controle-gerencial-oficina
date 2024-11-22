@@ -16,7 +16,7 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             dadosOficinas = fopen("DadosOficinas.txt", "r");
 
             if (dadosOficinas == NULL) {
-                printf("Erro ao abrir o arquivo!\n");
+                printf("Erro ao abrir o arquivo!\n\n");
                 return;
             }
 
@@ -31,7 +31,7 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             }
 
             if (lista->listaOficinas == NULL) {
-                printf("Erro ao alocar memória!\n");
+                printf("Erro ao alocar memória!\n\n");
                 exit(1);
             }
 
@@ -80,7 +80,7 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             dadosOficinas = fopen("DadosOficinas.bin", "rb");
 
             if (dadosOficinas == NULL) {
-                printf("Nenhuma oficina armazenada!\n");
+                printf("Nenhuma oficina armazenada!\n\n");
                 return;
             }
 
@@ -97,7 +97,7 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             }
 
             if (lista->listaOficinas == NULL) {
-                printf("Erro ao alocar memória!\n");
+                printf("Erro ao alocar memória!\n\n");
                 exit(1);
             }
 
@@ -122,7 +122,7 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
             dadosOficinas = fopen("DadosOficinas.txt", "w");
 
             if (dadosOficinas == NULL) {
-                printf("Erro ao armazenar oficinas!\n");
+                printf("Erro ao armazenar oficinas!\n\n");
                 exit(1);
             }
 
@@ -143,7 +143,7 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
             dadosOficinas = fopen("DadosOficinas.bin", "wb");
 
             if (dadosOficinas == NULL) {
-                printf("Erro ao armazenar oficinas!\n");
+                printf("Erro ao armazenar oficinas!\n\n");
                 exit(1);
             }
 
@@ -179,7 +179,7 @@ void realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
     // Verifica o tamando da alocação que pretende fazer
     if (qtdAloca == 0) {
         // Nenhuma alocação
-        printf("Nenhuma alocação foi realizada\n");
+        printf("Nenhuma alocação foi realizada\n\n");
         return;
     }
 
@@ -188,7 +188,7 @@ void realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
 
     // Verifica se a alocação deu certo
     if (lista->listaOficinas == NULL) {
-        printf("Erro: Memória insuficiente\n");
+        printf("Erro: Memória insuficiente\n\n");
         exit(EXIT_FAILURE);
     }
 }
@@ -209,7 +209,7 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
 
     lista->listaOficinas[lista->qtdOficinas - 1] = *oficinaCadastrando;
 
-    printf("Oficina cadastrada com sucesso!\n");
+    printf("Oficina cadastrada com sucesso!\n\n");
 }
 
 // Deleta uma oficina cadastrada
@@ -237,14 +237,14 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
             encontrado = 1;
             lista->listaOficinas[i].deletado = 1;
-            printf("Oficina deletada com sucesso!\n");
+            printf("Oficina deletada com sucesso!\n\n");
             break;
         }
     }
 
     // Se não encontrar o id para deleção, avisa o usuário.
     if (!encontrado) {
-        printf("Oficina não encontrada.\n");
+        printf("Oficina não encontrada.\n\n");
     }
 }
 
@@ -271,11 +271,11 @@ int verificarIDOficinaModel(struct ListaOficinas *lista, int id) {
             }
         }
     } else {
-        printf("Nenhuma oficina foi cadastrada!\n");
+        printf("Nenhuma oficina foi cadastrada!\n\n");
         return 0;
     }
 
-    printf("Oficina não encontrada!\n");
+    printf("Oficina não encontrada!\n\n");
     return 0;
 }
 
@@ -287,26 +287,27 @@ void listarTodosOficinaModel(struct ListaOficinas *lista) {
         for (int i = 0; i < lista->qtdOficinas; i++) {
             // Verifica se o índice atual existe
             if (lista->listaOficinas[i].deletado == 0) {
-                printf("====================\n"
-                       "Id: %d\n"
-                       "Nome: %s\n"
-                       "Endereço: %s\n"
-                       "DDD + Telefone: %s %s\n"
-                       "Email: %s\n"
-                       "Porcentagem de Lucro: %.2f\n",
-                       lista->listaOficinas[i].id,
-                       lista->listaOficinas[i].nome,
-                       lista->listaOficinas[i].endereco,
-                       lista->listaOficinas[i].ddd,
-                       lista->listaOficinas[i].telefone,
-                       lista->listaOficinas[i].email,
-                       lista->listaOficinas[i].porcentagemLucro);
+                printf("\n====================\n"
+                  "| OFICINA %d         |\n"
+                  "===================\n"
+                  "NOME: %s\n"
+                  "ENDEREÇO: %s\n"
+                  "TELEFONE: (%s) %s\n"
+                  "Email: %s\n"
+                  "Porcentagem de Lucro: %.2f\n",
+                   lista->listaOficinas[i].id,
+                   lista->listaOficinas[i].nome,
+                   lista->listaOficinas[i].endereco,
+                   lista->listaOficinas[i].ddd,
+                   lista->listaOficinas[i].telefone,
+                   lista->listaOficinas[i].email,
+                   lista->listaOficinas[i].porcentagemLucro);
             }
         }
         printf("====================\n");
     } else {
         // Se não houver, avisa que não há cadastros
-        printf("Nenhuma oficina foi cadastrada\n");
+        printf("Nenhuma oficina foi cadastrada\n\n");
     }
 }
 
@@ -324,14 +325,14 @@ void buscarIdOficinaModel(struct ListaOficinas *lista, int id) {
         }
 
         if (encontrado != -1) {
-            printf("====================\n"
-                   "Id: %d\n"
-                   "Nome: %s\n"
-                   "Endereço: %s\n"
-                   "DDD + Telefone: %s %s\n"
+            printf("\n====================\n"
+                   "| OFICINA %d         |\n"
+                   "===================\n"
+                   "NOME: %s\n"
+                   "ENDEREÇO: %s\n"
+                   "TELEFONE: (%s) %s\n"
                    "Email: %s\n"
-                   "Porcentagem de Lucro: %.2f"
-                   "====================\n",
+                   "Porcentagem de Lucro: %.2f",
                    lista->listaOficinas[encontrado].id,
                    lista->listaOficinas[encontrado].nome,
                    lista->listaOficinas[encontrado].endereco,
@@ -340,10 +341,10 @@ void buscarIdOficinaModel(struct ListaOficinas *lista, int id) {
                    lista->listaOficinas[encontrado].email,
                    lista->listaOficinas[encontrado].porcentagemLucro);
         } else {
-            printf("Nenhuma oficina encontrada.\n");
+            printf("Nenhuma oficina encontrada.\n\n");
         }
     } else {
         // Se não houver, avisa que não há cadastros
-        printf("Nenhuma oficina foi cadastrada\n");
+        printf("Nenhuma oficina foi cadastrada\n\n");
     }
 }

@@ -15,7 +15,7 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.txt", "r");
 
             if (dadosPecas == NULL) {
-                printf("Erro ao abrir o arquivo!\n");
+                printf("Erro ao abrir o arquivo!\n\n");
                 return;
             }
 
@@ -30,7 +30,7 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             }
 
             if (lista->listaPecas == NULL) {
-                printf("Erro ao alocar memória!\n");
+                printf("Erro ao alocar memória!\n\n");
                 exit(1);
             }
 
@@ -83,7 +83,7 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.bin", "rb");
 
             if (dadosPecas == NULL) {
-                printf("Nenhuma peça armazenada!\n");
+                printf("Nenhuma peça armazenada!\n\n");
                 return;
             }
 
@@ -100,7 +100,7 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             }
 
             if (lista->listaPecas == NULL) {
-                printf("Erro ao alocar memória!\n");
+                printf("Erro ao alocar memória!\n\n");
                 exit(1);
             }
 
@@ -125,7 +125,7 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.txt", "w");
 
             if (dadosPecas == NULL) {
-                printf("Erro ao armazenar pecas!\n");
+                printf("Erro ao armazenar pecas!\n\n");
                 exit(1);
             }
 
@@ -147,7 +147,7 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.bin", "wb");
 
             if (dadosPecas == NULL) {
-                printf("Erro ao armazenar peças!\n");
+                printf("Erro ao armazenar peças!\n\n");
                 exit(1);
             }
 
@@ -173,7 +173,7 @@ void alocarMemoriaPecaModel(struct ListaPecas *lista) {
 
     // Verifica se a alocação deu certo
     if (lista->listaPecas == NULL) {
-        printf("Erro: Memória insuficiente\n");
+        printf("Erro: Memória insuficiente.\n\n");
         exit(EXIT_FAILURE);
     }
 }
@@ -183,7 +183,7 @@ void realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
     // Verifica o tamando da alocação que pretende fazer
     if (qtdAloca == 0) {
         // Nenhuma alocação
-        printf("Nenhuma alocação foi realizada\n");
+        printf("Nenhuma alocação foi realizada.\n\n");
         return;
     }
 
@@ -192,7 +192,7 @@ void realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
 
     // Verifica se a alocação deu certo
     if (lista->listaPecas == NULL) {
-        printf("Erro: Memória insuficiente\n");
+        printf("Erro: Memória insuficiente.\n\n");
         exit(EXIT_FAILURE);
     }
 }
@@ -213,7 +213,7 @@ void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando)
 
     lista->listaPecas[lista->qtdPecas - 1] = *pecaCadastrando;
 
-    printf("Peça cadastrada com sucesso!\n");
+    printf("Peça cadastrada com sucesso!\n\n");
 }
 
 // Deleta uma peça cadastrada
@@ -266,11 +266,11 @@ int verificarIDPecaModel(struct ListaPecas *lista, int id) {
             }
         }
     } else {
-        printf("Nenhuma peça foi cadastrada!\n");
+        printf("Nenhuma peça foi cadastrada!\n\n");
         return 0;
     }
 
-    printf("Peca não encontrada!\n");
+    printf("Peca não encontrada!\n\n");
     return 0;
 }
 
@@ -282,15 +282,16 @@ void listarTodosPecaModel(struct ListaPecas *lista) {
         for (int i = 0; i < lista->qtdPecas; i++) {
             // Verifica se o índice atual existe
             if (lista->listaPecas[i].deletado == 0) {
-                printf("====================\n"
-                       "Id: %d\n"
-                       "Descrição: %s\n"
-                       "Fabricante: %s\n"
-                       "Preço de Custo: $%.2f\n"
-                       "Preço de Venda: $%.2f\n"
-                       "Quantidade em Estoque: %d\n"
-                       "Estoque Mínimio: %d\n"
-                       "Id do Fornecedor: %d\n",
+                printf("\n====================\n"
+                       "| PEÇA %d           |\n"
+                       "====================\n"
+                       "DESCRIÇÃO: %s\n"
+                       "FABRICANTE: %s\n"
+                       "PREÇO DE CUSTO: $%.2f\n"
+                       "PREÇO DE VENDA: $%.2f\n"
+                       "QUANTIDADE EM ESTOQUE: %d\n"
+                       "ESTOQUE MÍNIMO: %d\n"
+                       "FORNECEDOR: %d\n",
                        lista->listaPecas[i].id,
                        lista->listaPecas[i].descricao,
                        lista->listaPecas[i].fabricante,
@@ -301,10 +302,9 @@ void listarTodosPecaModel(struct ListaPecas *lista) {
                        lista->listaPecas[i].idFornecedor);
             }
         }
-        printf("====================\n");
     } else {
         // Se não houver, avisa que não há cadastros
-        printf("Nenhuma peça foi cadastrada\n");
+        printf("Nenhuma peça foi cadastrada.\n\n");
     }
 }
 
@@ -322,16 +322,16 @@ void buscarIdPecaModel(struct ListaPecas *lista, int id) {
         }
 
         if (encontrado != -1) {
-            printf("====================\n"
-                   "Id: %d\n"
-                   "Descrição: %s\n"
-                   "Fabricante: %s\n"
-                   "Preço de Custo: $%.2f\n"
-                   "Preço de Venda: $%.2f\n"
-                   "Quantidade em Estoque: %d\n"
-                   "Estoque Mínimio: %d\n"
-                   "Id do Fornecedor: %d\n"
-                   "====================\n",
+            printf("\n====================\n"
+                   "| PEÇA %d           |\n"
+                   "====================\n"
+                   "DESCRIÇÃO: %s\n"
+                   "FABRICANTE: %s\n"
+                   "PREÇO DE CUSTO: $%.2f\n"
+                   "PREÇO DE VENDA: $%.2f\n"
+                   "QUANTIDADE EM ESTOQUE: %d\n"
+                   "ESTOQUE MÍNIMO: %d\n"
+                   "FORNECEDOR: %d\n",
                    lista->listaPecas[encontrado].id,
                    lista->listaPecas[encontrado].descricao,
                    lista->listaPecas[encontrado].fabricante,
@@ -341,11 +341,11 @@ void buscarIdPecaModel(struct ListaPecas *lista, int id) {
                    lista->listaPecas[encontrado].estoqueMinimo,
                    lista->listaPecas[encontrado].idFornecedor);
         } else {
-            printf("Nenhuma peça encontrada.\n");
+            printf("Nenhuma peça encontrada.\n\n");
         }
     } else {
         // Se não houver, avisa que não há cadastros
-        printf("Nenhuma peça foi cadastrada\n");
+        printf("Nenhuma peça foi cadastrada.\n\n");
     }
 }
 
@@ -358,31 +358,33 @@ void buscarPecasPorFornecedorModel(struct ListaPecas *lista, int idFornecedor) {
         for (int i = 0; i < lista->qtdPecas; i++) {
             if (lista->listaPecas[i].idFornecedor == idFornecedor && lista->listaPecas[i].deletado == 0) {
                 encontrado = 1;
-                printf("====================\n"
-                       "Id: %d\n"
-                       "Descrição: %s\n"
-                       "Fabricante: %s\n"
-                       "Preço de Custo: $%.2f\n"
-                       "Preço de Venda: $%.2f\n"
-                       "Quantidade em Estoque: %d\n"
-                       "Estoque Mínimio: %d\n"
-                       "====================\n",
+                printf("\n====================\n"
+                       "| PEÇA %d           |\n"
+                       "====================\n"
+                       "DESCRIÇÃO: %s\n"
+                       "FABRICANTE: %s\n"
+                       "PREÇO DE CUSTO: $%.2f\n"
+                       "PREÇO DE VENDA: $%.2f\n"
+                       "QUANTIDADE EM ESTOQUE: %d\n"
+                       "ESTOQUE MÍNIMO: %d\n"
+                       "FORNECEDOR: %d\n",
                        lista->listaPecas[i].id,
                        lista->listaPecas[i].descricao,
                        lista->listaPecas[i].fabricante,
                        lista->listaPecas[i].precoCusto,
                        lista->listaPecas[i].precoVenda,
                        lista->listaPecas[i].qtdEstoque,
-                       lista->listaPecas[i].estoqueMinimo);
+                       lista->listaPecas[i].estoqueMinimo,
+                       lista->listaPecas[i].idFornecedor);
                 break;
             }
         }
 
         if (encontrado == 0) {
-            printf("Nenhuma peça encontrada.\n");
+            printf("Nenhuma peça encontrada.\n\n");
         }
     } else {
         // Se não houver, avisa que não há cadastros
-        printf("Nenhuma peça foi cadastrada\n");
+        printf("Nenhuma peça foi cadastrada.\n\n");
     }
 }

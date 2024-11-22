@@ -49,7 +49,7 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                     }
                 }
                 break;
-            default: printf("Opção inválida!\n");
+            default: printf("Opção inválida!\n\n");
                 break;
         }
     }
@@ -155,11 +155,13 @@ void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lista
 void listarOficina(struct ListaOficinas *lista) {
     // Pergunta se deseja listar todos, ou buscar por id
     int resp;
-    printf("==================\n"
-        "| 1 | Busca por ID\n"
-        "| 2 | Listar todos\n"
-        "| 3 | Voltar\n"
-        "==================\n"
+    printf("\n===============================\n"
+        "|     LISTAGEM DE OFICINA     |\n"
+        "===============================\n"
+        "| 1 | Busca por ID            |\n"
+        "| 2 | Listar todos            |\n"
+        "| 3 | Voltar                  |\n"
+        "===============================\n"
         "Opção desejada: ");
     setbuf(stdin, NULL);
     scanf("%d", &resp);
@@ -179,7 +181,7 @@ void listarOficina(struct ListaOficinas *lista) {
         case 3:
             break;
         default:
-            printf("Opção inválida, voltando ao menu principal.\n");
+            printf("Opção inválida, voltando ao menu principal.\n\n");
             break;
     }
 }

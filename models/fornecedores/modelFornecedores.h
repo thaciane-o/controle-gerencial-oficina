@@ -6,7 +6,7 @@ struct Fornecedores {
     int id;
     char nomeFantasia[255];
     char razaoSocial[255];
-    char inscricaoEstadual[10];
+    char inscricaoEstadual[14];
     char cnpj[15];
     char endereco[255];
     char ddd[3];

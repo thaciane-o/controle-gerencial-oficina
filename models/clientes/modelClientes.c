@@ -13,7 +13,7 @@ void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazename
             dadosClientes = fopen("DadosClientes.txt", "w");
 
             if (dadosClientes == NULL) {
-                printf("Erro ao armazenar clientes\n");
+                printf("Erro ao abrir arquivo.\n\n");
                 exit(1);
             }
 
@@ -29,7 +29,7 @@ void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazename
             dadosClientes = fopen("DadosClientes.bin", "wb");
 
             if (dadosClientes == NULL) {
-                printf("Erro ao armazenar clientes\n");
+                printf("Erro ao armazenar clientes\n\n");
                 exit(1);
             }
 
@@ -56,7 +56,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             dadosClientes = fopen("DadosClientes.txt", "r");
 
             if (dadosClientes == NULL) {
-                printf("Nenhum cliente armazenado\n");
+                printf("Nenhum cliente armazenado\n\n");
                 return;
             }
 
@@ -75,7 +75,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             }
 
             if (lista->listaClientes == NULL) {
-                printf("Erro ao alocar memoria\n");
+                printf("Erro ao alocar memoria\n\n");
                 exit(1);
             }
 
@@ -123,7 +123,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             dadosClientes = fopen("DadosClientes.bin", "rb");
 
             if (dadosClientes == NULL) {
-                printf("Nenhum cliente armazenado\n");
+                printf("Nenhum cliente armazenado\n\n");
                 return;
             }
 
@@ -140,7 +140,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             }
 
             if (lista->listaClientes == NULL) {
-                printf("Erro ao alocar memoria\n");
+                printf("Erro ao alocar memoria\n\n");
                 exit(1);
             }
 
@@ -223,11 +223,11 @@ int verificarIDClienteModel(struct ListaClientes *lista, int id) {
             }
         }
     } else {
-        printf("Nenhum cliente foi cadastrado!\n");
+        printf("Nenhum cliente foi cadastrado!\n\n");
         return 0;
     }
 
-    printf("Cliente não encontrado!\n");
+    printf("Cliente não encontrado!\n\n");
     return 0;
 }
 
@@ -240,12 +240,14 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
             //Verifica se o cliente esta deletado
             if (lista->listaClientes[i].deletado == 0) {
                 listado = 1;
-                printf("ID: %d"
+                printf("\n====================="
+                       "\n| CLIENTE %d         |"
+                       "\n====================="
                        "\nNOME: %s"
                        "\nCPF: %s"
-                       "\nTELEFONE: (%s)%s"
+                       "\nTELEFONE: (%s) %s"
                        "\nEMAIL: %s"
-                       "\nENDEREÇO: %s\n\n",
+                       "\nENDEREÇO: %s\n",
                        lista->listaClientes[i].id, lista->listaClientes[i].nome,
                        lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
                        lista->listaClientes[i].telefone, lista->listaClientes[i].email,
@@ -274,16 +276,18 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
     for (int i = 0; i < lista->qtdClientes; i++) {
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
         if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
-            printf("ID: %d"
-                   "\nNOME: %s"
-                   "\nCPF: %s"
-                   "\nTELEFONE: (%s)%s"
-                   "\nEMAIL: %s"
-                   "\nENDEREÇO: %s\n\n",
-                   lista->listaClientes[i].id, lista->listaClientes[i].nome,
-                   lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
-                   lista->listaClientes[i].telefone, lista->listaClientes[i].email,
-                   lista->listaClientes[i].endereco);
+            printf("\n====================="
+                       "\n| CLIENTE %d         |"
+                       "\n====================="
+                       "\nNOME: %s"
+                       "\nCPF: %s"
+                       "\nTELEFONE: (%s) %s"
+                       "\nEMAIL: %s"
+                       "\nENDEREÇO: %s\n",
+                       lista->listaClientes[i].id, lista->listaClientes[i].nome,
+                       lista->listaClientes[i].cpf, lista->listaClientes[i].ddd,
+                       lista->listaClientes[i].telefone, lista->listaClientes[i].email,
+                       lista->listaClientes[i].endereco);
             encontrado = 1;
             break;
         }

@@ -19,7 +19,7 @@ void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     }
 
     do {
-        printf("================================\n"
+        printf("\n================================\n"
             "|    SUBMENU DE FUNCIONÁRIO    |\n"
             "================================\n"
             "|  1  | Cadastrar              |\n"
@@ -104,9 +104,9 @@ void atualizarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     int id, idOficina;
     struct Funcionarios funcionario;
 
-    printf("\n======================================\n"
+    printf("\n=====================================\n"
         "|     ATUALIZAÇÃO DE FUNCIONÁRIO    |\n"
-        "======================================\n"
+        "=====================================\n"
         "Insira o ID do funcionário que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);

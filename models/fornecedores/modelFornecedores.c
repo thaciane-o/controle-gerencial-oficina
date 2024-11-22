@@ -12,7 +12,7 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
             dadosFornecedores = fopen("DadosFornecedores.txt", "w");
 
             if (dadosFornecedores == NULL) {
-                printf("Erro ao armazenar fornecedores!\n");
+                printf("Erro ao abrir o arquivo.\n\n");
                 exit(1);
             }
 
@@ -35,7 +35,7 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
             dadosFornecedores = fopen("DadosFornecedores.bin", "wb");
 
             if (dadosFornecedores == NULL) {
-                printf("Erro ao armazenar fornecedores!\n");
+                printf("Erro ao armazenar fornecedores!\n\n");
                 exit(1);
             }
 
@@ -62,7 +62,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             dadosFornecedores = fopen("DadosFornecedores.txt", "r");
 
             if (dadosFornecedores == NULL) {
-                printf("Nenhum fornecedor armazenado!\n");
+                printf("Nenhum fornecedor armazenado!\n\n");
                 return;
             }
 
@@ -77,7 +77,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             }
 
             if (lista->listaFornecedores == NULL) {
-                printf("Erro ao alocar memória!\n");
+                printf("Erro ao alocar memória!\n\n");
                 exit(1);
             }
 
@@ -133,7 +133,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             dadosFornecedores = fopen("DadosFornecedores.bin", "rb");
 
             if (dadosFornecedores == NULL) {
-                printf("Nenhum fornecedor armazenado!\n");
+                printf("Nenhum fornecedor armazenado!\n\n");
                 return;
             }
 
@@ -150,7 +150,7 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             }
 
             if (lista->listaFornecedores == NULL) {
-                printf("Erro ao alocar memoria!\n");
+                printf("Erro ao alocar memoria!\n\n");
                 exit(1);
             }
 
@@ -239,14 +239,16 @@ void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
     if (lista->qtdFornecedores > 0) {
         for (int i = 0; i < lista->qtdFornecedores; i++) {
             if (lista->listaFornecedores[i].deletado == 0) {
-                printf("ID: %d"
+                printf("\n====================="
+                       "\n| FORNECEDOR %d      |"
+                       "\n====================="
                        "\nNOME FANTASIA: %s"
                        "\nRAZÃO SOCIAL: %s"
                        "\nINSCRIÇÃO ESTADUAL: %s"
                        "\nCNPJ: %s"
                        "\nENDEREÇO COMPLETO: %s"
-                       "\nTELEFONE: (%s)%s"
-                       "\nEMAIL: %s\n\n",
+                       "\nTELEFONE: (%s) %s"
+                       "\nEMAIL: %s\n",
                        lista->listaFornecedores[i].id,
                        lista->listaFornecedores[i].nomeFantasia,
                        lista->listaFornecedores[i].razaoSocial,
@@ -275,14 +277,16 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
         if (lista->listaFornecedores[i].id == id && lista->listaFornecedores[i].deletado == 0) {
             encontrado = 1;
             if (lista->listaFornecedores[i].deletado == 0) {
-                printf("ID: %d"
+                printf("\n====================="
+                       "\n| FORNECEDOR %d      |"
+                       "\n====================="
                        "\nNOME FANTASIA: %s"
                        "\nRAZÃO SOCIAL: %s"
                        "\nINSCRIÇÃO ESTADUAL: %s"
                        "\nCNPJ: %s"
                        "\nENDEREÇO COMPLETO: %s"
-                       "\nTELEFONE: (%s)%s"
-                       "\nEMAIL: %s\n\n",
+                       "\nTELEFONE: (%s) %s"
+                       "\nEMAIL: %s\n",
                        lista->listaFornecedores[i].id,
                        lista->listaFornecedores[i].nomeFantasia,
                        lista->listaFornecedores[i].razaoSocial,
@@ -313,7 +317,8 @@ void deletarFornecedoresModel(struct ListaFornecedores *lista, struct ListaPecas
     if (pecasRelacionadas->qtdPecas > 0) {
         for (int i = 0; i < pecasRelacionadas->qtdPecas; i++) {
             if (pecasRelacionadas->listaPecas[i].idFornecedor == id && pecasRelacionadas->listaPecas[i].deletado == 0) {
-                printf("Não foi possível deletar o fornecedor, pois os seus dados estão sendo utilizados em uma peça que já está cadastrada.\n\n");
+                printf(
+                    "Não foi possível deletar o fornecedor, pois os seus dados estão sendo utilizados em uma peça que já está cadastrada.\n\n");
                 return;
             }
         }

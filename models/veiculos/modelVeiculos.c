@@ -12,7 +12,7 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
             dadosVeiculos = fopen("DadosVeiculos.txt", "w");
 
             if (dadosVeiculos == NULL) {
-                printf("Erro ao armazenar veiculos\n");
+                printf("Erro ao abrir arquivo.\n\n");
                 exit(1);
             }
 
@@ -28,7 +28,7 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
             dadosVeiculos = fopen("DadosVeiculos.bin", "wb");
 
             if (dadosVeiculos == NULL) {
-                printf("Erro ao armazenar veiculos\n");
+                printf("Erro ao armazenar veículos.\n\n");
                 exit(1);
             }
 
@@ -55,7 +55,7 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             dadosVeiculos = fopen("DadosVeiculos.txt", "r");
 
             if (dadosVeiculos == NULL) {
-                printf("Nenhum veiculo armazenado\n");
+                printf("Nenhum veículo armazenado.\n\n");
                 return;
             }
 
@@ -66,7 +66,7 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             }
 
 
-            //Alocando memoria para receber o arquivo
+        //Alocando memoria para receber o arquivo
             if (lista->qtdVeiculos > 0) {
                 lista->listaVeiculos = malloc(lista->qtdVeiculos * sizeof(struct Veiculos));
             } else {
@@ -74,7 +74,7 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             }
 
             if (lista->listaVeiculos == NULL) {
-                printf("Erro ao alocar memoria\n");
+                printf("Erro ao alocar memória.\n\n");
                 exit(1);
             }
 
@@ -122,7 +122,7 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             dadosVeiculos = fopen("DadosVeiculos.bin", "rb");
 
             if (dadosVeiculos == NULL) {
-                printf("Nenhum veiculo armazenado\n");
+                printf("Nenhum veículo armazenado.\n\n");
                 return;
             }
 
@@ -139,7 +139,7 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             }
 
             if (lista->listaVeiculos == NULL) {
-                printf("Erro ao alocar memoria\n");
+                printf("Erro ao alocar memoria.\n\n");
                 exit(1);
             }
 
@@ -199,7 +199,7 @@ void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *client
 
     lista->listaVeiculos[lista->qtdVeiculos - 1] = *cliente;
 
-    printf("Veiculo cadastrado com sucesso!\n\n");
+    printf("Veículo cadastrado com sucesso!\n\n");
 }
 
 void atualizarVeiculosModel(struct ListaVeiculos *lista, int id, struct Veiculos *veiculo) {
@@ -222,11 +222,11 @@ int verificarIDVeiculoModel(struct ListaVeiculos *lista, int id) {
             }
         }
     } else {
-        printf("Nenhum veiculo foi cadastrado!\n");
+        printf("Nenhum veículo foi cadastrado!\n\n");
         return 0;
     }
 
-    printf("Veiculo não encontrado!\n");
+    printf("Veículo não encontrado!\n\n");
     return 0;
 }
 
@@ -239,8 +239,10 @@ void listarTodosVeiculosModel(struct ListaVeiculos *lista) {
             //Verifica se o cliente esta deletado
             if (lista->listaVeiculos[i].deletado == 0) {
                 listado = 1;
-                printf("ID: %d"
-                       "\nID DO PROPRIETARIO: %d"
+                printf("\n===================\n"
+                       "| VEÍCULO %d       |\n"
+                       "==================="
+                       "\nPROPRIETÁRIO: %d"
                        "\nMODELO: %s"
                        "\nMARCA: %s"
                        "\nANO DE FABRICAÇÃO: %d"
@@ -259,7 +261,7 @@ void listarTodosVeiculosModel(struct ListaVeiculos *lista) {
      mesmo se a quantidade for maior que 0
     */
     if (listado == 0) {
-        printf("Nenhum veiculo cadastrado\n\n");
+        printf("Nenhum veículo cadastrado.\n\n");
     }
 }
 
@@ -267,31 +269,33 @@ void listarVeiculoModel(struct ListaVeiculos *lista, int id) {
     int encontrado = 0;
 
     if (lista->qtdVeiculos == 0) {
-        printf("Nenhum veiculo foi cadastrado!\n\n");
+        printf("Nenhum veículo foi cadastrado!\n\n");
         return;
     }
 
     for (int i = 0; i < lista->qtdVeiculos; i++) {
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
         if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
-            printf("ID: %d"
-                       "\nID DO PROPRIETARIO: %d"
-                       "\nMODELO: %s"
-                       "\nMARCA: %s"
-                       "\nANO DE FABRICAÇÃO: %d"
-                       "\nPLACA: %s"
-                       "\nCHASSI: %s\n\n",
-                       lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
-                       lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
-                       lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,
-                       lista->listaVeiculos[i].chassi);
+            printf("\n===================\n"
+                   "| VEÍCULO %d       |\n"
+                   "==================="
+                   "\nPROPRIETÁRIO: %d"
+                   "\nMODELO: %s"
+                   "\nMARCA: %s"
+                   "\nANO DE FABRICAÇÃO: %d"
+                   "\nPLACA: %s"
+                   "\nCHASSI: %s\n\n",
+                   lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
+                   lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
+                   lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,
+                   lista->listaVeiculos[i].chassi);
             encontrado = 1;
             break;
         }
     }
 
     if (!encontrado) {
-        printf("Veiculo não encontrado!\n\n");
+        printf("Veículo não encontrado!\n\n");
     }
 }
 
@@ -299,24 +303,26 @@ void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id) {
     int encontrado = 0;
 
     if (lista->qtdVeiculos == 0) {
-        printf("Nenhum veiculo foi cadastrado!\n\n");
+        printf("Nenhum veículo foi cadastrado!\n\n");
         return;
     }
 
     for (int i = 0; i < lista->qtdVeiculos; i++) {
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
         if (lista->listaVeiculos[i].idProprietario == id && lista->listaVeiculos[i].deletado == 0) {
-            printf("ID: %d"
-                       "\nID DO PROPRIETARIO: %d"
-                       "\nMODELO: %s"
-                       "\nMARCA: %s"
-                       "\nANO DE FABRICAÇÃO: %d"
-                       "\nPLACA: %s"
-                       "\nCHASSI: %s\n\n",
-                       lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
-                       lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
-                       lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,
-                       lista->listaVeiculos[i].chassi);
+            printf("\n===================\n"
+                   "| VEÍCULO %d       |\n"
+                   "==================="
+                   "\nPROPRIETÁRIO: %d"
+                   "\nMODELO: %s"
+                   "\nMARCA: %s"
+                   "\nANO DE FABRICAÇÃO: %d"
+                   "\nPLACA: %s"
+                   "\nCHASSI: %s\n\n",
+                   lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
+                   lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
+                   lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,
+                   lista->listaVeiculos[i].chassi);
             encontrado = 1;
         }
     }
@@ -324,7 +330,6 @@ void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id) {
     if (!encontrado) {
         printf("Proprietário não encontrado!\n\n");
     }
-
 }
 
 
@@ -333,7 +338,7 @@ void deletarVeiculosModel(struct ListaVeiculos *lista, int id) {
     int encontrado = 0;
 
     if (lista->qtdVeiculos == 0) {
-        printf("Nenhum veiculo foi cadastrado!\n\n");
+        printf("Nenhum veículo foi cadastrado!\n\n");
         return;
     }
 
@@ -347,13 +352,13 @@ void deletarVeiculosModel(struct ListaVeiculos *lista, int id) {
 
             lista->listaVeiculos[i].deletado = 1;
 
-            printf("Veiculo deletado com sucesso!\n\n");
+            printf("Veículo deletado com sucesso!\n\n");
 
             break;
         }
     }
 
     if (!encontrado) {
-        printf("Veiculo não encontrado!\n\n");
+        printf("Veículo não encontrado!\n\n");
     }
 }

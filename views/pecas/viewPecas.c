@@ -56,7 +56,7 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
                     }
                 }
                 break;
-            default: printf("Opção inválida!\n");
+            default: printf("Opção inválida!\n\n");
                 break;
         }
     }
@@ -213,7 +213,7 @@ void listarPeca(struct ListaPecas *listaPecas) {
         case 4:
             break;
         default:
-            printf("Opção inválida, voltando ao menu principal.\n");
+            printf("Opção inválida, voltando ao menu principal.\n\n");
             break;
     }
 }

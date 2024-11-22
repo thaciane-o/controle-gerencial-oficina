@@ -108,9 +108,9 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     int id;
     struct Fornecedores fornecedor;
 
-    printf("\n======================================\n"
+    printf("\n====================================\n"
         "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
-        "======================================\n"
+        "====================================\n"
         "Insira o fornecedor que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
@@ -189,9 +189,9 @@ void listarFornecedor(struct ListaFornecedores *lista) {
 void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas) {
     int id;
 
-    printf("\n==============================\n"
-        "|    DELEÇÃO DE FORNECEDOR   |\n"
-        "==============================\n");
+    printf("\n===============================\n"
+        "|    DELEÇÃO DE FORNECEDOR    |\n"
+        "===============================\n");
     printf("Insira o ID do fornecedor que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);

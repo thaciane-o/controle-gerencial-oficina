@@ -12,15 +12,15 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
     }
 
     do {
-        printf("=================================\n"
-            "|        MENU PRINCIPAL         |\n"
-            "=================================\n"
-            "|  1  | Cadastrar               |\n"
-            "|  2  | Atualizar               |\n"
-            "|  3  | Deletar                 |\n"
-            "|  4  | Listar                  |\n"
-            "|  5  | Voltar                  |\n"
-            "=================================\n"
+        printf("==================================\n"
+            "|       SUBMENU DE VEÍCULO       |\n"
+            "==================================\n"
+            "|  1  | Cadastrar                |\n"
+            "|  2  | Atualizar                |\n"
+            "|  3  | Deletar                  |\n"
+            "|  4  | Listar                   |\n"
+            "|  5  | Voltar                   |\n"
+            "==================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
 
@@ -43,7 +43,7 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
                 }
                 return;
             default:
-                printf("\nOpção inválida!");
+                printf("Opção inválida.\n\n");
                 break;
         }
     } while (opcaoSubmenus != 5);
@@ -52,11 +52,11 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
 void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
     struct Veiculos veiculo;
 
-    printf("\n=================================\n"
-        "|     CADASTRO DE VEICULO    |\n"
-        "=================================\n");
+    printf("\n==============================\n"
+        "|     CADASTRO DE VEÍCULO    |\n"
+        "==============================\n");
 
-    printf("Qual o ID do proprietario?");
+    printf("Qual o ID do proprietário?");
     setbuf(stdin, NULL);
     scanf("%d", &veiculo.idProprietario);
 
@@ -66,7 +66,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
         buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
 
         if (listaProprietarios->listaClientes == NULL) {
-            printf("Nenhum cliente cadastrado\n\n");
+            printf("Nenhum proprietário cadastrado.\n\n");
             return;
         }
     }
@@ -79,24 +79,23 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
         return;
     }
 
-
-    printf("Insira o modelo do veiculo: ");
+    printf("Insira o modelo do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.modelo);
 
-    printf("Insira a marca do veiculo: ");
+    printf("Insira a marca do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.marca);
 
-    printf("Insira a placa do veiculo: ");
+    printf("Insira a placa do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.placa);
 
-    printf("Insira o chassi do veiculo: ");
+    printf("Insira o chassi do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.chassi);
 
-    printf("Insira o ano de fabricação do veiculo: ");
+    printf("Insira o ano de fabricação do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %d", &veiculo.anoFabricacao);
 
@@ -109,12 +108,12 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     struct Veiculos veiculo;
 
     printf("\n=================================\n"
-        "|     ATUALIZAÇÃO DE VEICULO    |\n"
+        "|     ATUALIZAÇÃO DE VEÍCULO    |\n"
         "=================================\n"
-        "Insira o veiculo que deseja atualizar: ");
+        "Insira o veículo que deseja atualizar: ");
     scanf("%d", &id);
 
-    printf("\nQual o ID do proprietario? ");
+    printf("\nQual o ID do proprietário? ");
     setbuf(stdin, NULL);
     scanf("%d", &veiculo.idProprietario);
 
@@ -122,7 +121,7 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
         buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
 
         if (listaProprietarios->listaClientes == NULL) {
-            printf("Nenhum cliente cadastrado\n\n");
+            printf("Nenhum proprietário cadastrado.\n\n");
             return;
         }
     }
@@ -139,23 +138,23 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
         return;
     }
 
-    printf("Insira o modelo do veiculo: ");
+    printf("Insira o modelo do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.modelo);
 
-    printf("Insira a marca do veiculo: ");
+    printf("Insira a marca do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.marca);
 
-    printf("Insira a placa do veiculo: ");
+    printf("Insira a placa do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.placa);
 
-    printf("Insira o chassi do veiculo: ");
+    printf("Insira o chassi do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.chassi);
 
-    printf("Insira o ano de fabricação do veiculo: ");
+    printf("Insira o ano de fabricação do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %d", &veiculo.anoFabricacao);
 
@@ -166,19 +165,21 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 void listarVeiculo(struct ListaVeiculos *lista) {
     int opcao, id;
 
-    printf("==================\n"
-        "| 1 | Busca por ID\n"
-        "| 2 | Listar todos\n"
-        "| 3 | Listar por cliente\n"
-        "| 4 | Voltar\n"
-        "==================\n"
+    printf("\n===============================\n"
+        "|     LISTAGEM DE VEÍCULO     |\n"
+        "===============================\n"
+        "| 1 | Busca por ID            |\n"
+        "| 2 | Listar todos            |\n"
+        "| 3 | Listar por proprietário |\n"
+        "| 4 | Voltar                  |\n"
+        "===============================\n"
         "Opção desejada: ");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
     switch (opcao) {
         case 1:
-            printf("Insira o veiculo que deseja lista: ");
+            printf("Insira o veículo que deseja lista: ");
             scanf("%d", &id);
             listarVeiculoModel(lista, id);
             break;
@@ -186,14 +187,14 @@ void listarVeiculo(struct ListaVeiculos *lista) {
             listarTodosVeiculosModel(lista);
             break;
         case 3:
-            printf("Insira o ID do proprietario dos veiculos: ");
+            printf("Insira o ID do proprietário dos veículos: ");
             scanf("%d", &id);
             listarVeiculosPorClienteModel(lista, id);
             break;
         case 4:
             break;
         default:
-            printf("Opção inválida, voltando ao menu principal.\n");
+            printf("Opção inválida, voltando ao menu principal.\n\n");
             break;
     }
 }
@@ -202,9 +203,9 @@ void deletarVeiculo(struct ListaVeiculos *lista) {
     int id;
 
     printf("\n=================================\n"
-        "|     DELEÇÃO DE VEICULO    |\n"
+        "|       DELEÇÃO DE VEÍCULO      |\n"
         "=================================\n");
-    printf("Insira o veiculo que deseja deletar:");
+    printf("Insira o veículo que deseja deletar:");
     scanf("%d", &id);
     deletarVeiculosModel(lista, id);
 }

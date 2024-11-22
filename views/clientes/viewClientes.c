@@ -16,7 +16,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
     }
 
     do {
-        printf("=================================\n"
+        printf("\n=================================\n"
             "|        MENU PRINCIPAL         |\n"
             "=================================\n"
             "|  1  | Cadastrar               |\n"
@@ -49,7 +49,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
                 }
                 return;
             default:
-                printf("\nOpção inválida!");
+                printf("Opção inválida!\n\n");
                 break;
         }
     } while (opcaoSubmenus != 5);
@@ -58,10 +58,9 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
 void cadastrarCliente(struct ListaClientes *lista) {
     struct Clientes cliente;
 
-    printf("\n=================================\n"
-        "|     CADASTRO DE CLIENTE    |\n"
-        "=================================\n");
-
+    printf("\n===============================\n"
+        "|     CADASTRO DE CLIENTE     |\n"
+        "===============================\n");
 
     printf("Insira o nome do cliente: ");
     setbuf(stdin, NULL);
@@ -135,11 +134,13 @@ void atualizarCliente(struct ListaClientes *lista) {
 void listarClientes(struct ListaClientes *lista) {
     int opcao, id;
 
-    printf("==================\n"
-        "| 1 | Busca por ID\n"
-        "| 2 | Listar todos\n"
-        "| 3 | Voltar\n"
-        "==================\n"
+    printf("\n==============================\n"
+        "|     LISTAGEM DE CLIENTE    |\n"
+        "==============================\n"
+        "| 1 | Busca por ID           |\n"
+        "| 2 | Listar todos           |\n"
+        "| 3 | Voltar                 |\n"
+        "==============================\n"
         "Opção desejada: ");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
@@ -156,7 +157,7 @@ void listarClientes(struct ListaClientes *lista) {
         case 3:
             break;
         default:
-            printf("Opção inválida, voltando ao menu principal.\n");
+            printf("Opção inválida, voltando ao menu principal.\n\n");
             break;
     }
 }
@@ -164,9 +165,9 @@ void listarClientes(struct ListaClientes *lista) {
 void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos) {
     int id;
 
-    printf("\n=================================\n"
+    printf("=============================\n"
         "|     DELEÇÃO DE CLIENTE    |\n"
-        "=================================\n");
+        "=============================\n");
     printf("Insira o cliente que deseja deletar:");
     scanf("%d", &id);
     deletarClientesModel(lista, listaVeiculos, id);

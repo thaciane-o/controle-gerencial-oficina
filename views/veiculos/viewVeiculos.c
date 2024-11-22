@@ -72,7 +72,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 
     printf("Qual o ID do proprietário?");
     setbuf(stdin, NULL);
-    scanf("%d", &veiculo.idProprietario);
+    scanf("%d", &idProprietario);
 
 
     //Verifica se o ID é válido
@@ -86,6 +86,8 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     if (verificarIDClienteModel(listaProprietarios, idProprietario) == 0) {
         return;
     }
+
+    veiculo.idProprietario = idProprietario;
 
     printf("Insira o modelo do veículo: ");
     setbuf(stdin, NULL);
@@ -174,8 +176,8 @@ void listarVeiculo(struct ListaVeiculos *lista) {
         "|     LISTAGEM DE VEÍCULO     |\n"
         "===============================\n"
         "| 1 | Busca por ID            |\n"
-        "| 2 | Listar todos            |\n"
-        "| 3 | Listar por proprietário |\n"
+        "| 2 | Listar por proprietário |\n"
+        "| 3 | Listar todos            |\n"
         "| 4 | Voltar                  |\n"
         "===============================\n"
         "Opção desejada: ");
@@ -189,12 +191,12 @@ void listarVeiculo(struct ListaVeiculos *lista) {
             buscarIdClienteModel(lista, id);
             break;
         case 2:
-            listarTodosVeiculosModel(lista);
-            break;
-        case 3:
             printf("Insira o ID do proprietário dos veículos: ");
             scanf("%d", &id);
             listarVeiculosPorClienteModel(lista, id);
+            break;
+        case 3:
+            listarTodosVeiculosModel(lista);
             break;
         case 4:
             break;

@@ -1,7 +1,6 @@
 #include "modelOficina.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,7 +17,6 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             dadosOficinas = fopen("DadosOficinas.txt", "r");
 
             if (dadosOficinas == NULL) {
-                printf("Erro ao abrir o arquivo!\n\n");
                 return;
             }
 
@@ -33,8 +31,8 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             }
 
             if (lista->listaOficinas == NULL) {
-                printf("Erro ao alocar memória!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosOficinas, 0, SEEK_SET);
@@ -82,7 +80,6 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             dadosOficinas = fopen("DadosOficinas.bin", "rb");
 
             if (dadosOficinas == NULL) {
-                printf("Nenhuma oficina armazenada!\n\n");
                 return;
             }
 
@@ -99,8 +96,8 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             }
 
             if (lista->listaOficinas == NULL) {
-                printf("Erro ao alocar memória!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosOficinas, 0, SEEK_SET);
@@ -124,8 +121,8 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
             dadosOficinas = fopen("DadosOficinas.txt", "w");
 
             if (dadosOficinas == NULL) {
-                printf("Erro ao armazenar oficinas!\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdOficinas; i++) {
@@ -145,8 +142,8 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
             dadosOficinas = fopen("DadosOficinas.bin", "wb");
 
             if (dadosOficinas == NULL) {
-                printf("Erro ao armazenar oficinas!\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdOficinas; i++) {
@@ -164,46 +161,49 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
 }
 
 // Aloca a memória inicial para a lista de oficinas
-void alocarMemoriaOficinaModel(struct ListaOficinas *lista) {
-    // Aloca a memória inicial para a lista de oficinas
+int alocarMemoriaOficinaModel(struct ListaOficinas *lista) {
     lista->qtdOficinas = 1;
     lista->listaOficinas = malloc(sizeof(struct Oficinas));
 
-    // Verifica se a alocação deu certo
     if (lista->listaOficinas == NULL) {
-        printf("Erro: Memória insuficiente\n");
-        exit(EXIT_FAILURE);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 // Realoca memória da oficina de acordo com a quantidade que deseja alocar (qtdAloca)
-void realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
-    // Verifica o tamando da alocação que pretende fazer
+int realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
     if (qtdAloca == 0) {
-        // Nenhuma alocação
         printf("Nenhuma alocação foi realizada\n\n");
-        return;
+        return 0;
     }
 
     lista->qtdOficinas += qtdAloca;
     lista->listaOficinas = realloc(lista->listaOficinas, lista->qtdOficinas * sizeof(struct Oficinas));
 
-    // Verifica se a alocação deu certo
     if (lista->listaOficinas == NULL) {
         printf("Erro: Memória insuficiente\n\n");
-        exit(EXIT_FAILURE);
+        return 0;
     }
+    return 1;
 }
 
 // Cadastra uma nova oficina
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando) {
-    // Se nenhuma oficina cadastrada, inicia a alocação
+    int resultAlocacao = 0;
+
     if (lista->qtdOficinas == 0) {
         lista->qtdOficinas++;
-        alocarMemoriaOficinaModel(lista);
+        resultAlocacao = alocarMemoriaOficinaModel(lista);
     } else {
         // Se já tiver, aumenta a alocação em 1
-        realocarMemoriaOficinaModel(lista, 1);
+        resultAlocacao = realocarMemoriaOficinaModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar a oficina.\n\n");
+        return;
     }
 
     oficinaCadastrando->id = lista->qtdOficinas;
@@ -215,7 +215,8 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
 }
 
 // Deleta uma oficina cadastrada
-void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, int id) {
+void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos,
+                         struct ListaClientes *listaClientes, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0;
 
@@ -227,12 +228,25 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
 
     if (listaFuncionarios->qtdFuncionarios > 0) {
         for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
-            if (listaFuncionarios->listaFuncionarios[i].idOficina == id && listaFuncionarios->listaFuncionarios[i].deletado == 0) {
-                printf("Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um funcionário que já está cadastrado.\n\n");
+            if (listaFuncionarios->listaFuncionarios[i].idOficina == id && listaFuncionarios->listaFuncionarios[i].
+                deletado == 0) {
+                printf(
+                    "Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um funcionário que já está cadastrado.\n\n");
                 return;
             }
         }
     }
+
+    if (listaClientes->qtdClientes > 0) {
+        for (int i = 0; i < listaClientes->qtdClientes; i++) {
+            if (listaClientes->listaClientes[i].idOficina == id && listaClientes->listaClientes[i].deletado == 0) {
+                printf(
+                    "Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um cliente que já está cadastrado.\n\n");
+                return;
+            }
+        }
+    }
+
     if (listaServicos->qtdServicos > 0) {
         for (int i = 0; i < listaServicos->qtdServicos; i++) {
             if (listaServicos->listaServicos[i].idOficina == id && listaServicos->listaServicos->deletado == 0) {
@@ -298,20 +312,20 @@ void listarTodosOficinaModel(struct ListaOficinas *lista) {
             // Verifica se o índice atual existe
             if (lista->listaOficinas[i].deletado == 0) {
                 printf("\n====================\n"
-                  "| OFICINA %d         |\n"
-                  "===================\n"
-                  "NOME: %s\n"
-                  "ENDEREÇO: %s\n"
-                  "TELEFONE: (%s) %s\n"
-                  "Email: %s\n"
-                  "Porcentagem de Lucro: %.2f\n",
-                   lista->listaOficinas[i].id,
-                   lista->listaOficinas[i].nome,
-                   lista->listaOficinas[i].endereco,
-                   lista->listaOficinas[i].ddd,
-                   lista->listaOficinas[i].telefone,
-                   lista->listaOficinas[i].email,
-                   lista->listaOficinas[i].porcentagemLucro);
+                       "| OFICINA %d         |\n"
+                       "===================\n"
+                       "NOME: %s\n"
+                       "ENDEREÇO: %s\n"
+                       "TELEFONE: (%s) %s\n"
+                       "Email: %s\n"
+                       "Porcentagem de Lucro: %.2f\n",
+                       lista->listaOficinas[i].id,
+                       lista->listaOficinas[i].nome,
+                       lista->listaOficinas[i].endereco,
+                       lista->listaOficinas[i].ddd,
+                       lista->listaOficinas[i].telefone,
+                       lista->listaOficinas[i].email,
+                       lista->listaOficinas[i].porcentagemLucro);
             }
         }
         printf("====================\n");

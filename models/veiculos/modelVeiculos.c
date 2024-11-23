@@ -12,24 +12,29 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
             dadosVeiculos = fopen("DadosVeiculos.txt", "w");
 
             if (dadosVeiculos == NULL) {
-                printf("Erro ao abrir arquivo.\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdVeiculos; i++) {
                 //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosVeiculos, "%d;%d;%s;%s;%s;%s;%d;%d\n", lista->listaVeiculos[i].id,
-                        lista->listaVeiculos[i].idProprietario, lista->listaVeiculos[i].modelo,
-                        lista->listaVeiculos[i].marca, lista->listaVeiculos[i].placa, lista->listaVeiculos[i].chassi,
-                        lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].deletado);
+                fprintf(dadosVeiculos, "%d;%d;%s;%s;%s;%s;%d;%d\n",
+                        lista->listaVeiculos[i].id,
+                        lista->listaVeiculos[i].idProprietario,
+                        lista->listaVeiculos[i].modelo,
+                        lista->listaVeiculos[i].marca,
+                        lista->listaVeiculos[i].placa,
+                        lista->listaVeiculos[i].chassi,
+                        lista->listaVeiculos[i].anoFabricacao,
+                        lista->listaVeiculos[i].deletado);
             }
             break;
         case 2:
             dadosVeiculos = fopen("DadosVeiculos.bin", "wb");
 
             if (dadosVeiculos == NULL) {
-                printf("Erro ao armazenar veículos.\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdVeiculos; i++) {
@@ -55,7 +60,6 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             dadosVeiculos = fopen("DadosVeiculos.txt", "r");
 
             if (dadosVeiculos == NULL) {
-                printf("Nenhum veículo armazenado.\n\n");
                 return;
             }
 
@@ -66,7 +70,6 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             }
 
 
-        //Alocando memoria para receber o arquivo
             if (lista->qtdVeiculos > 0) {
                 lista->listaVeiculos = malloc(lista->qtdVeiculos * sizeof(struct Veiculos));
             } else {
@@ -74,8 +77,8 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             }
 
             if (lista->listaVeiculos == NULL) {
-                printf("Erro ao alocar memória.\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosVeiculos, 0, SEEK_SET);
@@ -122,7 +125,6 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             dadosVeiculos = fopen("DadosVeiculos.bin", "rb");
 
             if (dadosVeiculos == NULL) {
-                printf("Nenhum veículo armazenado.\n\n");
                 return;
             }
 
@@ -139,8 +141,8 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
             }
 
             if (lista->listaVeiculos == NULL) {
-                printf("Erro ao alocar memoria.\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosVeiculos, 0, SEEK_SET);
@@ -156,41 +158,46 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
     fclose(dadosVeiculos);
 }
 
-void alocarVeiculosModel(struct ListaVeiculos *lista) {
+int alocarVeiculosModel(struct ListaVeiculos *lista) {
+    lista->qtdVeiculos = 1;
     lista->listaVeiculos = malloc(sizeof(struct Veiculos));
 
     if (lista->listaVeiculos == NULL) {
-        printf("Erro: Memória insuficiente!\n\n");
-        exit(1);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
-void realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada) {
+int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhum registro salvo.\n\n");
-        return;
+        return 0;
     }
 
     lista->qtdVeiculos += qtdAlocada;
+    lista->listaVeiculos = realloc(lista->listaVeiculos, lista->qtdVeiculos * sizeof(struct Veiculos));
 
-    if (lista->qtdVeiculos == 0) {
-        free(lista->listaVeiculos);
-    } else {
-        lista->listaVeiculos = realloc(lista->listaVeiculos, lista->qtdVeiculos * sizeof(struct Veiculos));
-
-        if (lista->listaVeiculos == NULL) {
-            printf("Erro: Memória insuficiente!\n\n");
-            exit(1);
-        }
+    if (lista->listaVeiculos == NULL) {
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *cliente) {
+    int resultAlocacao = 0;
+
     if (lista->qtdVeiculos == 0) {
         lista->qtdVeiculos++;
-        alocarVeiculosModel(lista);
+        resultAlocacao = alocarVeiculosModel(lista);
     } else {
-        realocarVeiculosModel(lista, 1);
+        resultAlocacao = realocarVeiculosModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o veículo.\n\n");
+        return;
     }
 
     //Cadastrando veiculo na memoria

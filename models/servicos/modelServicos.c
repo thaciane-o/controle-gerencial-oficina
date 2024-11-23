@@ -15,7 +15,6 @@ void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento
             dadosServicos = fopen("DadosServicos.txt", "r");
 
             if (dadosServicos == NULL) {
-                printf("Erro ao abrir o arquivo!\n");
                 return;
             }
 
@@ -30,8 +29,8 @@ void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento
             }
 
             if (lista->listaServicos == NULL) {
-                printf("Erro ao alocar memória!\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosServicos, 0, SEEK_SET);
@@ -71,7 +70,6 @@ void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento
             dadosServicos = fopen("DadosServicos.bin", "rb");
 
             if (dadosServicos == NULL) {
-                printf("Nenhum serviço armazenado!\n");
                 return;
             }
 
@@ -88,8 +86,8 @@ void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento
             }
 
             if (lista->listaServicos == NULL) {
-                printf("Erro ao alocar memória!\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosServicos, 0, SEEK_SET);
@@ -113,8 +111,8 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
             dadosServicos = fopen("DadosServicos.txt", "w");
 
             if (dadosServicos == NULL) {
-                printf("Erro ao armazenar serviços!\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdServicos; i++) {
@@ -132,8 +130,8 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
             dadosServicos = fopen("DadosServicos.bin", "wb");
 
             if (dadosServicos == NULL) {
-                printf("Erro ao armazenar Serviços!\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdServicos; i++) {
@@ -151,46 +149,50 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
 }
 
 //Aloca a memoria inicial da lista
-void alocarMemoriaServicoModel(struct ListaServicos *lista) {
-    // Aloca a memória inicial para a lista de serviços
+int alocarMemoriaServicoModel(struct ListaServicos *lista) {
     lista->qtdServicos = 1;
     lista->listaServicos = malloc(sizeof(struct Servicos));
 
-    // Verifica se a alocação deu certo
     if (lista->listaServicos == NULL) {
-        printf("Erro: Memória insuficiente\n");
-        exit(EXIT_FAILURE);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 //Realoca a quantidade de serviços conforme o aumento da lista
-void realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca) {
-    // Verifica o tamando da alocação que pretende fazer
+int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca) {
     if (qtdAloca == 0) {
-        // Nenhuma alocação
         printf("Nenhuma alocação foi realizada\n");
-        return;
+        return 0;
     }
 
     lista->qtdServicos += qtdAloca;
     lista->listaServicos = realloc(lista->listaServicos, lista->qtdServicos * sizeof(struct Servicos));
 
-    // Verifica se a alocação deu certo
     if (lista->listaServicos == NULL) {
-        printf("Erro: Memória insuficiente\n");
-        exit(EXIT_FAILURE);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 //Cadastra um novo serviço
 void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando) {
-    // Se nenhum serviço cadastrado, inicia a alocação
+
+    int resultAlocacao = 0;
+
     if (lista->qtdServicos == 0) {
         lista->qtdServicos++;
-        alocarMemoriaServicoModel(lista);
+        resultAlocacao = alocarMemoriaServicoModel(lista);
     } else {
         // Se já tiver, aumenta a alocação em 1
-        realocarMemoriaServicoModel(lista, 1);
+        resultAlocacao = realocarMemoriaServicoModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o serviço.\n\n");
+        return;
     }
 
     servicoCadastrando->id = lista->qtdServicos;
@@ -286,11 +288,11 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
         }
     } else {
         // Se não houver, avisa que não há cadastros
-        printf("Nenhum serviço foi cadastrada\n");
+        printf("Nenhum serviço foi cadastrado.\n");
     }
     if (encontrado == -1) {
         // Caso todos estejam deletados
-        printf("Nenhum serviço foi cadastrada\n");
+        printf("Nenhum serviço foi cadastrado.\n");
     }
 }
 
@@ -306,19 +308,19 @@ void listarServicoModel(struct ListaServicos *lista, int id) {
 
     if (encontrado != -1) {
         printf("\n====================\n"
-                       "| SERVIÇO %d        |\n"
-                       "====================\n"
-                       "DESCRIÇÃO: %s\n"
-                       "PREÇO: $%.2f\n"
-                       "COMISSÃO: $%.2f\n"
-                       "OFICINA: %d\n\n",
-                       lista->listaServicos[encontrado].id,
-                       lista->listaServicos[encontrado].descricao,
-                       lista->listaServicos[encontrado].preco,
-                       lista->listaServicos[encontrado].comissao,
-                       lista->listaServicos[encontrado].idOficina);
+               "| SERVIÇO %d        |\n"
+               "====================\n"
+               "DESCRIÇÃO: %s\n"
+               "PREÇO: $%.2f\n"
+               "COMISSÃO: $%.2f\n"
+               "OFICINA: %d\n\n",
+               lista->listaServicos[encontrado].id,
+               lista->listaServicos[encontrado].descricao,
+               lista->listaServicos[encontrado].preco,
+               lista->listaServicos[encontrado].comissao,
+               lista->listaServicos[encontrado].idOficina);
     } else {
-        printf("Nenhum serviço encontrada.\n");
+        printf("Nenhum serviço encontrado.\n");
     }
 }
 

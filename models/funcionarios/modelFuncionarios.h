@@ -20,9 +20,9 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
 
 void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArmazenamento);
 
-void alocarFuncionariosModel(struct ListaFuncionarios *lista);
+int alocarFuncionariosModel(struct ListaFuncionarios *lista);
 
-void realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada);
+int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada);
 
 void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario);
 

@@ -1,7 +1,6 @@
 #ifndef MODELSERVICOS_H
 #define MODELSERVICOS_H
 
-
 struct Servicos {
     int id;
     int idOficina;
@@ -16,17 +15,14 @@ struct ListaServicos {
     struct Servicos *listaServicos;
 };
 
-// Controles de armazenamento
 void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento);
 
 void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento);
 
-// Controles de alocação de memória
-void alocarMemoriaServicoModel(struct ListaServicos *lista);
+int alocarMemoriaServicoModel(struct ListaServicos *lista);
 
-void realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca);
+int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca);
 
-// Controles de CRUD
 void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando);
 
 void deletarServicoModel(struct ListaServicos *lista, int id);

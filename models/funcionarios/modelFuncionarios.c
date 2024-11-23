@@ -11,8 +11,8 @@ void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoA
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
 
             if (dadosFuncionarios == NULL) {
-                printf("Erro ao abrir arquivo.\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdFuncionarios; i++) {
@@ -31,8 +31,8 @@ void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoA
             dadosFuncionarios = fopen("DadosFuncionarios.bin", "wb");
 
             if (dadosFuncionarios == NULL) {
-                printf("Erro ao armazenar funcionários!\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdFuncionarios; i++) {
@@ -56,7 +56,6 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "r");
 
             if (dadosFuncionarios == NULL) {
-                printf("Erro ao abrir o arquivo!\n\n");
                 return;
             }
 
@@ -71,8 +70,8 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
             }
 
             if (lista->listaFuncionarios == NULL) {
-                printf("Erro ao alocar memória!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosFuncionarios, 0, SEEK_SET);
@@ -115,7 +114,6 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
             dadosFuncionarios = fopen("DadosFuncionarios.bin", "rb");
 
             if (dadosFuncionarios == NULL) {
-                printf("Nenhum funcionário armazenado!\n\n");
                 return;
             }
 
@@ -125,10 +123,15 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
                 lista->qtdFuncionarios++;
             }
 
-            lista->listaFuncionarios = malloc(lista->qtdFuncionarios * sizeof(struct Funcionarios));
+            if (lista->qtdFuncionarios > 0) {
+                lista->listaFuncionarios = malloc(lista->qtdFuncionarios * sizeof(struct Funcionarios));
+            } else {
+                return;
+            }
+
             if (lista->listaFuncionarios == NULL) {
-                printf("Erro ao alocar memoria!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosFuncionarios, 0, SEEK_SET);
@@ -143,42 +146,51 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
     fclose(dadosFuncionarios);
 }
 
-void alocarFuncionariosModel(struct ListaFuncionarios *lista) {
+int alocarFuncionariosModel(struct ListaFuncionarios *lista) {
     lista->qtdFuncionarios = 1;
     lista->listaFuncionarios = malloc(sizeof(struct Funcionarios));
 
     if (lista->listaFuncionarios == NULL) {
-        printf("Erro: Memória insuficiente!\n\n");
-        exit(1);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
-void realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
+int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
-        printf("Nenhum registro salvo.\n\n");
-        return;
+        printf("Nenhuma alocação foi realizada\n\n");
+        return 0;
     }
 
     lista->qtdFuncionarios += qtdAlocada;
     lista->listaFuncionarios = realloc(lista->listaFuncionarios, lista->qtdFuncionarios * sizeof(struct Funcionarios));
 
     if (lista->listaFuncionarios == NULL) {
-        printf("Erro: Memória insuficiente!\n\n");
-        exit(1);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario) {
+
+    int resultAlocacao = 0;
+
     if (lista->qtdFuncionarios == 0) {
         lista->qtdFuncionarios++;
-        alocarFuncionariosModel(lista);
+        resultAlocacao = alocarFuncionariosModel(lista);
     } else {
-        realocarFuncionariosModel(lista, 1);
+        resultAlocacao = realocarFuncionariosModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o funcionário.\n\n");
+        return;
     }
 
     funcionario->id = lista->qtdFuncionarios;
     funcionario->deletado = 0;
-
 
     lista->listaFuncionarios[lista->qtdFuncionarios - 1] = *funcionario;
 
@@ -230,19 +242,19 @@ void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
         for (int i = 0; i < lista->qtdFuncionarios; i++) {
             if (lista->listaFuncionarios[i].deletado == 0) {
                 printf("\n======================="
-                         "\n| FUNCIONÁRIO %d       |"
-                         "\n======================="
-                         "\nNOME: %s"
-                         "\nCPF: %s"
-                         "\nCARGO: %s"
-                         "\nSALÁRIO: %.2f"
-                         "\nOFICINA: %d\n",
-                         lista->listaFuncionarios[i].id,
-                         lista->listaFuncionarios[i].nome,
-                         lista->listaFuncionarios[i].cpf,
-                         lista->listaFuncionarios[i].cargo,
-                         lista->listaFuncionarios[i].salario,
-                         lista->listaFuncionarios[i].idOficina);
+                       "\n| FUNCIONÁRIO %d       |"
+                       "\n======================="
+                       "\nNOME: %s"
+                       "\nCPF: %s"
+                       "\nCARGO: %s"
+                       "\nSALÁRIO: %.2f"
+                       "\nOFICINA: %d\n",
+                       lista->listaFuncionarios[i].id,
+                       lista->listaFuncionarios[i].nome,
+                       lista->listaFuncionarios[i].cpf,
+                       lista->listaFuncionarios[i].cargo,
+                       lista->listaFuncionarios[i].salario,
+                       lista->listaFuncionarios[i].idOficina);
             }
         }
     } else {
@@ -294,19 +306,19 @@ void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOfi
             if (lista->listaFuncionarios[i].idOficina == idOficina && lista->listaFuncionarios[i].deletado == 0) {
                 encontrado = 1;
                 printf("\n======================="
-                        "\n| FUNCIONÁRIO %d       |"
-                        "\n======================="
-                        "\nNOME: %s"
-                        "\nCPF: %s"
-                        "\nCARGO: %s"
-                        "\nSALÁRIO: %.2f"
-                        "\nOFICINA: %d\n",
-                        lista->listaFuncionarios[i].id,
-                        lista->listaFuncionarios[i].nome,
-                        lista->listaFuncionarios[i].cpf,
-                        lista->listaFuncionarios[i].cargo,
-                        lista->listaFuncionarios[i].salario,
-                        lista->listaFuncionarios[i].idOficina);
+                       "\n| FUNCIONÁRIO %d       |"
+                       "\n======================="
+                       "\nNOME: %s"
+                       "\nCPF: %s"
+                       "\nCARGO: %s"
+                       "\nSALÁRIO: %.2f"
+                       "\nOFICINA: %d\n",
+                       lista->listaFuncionarios[i].id,
+                       lista->listaFuncionarios[i].nome,
+                       lista->listaFuncionarios[i].cpf,
+                       lista->listaFuncionarios[i].cargo,
+                       lista->listaFuncionarios[i].salario,
+                       lista->listaFuncionarios[i].idOficina);
             }
         }
 

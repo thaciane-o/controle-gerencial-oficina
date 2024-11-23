@@ -24,9 +24,9 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
 
 void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento);
 
-void alocarClientesModel(struct ListaClientes *lista);
+int alocarClientesModel(struct ListaClientes *lista);
 
-void realocarClientesModel(struct ListaClientes *lista, int qtdAlocada);
+int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada);
 
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente);
 

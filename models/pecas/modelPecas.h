@@ -18,17 +18,14 @@ struct ListaPecas {
     struct Pecas *listaPecas;
 };
 
-// Controles de armazenamento
 void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento);
 
 void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento);
 
-// Controles de alocação de memória
-void alocarMemoriaPecaModel(struct ListaPecas *lista);
+int alocarMemoriaPecaModel(struct ListaPecas *lista);
 
-void realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca);
+int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca);
 
-// Controles de CRUD
 void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando);
 
 void deletarPecaModel(struct ListaPecas *lista, int id);

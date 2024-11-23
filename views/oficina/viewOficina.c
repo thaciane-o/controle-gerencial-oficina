@@ -2,10 +2,12 @@
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
+#include "../../models/clientes/modelClientes.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 // Menu de funcionalidades para oficina
-void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, int opcaoArmazenamento) {
+void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
 
     if (opcaoArmazenamento != 3) {
@@ -14,8 +16,7 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
         }
         if (lista->qtdOficinas > 0) {
             buscarDadosFuncionariosModel(listaFuncionarios, opcaoArmazenamento);
-        }
-        if (lista->qtdOficinas > 0) {
+            buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
             buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
         }
     }
@@ -41,7 +42,7 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                 atualizarOficina(lista);
                 break;
             case 3:
-                deletarOficina(lista, listaFuncionarios, listaServicos);
+                deletarOficina(lista, listaFuncionarios, listaServicos, listaClientes);
                 break;
             case 4:
                 listarOficina(lista);
@@ -50,6 +51,21 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                 if (opcaoArmazenamento != 3) {
                     if (lista->qtdOficinas) {
                         armazenarDadosOficinaModel(lista, opcaoArmazenamento);
+                    }
+                    if (listaFuncionarios->qtdFuncionarios) {
+                        free(listaFuncionarios->listaFuncionarios);
+                        listaFuncionarios->listaFuncionarios = NULL;
+                        listaFuncionarios->qtdFuncionarios = 0;
+                    }
+                    if (listaClientes->qtdClientes) {
+                        free(listaClientes->listaClientes);
+                        listaClientes->listaClientes = NULL;
+                        listaClientes->qtdClientes = 0;
+                    }
+                    if (listaServicos->qtdServicos) {
+                        free(listaServicos->listaServicos);
+                        listaServicos->listaServicos = NULL;
+                        listaServicos->qtdServicos = 0;
                     }
                 }
                 break;
@@ -141,7 +157,7 @@ void atualizarOficina(struct ListaOficinas *lista) {
 }
 
 // Formulário de deleção de oficina
-void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos) {
+void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
     int id;
 
     printf("\n==============================\n"
@@ -152,7 +168,7 @@ void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lista
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
-    deletarOficinaModel(lista, listaFuncionarios, listaServicos, id);
+    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, id);
 }
 
 // Listagem de oficinas

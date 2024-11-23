@@ -22,9 +22,9 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
 
 void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenamento);
 
-void alocarVeiculosModel(struct ListaVeiculos *lista);
+int alocarVeiculosModel(struct ListaVeiculos *lista);
 
-void realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada);
+int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada);
 
 void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *veiculo);
 

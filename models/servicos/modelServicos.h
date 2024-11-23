@@ -5,7 +5,6 @@
 struct Servicos {
     int id;
     int idOficina;
-    int idCliente;
     char descricao[255];
     float preco;
     float comissao;

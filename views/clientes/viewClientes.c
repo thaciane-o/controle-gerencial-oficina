@@ -7,7 +7,7 @@
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/veiculos/modelVeiculos.h"
 
-void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, struct ListaServicos *listaServicos, int opcaoArmazenamento) {
+void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
     int opcaoSubmenus;
 
     if (opcaoArmazenamento != 3) {
@@ -19,9 +19,6 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
         }
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
-        }
-        if (listaServicos->qtdServicos == 0) {
-            buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
         }
     }
 
@@ -46,7 +43,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
                 atualizarCliente(lista, listaOficinas);
                 break;
             case 3:
-                deletarCliente(lista, listaVeiculos, listaServicos);
+                deletarCliente(lista, listaVeiculos);
                 break;
             case 4:
                 listarClientes(lista);
@@ -222,7 +219,7 @@ void listarClientes(struct ListaClientes *lista) {
     }
 }
 
-void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaServicos *listaServicos) {
+void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos) {
     int id;
 
     printf("=============================\n"
@@ -230,5 +227,5 @@ void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeic
         "=============================\n");
     printf("Insira o cliente que deseja deletar:");
     scanf("%d", &id);
-    deletarClientesModel(lista, listaVeiculos, listaServicos, id);
+    deletarClientesModel(lista, listaVeiculos, id);
 }

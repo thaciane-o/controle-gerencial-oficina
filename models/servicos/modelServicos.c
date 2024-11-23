@@ -60,10 +60,6 @@ void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaServicos[i].idCliente = atoi(token);
-                    token = strtok(NULL, ";");
-                }
-                if (token != NULL) {
                     lista->listaServicos[i].deletado = atoi(token);
                 }
 
@@ -128,7 +124,6 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
                         lista->listaServicos[i].preco,
                         lista->listaServicos[i].comissao,
                         lista->listaServicos[i].idOficina,
-                        lista->listaServicos[i].idCliente,
                         lista->listaServicos[i].deletado);
             }
             break;
@@ -281,13 +276,11 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
                        "DESCRIÇÃO: %s\n"
                        "PREÇO: $%.2f\n"
                        "COMISSÃO: $%.2f\n"
-                       "CLIENTE: %d\n"
                        "OFICINA: %d\n\n",
                        lista->listaServicos[i].id,
                        lista->listaServicos[i].descricao,
                        lista->listaServicos[i].preco,
                        lista->listaServicos[i].comissao,
-                       lista->listaServicos[i].idCliente,
                        lista->listaServicos[i].idOficina);
             }
         }
@@ -318,13 +311,11 @@ void listarServicoModel(struct ListaServicos *lista, int id) {
                        "DESCRIÇÃO: %s\n"
                        "PREÇO: $%.2f\n"
                        "COMISSÃO: $%.2f\n"
-                       "CLIENTE: %d\n"
                        "OFICINA: %d\n\n",
                        lista->listaServicos[encontrado].id,
                        lista->listaServicos[encontrado].descricao,
                        lista->listaServicos[encontrado].preco,
                        lista->listaServicos[encontrado].comissao,
-                       lista->listaServicos[encontrado].idCliente,
                        lista->listaServicos[encontrado].idOficina);
     } else {
         printf("Nenhum serviço encontrada.\n");
@@ -345,13 +336,11 @@ void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina) {
                        "DESCRIÇÃO: %s\n"
                        "PREÇO: $%.2f\n"
                        "COMISSÃO: $%.2f\n"
-                       "CLIENTE: %d\n"
                        "OFICINA: %d\n\n",
                        lista->listaServicos[i].id,
                        lista->listaServicos[i].descricao,
                        lista->listaServicos[i].preco,
                        lista->listaServicos[i].comissao,
-                       lista->listaServicos[i].idCliente,
                        lista->listaServicos[i].idOficina);
             }
         }

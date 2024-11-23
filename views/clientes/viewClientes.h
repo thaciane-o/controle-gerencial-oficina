@@ -9,8 +9,8 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
 
 void listarClientes(struct ListaClientes *lista);
 
-void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaServicos *listaServicos);
+void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos);
 
-void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, struct ListaServicos *listaServicos, int opcaoArmazenamento);
+void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, int opcaoArmazenamento);
 
 #endif //CLIENTES_H

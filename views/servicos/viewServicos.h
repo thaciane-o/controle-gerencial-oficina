@@ -2,16 +2,17 @@
 #define VIEWSERVICOS_H
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/oficina/modelOficina.h"
+#include "../../models/clientes/modelClientes.h"
 
-void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes, int opcaoArmazenamento);
+void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, int opcaoArmazenamento);
 
-void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes);
+void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas);
 
 void deletarServico(struct ListaServicos *lista);
 
 void listarServico(struct ListaServicos *lista);
 
-void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes);
+void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas);
 
 
 #endif //VIEWSERVICOS_H

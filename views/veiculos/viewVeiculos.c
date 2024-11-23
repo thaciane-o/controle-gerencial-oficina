@@ -117,7 +117,6 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     scanf("%d", &idVeiculo);
 
     if (verificarIDVeiculoModel(lista, idVeiculo) == 0) {
-        printf("ID de veículo invalido!\n");
         return;
     }
 
@@ -128,7 +127,6 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 
 
     if (verificarIDClienteModel(listaProprietarios, idProprietario) == 0) {
-        printf("ID de proprietario invalido!\n");
         return;
     }
 

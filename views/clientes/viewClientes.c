@@ -84,10 +84,6 @@ void cadastrarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
-    if (idOficina <= 0) {
-        printf("ID da oficina invalido!\n");
-        return;
-    }
 
     if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
         return;
@@ -135,7 +131,6 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
 
     int encontrado = verificarIDClienteModel(lista, id);
     if (encontrado == 0) {
-        printf("ID de cliente invalido\n");
         return;
     }
 
@@ -144,7 +139,6 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     scanf("%d", &idOficina);
 
     if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
-        printf("ID de oficina invalido!\n");
         return;
     }
 

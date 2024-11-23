@@ -15,6 +15,9 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
         if (lista->qtdOficinas > 0) {
             buscarDadosFuncionariosModel(listaFuncionarios, opcaoArmazenamento);
         }
+        if (lista->qtdOficinas > 0) {
+            buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
+        }
     }
 
     while (opcaoSubmenus != 5) {

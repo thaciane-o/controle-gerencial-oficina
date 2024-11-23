@@ -2,7 +2,6 @@
 #define VIEWSERVICOS_H
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/oficina/modelOficina.h"
-#include "../../models/clientes/modelClientes.h"
 
 void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, int opcaoArmazenamento);
 

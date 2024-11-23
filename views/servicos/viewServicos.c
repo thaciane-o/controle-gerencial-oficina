@@ -18,8 +18,8 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     }
 
     do {
-        printf("================================\n"
-            "|    SUBMENU DE SERVIÇOS     |\n"
+        printf("\n================================\n"
+            "|     SUBMENU DE SERVIÇOS      |\n"
             "================================\n"
             "|  1  | Cadastrar              |\n"
             "|  2  | Atualizar              |\n"
@@ -67,7 +67,7 @@ void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     int idOficina;
 
     printf("\n================================\n"
-        "|    CADASTRO DE SERVIÇO    |\n"
+        "|     CADASTRO DE SERVIÇO     |\n"
         "================================\n");
 
     printf("Insira o ID da oficina que fornece o serviço: ");
@@ -99,9 +99,9 @@ void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
 void deletarServico(struct ListaServicos *lista) {
     int id;
 
-    printf("\n===============================\n"
+    printf("\n==============================\n"
         "|    DELEÇÃO DE SERVIÇO      |\n"
-        "===============================\n");
+        "==============================\n");
     printf("Insira o ID do serviço que deseja deletar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
@@ -111,14 +111,14 @@ void deletarServico(struct ListaServicos *lista) {
 void listarServico(struct ListaServicos *lista) {
     int opcao, id;
 
-    printf("\n=================================\n"
-        "|    LISTAGEM DE SERVIÇOS      |\n"
-        "=================================\n"
-        "| 1 | Busca por ID              |\n"
-        "| 2 | Busca por ID da oficina   |\n"
-        "| 3 | Listar todos              |\n"
-        "| 4 | Voltar                    |\n"
-        "=================================\n"
+    printf("\n==================================\n"
+        "|     LISTAGEM DE SERVIÇOS       |\n"
+        "==================================\n"
+        "| 1 | Busca por ID               |\n"
+        "| 2 | Busca por ID da oficina    |\n"
+        "| 3 | Listar todos               |\n"
+        "| 4 | Voltar                     |\n"
+        "==================================\n"
         "Escolha uma opção: ");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
@@ -149,9 +149,9 @@ void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     int id, idOficina;
     struct Servicos servico;
 
-    printf("\n======================================\n"
+    printf("\n==================================\n"
         "|     ATUALIZAÇÃO DE SERVIÇO     |\n"
-        "======================================\n"
+        "==================================\n"
         "Insira o ID do serviço que deseja atualizar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);

@@ -112,34 +112,34 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
         case 1:
             dadosServicos = fopen("DadosServicos.txt", "w");
 
-        if (dadosServicos == NULL) {
-            printf("Erro ao armazenar serviços!\n");
-            exit(1);
-        }
+            if (dadosServicos == NULL) {
+                printf("Erro ao armazenar serviços!\n");
+                exit(1);
+            }
 
-        for (int i = 0; i < lista->qtdServicos; i++) {
-            fprintf(dadosServicos, "%d;%s;%f;%f;%d;%d;\n",
-                    lista->listaServicos[i].id,
-                    lista->listaServicos[i].descricao,
-                    lista->listaServicos[i].preco,
-                    lista->listaServicos[i].comissao,
-                    lista->listaServicos[i].idOficina,
-                    lista->listaServicos[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdServicos; i++) {
+                fprintf(dadosServicos, "%d;%s;%f;%f;%d;%d;\n",
+                        lista->listaServicos[i].id,
+                        lista->listaServicos[i].descricao,
+                        lista->listaServicos[i].preco,
+                        lista->listaServicos[i].comissao,
+                        lista->listaServicos[i].idOficina,
+                        lista->listaServicos[i].deletado);
+            }
+            break;
 
         case 2:
             dadosServicos = fopen("DadosServicos.bin", "wb");
 
-        if (dadosServicos == NULL) {
-            printf("Erro ao armazenar Serviços!\n");
-            exit(1);
-        }
+            if (dadosServicos == NULL) {
+                printf("Erro ao armazenar Serviços!\n");
+                exit(1);
+            }
 
-        for (int i = 0; i < lista->qtdServicos; i++) {
-            fwrite(&lista->listaServicos[i], sizeof(struct Servicos), 1, dadosServicos);
-        }
-        break;
+            for (int i = 0; i < lista->qtdServicos; i++) {
+                fwrite(&lista->listaServicos[i], sizeof(struct Servicos), 1, dadosServicos);
+            }
+            break;
     }
 
     fclose(dadosServicos);
@@ -270,12 +270,13 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
             // Verifica se o índice atual existe
             if (lista->listaServicos[i].deletado == 0) {
                 encontrado = 1;
-                printf("====================\n"
-                       "Id: %d\n"
-                       "Descrição: %s\n"
-                       "Preço: $%.2f\n"
-                       "Comissão do funcionario: $%.2f\n"
-                       "Id da Oficina: %d\n\n",
+                printf("\n====================\n"
+                       "| SERVIÇO %d        |\n"
+                       "====================\n"
+                       "DESCRIÇÃO: %s\n"
+                       "PREÇO: $%.2f\n"
+                       "COMISSÃO: $%.2f\n"
+                       "OFICINA: %d\n\n",
                        lista->listaServicos[i].id,
                        lista->listaServicos[i].descricao,
                        lista->listaServicos[i].preco,
@@ -283,7 +284,6 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
                        lista->listaServicos[i].idOficina);
             }
         }
-        printf("====================\n");
     } else {
         // Se não houver, avisa que não há cadastros
         printf("Nenhum serviço foi cadastrada\n");
@@ -305,18 +305,18 @@ void listarServicoModel(struct ListaServicos *lista, int id) {
     }
 
     if (encontrado != -1) {
-        printf("====================\n"
-               "Id: %d\n"
-               "Descrição: %s\n"
-               "Preço: $%.2f\n"
-               "Comissão: $%.2f\n"
-               "Id do Serviço: %d\n"
-               "====================\n",
-               lista->listaServicos[encontrado].id,
-               lista->listaServicos[encontrado].descricao,
-               lista->listaServicos[encontrado].preco,
-               lista->listaServicos[encontrado].comissao,
-               lista->listaServicos[encontrado].idOficina);
+        printf("\n====================\n"
+                      "| SERVIÇO %d        |\n"
+                      "====================\n"
+                      "DESCRIÇÃO: %s\n"
+                      "PREÇO: $%.2f\n"
+                      "COMISSÃO: $%.2f\n"
+                      "OFICINA: %d\n\n",
+                      lista->listaServicos[encontrado].id,
+                      lista->listaServicos[encontrado].descricao,
+                      lista->listaServicos[encontrado].preco,
+                      lista->listaServicos[encontrado].comissao,
+                      lista->listaServicos[encontrado].idOficina);
     } else {
         printf("Nenhuma peça encontrada.\n");
     }
@@ -330,18 +330,18 @@ void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina) {
         for (int i = 0; i < lista->qtdServicos; i++) {
             if (lista->listaServicos[i].idOficina == idOficina && lista->listaServicos[i].deletado == 0) {
                 encontrado = 1;
-                printf("====================\n"
-               "Id: %d\n"
-               "Descrição: %s\n"
-               "Preço: $%.2f\n"
-               "Comissão: $%.2f\n"
-               "Id da oficina: %d\n"
-               "====================\n",
-               lista->listaServicos[i].id,
-               lista->listaServicos[i].descricao,
-               lista->listaServicos[i].preco,
-               lista->listaServicos[i].comissao,
-               lista->listaServicos[i].idOficina);
+                printf("\n====================\n"
+                       "| SERVIÇO %d        |\n"
+                       "====================\n"
+                       "DESCRIÇÃO: %s\n"
+                       "PREÇO: $%.2f\n"
+                       "COMISSÃO: $%.2f\n"
+                       "OFICINA: %d\n\n",
+                       lista->listaServicos[i].id,
+                       lista->listaServicos[i].descricao,
+                       lista->listaServicos[i].preco,
+                       lista->listaServicos[i].comissao,
+                       lista->listaServicos[i].idOficina);
             }
         }
 

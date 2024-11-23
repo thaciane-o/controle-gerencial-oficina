@@ -13,24 +13,29 @@ void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazename
             dadosClientes = fopen("DadosClientes.txt", "w");
 
             if (dadosClientes == NULL) {
-                printf("Erro ao abrir arquivo.\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdClientes; i++) {
-                //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n", lista->listaClientes[i].id,
-                        lista->listaClientes[i].nome, lista->listaClientes[i].ddd,
-                        lista->listaClientes[i].telefone, lista->listaClientes[i].cpf_cnpj, lista->listaClientes[i].email,
-                        lista->listaClientes[i].endereco, lista->listaClientes->idOficina, lista->listaClientes[i].deletado);
+                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n",
+                        lista->listaClientes[i].id,
+                        lista->listaClientes[i].nome,
+                        lista->listaClientes[i].ddd,
+                        lista->listaClientes[i].telefone,
+                        lista->listaClientes[i].cpf_cnpj,
+                        lista->listaClientes[i].email,
+                        lista->listaClientes[i].endereco,
+                        lista->listaClientes[i].idOficina,
+                        lista->listaClientes[i].deletado);
             }
             break;
         case 2:
             dadosClientes = fopen("DadosClientes.bin", "wb");
 
             if (dadosClientes == NULL) {
-                printf("Erro ao armazenar clientes\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdClientes; i++) {
@@ -56,7 +61,6 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             dadosClientes = fopen("DadosClientes.txt", "r");
 
             if (dadosClientes == NULL) {
-                printf("Nenhum cliente armazenado\n\n");
                 return;
             }
 
@@ -66,17 +70,15 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                 lista->qtdClientes++;
             }
 
-
-        //Alocando memoria para receber o arquivo
             if (lista->qtdClientes > 0) {
                 lista->listaClientes = malloc(lista->qtdClientes * sizeof(struct Clientes));
-            }else {
+            } else {
                 return;
             }
 
             if (lista->listaClientes == NULL) {
-                printf("Erro ao alocar memoria\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosClientes, 0, SEEK_SET);
@@ -114,6 +116,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                 }
                 if (token != NULL) {
                     lista->listaClientes[i].idOficina = atoi(token);
+                    token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
                     lista->listaClientes[i].deletado = atoi(token);
@@ -126,7 +129,6 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             dadosClientes = fopen("DadosClientes.bin", "rb");
 
             if (dadosClientes == NULL) {
-                printf("Nenhum cliente armazenado\n\n");
                 return;
             }
 
@@ -143,8 +145,8 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
             }
 
             if (lista->listaClientes == NULL) {
-                printf("Erro ao alocar memoria\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosClientes, 0, SEEK_SET);
@@ -154,47 +156,52 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
                 i++;
             }
 
-
             break;
     }
     fclose(dadosClientes);
 }
 
-void alocarClientesModel(struct ListaClientes *lista) {
+int alocarClientesModel(struct ListaClientes *lista) {
+    lista->qtdClientes = 1;
     lista->listaClientes = malloc(sizeof(struct Clientes));
 
     if (lista->listaClientes == NULL) {
-        printf("Erro: Memória insuficiente!\n\n");
-        exit(1);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
-void realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
+int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhum registro salvo.\n\n");
-        return;
+        return 0;
     }
 
     lista->qtdClientes += qtdAlocada;
+    lista->listaClientes = realloc(lista->listaClientes, lista->qtdClientes * sizeof(struct Clientes));
 
-    if (lista->qtdClientes == 0) {
-        free(lista->listaClientes);
-    } else {
-        lista->listaClientes = realloc(lista->listaClientes, lista->qtdClientes * sizeof(struct Clientes));
-
-        if (lista->listaClientes == NULL) {
-            printf("Erro: Memória insuficiente!\n\n");
-            exit(1);
-        }
+    if (lista->listaClientes == NULL) {
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente) {
+
+    int resultAlocacao = 0;
+
     if (lista->qtdClientes == 0) {
         lista->qtdClientes++;
-        alocarClientesModel(lista);
+        resultAlocacao = alocarClientesModel(lista);
     } else {
-        realocarClientesModel(lista, 1);
+        resultAlocacao = realocarClientesModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o Cliente.\n\n");
+        return;
     }
 
     //Cadastrando cliente na memoria
@@ -285,22 +292,22 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
         if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
             printf("\n====================="
-                       "\n| CLIENTE %d         |"
-                       "\n====================="
-                       "\nNOME: %s"
-                       "\nCPF: %s"
-                       "\nTELEFONE: (%s) %s"
-                       "\nEMAIL: %s"
-                       "\nENDEREÇO: %s"
-                       "\nID DA OFICINA: %d\n\n",
-                       lista->listaClientes[i].id,
-                       lista->listaClientes[i].nome,
-                       lista->listaClientes[i].cpf_cnpj,
-                       lista->listaClientes[i].ddd,
-                       lista->listaClientes[i].telefone,
-                       lista->listaClientes[i].email,
-                       lista->listaClientes[i].endereco,
-                       lista->listaClientes[i].idOficina);
+                   "\n| CLIENTE %d         |"
+                   "\n====================="
+                   "\nNOME: %s"
+                   "\nCPF: %s"
+                   "\nTELEFONE: (%s) %s"
+                   "\nEMAIL: %s"
+                   "\nENDEREÇO: %s"
+                   "\nID DA OFICINA: %d\n\n",
+                   lista->listaClientes[i].id,
+                   lista->listaClientes[i].nome,
+                   lista->listaClientes[i].cpf_cnpj,
+                   lista->listaClientes[i].ddd,
+                   lista->listaClientes[i].telefone,
+                   lista->listaClientes[i].email,
+                   lista->listaClientes[i].endereco,
+                   lista->listaClientes[i].idOficina);
             encontrado = 1;
             break;
         }
@@ -321,20 +328,20 @@ void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina) {
                 printf("\n====================="
                        "\n| CLIENTE %d         |"
                        "\n====================="
-                   "\nNOME: %s"
-                   "\nCPF: %s"
-                   "\nTELEFONE: (%s)%s"
-                   "\nEMAIL: %s"
-                   "\nENDEREÇO: %s"
-                   "\nID DA OFICINA: %d\n\n",
-                   lista->listaClientes[i].id,
-                   lista->listaClientes[i].nome,
-                   lista->listaClientes[i].cpf_cnpj,
-                   lista->listaClientes[i].ddd,
-                   lista->listaClientes[i].telefone,
-                   lista->listaClientes[i].email,
-                   lista->listaClientes[i].endereco,
-                   lista->listaClientes[i].idOficina);
+                       "\nNOME: %s"
+                       "\nCPF: %s"
+                       "\nTELEFONE: (%s)%s"
+                       "\nEMAIL: %s"
+                       "\nENDEREÇO: %s"
+                       "\nID DA OFICINA: %d\n\n",
+                       lista->listaClientes[i].id,
+                       lista->listaClientes[i].nome,
+                       lista->listaClientes[i].cpf_cnpj,
+                       lista->listaClientes[i].ddd,
+                       lista->listaClientes[i].telefone,
+                       lista->listaClientes[i].email,
+                       lista->listaClientes[i].endereco,
+                       lista->listaClientes[i].idOficina);
             }
         }
 
@@ -359,7 +366,8 @@ void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *lis
     if (listaVeiculos->qtdVeiculos > 0) {
         for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
             if (listaVeiculos->listaVeiculos[i].idProprietario == id && listaVeiculos->listaVeiculos[i].deletado == 0) {
-                printf("Não foi possível deletar o cliente, pois os seus dados estão sendo utilizados em um veículo que já está cadastrado.\n\n");
+                printf(
+                    "Não foi possível deletar o cliente, pois os seus dados estão sendo utilizados em um veículo que já está cadastrado.\n\n");
                 return;
             }
         }

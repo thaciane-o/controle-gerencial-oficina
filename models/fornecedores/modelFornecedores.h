@@ -26,9 +26,9 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
 void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento);
 
 // Controles de alocação de memória
-void alocarFornecedoresModel(struct ListaFornecedores *lista);
+int alocarFornecedoresModel(struct ListaFornecedores *lista);
 
-void realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
+int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
 
 // Controles de CRUD
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor);

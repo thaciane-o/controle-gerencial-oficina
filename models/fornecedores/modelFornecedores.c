@@ -12,8 +12,8 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
             dadosFornecedores = fopen("DadosFornecedores.txt", "w");
 
             if (dadosFornecedores == NULL) {
-                printf("Erro ao abrir o arquivo.\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdFornecedores; i++) {
@@ -35,8 +35,8 @@ void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoA
             dadosFornecedores = fopen("DadosFornecedores.bin", "wb");
 
             if (dadosFornecedores == NULL) {
-                printf("Erro ao armazenar fornecedores!\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdFornecedores; i++) {
@@ -62,7 +62,6 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             dadosFornecedores = fopen("DadosFornecedores.txt", "r");
 
             if (dadosFornecedores == NULL) {
-                printf("Nenhum fornecedor armazenado!\n\n");
                 return;
             }
 
@@ -77,8 +76,8 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             }
 
             if (lista->listaFornecedores == NULL) {
-                printf("Erro ao alocar memória!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosFornecedores, 0, SEEK_SET);
@@ -133,7 +132,6 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             dadosFornecedores = fopen("DadosFornecedores.bin", "rb");
 
             if (dadosFornecedores == NULL) {
-                printf("Nenhum fornecedor armazenado!\n\n");
                 return;
             }
 
@@ -150,8 +148,8 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
             }
 
             if (lista->listaFornecedores == NULL) {
-                printf("Erro ao alocar memoria!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosFornecedores, 0, SEEK_SET);
@@ -166,37 +164,44 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
     fclose(dadosFornecedores);
 }
 
-void alocarFornecedoresModel(struct ListaFornecedores *lista) {
+int alocarFornecedoresModel(struct ListaFornecedores *lista) {
     lista->qtdFornecedores = 1;
     lista->listaFornecedores = malloc(sizeof(struct Fornecedores));
 
     if (lista->listaFornecedores == NULL) {
-        printf("Erro: Memória insuficiente!\n\n");
-        exit(1);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
 }
 
-void realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada) {
+int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
-        printf("Nenhum registro salvo.\n\n");
-        return;
+        printf("Nenhuma alocação foi realizada\n\n");
+        return 0;
     }
 
     lista->qtdFornecedores += qtdAlocada;
     lista->listaFornecedores = realloc(lista->listaFornecedores, lista->qtdFornecedores * sizeof(struct Fornecedores));
 
     if (lista->listaFornecedores == NULL) {
-        printf("Erro: Memória insuficiente!\n\n");
-        exit(1);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor) {
+    int resultAlocacao = 0;
     if (lista->qtdFornecedores == 0) {
         lista->qtdFornecedores++;
-        alocarFornecedoresModel(lista);
+        resultAlocacao = alocarFornecedoresModel(lista);
     } else {
-        realocarFornecedoresModel(lista, 1);
+        resultAlocacao = realocarFornecedoresModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o fornecedor.\n\n");
+        return;
     }
 
     fornecedor->id = lista->qtdFornecedores;
@@ -215,7 +220,7 @@ int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id) {
             }
         }
     } else {
-        printf("Nenhuma fornecedor foi cadastrado!\n\n");
+        printf("Nenhum fornecedor foi cadastrado!\n\n");
         return 0;
     }
 
@@ -229,7 +234,6 @@ void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct 
             lista->listaFornecedores[i] = *fornecedor;
             lista->listaFornecedores[i].id = id;
             lista->listaFornecedores[i].deletado = 0;
-
             break;
         }
     }

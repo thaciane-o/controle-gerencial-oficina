@@ -15,7 +15,6 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.txt", "r");
 
             if (dadosPecas == NULL) {
-                printf("Erro ao abrir o arquivo!\n\n");
                 return;
             }
 
@@ -30,8 +29,8 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             }
 
             if (lista->listaPecas == NULL) {
-                printf("Erro ao alocar memória!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosPecas, 0, SEEK_SET);
@@ -83,7 +82,6 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.bin", "rb");
 
             if (dadosPecas == NULL) {
-                printf("Nenhuma peça armazenada!\n\n");
                 return;
             }
 
@@ -100,8 +98,8 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             }
 
             if (lista->listaPecas == NULL) {
-                printf("Erro ao alocar memória!\n\n");
-                exit(1);
+                printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                return;
             }
 
             fseek(dadosPecas, 0, SEEK_SET);
@@ -125,8 +123,8 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.txt", "w");
 
             if (dadosPecas == NULL) {
-                printf("Erro ao armazenar pecas!\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdPecas; i++) {
@@ -147,8 +145,8 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             dadosPecas = fopen("DadosPecas.bin", "wb");
 
             if (dadosPecas == NULL) {
-                printf("Erro ao armazenar peças!\n\n");
-                exit(1);
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
             }
 
             for (int i = 0; i < lista->qtdPecas; i++) {
@@ -166,25 +164,22 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
 }
 
 // Aloca a memória inicial para a lista de peças
-void alocarMemoriaPecaModel(struct ListaPecas *lista) {
-    // Aloca a memória inicial para a lista de peças
+int alocarMemoriaPecaModel(struct ListaPecas *lista) {
     lista->qtdPecas = 1;
     lista->listaPecas = malloc(sizeof(struct Pecas));
 
-    // Verifica se a alocação deu certo
     if (lista->listaPecas == NULL) {
-        printf("Erro: Memória insuficiente.\n\n");
-        exit(EXIT_FAILURE);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 // Realoca memória da peca de acordo com a quantidade que deseja alocar (qtdAloca)
-void realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
-    // Verifica o tamando da alocação que pretende fazer
+int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
     if (qtdAloca == 0) {
-        // Nenhuma alocação
         printf("Nenhuma alocação foi realizada.\n\n");
-        return;
+        return 0;
     }
 
     lista->qtdPecas += qtdAloca;
@@ -192,20 +187,28 @@ void realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
 
     // Verifica se a alocação deu certo
     if (lista->listaPecas == NULL) {
-        printf("Erro: Memória insuficiente.\n\n");
-        exit(EXIT_FAILURE);
+        printf("Erro: Memória insuficiente\n\n");
+        return 0;
     }
+    return 1;
 }
 
 // Cadastra uma nova peca
 void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando) {
-    // Se nenhuma peça cadastrada, inicia a alocação
+
+    int resultAlocacao = 0;
+
     if (lista->qtdPecas == 0) {
         lista->qtdPecas++;
-        alocarMemoriaPecaModel(lista);
+        resultAlocacao = alocarMemoriaPecaModel(lista);
     } else {
         // Se já tiver, aumenta a alocação em 1
-        realocarMemoriaPecaModel(lista, 1);
+        resultAlocacao = realocarMemoriaPecaModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar a peça.\n\n");
+        return;
     }
 
     pecaCadastrando->id = lista->qtdPecas;

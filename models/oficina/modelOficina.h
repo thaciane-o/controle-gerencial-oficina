@@ -1,6 +1,7 @@
 #ifndef MODELOFICINA_H
 #define MODELOFICINA_H
 #include "../../models/funcionarios/modelFuncionarios.h"
+#include "../../models/clientes/modelClientes.h"
 
 struct Oficinas {
     int id;
@@ -18,20 +19,17 @@ struct ListaOficinas {
     struct Oficinas *listaOficinas;
 };
 
-// Controles de armazenamento
 void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento);
 
 void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento);
 
-// Controles de alocação de memória
-void alocarMemoriaOficinaModel(struct ListaOficinas *lista);
+int alocarMemoriaOficinaModel(struct ListaOficinas *lista);
 
-void realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
+int realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
 
-// Controles de CRUD
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando);
 
-void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, int id);
+void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaClientes *listaClientes, int id);
 
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando);
 

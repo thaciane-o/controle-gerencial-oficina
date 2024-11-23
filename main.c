@@ -90,7 +90,7 @@ int main() {
                 gerenciarOficina(&listaOficinas, &listaFuncionarios, opcaoArmazenamento);
                 break;
             case 2:
-                gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
+                gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, &listaServicos, opcaoArmazenamento);
                 break;
             case 3:
                 gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
@@ -102,7 +102,7 @@ int main() {
                 gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
                 break;
             case 6:
-                gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
+                gerenciarServico(&listaServicos, &listaOficinas, &listaClientes, opcaoArmazenamento);
                 break;
             case 7:
                 gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);

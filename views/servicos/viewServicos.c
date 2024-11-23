@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
+#include "../../models/clientes/modelClientes.h"
+
+void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes, int opcaoArmazenamento) {
     int opcaoSubmenus;
 
     if (opcaoArmazenamento != 3) {
@@ -14,6 +16,10 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
 
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
+        }
+
+        if (listaClientes->qtdClientes == 0) {
+            buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
         }
     }
 
@@ -32,10 +38,10 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarServico(lista, listaOficinas);
+                cadastrarServico(lista, listaOficinas, listaClientes);
             break;
             case 2:
-                atualizarServico(lista, listaOficinas);
+                atualizarServico(lista, listaOficinas, listaClientes);
             break;
             case 3:
                 deletarServico(lista);
@@ -62,9 +68,9 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     } while (opcaoSubmenus != 5);
 }
 
-void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas) {
+void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes) {
     struct Servicos servico;
-    int idOficina;
+    int idOficina, idCliente;
 
     printf("\n================================\n"
         "|     CADASTRO DE SERVIÇO     |\n"
@@ -79,6 +85,17 @@ void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     }
 
     servico.idOficina = idOficina;
+
+    printf("Insira o ID do cliente que receberá o serviço: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idCliente);
+
+    if (verificarIDClienteModel(listaClientes, idCliente) == 0) {
+        return;
+    }
+
+    servico.idCliente = idCliente;
+
 
     printf("Insira a descrição do serviço: ");
     setbuf(stdin, NULL);
@@ -145,8 +162,8 @@ void listarServico(struct ListaServicos *lista) {
     }
 }
 
-void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas) {
-    int id, idOficina;
+void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes) {
+    int id, idOficina, idCliente;
     struct Servicos servico;
 
     printf("\n==================================\n"
@@ -170,6 +187,16 @@ void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     }
 
     servico.idOficina = idOficina;
+
+    printf("Insira o ID do cliente que receberá o serviço: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idCliente);
+
+    if (verificarIDClienteModel(listaClientes, idCliente) == 0) {
+        return;
+    }
+
+    servico.idCliente = idCliente;
 
     printf("Insira a descrição do serviço: ");
     setbuf(stdin, NULL);

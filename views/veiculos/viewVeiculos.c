@@ -75,13 +75,6 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     scanf("%d", &idProprietario);
 
 
-    //Verifica se o ID é válido
-    if (idProprietario <= 0) {
-        printf("ID de proprietário invalido!\n");
-        return;
-    }
-
-
     //verificando existencia de cliente
     if (verificarIDClienteModel(listaProprietarios, idProprietario) == 0) {
         return;
@@ -115,35 +108,32 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 
 void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
     struct Veiculos veiculo;
-    int id, idProprietario;
+    int idVeiculo, idProprietario;
 
     printf("\n=================================\n"
         "|     ATUALIZAÇÃO DE VEÍCULO    |\n"
         "=================================\n"
         "Insira o veículo que deseja atualizar: ");
-    scanf("%d", &id);
+    scanf("%d", &idVeiculo);
+
+    if (verificarIDVeiculoModel(lista, idVeiculo) == 0) {
+        printf("ID de veículo invalido!\n");
+        return;
+    }
 
     printf("\nQual o ID do proprietário? ");
     setbuf(stdin, NULL);
     scanf("%d", &idProprietario);
 
-    //Verifica se o ID é válido
-    if (idProprietario <= 0) {
-        printf("ID de proprietario invalido!\n");
-        return;
-    }
 
 
     if (verificarIDClienteModel(listaProprietarios, idProprietario) == 0) {
+        printf("ID de proprietario invalido!\n");
         return;
     }
 
     veiculo.idProprietario = idProprietario;
 
-    int encontrado = verificarIDVeiculoModel(lista, id);
-    if (encontrado == 0) {
-        return;
-    }
 
     printf("Insira o modelo do veículo: ");
     setbuf(stdin, NULL);
@@ -166,7 +156,7 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     scanf(" %d", &veiculo.anoFabricacao);
 
 
-    atualizarVeiculosModel(lista, id, &veiculo);
+    atualizarVeiculosModel(lista, idVeiculo, &veiculo);
 }
 
 void listarVeiculo(struct ListaVeiculos *lista) {

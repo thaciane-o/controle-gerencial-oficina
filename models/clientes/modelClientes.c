@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../servicos/modelServicos.h"
+
 void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento) {
     //Abrindo ou criando arquivo para adicionar cadastros
     FILE *dadosClientes;
@@ -348,12 +350,21 @@ void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina) {
 
 
 //Utilizei um modelo de deleção logica
-void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, int id) {
+void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaServicos *listaServicos, int id) {
     int encontrado = 0;
 
     if (lista->qtdClientes == 0) {
         printf("Nenhum cliente foi cadastrado!\n\n");
         return;
+    }
+
+    if (listaServicos->qtdServicos > 0) {
+        for (int i = 0; i < listaServicos->qtdServicos; i++) {
+            if (listaServicos->listaServicos[i].idCliente == id && listaServicos->listaServicos->deletado == 0) {
+                printf("Não foi possível deletar o cliente, pois os seus dados estão sendo utilizados em um serviço que já está cadastrado.\n\n");
+                return;
+            }
+        }
     }
 
     if (listaVeiculos->qtdVeiculos > 0) {

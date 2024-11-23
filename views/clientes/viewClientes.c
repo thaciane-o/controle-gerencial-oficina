@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../models/servicos/modelServicos.h"
 #include "../../models/veiculos/modelVeiculos.h"
 
-void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
+void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, struct ListaServicos *listaServicos, int opcaoArmazenamento) {
     int opcaoSubmenus;
 
     if (opcaoArmazenamento != 3) {
@@ -18,6 +19,9 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
         }
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
+        }
+        if (listaServicos->qtdServicos == 0) {
+            buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
         }
     }
 
@@ -42,7 +46,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
                 atualizarCliente(lista, listaOficinas);
                 break;
             case 3:
-                deletarCliente(lista, listaVeiculos);
+                deletarCliente(lista, listaVeiculos, listaServicos);
                 break;
             case 4:
                 listarClientes(lista);
@@ -131,8 +135,10 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
         "Insira o cliente que deseja atualizar: ");
     scanf("%d", &id);
 
+
     int encontrado = verificarIDClienteModel(lista, id);
     if (encontrado == 0) {
+        printf("ID de cliente invalido\n");
         return;
     }
 
@@ -140,16 +146,11 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
-    //Verifica se o ID é válido
-    if (idOficina <= 0) {
-        printf("ID da oficina invalido!\n");
-        return;
-    }
-
-
     if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
+        printf("ID de oficina invalido!\n");
         return;
     }
+
 
     cliente.idOficina = idOficina;
 
@@ -221,7 +222,7 @@ void listarClientes(struct ListaClientes *lista) {
     }
 }
 
-void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos) {
+void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaServicos *listaServicos) {
     int id;
 
     printf("=============================\n"
@@ -229,5 +230,5 @@ void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeic
         "=============================\n");
     printf("Insira o cliente que deseja deletar:");
     scanf("%d", &id);
-    deletarClientesModel(lista, listaVeiculos, id);
+    deletarClientesModel(lista, listaVeiculos, listaServicos, id);
 }

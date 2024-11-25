@@ -354,7 +354,7 @@ void deletarVeiculosModel(struct ListaVeiculos *lista, int id) {
      "isDeleted" = 1
      */
     for (int i = 0; i < lista->qtdVeiculos; i++) {
-        if (lista->listaVeiculos[i].id == id) {
+        if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
             encontrado = 1;
 
             lista->listaVeiculos[i].deletado = 1;

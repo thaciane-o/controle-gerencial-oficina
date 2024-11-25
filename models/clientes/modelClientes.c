@@ -381,7 +381,7 @@ void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *lis
      "isDeleted" = 1
      */
     for (int i = 0; i < lista->qtdClientes; i++) {
-        if (lista->listaClientes[i].id == id) {
+        if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
             encontrado = 1;
 
             lista->listaClientes[i].deletado = 1;

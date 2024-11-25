@@ -13,7 +13,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
         if (lista->qtdClientes == 0) {
             buscarDadosClientesModel(lista, opcaoArmazenamento);
         }
-        if (lista->qtdClientes == 0) {
+        if (lista->qtdClientes > 0) {
             buscarDadosVeiculosModel(listaVeiculos, opcaoArmazenamento);
         }
         if (listaOficinas->qtdOficinas == 0) {
@@ -23,7 +23,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
 
     do {
         printf("\n=================================\n"
-            "|        MENU PRINCIPAL         |\n"
+            "|         MENU CLIENTES         |\n"
             "=================================\n"
             "|  1  | Cadastrar               |\n"
             "|  2  | Atualizar               |\n"

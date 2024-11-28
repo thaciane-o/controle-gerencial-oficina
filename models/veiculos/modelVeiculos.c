@@ -18,14 +18,14 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
 
             for (int i = 0; i < lista->qtdVeiculos; i++) {
                 //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosVeiculos, "%d;%d;%s;%s;%s;%s;%d;%d\n",
+                fprintf(dadosVeiculos, "%d;%s;%s;%s;%s;%d;%d;%d\n",
                         lista->listaVeiculos[i].id,
-                        lista->listaVeiculos[i].idProprietario,
                         lista->listaVeiculos[i].modelo,
                         lista->listaVeiculos[i].marca,
                         lista->listaVeiculos[i].placa,
                         lista->listaVeiculos[i].chassi,
                         lista->listaVeiculos[i].anoFabricacao,
+                        lista->listaVeiculos->idProprietario,
                         lista->listaVeiculos[i].deletado);
             }
             break;
@@ -91,10 +91,6 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaVeiculos[i].idProprietario = atoi(token);
-                    token = strtok(NULL, ";");
-                }
-                if (token != NULL) {
                     strcpy(lista->listaVeiculos[i].modelo, token);
                     token = strtok(NULL, ";");
                 }
@@ -112,6 +108,10 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
                 }
                 if (token != NULL) {
                     lista->listaVeiculos[i].anoFabricacao = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaVeiculos[i].idProprietario = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {

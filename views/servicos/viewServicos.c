@@ -86,11 +86,11 @@ void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf(" %[^\n]", servico.descricao);
 
-    printf("Insira o preço do serviço: ");
+    printf("Insira o preço do serviço: R$");
     setbuf(stdin, NULL);
     scanf(" %f", &servico.preco);
 
-    printf("Insira a comissão do serviço: ");
+    printf("Insira a comissão do serviço: R$");
     setbuf(stdin, NULL);
     scanf(" %f", &servico.comissao);
 

@@ -70,7 +70,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
         "|     CADASTRO DE VEÍCULO    |\n"
         "==============================\n");
 
-    printf("Qual o ID do proprietário?");
+    printf("Insira o ID do proprietário: ");
     setbuf(stdin, NULL);
     scanf("%d", &idProprietario);
 
@@ -120,7 +120,7 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
         return;
     }
 
-    printf("\nQual o ID do proprietário? ");
+    printf("Insira o ID do proprietário:  ");
     setbuf(stdin, NULL);
     scanf("%d", &idProprietario);
 

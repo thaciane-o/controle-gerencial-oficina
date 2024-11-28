@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../../models/pecas/modelPecas.h"
 
-void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas,
+void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *listaPecas,
                          int opcaoArmazenamento) {
     int opcaoSubmenus;
 
@@ -13,7 +13,7 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pec
             buscarDadosFornecedoresModel(lista, opcaoArmazenamento);
         }
         if (lista->qtdFornecedores > 0) {
-            buscarDadosPecaModel(pecasRelacionadas, opcaoArmazenamento);
+            buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
         }
     }
 
@@ -38,7 +38,7 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pec
                 atualizarFornecedor(lista);
                 break;
             case 3:
-                deletarFornecedor(lista, pecasRelacionadas);
+                deletarFornecedor(lista, listaPecas);
                 break;
             case 4:
                 listarFornecedor(lista);
@@ -49,10 +49,10 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pec
                         armazenarDadosFornecedoresModel(lista, opcaoArmazenamento);
                     }
 
-                    if (pecasRelacionadas->qtdPecas > 0) {
-                        free(pecasRelacionadas);
-                        pecasRelacionadas->qtdPecas = 0;
-                        pecasRelacionadas = NULL;
+                    if (listaPecas->qtdPecas) {
+                        free(listaPecas->listaPecas);
+                        listaPecas->qtdPecas = 0;
+                        listaPecas->listaPecas = NULL;
                     }
                 }
                 break;
@@ -186,7 +186,7 @@ void listarFornecedor(struct ListaFornecedores *lista) {
     }
 }
 
-void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas) {
+void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *listaPecas) {
     int id;
 
     printf("\n===============================\n"
@@ -195,5 +195,5 @@ void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pecas
     printf("Insira o ID do fornecedor que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    deletarFornecedoresModel(lista, pecasRelacionadas, id);
+    deletarFornecedoresModel(lista, listaPecas, id);
 }

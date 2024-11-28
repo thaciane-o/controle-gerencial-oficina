@@ -37,7 +37,6 @@ int main() {
     listaClientes.qtdClientes = 0;
 
     struct ListaVeiculos listaVeiculos;
-    listaVeiculos.listaVeiculos = NULL;
     listaVeiculos.qtdVeiculos = 0;
 
     struct ListaOficinas listaOficinas;

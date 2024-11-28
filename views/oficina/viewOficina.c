@@ -22,15 +22,15 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
     }
 
     while (opcaoSubmenus != 5) {
-        printf("\n=================================\n"
-            "|      SUBMENU DE OFICINAS      |\n"
-            "=================================\n"
-            "|  1  | Cadastrar               |\n"
-            "|  2  | Atualizar               |\n"
-            "|  3  | Deletar                 |\n"
-            "|  4  | Listar                  |\n"
-            "|  5  | Voltar                  |\n"
-            "=================================\n"
+        printf("\n================================\n"
+            "|       MENU DE OFICINAS       |\n"
+            "================================\n"
+            "|  1  | Cadastrar              |\n"
+            "|  2  | Atualizar              |\n"
+            "|  3  | Deletar                |\n"
+            "|  4  | Listar                 |\n"
+            "|  5  | Voltar                 |\n"
+            "================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
 

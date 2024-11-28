@@ -18,15 +18,15 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pec
     }
 
     do {
-        printf("\n=================================\n"
-            "|    SUBMENU DE FORNECEDORES    |\n"
-            "=================================\n"
-            "|  1  | Cadastrar               |\n"
-            "|  2  | Atualizar               |\n"
-            "|  3  | Deletar                 |\n"
-            "|  4  | Listar                  |\n"
-            "|  5  | Voltar                  |\n"
-            "=================================\n"
+        printf("\n================================\n"
+            "|     MENU DE FORNECEDORES     |\n"
+            "================================\n"
+            "|  1  | Cadastrar              |\n"
+            "|  2  | Atualizar              |\n"
+            "|  3  | Deletar                |\n"
+            "|  4  | Listar                 |\n"
+            "|  5  | Voltar                 |\n"
+            "================================\n"
             "Escolha uma opção: \n");
         scanf("%d", &opcaoSubmenus);
 

@@ -19,15 +19,15 @@ void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     }
 
     do {
-        printf("\n================================\n"
-            "|    SUBMENU DE FUNCIONÁRIO    |\n"
-            "================================\n"
-            "|  1  | Cadastrar              |\n"
-            "|  2  | Atualizar              |\n"
-            "|  3  | Deletar                |\n"
-            "|  4  | Listar                 |\n"
-            "|  5  | Voltar                 |\n"
-            "================================\n"
+        printf("\n===============================\n"
+            "|     MENU DE FUNCIONÁRIO     |\n"
+            "===============================\n"
+            "|  1  | Cadastrar             |\n"
+            "|  2  | Atualizar             |\n"
+            "|  3  | Deletar               |\n"
+            "|  4  | Listar                |\n"
+            "|  5  | Voltar                |\n"
+            "===============================\n"
             "Escolha uma opção: \n");
         scanf("%d", &opcaoSubmenus);
 

@@ -19,7 +19,7 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
 
     while (opcaoSubmenus != 5) {
         printf("\n=================================\n"
-            "|       SUBMENU DE PEÇAS        |\n"
+            "|         MENU DE PEÇAS         |\n"
             "=================================\n"
             "|  1  | Cadastrar               |\n"
             "|  2  | Atualizar               |\n"

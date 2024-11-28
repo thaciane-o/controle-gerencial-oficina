@@ -50,7 +50,7 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *pec
                     }
 
                     if (pecasRelacionadas->qtdPecas > 0) {
-                        free(pecasRelacionadas);
+                        free(pecasRelacionadas->listaPecas);
                         pecasRelacionadas->qtdPecas = 0;
                         pecasRelacionadas = NULL;
                     }

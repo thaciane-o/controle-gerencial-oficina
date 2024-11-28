@@ -264,14 +264,14 @@ int verificarIDServicoModel(struct ListaServicos *lista, int id) {
 //Lista todos os serviços cadastrados
 void listarTodosServicoModel(struct ListaServicos *lista) {
     // Verifica se há pelo menos um cadastro
-    int encontrado = -1;
+    int listado = -1;
 
     if (lista->qtdServicos > 0) {
         // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdServicos; i++) {
             // Verifica se o índice atual existe
             if (lista->listaServicos[i].deletado == 0) {
-                encontrado = 1;
+                listado = 1;
                 printf("\n====================\n"
                        "| SERVIÇO %d        |\n"
                        "====================\n"
@@ -286,11 +286,8 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
                        lista->listaServicos[i].idOficina);
             }
         }
-    } else {
-        // Se não houver, avisa que não há cadastros
-        printf("Nenhum serviço foi cadastrado.\n");
     }
-    if (encontrado == -1) {
+    if (listado == -1) {
         // Caso todos estejam deletados
         printf("Nenhum serviço foi cadastrado.\n");
     }

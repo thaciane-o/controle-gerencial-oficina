@@ -76,10 +76,10 @@ int main() {
             "|  1  | Oficina                 |\n"
             "|  2  | Clientes                |\n"
             "|  3  | Veículos                |\n"
-            "|  4  | Peças                   |\n"
-            "|  5  | Fornecedores            |\n"
-            "|  6  | Serviços                |\n"
-            "|  7  | Funcionários            |\n"
+            "|  4  | Funcionários            |\n"
+            "|  5  | Serviços                |\n"
+            "|  6  | Fornecedores            |\n"
+            "|  7  | Peças                   |\n"
             "|  8  | Sair                    |\n"
             "=================================\n"
             "Escolha uma opção:\n");
@@ -96,16 +96,16 @@ int main() {
                 gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
                 break;
             case 4:
-                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
+                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
                 break;
             case 5:
-                gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
-                break;
-            case 6:
                 gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
                 break;
+            case 6:
+                gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
+                break;
             case 7:
-                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
+                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
                 break;
             case 8:
                 if (listaClientes.qtdClientes > 0) {

@@ -240,9 +240,13 @@ void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct 
 }
 
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
+    //variavel para verificação de listagem
+    int listado = 0;
+
     if (lista->qtdFornecedores > 0) {
         for (int i = 0; i < lista->qtdFornecedores; i++) {
             if (lista->listaFornecedores[i].deletado == 0) {
+                listado = 1;
                 printf("\n====================="
                        "\n| FORNECEDOR %d      |"
                        "\n====================="
@@ -264,8 +268,11 @@ void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
                        lista->listaFornecedores[i].email);
             }
         }
-    } else {
-        printf("Nenhum fornecedor foi cadastrado!\n\n");
+    }
+
+    // Se não houver, avisa que não há cadastros
+    if (listado == 0) {
+        printf("Nenhum fornecedor cadastrado\n\n");
     }
 }
 

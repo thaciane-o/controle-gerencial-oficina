@@ -238,9 +238,13 @@ void atualizarFuncionariosModel(struct ListaFuncionarios *lista, int id, struct 
 }
 
 void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
+    //variavel para verificação de listagem
+    int listado = 0;
+
     if (lista->qtdFuncionarios > 0) {
         for (int i = 0; i < lista->qtdFuncionarios; i++) {
             if (lista->listaFuncionarios[i].deletado == 0) {
+                listado = 1;
                 printf("\n======================="
                        "\n| FUNCIONÁRIO %d       |"
                        "\n======================="
@@ -257,8 +261,11 @@ void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
                        lista->listaFuncionarios[i].idOficina);
             }
         }
-    } else {
-        printf("Nenhum funcionário foi cadastrado!\n\n");
+    }
+
+    // Se não houver, avisa que não há cadastros
+    if (listado == 0) {
+        printf("Nenhum funcionário cadastrado\n\n");
     }
 }
 

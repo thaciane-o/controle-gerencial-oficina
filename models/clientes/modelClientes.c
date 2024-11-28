@@ -243,7 +243,7 @@ int verificarIDClienteModel(struct ListaClientes *lista, int id) {
 }
 
 void listarTodosClientesModel(struct ListaClientes *lista) {
-    //variavel para verificar se algum cliente foi listado
+    //variavel para verificação de listagem
     int listado = 0;
 
     if (lista->qtdClientes > 0) {
@@ -272,10 +272,7 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
         }
     }
 
-    /*
-     Caso nenhum cliente seja listado, será considerado que nenhum cliente foi cadastrado
-     mesmo se a quantidade for maior que 0
-    */
+    // Se não houver, avisa que não há cadastros
     if (listado == 0) {
         printf("Nenhum cliente cadastrado\n\n");
     }

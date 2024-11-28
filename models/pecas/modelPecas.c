@@ -279,12 +279,16 @@ int verificarIDPecaModel(struct ListaPecas *lista, int id) {
 
 // Lista todas as peças cadastradas
 void listarTodosPecaModel(struct ListaPecas *lista) {
+    //variavel para verificação de listagem
+    int listado = 0;
+
     // Verifica se há pelo menos um cadastro
     if (lista->qtdPecas > 0) {
         // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdPecas; i++) {
             // Verifica se o índice atual existe
             if (lista->listaPecas[i].deletado == 0) {
+                listado = 1;
                 printf("\n====================\n"
                        "| PEÇA %d           |\n"
                        "====================\n"
@@ -305,9 +309,11 @@ void listarTodosPecaModel(struct ListaPecas *lista) {
                        lista->listaPecas[i].idFornecedor);
             }
         }
-    } else {
-        // Se não houver, avisa que não há cadastros
-        printf("Nenhuma peça foi cadastrada.\n\n");
+    }
+
+    // Se não houver, avisa que não há cadastros
+    if (listado == 0) {
+        printf("Nenhuma peça cadastrado\n\n");
     }
 }
 

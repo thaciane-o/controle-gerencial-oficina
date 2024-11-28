@@ -25,7 +25,7 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
                         lista->listaVeiculos[i].placa,
                         lista->listaVeiculos[i].chassi,
                         lista->listaVeiculos[i].anoFabricacao,
-                        lista->listaVeiculos->idProprietario,
+                        lista->listaVeiculos[i].idProprietario,
                         lista->listaVeiculos[i].deletado);
             }
             break;

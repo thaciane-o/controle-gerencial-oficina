@@ -22,15 +22,15 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
     }
 
     do {
-        printf("\n=================================\n"
-            "|         MENU CLIENTES         |\n"
-            "=================================\n"
-            "|  1  | Cadastrar               |\n"
-            "|  2  | Atualizar               |\n"
-            "|  3  | Deletar                 |\n"
-            "|  4  | Listar                  |\n"
-            "|  5  | Voltar                  |\n"
-            "=================================\n"
+        printf("\n==================================\n"
+            "|        MENU DE CLIENTES        |\n"
+            "==================================\n"
+            "|  1  | Cadastrar                |\n"
+            "|  2  | Atualizar                |\n"
+            "|  3  | Deletar                  |\n"
+            "|  4  | Listar                   |\n"
+            "|  5  | Voltar                   |\n"
+            "==================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
 
@@ -133,14 +133,13 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
         return;
     }
 
-    printf("Insira o ID da oficina que atende este cliente:: ");
+    printf("Insira o ID da oficina que atende este cliente: ");
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
     if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
         return;
     }
-
 
     cliente.idOficina = idOficina;
 
@@ -165,10 +164,6 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     scanf(" %[^\n]", cliente.email);
 
     printf("Insira o endereço do cliente: ");
-    setbuf(stdin, NULL);
-    scanf(" %[^\n]", cliente.endereco);
-
-    printf("Insira o ID do cliente: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", cliente.endereco);
 
@@ -215,10 +210,10 @@ void listarClientes(struct ListaClientes *lista) {
 void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos) {
     int id;
 
-    printf("=============================\n"
+    printf("\n=============================\n"
         "|     DELEÇÃO DE CLIENTE    |\n"
         "=============================\n");
-    printf("Insira o cliente que deseja deletar:");
+    printf("Insira o ID do cliente que deseja deletar:");
     scanf("%d", &id);
     deletarClientesModel(lista, listaVeiculos, id);
 }

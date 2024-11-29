@@ -161,7 +161,7 @@ void listarFornecedor(struct ListaFornecedores *lista) {
     printf("\n==================================\n"
         "|     LISTAGEM DE FORNECEDOR     |\n"
         "==================================\n"
-        "| 1 | Listar um único fornecedor |\n"
+        "| 1 | Busca por ID               |\n"
         "| 2 | Listar todos               |\n"
         "| 3 | Voltar                     |\n"
         "==================================\n"

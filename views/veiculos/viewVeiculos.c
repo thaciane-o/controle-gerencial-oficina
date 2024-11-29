@@ -17,15 +17,15 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
     }
 
     do {
-        printf("=================================\n"
-            "|        MENU DE VEÍCULO        |\n"
-            "=================================\n"
-            "|  1  | Cadastrar               |\n"
-            "|  2  | Atualizar               |\n"
-            "|  3  | Deletar                 |\n"
-            "|  4  | Listar                  |\n"
-            "|  5  | Voltar                  |\n"
-            "=================================\n"
+        printf("\n==================================\n"
+            "|        MENU DE VEÍCULOS        |\n"
+            "==================================\n"
+            "|  1  | Cadastrar                |\n"
+            "|  2  | Atualizar                |\n"
+            "|  3  | Deletar                  |\n"
+            "|  4  | Listar                   |\n"
+            "|  5  | Voltar                   |\n"
+            "==================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
 
@@ -160,14 +160,14 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 void listarVeiculo(struct ListaVeiculos *lista) {
     int opcao, id;
 
-    printf("\n===============================\n"
-        "|     LISTAGEM DE VEÍCULO     |\n"
-        "===============================\n"
-        "| 1 | Busca por ID            |\n"
-        "| 2 | Listar por proprietário |\n"
-        "| 3 | Listar todos            |\n"
-        "| 4 | Voltar                  |\n"
-        "===============================\n"
+    printf("\n=====================================\n"
+        "|        LISTAGEM DE VEÍCULO        |\n"
+        "=====================================\n"
+        "| 1 | Busca por ID                  |\n"
+        "| 2 | Listar por ID do proprietário |\n"
+        "| 3 | Listar todos                  |\n"
+        "| 4 | Voltar                        |\n"
+        "=====================================\n"
         "Opção desejada: ");
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
@@ -200,7 +200,7 @@ void deletarVeiculo(struct ListaVeiculos *lista) {
     printf("\n=================================\n"
         "|       DELEÇÃO DE VEÍCULO      |\n"
         "=================================\n");
-    printf("Insira o veículo que deseja deletar:");
+    printf("Insira o ID veículo que deseja deletar:");
     scanf("%d", &id);
     deletarVeiculosModel(lista, id);
 }

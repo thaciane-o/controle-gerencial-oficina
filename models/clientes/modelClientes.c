@@ -205,7 +205,7 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
         return;
     }
 
-    //Cadastrando cliente na memoria
+    //Cadastrando cliente na memória
     cliente->id = lista->qtdClientes;
     cliente->deletado = 0;
 
@@ -255,7 +255,7 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
                        "\n| CLIENTE %d         |"
                        "\n====================="
                        "\nNOME: %s"
-                       "\nCPF: %s"
+                       "\nCPF/CNPJ: %s"
                        "\nTELEFONE: (%s) %s"
                        "\nEMAIL: %s"
                        "\nENDEREÇO: %s"
@@ -293,7 +293,7 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
                    "\n| CLIENTE %d         |"
                    "\n====================="
                    "\nNOME: %s"
-                   "\nCPF: %s"
+                   "\nCPF/CNPJ: %s"
                    "\nTELEFONE: (%s) %s"
                    "\nEMAIL: %s"
                    "\nENDEREÇO: %s"
@@ -327,19 +327,17 @@ void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina) {
                        "\n| CLIENTE %d         |"
                        "\n====================="
                        "\nNOME: %s"
-                       "\nCPF: %s"
+                       "\nCPF/CNPJ: %s"
                        "\nTELEFONE: (%s)%s"
                        "\nEMAIL: %s"
-                       "\nENDEREÇO: %s"
-                       "\nID DA OFICINA: %d\n\n",
+                       "\nENDEREÇO: %s\n\n",
                        lista->listaClientes[i].id,
                        lista->listaClientes[i].nome,
                        lista->listaClientes[i].cpf_cnpj,
                        lista->listaClientes[i].ddd,
                        lista->listaClientes[i].telefone,
                        lista->listaClientes[i].email,
-                       lista->listaClientes[i].endereco,
-                       lista->listaClientes[i].idOficina);
+                       lista->listaClientes[i].endereco);
             }
         }
 

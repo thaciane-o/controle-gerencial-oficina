@@ -226,6 +226,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         return;
     }
 
+    // Verifica relações com funcionarios
     if (listaFuncionarios->qtdFuncionarios > 0) {
         for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
             if (listaFuncionarios->listaFuncionarios[i].idOficina == id && listaFuncionarios->listaFuncionarios[i].
@@ -238,6 +239,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         }
     }
 
+    // Verifica relações com clientes
     if (listaClientes->qtdClientes > 0) {
         for (int i = 0; i < listaClientes->qtdClientes; i++) {
             if (listaClientes->listaClientes[i].idOficina == id && listaClientes->listaClientes[i].deletado == 0) {
@@ -249,6 +251,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         }
     }
 
+    // Verifica relações com serviços
     if (listaServicos->qtdServicos > 0) {
         for (int i = 0; i < listaServicos->qtdServicos; i++) {
             if (listaServicos->listaServicos[i].idOficina == id && listaServicos->listaServicos->deletado == 0) {
@@ -259,6 +262,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         }
     }
 
+    // Retorna caso exista relação
     if (existeRelacao) {
         return;
     }

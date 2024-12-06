@@ -9,11 +9,13 @@
 // Menu de funcionalidades para oficina
 void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
-
+    //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
+        // Busca os dados armazenados em arquivos
         if (lista->qtdOficinas == 0) {
             buscarDadosOficinaModel(lista, opcaoArmazenamento);
         }
+        // Busca os dados em arquivos das tabelas relacionadas
         if (lista->qtdOficinas > 0) {
             buscarDadosFuncionariosModel(listaFuncionarios, opcaoArmazenamento);
             buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
@@ -83,6 +85,7 @@ void cadastrarOficina(struct ListaOficinas *lista) {
         "|     CADASTRO DE OFICINA     |\n"
         "===============================\n");
 
+    // Preenchimento dos dados
     printf("Insira o nome da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaCadastrando.nome);
@@ -114,7 +117,7 @@ void cadastrarOficina(struct ListaOficinas *lista) {
 void atualizarOficina(struct ListaOficinas *lista) {
     struct Oficinas oficinaAtualizando;
     int id;
-
+    // Pede o Id da oficina que será atualizada
     printf("\n==================================\n"
         "|     ATUALIZAÇÃO DE OFICINA     |\n"
         "==================================\n");
@@ -129,6 +132,7 @@ void atualizarOficina(struct ListaOficinas *lista) {
         return;
     }
 
+    //Preenchimento dos dados
     printf("Insira o nome da oficina: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", oficinaAtualizando.nome);
@@ -159,7 +163,7 @@ void atualizarOficina(struct ListaOficinas *lista) {
 // Formulário de deleção de oficina
 void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
     int id;
-
+    // Pede o Id da oficina que será deletada
     printf("\n==============================\n"
         "|     DELEÇÃO DE OFICINA     |\n"
         "==============================\n");
@@ -189,12 +193,14 @@ void listarOficina(struct ListaOficinas *lista) {
     // Verifica a opção de listagem
     int id = 0;
     switch (resp) {
+        // Listagem de uma unica Oficina
         case 1:
             printf("Insira o ID desejado para a busca: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
             buscarIdOficinaModel(lista, id);
             break;
+        // Listagem de todas as Oficinas
         case 2:
             listarTodosOficinaModel(lista);
             break;

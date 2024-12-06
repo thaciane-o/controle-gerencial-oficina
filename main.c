@@ -29,8 +29,7 @@
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
-    system("cls");
-    setlocale(LC_ALL, "PT-BR");
+    setlocale(LC_ALL, "PT_BR");
 
     // Declaração de variáveis dos dados do sistema
     struct ListaClientes listaClientes;

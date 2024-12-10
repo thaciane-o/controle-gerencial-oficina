@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Menu de funcionalidades para oficina
+// Menu de funcionalidades de oficinas
 void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
     //Verifica se o programa esta rodando apenas em memória
@@ -160,25 +160,10 @@ void atualizarOficina(struct ListaOficinas *lista) {
     atualizarOficinaModel(lista, id, &oficinaAtualizando);
 }
 
-// Formulário de deleção de oficina
-void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
-    int id;
-    // Pede o Id da oficina que será deletada
-    printf("\n==============================\n"
-        "|     DELEÇÃO DE OFICINA     |\n"
-        "==============================\n");
-
-    printf("Insira o ID da oficina que deseja deletar: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &id);
-
-    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, id);
-}
-
 // Listagem de oficinas
 void listarOficina(struct ListaOficinas *lista) {
-    // Pergunta se deseja listar todos, ou buscar por id
     int resp;
+    // Pergunta o tipo de listagem
     printf("\n===============================\n"
         "|     LISTAGEM DE OFICINA     |\n"
         "===============================\n"
@@ -193,12 +178,12 @@ void listarOficina(struct ListaOficinas *lista) {
     // Verifica a opção de listagem
     int id = 0;
     switch (resp) {
-        // Listagem de uma unica Oficina
+        // Listagem de uma única Oficina
         case 1:
             printf("Insira o ID desejado para a busca: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
-            buscarIdOficinaModel(lista, id);
+            listarOficinaModel(lista, id);
             break;
         // Listagem de todas as Oficinas
         case 2:
@@ -210,4 +195,19 @@ void listarOficina(struct ListaOficinas *lista) {
             printf("Opção inválida, voltando ao menu principal.\n\n");
             break;
     }
+}
+
+// Formulário de deleção de oficinas
+void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
+    int id;
+    // Pede o Id da oficina que será deletada
+    printf("\n==============================\n"
+        "|     DELEÇÃO DE OFICINA     |\n"
+        "==============================\n");
+
+    printf("Insira o ID da oficina que deseja deletar: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &id);
+
+    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, id);
 }

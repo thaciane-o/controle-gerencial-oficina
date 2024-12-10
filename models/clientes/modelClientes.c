@@ -4,54 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento) {
-    //Abrindo ou criando arquivo para adicionar cadastros
-    FILE *dadosClientes;
-
-    switch (opcaoArmazenamento) {
-        case 1:
-            dadosClientes = fopen("DadosClientes.txt", "w");
-
-            if (dadosClientes == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdClientes; i++) {
-                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n",
-                        lista->listaClientes[i].id,
-                        lista->listaClientes[i].nome,
-                        lista->listaClientes[i].ddd,
-                        lista->listaClientes[i].telefone,
-                        lista->listaClientes[i].cpf_cnpj,
-                        lista->listaClientes[i].email,
-                        lista->listaClientes[i].endereco,
-                        lista->listaClientes[i].idOficina,
-                        lista->listaClientes[i].deletado);
-            }
-            break;
-        case 2:
-            dadosClientes = fopen("DadosClientes.bin", "wb");
-
-            if (dadosClientes == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdClientes; i++) {
-                fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
-            }
-            break;
-    }
-    fclose(dadosClientes);
-
-    free(lista->listaClientes);
-    lista->listaClientes = NULL;
-
-    lista->qtdClientes = 0;
-}
-
+// Busca os dados de clientes nos arquivos
 void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenamento) {
     int i = 0;
 
@@ -162,6 +115,55 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
     fclose(dadosClientes);
 }
 
+// Armazena os dados de clientes nos arquivos
+void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento) {
+    //Abrindo ou criando arquivo para adicionar cadastros
+    FILE *dadosClientes;
+
+    switch (opcaoArmazenamento) {
+        case 1:
+            dadosClientes = fopen("DadosClientes.txt", "w");
+
+        if (dadosClientes == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdClientes; i++) {
+            fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n",
+                    lista->listaClientes[i].id,
+                    lista->listaClientes[i].nome,
+                    lista->listaClientes[i].ddd,
+                    lista->listaClientes[i].telefone,
+                    lista->listaClientes[i].cpf_cnpj,
+                    lista->listaClientes[i].email,
+                    lista->listaClientes[i].endereco,
+                    lista->listaClientes[i].idOficina,
+                    lista->listaClientes[i].deletado);
+        }
+        break;
+        case 2:
+            dadosClientes = fopen("DadosClientes.bin", "wb");
+
+        if (dadosClientes == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdClientes; i++) {
+            fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
+        }
+        break;
+    }
+    fclose(dadosClientes);
+
+    free(lista->listaClientes);
+    lista->listaClientes = NULL;
+
+    lista->qtdClientes = 0;
+}
+
+// Aloca memória inicial na lista de clientes
 int alocarClientesModel(struct ListaClientes *lista) {
     lista->qtdClientes = 1;
     lista->listaClientes = malloc(sizeof(struct Clientes));
@@ -173,6 +175,7 @@ int alocarClientesModel(struct ListaClientes *lista) {
     return 1;
 }
 
+// Realoca memória na lista de clientes de acordo com a necessidade em qtdAlocada
 int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhum registro salvo.\n\n");
@@ -189,6 +192,7 @@ int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
     return 1;
 }
 
+// Cadastra um novo cliente
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente) {
 
     int resultAlocacao = 0;
@@ -214,19 +218,9 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
     printf("Cliente cadastrado com sucesso!\n\n");
 }
 
-void atualizarClientesModel(struct ListaClientes *lista, int id, struct Clientes *cliente) {
-    for (int i = 0; i < lista->qtdClientes; i++) {
-        if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
-            cliente->id = lista->listaClientes[i].id;
-            cliente->deletado = lista->listaClientes[i].deletado;
-            lista->listaClientes[i] = *cliente;
-            break;
-        }
-    }
-}
-
-// Verifica se o ID que deseja atualizar existe
+// Verifica a existência do id requisitado
 int verificarIDClienteModel(struct ListaClientes *lista, int id) {
+    // Procura o cliente com o id inserido
     if (lista->qtdClientes > 0) {
         for (int i = 0; i < lista->qtdClientes; i++) {
             if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
@@ -242,11 +236,27 @@ int verificarIDClienteModel(struct ListaClientes *lista, int id) {
     return 0;
 }
 
+// Atualiza o cadastro de um cliente
+void atualizarClientesModel(struct ListaClientes *lista, int id, struct Clientes *cliente) {
+    // Busca pelo id para fazer a alteração
+    for (int i = 0; i < lista->qtdClientes; i++) {
+        if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
+            cliente->id = lista->listaClientes[i].id;
+            cliente->deletado = lista->listaClientes[i].deletado;
+            lista->listaClientes[i] = *cliente;
+            break;
+        }
+    }
+}
+
+// Lista todos os clientes
 void listarTodosClientesModel(struct ListaClientes *lista) {
-    //variavel para verificação de listagem
+    // Variável para verificação de listagem
     int listado = 0;
 
+    // Verifica se há pelo menos um cadastro
     if (lista->qtdClientes > 0) {
+        // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdClientes; i++) {
             //Verifica se o cliente esta deletado
             if (lista->listaClientes[i].deletado == 0) {
@@ -278,16 +288,18 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
     }
 }
 
+// Lista um cliente pelo Id
 void listarClienteModel(struct ListaClientes *lista, int id) {
+    // Variável para verificar que cliente foi encotrado
     int encontrado = 0;
 
     if (lista->qtdClientes == 0) {
         printf("Nenhum cliente foi cadastrado!\n\n");
         return;
     }
-
+    // Se há um ou mais cadastros, procura pelo cliente com o id desejado
     for (int i = 0; i < lista->qtdClientes; i++) {
-        //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
+        // Verifica se o cliente está ou não deletado
         if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
             printf("\n====================="
                    "\n| CLIENTE %d         |"
@@ -316,6 +328,7 @@ void listarClienteModel(struct ListaClientes *lista, int id) {
     }
 }
 
+// Lista os clientes relacionados a uma oficina, buscando pelo idOficina
 void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina) {
     int encontrado = 0;
 
@@ -349,18 +362,17 @@ void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina) {
     }
 }
 
-
-//Utilizei um modelo de deleção logica
+// Deleta um cliente cadastrado
 void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, int id) {
     int encontrado = 0;
 
+    // Verifica se há algum cadastro
     if (lista->qtdClientes == 0) {
         printf("Nenhum cliente foi cadastrado!\n\n");
         return;
     }
 
-
-
+    // Verifica relação com veículo
     if (listaVeiculos->qtdVeiculos > 0) {
         for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
             if (listaVeiculos->listaVeiculos[i].idProprietario == id && listaVeiculos->listaVeiculos[i].deletado == 0) {
@@ -371,10 +383,7 @@ void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *lis
         }
     }
 
-    /*
-     Caso o ID do cliente seja encontrado, ele tera armazenado uma variavel para sinaliza-lo como "Deletado"
-     "isDeleted" = 1
-     */
+    // Busca pelo id para fazer a deleção
     for (int i = 0; i < lista->qtdClientes; i++) {
         if (lista->listaClientes[i].id == id && lista->listaClientes[i].deletado == 0) {
             encontrado = 1;
@@ -387,6 +396,7 @@ void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *lis
         }
     }
 
+    // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Cliente não encontrado!\n\n");
     }

@@ -4,14 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Menu de funcionalidades para peca
+// Menu de funcionalidades de peças
 void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
-
+    //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
+        // Busca os dados armazenados em arquivos
         if (listaPecas->qtdPecas == 0) {
             buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
         }
+        // Busca os dados em arquivos das tabelas relacionadas
         if (listaFornecedores->qtdFornecedores == 0) {
             buscarDadosFornecedoresModel(listaFornecedores, opcaoArmazenamento);
         }
@@ -75,12 +77,14 @@ void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
     setbuf(stdin, NULL);
     scanf("%d", &idFornecedor);
 
+    // Verificando existência do item relacionado
     if (verificarIDFornecedoresModel(listaFornecedores, idFornecedor) == 0) {
         return;
     }
 
     pecaCadastrando.idFornecedor = idFornecedor;
 
+    // Preenchimento dos dados
     printf("Insira a descrição da peça: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", pecaCadastrando.descricao);
@@ -113,6 +117,7 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
     struct Pecas pecaAtualizando;
     int idFornecedor, idPeca;
 
+    // Pede o Id da peça que será atualizada
     printf("\n===============================\n"
         "|     ATUALIZAÇÃO DE PEÇA     |\n"
         "===============================\n");
@@ -121,6 +126,7 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
     setbuf(stdin, NULL);
     scanf("%d", &idPeca);
 
+    // Verifica se o ID inserido existe
     if (verificarIDPecaModel(listaPecas, idPeca) == 0) {
         return;
     }
@@ -135,6 +141,7 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
 
     pecaAtualizando.idFornecedor = idFornecedor;
 
+    //Preenchimento dos dados
     printf("Insira a descrição da peça: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]s", pecaAtualizando.descricao);
@@ -162,24 +169,10 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
     atualizarPecaModel(listaPecas, idPeca, &pecaAtualizando);
 }
 
-// Formulário de deleção de peça
-void deletarPeca(struct ListaPecas *lista) {
-    int id;
-
-    printf("\n==============================\n"
-        "|      DELEÇÃO DE PEÇA       |\n"
-        "==============================\n");
-    printf("Insira o ID da peça que deseja deletar: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &id);
-
-    deletarPecaModel(lista, id);
-}
-
 // Listagem de peças
 void listarPeca(struct ListaPecas *listaPecas) {
-    // Pergunta se deseja listar todos, ou buscar por id
     int resp;
+    // Pergunta o tipo de listagem
     printf("\n==================================\n"
         "|     LISTAGEM DE FORNECEDOR     |\n"
         "==================================\n"
@@ -195,18 +188,21 @@ void listarPeca(struct ListaPecas *listaPecas) {
     // Verifica a opção de listagem
     int id = 0;
     switch (resp) {
+        // Listagem de uma única peça
         case 1:
             printf("Insira o ID desejado para a busca: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
-            buscarIdPecaModel(listaPecas, id);
+            listarPecaModel(listaPecas, id);
             break;
+        // Listagem por relação
         case 2:
             printf("Insira o ID do fornecedor desejado para a busca: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
             buscarPecasPorFornecedorModel(listaPecas, id);
             break;
+        // Listagem de todas as peças
         case 3:
             listarTodosPecaModel(listaPecas);
             break;
@@ -216,4 +212,19 @@ void listarPeca(struct ListaPecas *listaPecas) {
             printf("Opção inválida, voltando ao menu principal.\n\n");
             break;
     }
+}
+
+// Formulário de deleção de peças
+void deletarPeca(struct ListaPecas *lista) {
+    int id;
+
+    // Pede o Id da peça que será deletada
+    printf("\n==============================\n"
+        "|      DELEÇÃO DE PEÇA       |\n"
+        "==============================\n");
+    printf("Insira o ID da peça que deseja deletar: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &id);
+
+    deletarPecaModel(lista, id);
 }

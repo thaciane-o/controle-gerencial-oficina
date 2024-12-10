@@ -4,14 +4,17 @@
 #include <stdlib.h>
 #include "../../models/pecas/modelPecas.h"
 
+// Menu de funcionalidades de fornecedores
 void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *listaPecas,
                          int opcaoArmazenamento) {
     int opcaoSubmenus;
-
+    //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
+        // Busca os dados armazenados em arquivos
         if (lista->qtdFornecedores == 0) {
             buscarDadosFornecedoresModel(lista, opcaoArmazenamento);
         }
+        // Busca os dados em arquivos das tabelas relacionadas
         if (lista->qtdFornecedores > 0) {
             buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
         }
@@ -62,6 +65,7 @@ void gerenciarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *lis
     } while (opcaoSubmenus != 5);
 }
 
+// Formulário de cadastro de fornecedores
 void cadastrarFornecedor(struct ListaFornecedores *lista) {
     struct Fornecedores fornecedor;
 
@@ -69,6 +73,7 @@ void cadastrarFornecedor(struct ListaFornecedores *lista) {
         "|     CADASTRO DE FORNECEDOR    |\n"
         "=================================\n");
 
+    // Preenchimento dos dados
     printf("Insira o nome fantasia do fornecedor: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", fornecedor.nomeFantasia);
@@ -104,10 +109,12 @@ void cadastrarFornecedor(struct ListaFornecedores *lista) {
     cadastrarFornecedoresModel(lista, &fornecedor);
 }
 
+// Formulário de atualização de fornecedores
 void atualizarFornecedor(struct ListaFornecedores *lista) {
     int id;
     struct Fornecedores fornecedor;
 
+    // Pede o Id do fornecedor que será atualizado
     printf("\n====================================\n"
         "|     ATUALIZAÇÃO DE FORNECEDOR    |\n"
         "====================================\n"
@@ -115,11 +122,13 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
+    // Verifica se o ID inserido existe
     int encontrado = verificarIDFornecedoresModel(lista, id);
     if (encontrado == 0) {
         return;
     }
 
+    //Preenchimento dos dados
     printf("Insira o nome fantasia do fornecedor: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", fornecedor.nomeFantasia);
@@ -155,9 +164,10 @@ void atualizarFornecedor(struct ListaFornecedores *lista) {
     atualizarFornecedoresModel(lista, id, &fornecedor);
 }
 
+// Listagem de fornecedores
 void listarFornecedor(struct ListaFornecedores *lista) {
     int opcao, id;
-
+    // Pergunta o tipo de listagem
     printf("\n==================================\n"
         "|     LISTAGEM DE FORNECEDOR     |\n"
         "==================================\n"
@@ -169,13 +179,16 @@ void listarFornecedor(struct ListaFornecedores *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
+    // Verifica a opção de listagem
     switch (opcao) {
+        // Listagem de um único fornecedor
         case 1:
             printf("Insira o ID do fornecedor que deseja listar: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
             listarFornecedoresModel(lista, id);
             break;
+        // Listagem de todos os fornecedores
         case 2:
             listarTodosFornecedoresModel(lista);
             break;
@@ -186,9 +199,11 @@ void listarFornecedor(struct ListaFornecedores *lista) {
     }
 }
 
+// Formulário de deleção de fornecedores
 void deletarFornecedor(struct ListaFornecedores *lista, struct ListaPecas *listaPecas) {
     int id;
 
+    // Pede o Id do fornecedor que será deletada
     printf("\n===============================\n"
         "|    DELEÇÃO DE FORNECEDOR    |\n"
         "===============================\n");

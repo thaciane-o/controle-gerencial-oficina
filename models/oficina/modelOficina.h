@@ -38,6 +38,6 @@ int verificarIDOficinaModel(struct ListaOficinas *lista, int id);
 
 void listarTodosOficinaModel(struct ListaOficinas *lista);
 
-void buscarIdOficinaModel(struct ListaOficinas *lista, int id);
+void listarOficinaModel(struct ListaOficinas *lista, int id);
 
 #endif //MODELOFICINA_H

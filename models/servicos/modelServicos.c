@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//Busca os dados de serviços nos arquivos
+// Busca os dados de serviços nos arquivos
 void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento) {
     int i = 0;
     char linha[sizeof(struct Servicos)];
@@ -102,7 +102,7 @@ void buscarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento
     fclose(dadosServicos);
 }
 
-//Armazena os dados dos serviços nos arquivos
+// Armazena os dados dos serviços nos arquivos
 void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazenamento) {
     FILE *dadosServicos;
 
@@ -148,7 +148,7 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
     lista->qtdServicos = 0;
 }
 
-//Aloca a memoria inicial da lista
+// Aloca a memoria inicial da lista
 int alocarMemoriaServicoModel(struct ListaServicos *lista) {
     lista->qtdServicos = 1;
     lista->listaServicos = malloc(sizeof(struct Servicos));
@@ -160,7 +160,7 @@ int alocarMemoriaServicoModel(struct ListaServicos *lista) {
     return 1;
 }
 
-//Realoca a quantidade de serviços conforme o aumento da lista
+// Realoca a quantidade de serviços conforme o aumento da lista
 int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca) {
     if (qtdAloca == 0) {
         printf("Nenhuma alocação foi realizada\n");
@@ -177,7 +177,7 @@ int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca) {
     return 1;
 }
 
-//Cadastra um novo serviço
+// Cadastra um novo serviço
 void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando) {
 
     int resultAlocacao = 0;
@@ -203,47 +203,7 @@ void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servico
     printf("Serviço cadastrado com sucesso!\n");
 }
 
-//Deleta um serviço
-void deletarServicoModel(struct ListaServicos *lista, int id) {
-    // Auxiliar para saber se encontrou o id.
-    int encontrado = 0;
-
-    // Verifica se há algum serviço cadastrada.
-    if (lista->qtdServicos == 0) {
-        printf("Nenhum serviço foi cadastrado.\n");
-        return;
-    }
-
-    // Busca pelo id para fazer a deleção.
-    for (int i = 0; i < lista->qtdServicos; i++) {
-        if (lista->listaServicos[i].id == id && lista->listaServicos[i].deletado == 0) {
-            encontrado = 1;
-            lista->listaServicos[i].deletado = 1;
-            printf("Serviço deletado com sucesso!\n");
-            break;
-        }
-    }
-
-    // Se não encontrar o id para deleção, avisa ao usuário.
-    if (!encontrado) {
-        printf("Serviço não encontrado.\n");
-    }
-}
-
-//Atualiza serviço ja cadastrado
-void atualizarServicoModel(struct ListaServicos *lista, int id, struct Servicos *servicoAlterando) {
-    // Busca pelo id para fazer a alteração.
-    for (int i = 0; i < lista->qtdServicos; i++) {
-        if (lista->listaServicos[i].id == id && lista->listaServicos[i].deletado == 0) {
-            lista->listaServicos[i] = *servicoAlterando;
-            lista->listaServicos[i].id = id;
-            lista->listaServicos[i].deletado = 0;
-            break;
-        }
-    }
-}
-
-//Verifica a existencia de um ID de serviço
+// Verifica a existência do id requisitado
 int verificarIDServicoModel(struct ListaServicos *lista, int id) {
     // Procura o serviço com o id inserido
     if (lista->qtdServicos > 0) {
@@ -261,11 +221,25 @@ int verificarIDServicoModel(struct ListaServicos *lista, int id) {
     return 0;
 }
 
-//Lista todos os serviços cadastrados
+// Atualiza serviço ja cadastrado
+void atualizarServicoModel(struct ListaServicos *lista, int id, struct Servicos *servicoAlterando) {
+    // Busca pelo id para fazer a alteração.
+    for (int i = 0; i < lista->qtdServicos; i++) {
+        if (lista->listaServicos[i].id == id && lista->listaServicos[i].deletado == 0) {
+            lista->listaServicos[i] = *servicoAlterando;
+            lista->listaServicos[i].id = id;
+            lista->listaServicos[i].deletado = 0;
+            break;
+        }
+    }
+}
+
+// Lista todos os serviços cadastrados
 void listarTodosServicoModel(struct ListaServicos *lista) {
-    // Verifica se há pelo menos um cadastro
+    // Variável para verificação de listagem
     int listado = -1;
 
+    // Verifica se há pelo menos um cadastro
     if (lista->qtdServicos > 0) {
         // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdServicos; i++) {
@@ -293,6 +267,7 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
     }
 }
 
+// Lista um serviço pelo id
 void listarServicoModel(struct ListaServicos *lista, int id) {
     // Se há um ou mais cadastros, procura pelo serviço com o id desejado
     int encontrado = -1;
@@ -321,7 +296,7 @@ void listarServicoModel(struct ListaServicos *lista, int id) {
     }
 }
 
-
+// Lista os serviços relacionados a uma oficina, buscando pelo idOficina
 void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina) {
     int encontrado = 0;
 
@@ -349,5 +324,32 @@ void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina) {
         }
     } else {
         printf("Nenhum serviço foi cadastrado.\n\n");
+    }
+}
+
+// Deleta um serviço
+void deletarServicoModel(struct ListaServicos *lista, int id) {
+    // Auxiliar para saber se encontrou o id.
+    int encontrado = 0;
+
+    // Verifica se há algum cadastro
+    if (lista->qtdServicos == 0) {
+        printf("Nenhum serviço foi cadastrado.\n");
+        return;
+    }
+
+    // Busca pelo id para fazer a deleção
+    for (int i = 0; i < lista->qtdServicos; i++) {
+        if (lista->listaServicos[i].id == id && lista->listaServicos[i].deletado == 0) {
+            encontrado = 1;
+            lista->listaServicos[i].deletado = 1;
+            printf("Serviço deletado com sucesso!\n");
+            break;
+        }
+    }
+
+    // Se não encontrar o id para deleção, avisa ao usuário
+    if (!encontrado) {
+        printf("Serviço não encontrado.\n");
     }
 }

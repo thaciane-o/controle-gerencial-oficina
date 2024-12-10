@@ -4,54 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento) {
-    FILE *dadosFornecedores;
-
-    switch (opcaoArmazenamento) {
-        case 1:
-            dadosFornecedores = fopen("DadosFornecedores.txt", "w");
-
-            if (dadosFornecedores == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdFornecedores; i++) {
-                fprintf(dadosFornecedores, "%d;%s;%s;%s;%s;%s;%s;%s;%s;%d\n",
-                        lista->listaFornecedores[i].id,
-                        lista->listaFornecedores[i].nomeFantasia,
-                        lista->listaFornecedores[i].razaoSocial,
-                        lista->listaFornecedores[i].inscricaoEstadual,
-                        lista->listaFornecedores[i].cnpj,
-                        lista->listaFornecedores[i].endereco,
-                        lista->listaFornecedores[i].ddd,
-                        lista->listaFornecedores[i].telefone,
-                        lista->listaFornecedores[i].email,
-                        lista->listaFornecedores[i].deletado);
-            }
-
-            break;
-        case 2:
-            dadosFornecedores = fopen("DadosFornecedores.bin", "wb");
-
-            if (dadosFornecedores == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdFornecedores; i++) {
-                fwrite(&lista->listaFornecedores[i], sizeof(struct Fornecedores), 1, dadosFornecedores);
-            }
-            break;
-    }
-
-    fclose(dadosFornecedores);
-
-    free(lista->listaFornecedores);
-    lista->listaFornecedores = NULL;
-    lista->qtdFornecedores = 0;
-}
-
+// Busca os dados de fornecedores nos arquivos
 void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento) {
     int i = 0;
     FILE *dadosFornecedores;
@@ -164,6 +117,56 @@ void buscarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArma
     fclose(dadosFornecedores);
 }
 
+// Armazena os dados de fornecedores nos arquivos
+void armazenarDadosFornecedoresModel(struct ListaFornecedores *lista, int opcaoArmazenamento) {
+    FILE *dadosFornecedores;
+
+    switch (opcaoArmazenamento) {
+        case 1:
+            dadosFornecedores = fopen("DadosFornecedores.txt", "w");
+
+        if (dadosFornecedores == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdFornecedores; i++) {
+            fprintf(dadosFornecedores, "%d;%s;%s;%s;%s;%s;%s;%s;%s;%d\n",
+                    lista->listaFornecedores[i].id,
+                    lista->listaFornecedores[i].nomeFantasia,
+                    lista->listaFornecedores[i].razaoSocial,
+                    lista->listaFornecedores[i].inscricaoEstadual,
+                    lista->listaFornecedores[i].cnpj,
+                    lista->listaFornecedores[i].endereco,
+                    lista->listaFornecedores[i].ddd,
+                    lista->listaFornecedores[i].telefone,
+                    lista->listaFornecedores[i].email,
+                    lista->listaFornecedores[i].deletado);
+        }
+
+        break;
+        case 2:
+            dadosFornecedores = fopen("DadosFornecedores.bin", "wb");
+
+        if (dadosFornecedores == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdFornecedores; i++) {
+            fwrite(&lista->listaFornecedores[i], sizeof(struct Fornecedores), 1, dadosFornecedores);
+        }
+        break;
+    }
+
+    fclose(dadosFornecedores);
+
+    free(lista->listaFornecedores);
+    lista->listaFornecedores = NULL;
+    lista->qtdFornecedores = 0;
+}
+
+// Aloca memória inicial na lista de fornecedores
 int alocarFornecedoresModel(struct ListaFornecedores *lista) {
     lista->qtdFornecedores = 1;
     lista->listaFornecedores = malloc(sizeof(struct Fornecedores));
@@ -172,8 +175,10 @@ int alocarFornecedoresModel(struct ListaFornecedores *lista) {
         printf("Erro: Memória insuficiente\n\n");
         return 0;
     }
+    return 1;
 }
 
+// Realoca memória na lista de fornecedores de acordo com a necessidade em qtdAlocada
 int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhuma alocação foi realizada\n\n");
@@ -190,6 +195,7 @@ int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada) {
     return 1;
 }
 
+// Cadastra um novo fornecedor
 void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor) {
     int resultAlocacao = 0;
     if (lista->qtdFornecedores == 0) {
@@ -212,6 +218,7 @@ void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Forneced
     printf("Fornecedor cadastrado com sucesso!\n\n");
 }
 
+// Verifica a existência do id requisitado
 int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id) {
     if (lista->qtdFornecedores > 0) {
         for (int i = 0; i < lista->qtdFornecedores; i++) {
@@ -228,7 +235,9 @@ int verificarIDFornecedoresModel(struct ListaFornecedores *lista, int id) {
     return 0;
 }
 
+// Atualiza o cadastro de um fornecedor
 void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct Fornecedores *fornecedor) {
+    // Busca pelo id para fazer a alteração
     for (int i = 0; i < lista->qtdFornecedores; i++) {
         if (lista->listaFornecedores[i].id == id && lista->listaFornecedores[i].deletado == 0) {
             lista->listaFornecedores[i] = *fornecedor;
@@ -239,12 +248,16 @@ void atualizarFornecedoresModel(struct ListaFornecedores *lista, int id, struct 
     }
 }
 
+// Lista todos os fornecedores
 void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
-    //variavel para verificação de listagem
+    // Variável para verificação de listagem
     int listado = 0;
 
+    // Verifica se há pelo menos um cadastro
     if (lista->qtdFornecedores > 0) {
+        // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdFornecedores; i++) {
+            // Verifica se o índice atual existe
             if (lista->listaFornecedores[i].deletado == 0) {
                 listado = 1;
                 printf("\n====================="
@@ -276,7 +289,9 @@ void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
     }
 }
 
+// Lista um fornecedor pelo Id
 void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
+    // Variável para verificar que fornecedor foi encotrado
     int encontrado = 0;
 
     if (lista->qtdFornecedores == 0) {
@@ -284,7 +299,9 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
         return;
     }
 
+    // Se há um ou mais cadastros, procura pelo fornecedor com o id desejado
     for (int i = 0; i < lista->qtdFornecedores; i++) {
+        // Verifica se o fornecedor está ou não deletado
         if (lista->listaFornecedores[i].id == id && lista->listaFornecedores[i].deletado == 0) {
             encontrado = 1;
             if (lista->listaFornecedores[i].deletado == 0) {
@@ -317,14 +334,17 @@ void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
     }
 }
 
+// Deleta um fornecedor cadastrado
 void deletarFornecedoresModel(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas, int id) {
     int encontrado = 0;
 
+    // Verifica se há algum cadastro
     if (lista->qtdFornecedores == 0) {
         printf("Nenhum fornecedor foi cadastrado!\n\n");
         return;
     }
 
+    // Verifica relações com peças
     if (pecasRelacionadas->qtdPecas > 0) {
         for (int i = 0; i < pecasRelacionadas->qtdPecas; i++) {
             if (pecasRelacionadas->listaPecas[i].idFornecedor == id && pecasRelacionadas->listaPecas[i].deletado == 0) {
@@ -335,6 +355,7 @@ void deletarFornecedoresModel(struct ListaFornecedores *lista, struct ListaPecas
         }
     }
 
+    // Busca pelo id para fazer a deleção
     for (int i = 0; i < lista->qtdFornecedores; i++) {
         if (lista->listaFornecedores[i].id == id && lista->listaFornecedores[i].deletado == 0) {
             encontrado = 1;
@@ -344,6 +365,7 @@ void deletarFornecedoresModel(struct ListaFornecedores *lista, struct ListaPecas
         }
     }
 
+    // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Fornecedor não encontrado!\n\n");
     }

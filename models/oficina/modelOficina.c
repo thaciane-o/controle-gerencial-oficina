@@ -214,13 +214,120 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
     printf("Oficina cadastrada com sucesso!\n\n");
 }
 
+// Verifica se o ID que deseja atualizar existe
+int verificarIDOficinaModel(struct ListaOficinas *lista, int id) {
+    // Procura a oficina com o id inserido
+    if (lista->qtdOficinas > 0) {
+        for (int i = 0; i < lista->qtdOficinas; i++) {
+            if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
+                return 1;
+            }
+        }
+    } else {
+        printf("Nenhuma oficina foi cadastrada!\n\n");
+        return 0;
+    }
+
+    printf("Oficina não encontrada!\n\n");
+    return 0;
+}
+
+// Atualiza uma oficina cadastrada
+void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando) {
+    // Busca pelo id para fazer a alteração.
+    for (int i = 0; i < lista->qtdOficinas; i++) {
+        if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
+            lista->listaOficinas[i] = *oficinaAlterando;
+            lista->listaOficinas[i].id = id;
+            lista->listaOficinas[i].deletado = 0;
+            break;
+        }
+    }
+}
+
+// Lista todas as oficinas cadastradas
+void listarTodosOficinaModel(struct ListaOficinas *lista) {
+    // Variável para verificação de listagem
+    int listado = 0;
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdOficinas > 0) {
+        // Se há um ou mais cadastros, exibe todos
+        for (int i = 0; i < lista->qtdOficinas; i++) {
+            // Verifica se o índice atual existe
+            if (lista->listaOficinas[i].deletado == 0) {
+                listado = 1;
+                printf("\n====================\n"
+                       "| OFICINA %d         |\n"
+                       "===================\n"
+                       "NOME: %s\n"
+                       "ENDEREÇO: %s\n"
+                       "TELEFONE: (%s) %s\n"
+                       "Email: %s\n"
+                       "Porcentagem de Lucro: %.2f\n",
+                       lista->listaOficinas[i].id,
+                       lista->listaOficinas[i].nome,
+                       lista->listaOficinas[i].endereco,
+                       lista->listaOficinas[i].ddd,
+                       lista->listaOficinas[i].telefone,
+                       lista->listaOficinas[i].email,
+                       lista->listaOficinas[i].porcentagemLucro);
+            }
+        }
+        printf("====================\n");
+    }
+
+    // Se não houver, avisa que não há cadastros
+    if (listado == 0) {
+        printf("Nenhuma oficina cadastrado\n\n");
+    }
+}
+
+// Busca uma oficina cadastrada pelo seu id
+void listarOficinaModel(struct ListaOficinas *lista, int id) {
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdOficinas > 0) {
+        // Se há um ou mais cadastros, procura pela oficina com o id desejado
+        int encontrado = -1;
+        for (int i = 0; i < lista->qtdOficinas; i++) {
+            if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
+                encontrado = i;
+                break;
+            }
+        }
+
+        if (encontrado != -1) {
+            printf("\n====================\n"
+                   "| OFICINA %d         |\n"
+                   "===================\n"
+                   "NOME: %s\n"
+                   "ENDEREÇO: %s\n"
+                   "TELEFONE: (%s) %s\n"
+                   "Email: %s\n"
+                   "Porcentagem de Lucro: %.2f",
+                   lista->listaOficinas[encontrado].id,
+                   lista->listaOficinas[encontrado].nome,
+                   lista->listaOficinas[encontrado].endereco,
+                   lista->listaOficinas[encontrado].ddd,
+                   lista->listaOficinas[encontrado].telefone,
+                   lista->listaOficinas[encontrado].email,
+                   lista->listaOficinas[encontrado].porcentagemLucro);
+        } else {
+            printf("Nenhuma oficina encontrada.\n\n");
+        }
+    } else {
+        // Se não houver, avisa que não há cadastros
+        printf("Nenhuma oficina foi cadastrada\n\n");
+    }
+}
+
 // Deleta uma oficina cadastrada
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos,
                          struct ListaClientes *listaClientes, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0, existeRelacao = 0;
 
-    // Verifica se há alguma oficina cadastrada.
+    // Verifica se há algum cadastro
     if (lista->qtdOficinas == 0) {
         printf("Nenhuma oficina foi cadastrada.\n");
         return;
@@ -267,7 +374,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         return;
     }
 
-    // Busca pelo id para fazer a deleção.
+    // Busca pelo id para fazer a deleção
     for (int i = 0; i < lista->qtdOficinas; i++) {
         if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
             encontrado = 1;
@@ -277,115 +384,8 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         }
     }
 
-    // Se não encontrar o id para deleção, avisa o usuário.
+    // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Oficina não encontrada.\n\n");
-    }
-}
-
-// Atualiza uma oficina cadastrada
-void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando) {
-    // Busca pelo id para fazer a alteração.
-    for (int i = 0; i < lista->qtdOficinas; i++) {
-        if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
-            lista->listaOficinas[i] = *oficinaAlterando;
-            lista->listaOficinas[i].id = id;
-            lista->listaOficinas[i].deletado = 0;
-            break;
-        }
-    }
-}
-
-// Verifica se o ID que deseja atualizar existe
-int verificarIDOficinaModel(struct ListaOficinas *lista, int id) {
-    // Procura a oficina com o id inserido
-    if (lista->qtdOficinas > 0) {
-        for (int i = 0; i < lista->qtdOficinas; i++) {
-            if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
-                return 1;
-            }
-        }
-    } else {
-        printf("Nenhuma oficina foi cadastrada!\n\n");
-        return 0;
-    }
-
-    printf("Oficina não encontrada!\n\n");
-    return 0;
-}
-
-// Lista todas as oficinas cadastradas
-void listarTodosOficinaModel(struct ListaOficinas *lista) {
-    //variavel para verificação de listagem
-    int listado = 0;
-
-    // Verifica se há pelo menos um cadastro
-    if (lista->qtdOficinas > 0) {
-        // Se há um ou mais cadastros, exibe todos
-        for (int i = 0; i < lista->qtdOficinas; i++) {
-            // Verifica se o índice atual existe
-            if (lista->listaOficinas[i].deletado == 0) {
-                listado = 1;
-                printf("\n====================\n"
-                       "| OFICINA %d         |\n"
-                       "===================\n"
-                       "NOME: %s\n"
-                       "ENDEREÇO: %s\n"
-                       "TELEFONE: (%s) %s\n"
-                       "Email: %s\n"
-                       "Porcentagem de Lucro: %.2f\n",
-                       lista->listaOficinas[i].id,
-                       lista->listaOficinas[i].nome,
-                       lista->listaOficinas[i].endereco,
-                       lista->listaOficinas[i].ddd,
-                       lista->listaOficinas[i].telefone,
-                       lista->listaOficinas[i].email,
-                       lista->listaOficinas[i].porcentagemLucro);
-            }
-        }
-        printf("====================\n");
-    }
-
-    // Se não houver, avisa que não há cadastros
-    if (listado == 0) {
-        printf("Nenhuma oficina cadastrado\n\n");
-    }
-}
-
-// Busca uma oficina cadastrada pelo seu id
-void buscarIdOficinaModel(struct ListaOficinas *lista, int id) {
-    // Verifica se há pelo menos um cadastro
-    if (lista->qtdOficinas > 0) {
-        // Se há um ou mais cadastros, procura pela oficina com o id desejado
-        int encontrado = -1;
-        for (int i = 0; i < lista->qtdOficinas; i++) {
-            if (lista->listaOficinas[i].id == id && lista->listaOficinas[i].deletado == 0) {
-                encontrado = i;
-                break;
-            }
-        }
-
-        if (encontrado != -1) {
-            printf("\n====================\n"
-                   "| OFICINA %d         |\n"
-                   "===================\n"
-                   "NOME: %s\n"
-                   "ENDEREÇO: %s\n"
-                   "TELEFONE: (%s) %s\n"
-                   "Email: %s\n"
-                   "Porcentagem de Lucro: %.2f",
-                   lista->listaOficinas[encontrado].id,
-                   lista->listaOficinas[encontrado].nome,
-                   lista->listaOficinas[encontrado].endereco,
-                   lista->listaOficinas[encontrado].ddd,
-                   lista->listaOficinas[encontrado].telefone,
-                   lista->listaOficinas[encontrado].email,
-                   lista->listaOficinas[encontrado].porcentagemLucro);
-        } else {
-            printf("Nenhuma oficina encontrada.\n\n");
-        }
-    } else {
-        // Se não houver, avisa que não há cadastros
-        printf("Nenhuma oficina foi cadastrada\n\n");
     }
 }

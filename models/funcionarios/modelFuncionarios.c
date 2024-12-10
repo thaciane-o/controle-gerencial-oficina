@@ -3,49 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArmazenamento) {
-    FILE *dadosFuncionarios;
-
-    switch (opcaoArmazenamento) {
-        case 1:
-            dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
-
-            if (dadosFuncionarios == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdFuncionarios; i++) {
-                fprintf(dadosFuncionarios, "%d;%s;%s;%s;%.2f;%d;%d\n",
-                        lista->listaFuncionarios[i].id,
-                        lista->listaFuncionarios[i].nome,
-                        lista->listaFuncionarios[i].cpf,
-                        lista->listaFuncionarios[i].cargo,
-                        lista->listaFuncionarios[i].salario,
-                        lista->listaFuncionarios[i].idOficina,
-                        lista->listaFuncionarios[i].deletado);
-            }
-
-            break;
-        case 2:
-            dadosFuncionarios = fopen("DadosFuncionarios.bin", "wb");
-
-            if (dadosFuncionarios == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdFuncionarios; i++) {
-                fwrite(&lista->listaFuncionarios[i], sizeof(struct Funcionarios), 1, dadosFuncionarios);
-            }
-            break;
-    }
-
-    fclose(dadosFuncionarios);
-    free(lista->listaFuncionarios);
-    lista->qtdFuncionarios = 0;
-}
-
+// Busca os dados de funcionários nos arquivos
 void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArmazenamento) {
     int i = 0;
     FILE *dadosFuncionarios;
@@ -146,6 +104,51 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
     fclose(dadosFuncionarios);
 }
 
+// Armazena os dados de funcionários nos arquivos
+void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArmazenamento) {
+    FILE *dadosFuncionarios;
+
+    switch (opcaoArmazenamento) {
+        case 1:
+            dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
+
+        if (dadosFuncionarios == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdFuncionarios; i++) {
+            fprintf(dadosFuncionarios, "%d;%s;%s;%s;%.2f;%d;%d\n",
+                    lista->listaFuncionarios[i].id,
+                    lista->listaFuncionarios[i].nome,
+                    lista->listaFuncionarios[i].cpf,
+                    lista->listaFuncionarios[i].cargo,
+                    lista->listaFuncionarios[i].salario,
+                    lista->listaFuncionarios[i].idOficina,
+                    lista->listaFuncionarios[i].deletado);
+        }
+
+        break;
+        case 2:
+            dadosFuncionarios = fopen("DadosFuncionarios.bin", "wb");
+
+        if (dadosFuncionarios == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdFuncionarios; i++) {
+            fwrite(&lista->listaFuncionarios[i], sizeof(struct Funcionarios), 1, dadosFuncionarios);
+        }
+        break;
+    }
+
+    fclose(dadosFuncionarios);
+    free(lista->listaFuncionarios);
+    lista->qtdFuncionarios = 0;
+}
+
+// Aloca memória inicial na lista de funcionários
 int alocarFuncionariosModel(struct ListaFuncionarios *lista) {
     lista->qtdFuncionarios = 1;
     lista->listaFuncionarios = malloc(sizeof(struct Funcionarios));
@@ -157,6 +160,7 @@ int alocarFuncionariosModel(struct ListaFuncionarios *lista) {
     return 1;
 }
 
+// Realoca memória na lista de funcionários de acordo com a necessidade em qtdAlocada
 int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhuma alocação foi realizada\n\n");
@@ -173,6 +177,7 @@ int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
     return 1;
 }
 
+// Cadastra um novo funcionário
 void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario) {
 
     int resultAlocacao = 0;
@@ -197,7 +202,9 @@ void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funciona
     printf("Funcionário cadastrado com sucesso!\n\n");
 }
 
+// Verifica a existência do id requisitado
 int verificarIDFuncionariosModel(struct ListaFuncionarios *lista, int id) {
+    // Procura o funcionário com o id inserido
     if (lista->qtdFuncionarios > 0) {
         for (int i = 0; i < lista->qtdFuncionarios; i++) {
             if (lista->listaFuncionarios[i].id == id && lista->listaFuncionarios[i].deletado == 0) {
@@ -213,6 +220,7 @@ int verificarIDFuncionariosModel(struct ListaFuncionarios *lista, int id) {
     return 0;
 }
 
+// Atualiza o cadastro de um funcionário
 void atualizarFuncionariosModel(struct ListaFuncionarios *lista, int id, struct Funcionarios *funcionario) {
     int encontrado = 0;
 
@@ -221,6 +229,7 @@ void atualizarFuncionariosModel(struct ListaFuncionarios *lista, int id, struct 
         return;
     }
 
+    // Busca pelo id para fazer a alteração
     for (int i = 0; i < lista->qtdFuncionarios; i++) {
         if (lista->listaFuncionarios[i].id == id && lista->listaFuncionarios[i].deletado == 0) {
             encontrado = 1;
@@ -237,12 +246,16 @@ void atualizarFuncionariosModel(struct ListaFuncionarios *lista, int id, struct 
     }
 }
 
+// Lista todos os funcionários cadastrados
 void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
     //variavel para verificação de listagem
     int listado = 0;
 
+    // Verifica se há pelo menos um cadastro
     if (lista->qtdFuncionarios > 0) {
+        // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdFuncionarios; i++) {
+            // Verifica se o índice atual existe
             if (lista->listaFuncionarios[i].deletado == 0) {
                 listado = 1;
                 printf("\n======================="
@@ -269,7 +282,9 @@ void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
     }
 }
 
+// Lista um funcionário pelo Id
 void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
+    // Variável para verificar que cliente foi encotrado
     int encontrado = 0;
 
     if (lista->qtdFuncionarios == 0) {
@@ -277,7 +292,9 @@ void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
         return;
     }
 
+    // Se há um ou mais cadastros, procura pelo funcionário com o id desejado
     for (int i = 0; i < lista->qtdFuncionarios; i++) {
+        // Verifica se o funcionário está ou não deletado
         if (lista->listaFuncionarios[i].id == id && lista->listaFuncionarios[i].deletado == 0) {
             encontrado = 1;
             if (lista->listaFuncionarios[i].deletado == 0) {
@@ -305,6 +322,7 @@ void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
     }
 }
 
+// Lista os funcionários relacionados a uma oficina, buscando pelo idOficina
 void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOficina) {
     int encontrado = 0;
 
@@ -337,14 +355,17 @@ void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOfi
     }
 }
 
+// Deleta um funcionário cadastrado
 void deletarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
     int encontrado = 0;
 
+    // Verifica se há algum cadastro
     if (lista->qtdFuncionarios == 0) {
         printf("Nenhum funcionário foi cadastrado!\n\n");
         return;
     }
 
+    // Busca pelo id para fazer a deleção
     for (int i = 0; i < lista->qtdFuncionarios; i++) {
         if (lista->listaFuncionarios[i].id == id && lista->listaFuncionarios[i].deletado == 0) {
             encontrado = 1;
@@ -354,6 +375,7 @@ void deletarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
         }
     }
 
+    // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Funcionário não encontrado!\n\n");
     }

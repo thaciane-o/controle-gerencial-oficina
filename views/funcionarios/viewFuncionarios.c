@@ -4,15 +4,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Menu de funcionalidades de funcionários
 void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas,
                           int opcaoArmazenamento) {
     int opcaoSubmenus;
-
+    //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
+        // Busca os dados armazenados em arquivos
         if (lista->qtdFuncionarios == 0) {
             buscarDadosFuncionariosModel(lista, opcaoArmazenamento);
         }
-
+        // Busca os dados em arquivos das tabelas relacionadas
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
         }
@@ -63,6 +65,7 @@ void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     } while (opcaoSubmenus != 5);
 }
 
+// Formulário de cadastro de funcionários
 void cadastrarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas) {
     struct Funcionarios funcionario;
     int idOficina;
@@ -75,12 +78,14 @@ void cadastrarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
+    // Verificando existência do item relacionado
     if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
         return;
     }
 
     funcionario.idOficina = idOficina;
 
+    // Preenchimento dos dados
     printf("Insira o nome do funcionário: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", funcionario.nome);
@@ -100,10 +105,12 @@ void cadastrarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     cadastrarFuncionariosModel(lista, &funcionario);
 }
 
+// Formulário de atualização de funcionários
 void atualizarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas) {
     int id, idOficina;
     struct Funcionarios funcionario;
 
+    // Pede o Id do funcionário que será atualizado
     printf("\n=====================================\n"
         "|     ATUALIZAÇÃO DE FUNCIONÁRIO    |\n"
         "=====================================\n"
@@ -111,6 +118,7 @@ void atualizarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
+    // Verifica se o ID inserido existe
     int encontrado = verificarIDFuncionariosModel(lista, id);
     if (encontrado == 0) {
         return;
@@ -126,6 +134,7 @@ void atualizarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
 
     funcionario.idOficina = idOficina;
 
+    //Preenchimento dos dados
     printf("Insira o nome do funcionário: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", funcionario.nome);
@@ -145,9 +154,10 @@ void atualizarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     atualizarFuncionariosModel(lista, id, &funcionario);
 }
 
+// Listagem de funcionários
 void listarFuncionario(struct ListaFuncionarios *lista) {
     int opcao, id;
-
+    // Pergunta o tipo de listagem
     printf("\n=================================\n"
         "|    LISTAGEM DE FUNCIONÁRIO    |\n"
         "=================================\n"
@@ -160,19 +170,23 @@ void listarFuncionario(struct ListaFuncionarios *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
+    // Verifica a opção de listagem
     switch (opcao) {
+        // Listagem de um único fornecedor
         case 1:
             printf("Insira o ID do funcionário que deseja listar: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
             listarFuncionariosModel(lista, id);
             break;
+        // Listagem por relação
         case 2:
-            printf("Insira o ID da oficina desejado para a busca: ");
+            printf("Insira o ID da oficina desejada para a busca: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
             buscarFuncionarioPorOficinaModel(lista, id);
             break;
+        // Listagem de todos os funcionários
         case 3:
             listarTodosFuncionariosModel(lista);
             break;
@@ -182,9 +196,11 @@ void listarFuncionario(struct ListaFuncionarios *lista) {
     }
 }
 
+// Formulário de deleção de funcionários
 void deletarFuncionario(struct ListaFuncionarios *lista) {
     int id;
 
+    // Pede o Id do funcionário que será deletada
     printf("\n===============================\n"
         "|    DELEÇÃO DE FUNCIONÁRIO   |\n"
         "===============================\n");

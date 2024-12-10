@@ -219,47 +219,7 @@ void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando)
     printf("Peça cadastrada com sucesso!\n\n");
 }
 
-// Deleta uma peça cadastrada
-void deletarPecaModel(struct ListaPecas *lista, int id) {
-    // Auxiliar para saber se encontrou o id.
-    int encontrado = 0;
-
-    // Verifica se há alguma peça cadastrada.
-    if (lista->qtdPecas == 0) {
-        printf("Nenhuma peça foi cadastrada.\n");
-        return;
-    }
-
-    // Busca pelo id para fazer a deleção.
-    for (int i = 0; i < lista->qtdPecas; i++) {
-        if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
-            encontrado = 1;
-            lista->listaPecas[i].deletado = 1;
-            printf("Peça deletada com sucesso!\n");
-            break;
-        }
-    }
-
-    // Se não encontrar o id para deleção, avisa o usuário.
-    if (!encontrado) {
-        printf("Peça não encontrada.\n");
-    }
-}
-
-// Atualiza uma peça cadastrada
-void atualizarPecaModel(struct ListaPecas *lista, int id, struct Pecas *pecaAlterando) {
-    // Busca pelo id para fazer a alteração.
-    for (int i = 0; i < lista->qtdPecas; i++) {
-        if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
-            lista->listaPecas[i] = *pecaAlterando;
-            lista->listaPecas[i].id = id;
-            lista->listaPecas[i].deletado = 0;
-            break;
-        }
-    }
-}
-
-// Verifica se o ID que deseja atualizar existe
+// Verifica a existência do id requisitado
 int verificarIDPecaModel(struct ListaPecas *lista, int id) {
     // Procura a peça com o id inserido
     if (lista->qtdPecas > 0) {
@@ -277,9 +237,22 @@ int verificarIDPecaModel(struct ListaPecas *lista, int id) {
     return 0;
 }
 
+// Atualiza uma peça cadastrada
+void atualizarPecaModel(struct ListaPecas *lista, int id, struct Pecas *pecaAlterando) {
+    // Busca pelo id para fazer a alteração.
+    for (int i = 0; i < lista->qtdPecas; i++) {
+        if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
+            lista->listaPecas[i] = *pecaAlterando;
+            lista->listaPecas[i].id = id;
+            lista->listaPecas[i].deletado = 0;
+            break;
+        }
+    }
+}
+
 // Lista todas as peças cadastradas
 void listarTodosPecaModel(struct ListaPecas *lista) {
-    //variavel para verificação de listagem
+    // Variável para verificação de listagem
     int listado = 0;
 
     // Verifica se há pelo menos um cadastro
@@ -318,7 +291,7 @@ void listarTodosPecaModel(struct ListaPecas *lista) {
 }
 
 // Busca uma peça cadastrada pelo seu id
-void buscarIdPecaModel(struct ListaPecas *lista, int id) {
+void listarPecaModel(struct ListaPecas *lista, int id) {
     // Verifica se há pelo menos um cadastro
     if (lista->qtdPecas > 0) {
         // Se há um ou mais cadastros, procura pela peça com o id desejado
@@ -395,5 +368,32 @@ void buscarPecasPorFornecedorModel(struct ListaPecas *lista, int idFornecedor) {
     } else {
         // Se não houver, avisa que não há cadastros
         printf("Nenhuma peça foi cadastrada.\n\n");
+    }
+}
+
+// Deleta uma peça cadastrada
+void deletarPecaModel(struct ListaPecas *lista, int id) {
+    // Auxiliar para saber se encontrou o id.
+    int encontrado = 0;
+
+    // Verifica se há algum cadastro
+    if (lista->qtdPecas == 0) {
+        printf("Nenhuma peça foi cadastrada.\n");
+        return;
+    }
+
+    // Busca pelo id para fazer a deleção
+    for (int i = 0; i < lista->qtdPecas; i++) {
+        if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
+            encontrado = 1;
+            lista->listaPecas[i].deletado = 1;
+            printf("Peça deletada com sucesso!\n");
+            break;
+        }
+    }
+
+    // Se não encontrar o id para deleção, avisa o usuário
+    if (!encontrado) {
+        printf("Peça não encontrada.\n");
     }
 }

@@ -3,53 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenamento) {
-    //Abrindo ou criando arquivo para adicionar cadastros
-    FILE *dadosVeiculos;
-
-    switch (opcaoArmazenamento) {
-        case 1:
-            dadosVeiculos = fopen("DadosVeiculos.txt", "w");
-
-            if (dadosVeiculos == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdVeiculos; i++) {
-                //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-                fprintf(dadosVeiculos, "%d;%s;%s;%s;%s;%d;%d;%d\n",
-                        lista->listaVeiculos[i].id,
-                        lista->listaVeiculos[i].modelo,
-                        lista->listaVeiculos[i].marca,
-                        lista->listaVeiculos[i].placa,
-                        lista->listaVeiculos[i].chassi,
-                        lista->listaVeiculos[i].anoFabricacao,
-                        lista->listaVeiculos[i].idProprietario,
-                        lista->listaVeiculos[i].deletado);
-            }
-            break;
-        case 2:
-            dadosVeiculos = fopen("DadosVeiculos.bin", "wb");
-
-            if (dadosVeiculos == NULL) {
-                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-                return;
-            }
-
-            for (int i = 0; i < lista->qtdVeiculos; i++) {
-                fwrite(&lista->listaVeiculos[i], sizeof(struct Veiculos), 1, dadosVeiculos);
-            }
-            break;
-    }
-    fclose(dadosVeiculos);
-
-    free(lista->listaVeiculos);
-    lista->listaVeiculos = NULL;
-
-    lista->qtdVeiculos = 0;
-}
-
+// Busca os dados de veículos nos arquivos
 void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenamento) {
     int i = 0;
 
@@ -158,6 +112,55 @@ void buscarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenament
     fclose(dadosVeiculos);
 }
 
+// Armazena os dados de veículos nos arquivos
+void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenamento) {
+    //Abrindo ou criando arquivo para adicionar cadastros
+    FILE *dadosVeiculos;
+
+    switch (opcaoArmazenamento) {
+        case 1:
+            dadosVeiculos = fopen("DadosVeiculos.txt", "w");
+
+        if (dadosVeiculos == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdVeiculos; i++) {
+            //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
+            fprintf(dadosVeiculos, "%d;%s;%s;%s;%s;%d;%d;%d\n",
+                    lista->listaVeiculos[i].id,
+                    lista->listaVeiculos[i].modelo,
+                    lista->listaVeiculos[i].marca,
+                    lista->listaVeiculos[i].placa,
+                    lista->listaVeiculos[i].chassi,
+                    lista->listaVeiculos[i].anoFabricacao,
+                    lista->listaVeiculos[i].idProprietario,
+                    lista->listaVeiculos[i].deletado);
+        }
+        break;
+        case 2:
+            dadosVeiculos = fopen("DadosVeiculos.bin", "wb");
+
+        if (dadosVeiculos == NULL) {
+            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+            return;
+        }
+
+        for (int i = 0; i < lista->qtdVeiculos; i++) {
+            fwrite(&lista->listaVeiculos[i], sizeof(struct Veiculos), 1, dadosVeiculos);
+        }
+        break;
+    }
+    fclose(dadosVeiculos);
+
+    free(lista->listaVeiculos);
+    lista->listaVeiculos = NULL;
+
+    lista->qtdVeiculos = 0;
+}
+
+// Aloca memória inicial na lista de veículos
 int alocarVeiculosModel(struct ListaVeiculos *lista) {
     lista->qtdVeiculos = 1;
     lista->listaVeiculos = malloc(sizeof(struct Veiculos));
@@ -169,6 +172,7 @@ int alocarVeiculosModel(struct ListaVeiculos *lista) {
     return 1;
 }
 
+// Realoca memória na lista de veículos de acordo com a necessidade em qtdAlocada
 int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhum registro salvo.\n\n");
@@ -185,6 +189,7 @@ int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada) {
     return 1;
 }
 
+// Cadastra um novo veículo
 void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *cliente) {
     int resultAlocacao = 0;
 
@@ -209,19 +214,9 @@ void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *client
     printf("Veículo cadastrado com sucesso!\n\n");
 }
 
-void atualizarVeiculosModel(struct ListaVeiculos *lista, int id, struct Veiculos *veiculo) {
-    for (int i = 0; i < lista->qtdVeiculos; i++) {
-        if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
-            veiculo->id = lista->listaVeiculos[i].id;
-            veiculo->deletado = lista->listaVeiculos[i].deletado;
-            lista->listaVeiculos[i] = *veiculo;
-            break;
-        }
-    }
-}
-
 // Verifica se o ID que deseja atualizar existe
 int verificarIDVeiculoModel(struct ListaVeiculos *lista, int id) {
+    // Procura o veículo com o id inserido
     if (lista->qtdVeiculos > 0) {
         for (int i = 0; i < lista->qtdVeiculos; i++) {
             if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
@@ -237,11 +232,27 @@ int verificarIDVeiculoModel(struct ListaVeiculos *lista, int id) {
     return 0;
 }
 
+// Atualiza o cadastro de um veículo
+void atualizarVeiculosModel(struct ListaVeiculos *lista, int id, struct Veiculos *veiculo) {
+    // Busca pelo id para fazer a alteração
+    for (int i = 0; i < lista->qtdVeiculos; i++) {
+        if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
+            veiculo->id = lista->listaVeiculos[i].id;
+            veiculo->deletado = lista->listaVeiculos[i].deletado;
+            lista->listaVeiculos[i] = *veiculo;
+            break;
+        }
+    }
+}
+
+// Lista todos os veículos cadastrados
 void listarTodosVeiculosModel(struct ListaVeiculos *lista) {
-    //variavel para verificar se algum veiculo foi listado
+    // Variável para verificação de listagem
     int listado = 0;
 
+    // Verifica se há pelo menos um cadastro
     if (lista->qtdVeiculos > 0) {
+        // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdVeiculos; i++) {
             //Verifica se o cliente esta deletado
             if (lista->listaVeiculos[i].deletado == 0) {
@@ -263,16 +274,13 @@ void listarTodosVeiculosModel(struct ListaVeiculos *lista) {
         }
     }
 
-    /*
-     Caso nenhum veiculo seja listado, será considerado que nenhum veiculo foi cadastrado
-     mesmo se a quantidade for maior que 0
-    */
     if (listado == 0) {
         printf("Nenhum veículo cadastrado.\n\n");
     }
 }
 
-void buscarIdClienteModel(struct ListaVeiculos *lista, int id) {
+// Verifica a existência do id requisitado
+void listarVeiculoModel(struct ListaVeiculos *lista, int id) {
     int encontrado = 0;
 
     if (lista->qtdVeiculos == 0) {
@@ -280,8 +288,9 @@ void buscarIdClienteModel(struct ListaVeiculos *lista, int id) {
         return;
     }
 
+    // Se há um ou mais cadastros, procura pelo veículo com o id desejado
     for (int i = 0; i < lista->qtdVeiculos; i++) {
-        //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
+        // Verifica se o veículo está ou não deletado
         if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
             printf("\n===================\n"
                    "| VEÍCULO %d       |\n"
@@ -306,7 +315,8 @@ void buscarIdClienteModel(struct ListaVeiculos *lista, int id) {
     }
 }
 
-void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id) {
+// Lista os veículos relacionados a um cliente, buscando pelo idCliente
+void buscarVeiculosPorClienteModel(struct ListaVeiculos *lista, int idCliente) {
     int encontrado = 0;
 
     if (lista->qtdVeiculos == 0) {
@@ -316,7 +326,7 @@ void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id) {
 
     for (int i = 0; i < lista->qtdVeiculos; i++) {
         //Verifica se o cliente está ou não deletado, e encontrando o cliente no ARRAY
-        if (lista->listaVeiculos[i].idProprietario == id && lista->listaVeiculos[i].deletado == 0) {
+        if (lista->listaVeiculos[i].idProprietario == idCliente && lista->listaVeiculos[i].deletado == 0) {
             printf("\n===================\n"
                    "| VEÍCULO %d       |\n"
                    "==================="
@@ -339,20 +349,17 @@ void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id) {
     }
 }
 
-
 //Utilizei um modelo de deleção logica
 void deletarVeiculosModel(struct ListaVeiculos *lista, int id) {
     int encontrado = 0;
 
+    // Verifica se há algum cadastro
     if (lista->qtdVeiculos == 0) {
         printf("Nenhum veículo foi cadastrado!\n\n");
         return;
     }
 
-    /*
-     Caso o ID do Veiculo seja encontrado, ele tera armazenado uma variavel para sinaliza-lo como "Deletado"
-     "isDeleted" = 1
-     */
+    // Busca pelo id para fazer a deleção
     for (int i = 0; i < lista->qtdVeiculos; i++) {
         if (lista->listaVeiculos[i].id == id && lista->listaVeiculos[i].deletado == 0) {
             encontrado = 1;
@@ -365,6 +372,7 @@ void deletarVeiculosModel(struct ListaVeiculos *lista, int id) {
         }
     }
 
+    // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Veículo não encontrado!\n\n");
     }

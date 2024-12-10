@@ -4,13 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Menu de funcionalidades de veículos
 void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
     int opcaoSubmenus;
-
+    //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
+        // Busca os dados armazenados em arquivos
         if (lista->qtdVeiculos == 0){
             buscarDadosVeiculosModel(lista, opcaoArmazenamento);
         }
+        // Busca os dados em arquivos das tabelas relacionadas
         if (listaProprietarios->qtdClientes == 0) {
             buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
         }
@@ -62,6 +65,7 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
     } while (opcaoSubmenus != 5);
 }
 
+// Formulário de cadastro de veículos
 void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
     struct Veiculos veiculo;
     int idProprietario;
@@ -75,13 +79,14 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     scanf("%d", &idProprietario);
 
 
-    //verificando existencia de cliente
+    // Verificando existência do item relacionado
     if (verificarIDClienteModel(listaProprietarios, idProprietario) == 0) {
         return;
     }
 
     veiculo.idProprietario = idProprietario;
 
+    // Preenchimento dos dados
     printf("Insira o modelo do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.modelo);
@@ -106,16 +111,19 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     cadastrarVeiculosModel(lista, &veiculo);
 }
 
+// Formulário de atualização de veículos
 void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
     struct Veiculos veiculo;
     int idVeiculo, idProprietario;
 
+    // Pede o Id do veículo que será atualizado
     printf("\n=================================\n"
         "|     ATUALIZAÇÃO DE VEÍCULO    |\n"
         "=================================\n"
         "Insira o veículo que deseja atualizar: ");
     scanf("%d", &idVeiculo);
 
+    // Verifica se o ID inserido existe
     if (verificarIDVeiculoModel(lista, idVeiculo) == 0) {
         return;
     }
@@ -125,14 +133,13 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     scanf("%d", &idProprietario);
 
 
-
     if (verificarIDClienteModel(listaProprietarios, idProprietario) == 0) {
         return;
     }
 
     veiculo.idProprietario = idProprietario;
 
-
+    //Preenchimento dos dados
     printf("Insira o modelo do veículo: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", veiculo.modelo);
@@ -157,9 +164,10 @@ void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     atualizarVeiculosModel(lista, idVeiculo, &veiculo);
 }
 
+// Listagem de veículos
 void listarVeiculo(struct ListaVeiculos *lista) {
     int opcao, id;
-
+    // Pergunta o tipo de listagem
     printf("\n=====================================\n"
         "|        LISTAGEM DE VEÍCULO        |\n"
         "=====================================\n"
@@ -172,17 +180,21 @@ void listarVeiculo(struct ListaVeiculos *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
+    // Verifica a opção de listagem
     switch (opcao) {
+        // Listagem de um único veículo
         case 1:
             printf("Insira o veículo que deseja lista: ");
             scanf("%d", &id);
-            buscarIdClienteModel(lista, id);
+            listarVeiculoModel(lista, id);
             break;
+        // Listagem por relação
         case 2:
             printf("Insira o ID do proprietário dos veículos: ");
             scanf("%d", &id);
-            listarVeiculosPorClienteModel(lista, id);
+            buscarVeiculosPorClienteModel(lista, id);
             break;
+        // Listagem de todos os veículos
         case 3:
             listarTodosVeiculosModel(lista);
             break;
@@ -194,9 +206,10 @@ void listarVeiculo(struct ListaVeiculos *lista) {
     }
 }
 
+// Formulário de deleção de veículos
 void deletarVeiculo(struct ListaVeiculos *lista) {
     int id;
-
+    // Pede o Id do veículo que será deletada
     printf("\n=================================\n"
         "|       DELEÇÃO DE VEÍCULO      |\n"
         "=================================\n");

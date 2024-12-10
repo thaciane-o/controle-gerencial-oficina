@@ -6,13 +6,16 @@
 
 #include "../../models/veiculos/modelVeiculos.h"
 
+// Menu de funcionalidades de clientes
 void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
     int opcaoSubmenus;
-
+    //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
+        // Busca os dados armazenados em arquivos
         if (lista->qtdClientes == 0) {
             buscarDadosClientesModel(lista, opcaoArmazenamento);
         }
+        // Busca os dados em arquivos das tabelas relacionadas
         if (lista->qtdClientes > 0) {
             buscarDadosVeiculosModel(listaVeiculos, opcaoArmazenamento);
         }
@@ -71,6 +74,7 @@ void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaV
     } while (opcaoSubmenus != 5);
 }
 
+// Formulário de cadastro de clientes
 void cadastrarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOficinas) {
     struct Clientes cliente;
     int idOficina;
@@ -83,13 +87,14 @@ void cadastrarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
-
+    // Verificando existência do item relacionado
     if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
         return;
     }
 
     cliente.idOficina = idOficina;
 
+    // Preenchimento dos dados
     printf("Insira o nome do cliente: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", cliente.nome);
@@ -117,17 +122,19 @@ void cadastrarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     cadastrarClientesModel(lista, &cliente);
 }
 
+// Formulário de atualização de clientes
 void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOficinas) {
     int id, idOficina;
     struct Clientes cliente;
 
+    // Pede o Id do cliente que será atualizado
     printf("\n=================================\n"
         "|     ATUALIZAÇÃO DE CLIENTE    |\n"
         "=================================\n"
         "Insira o cliente que deseja atualizar: ");
     scanf("%d", &id);
 
-
+    // Verifica se o ID inserido existe
     int encontrado = verificarIDClienteModel(lista, id);
     if (encontrado == 0) {
         return;
@@ -143,6 +150,7 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
 
     cliente.idOficina = idOficina;
 
+    //Preenchimento dos dados
     printf("Insira o nome do cliente: ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", cliente.nome);
@@ -170,9 +178,10 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     atualizarClientesModel(lista, id, &cliente);
 }
 
+// Listagem de clientes
 void listarClientes(struct ListaClientes *lista) {
     int opcao, id;
-
+    // Pergunta o tipo de listagem
     printf("\n=================================\n"
         "|    LISTAGEM DE CLIENTES      |\n"
         "=================================\n"
@@ -185,19 +194,23 @@ void listarClientes(struct ListaClientes *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &opcao);
 
+    // Verifica a opção de listagem
     switch (opcao) {
+        // Listagem de um único cliente
         case 1:
             printf("Insira o ID do cliente que deseja listar: ");
         setbuf(stdin, NULL);
         scanf("%d", &id);
         listarClienteModel(lista, id);
         break;
+        // Listagem por relação
         case 2:
-            printf("Insira o ID da oficina desejado para a busca: ");
+            printf("Insira o ID da oficina desejada para a busca: ");
         setbuf(stdin, NULL);
         scanf("%d", &id);
         buscarClientesPorOficinaModel(lista, id);
         break;
+        // Listagem de todos os clientes
         case 3:
             listarTodosClientesModel(lista);
         break;
@@ -207,9 +220,11 @@ void listarClientes(struct ListaClientes *lista) {
     }
 }
 
+// Formulário de deleção de clientes
 void deletarCliente(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos) {
     int id;
 
+    // Pede o Id do cliente que será deletada
     printf("\n=============================\n"
         "|     DELEÇÃO DE CLIENTE    |\n"
         "=============================\n");

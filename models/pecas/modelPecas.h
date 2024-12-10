@@ -36,7 +36,7 @@ int verificarIDPecaModel(struct ListaPecas *lista, int id);
 
 void listarTodosPecaModel(struct ListaPecas *lista);
 
-void buscarIdPecaModel(struct ListaPecas *lista, int id);
+void listarPecaModel(struct ListaPecas *lista, int id);
 
 void buscarPecasPorFornecedorModel(struct ListaPecas *lista, int idFornecedor);
 

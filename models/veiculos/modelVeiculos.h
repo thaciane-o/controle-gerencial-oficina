@@ -36,8 +36,8 @@ int verificarIDVeiculoModel(struct ListaVeiculos *lista, int id);
 
 void listarTodosVeiculosModel(struct ListaVeiculos *lista);
 
-void buscarIdClienteModel(struct ListaVeiculos *lista, int id);
+void listarVeiculoModel(struct ListaVeiculos *lista, int id);
 
-void listarVeiculosPorClienteModel(struct ListaVeiculos *lista, int id);
+void buscarVeiculosPorClienteModel(struct ListaVeiculos *lista, int idCliente);
 
 #endif //MODELVEICULOS_H

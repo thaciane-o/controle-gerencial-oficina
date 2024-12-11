@@ -258,13 +258,13 @@ void listarTodosOficinaModel(struct ListaOficinas *lista) {
             if (lista->listaOficinas[i].deletado == 0) {
                 listado = 1;
                 printf("\n====================\n"
-                       "| OFICINA %d         |\n"
-                       "===================\n"
+                       "| OFICINA %d        |\n"
+                       "====================\n"
                        "NOME: %s\n"
                        "ENDEREÇO: %s\n"
                        "TELEFONE: (%s) %s\n"
-                       "Email: %s\n"
-                       "Porcentagem de Lucro: %.2f\n",
+                       "EMAIL: %s\n"
+                       "PORCENTAGEM DE LUCRO: %.2f\n",
                        lista->listaOficinas[i].id,
                        lista->listaOficinas[i].nome,
                        lista->listaOficinas[i].endereco,
@@ -298,13 +298,13 @@ void listarOficinaModel(struct ListaOficinas *lista, int id) {
 
         if (encontrado != -1) {
             printf("\n====================\n"
-                   "| OFICINA %d         |\n"
-                   "===================\n"
+                   "| OFICINA %d        |\n"
+                   "====================\n"
                    "NOME: %s\n"
                    "ENDEREÇO: %s\n"
                    "TELEFONE: (%s) %s\n"
-                   "Email: %s\n"
-                   "Porcentagem de Lucro: %.2f",
+                   "EMAIL: %s\n"
+                   "PORCENTAGEM DE LUCRO: %.2f\n",
                    lista->listaOficinas[encontrado].id,
                    lista->listaOficinas[encontrado].nome,
                    lista->listaOficinas[encontrado].endereco,

@@ -265,7 +265,7 @@ void listarTodosVeiculosModel(struct ListaVeiculos *lista) {
                        "\nMARCA: %s"
                        "\nANO DE FABRICAÇÃO: %d"
                        "\nPLACA: %s"
-                       "\nCHASSI: %s\n\n",
+                       "\nCHASSI: %s\n",
                        lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
                        lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
                        lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,
@@ -300,7 +300,7 @@ void listarVeiculoModel(struct ListaVeiculos *lista, int id) {
                    "\nMARCA: %s"
                    "\nANO DE FABRICAÇÃO: %d"
                    "\nPLACA: %s"
-                   "\nCHASSI: %s\n\n",
+                   "\nCHASSI: %s\n",
                    lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
                    lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
                    lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,
@@ -335,7 +335,7 @@ void buscarVeiculosPorClienteModel(struct ListaVeiculos *lista, int idCliente) {
                    "\nMARCA: %s"
                    "\nANO DE FABRICAÇÃO: %d"
                    "\nPLACA: %s"
-                   "\nCHASSI: %s\n\n",
+                   "\nCHASSI: %s\n",
                    lista->listaVeiculos[i].id, lista->listaVeiculos[i].idProprietario,
                    lista->listaVeiculos[i].modelo, lista->listaVeiculos[i].marca,
                    lista->listaVeiculos[i].anoFabricacao, lista->listaVeiculos[i].placa,

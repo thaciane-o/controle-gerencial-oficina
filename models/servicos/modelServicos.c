@@ -252,7 +252,7 @@ void listarTodosServicoModel(struct ListaServicos *lista) {
                        "DESCRIÇÃO: %s\n"
                        "PREÇO: $%.2f\n"
                        "COMISSÃO: $%.2f\n"
-                       "OFICINA: %d\n\n",
+                       "OFICINA: %d\n",
                        lista->listaServicos[i].id,
                        lista->listaServicos[i].descricao,
                        lista->listaServicos[i].preco,
@@ -285,7 +285,7 @@ void listarServicoModel(struct ListaServicos *lista, int id) {
                "DESCRIÇÃO: %s\n"
                "PREÇO: $%.2f\n"
                "COMISSÃO: $%.2f\n"
-               "OFICINA: %d\n\n",
+               "OFICINA: %d\n",
                lista->listaServicos[encontrado].id,
                lista->listaServicos[encontrado].descricao,
                lista->listaServicos[encontrado].preco,
@@ -310,7 +310,7 @@ void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina) {
                        "DESCRIÇÃO: %s\n"
                        "PREÇO: $%.2f\n"
                        "COMISSÃO: $%.2f\n"
-                       "OFICINA: %d\n\n",
+                       "OFICINA: %d\n",
                        lista->listaServicos[i].id,
                        lista->listaServicos[i].descricao,
                        lista->listaServicos[i].preco,

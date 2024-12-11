@@ -34,10 +34,10 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarVeiculo(listaProprietarios, lista, opcaoArmazenamento);
+                cadastrarVeiculo(listaProprietarios, lista);
                 break;
             case 2:
-                atualizarVeiculo(listaProprietarios, lista, opcaoArmazenamento);
+                atualizarVeiculo(listaProprietarios, lista);
                 break;
             case 3:
                 deletarVeiculo(lista);
@@ -66,7 +66,7 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
 }
 
 // Formulário de cadastro de veículos
-void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
+void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista) {
     struct Veiculos veiculo;
     int idProprietario;
 
@@ -112,7 +112,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
 }
 
 // Formulário de atualização de veículos
-void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
+void atualizarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista) {
     struct Veiculos veiculo;
     int idVeiculo, idProprietario;
 

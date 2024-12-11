@@ -172,7 +172,7 @@ int alocarMemoriaOficinaModel(struct ListaOficinas *lista) {
     return 1;
 }
 
-// Realoca memória da oficina de acordo com a quantidade que deseja alocar (qtdAloca)
+// Realoca memória da oficina conforme a quantidade que deseja alocar (qtdAloca)
 int realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
     if (qtdAloca == 0) {
         printf("Nenhuma alocação foi realizada\n\n");
@@ -333,7 +333,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         return;
     }
 
-    // Verifica relações com funcionarios
+    // Verifica relações com funcionários
     if (listaFuncionarios->qtdFuncionarios > 0) {
         for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
             if (listaFuncionarios->listaFuncionarios[i].idOficina == id && listaFuncionarios->listaFuncionarios[i].

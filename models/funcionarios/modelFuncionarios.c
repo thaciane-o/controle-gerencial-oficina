@@ -160,7 +160,7 @@ int alocarFuncionariosModel(struct ListaFuncionarios *lista) {
     return 1;
 }
 
-// Realoca memória na lista de funcionários de acordo com a necessidade em qtdAlocada
+// Realoca memória na lista de funcionários conforme a necessidade em qtdAlocada
 int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhuma alocação foi realizada\n\n");
@@ -248,7 +248,7 @@ void atualizarFuncionariosModel(struct ListaFuncionarios *lista, int id, struct 
 
 // Lista todos os funcionários cadastrados
 void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
-    //variavel para verificação de listagem
+    // Variável para verificação de listagem
     int listado = 0;
 
     // Verifica se há pelo menos um cadastro
@@ -284,7 +284,7 @@ void listarTodosFuncionariosModel(struct ListaFuncionarios *lista) {
 
 // Lista um funcionário pelo Id
 void listarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
-    // Variável para verificar que cliente foi encotrado
+    // Variável para verificar que cliente foi encontrado
     int encontrado = 0;
 
     if (lista->qtdFuncionarios == 0) {

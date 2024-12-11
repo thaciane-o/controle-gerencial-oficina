@@ -175,7 +175,7 @@ int alocarClientesModel(struct ListaClientes *lista) {
     return 1;
 }
 
-// Realoca memória na lista de clientes de acordo com a necessidade em qtdAlocada
+// Realoca memória na lista de clientes conforme a necessidade em qtdAlocada
 int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhum registro salvo.\n\n");
@@ -290,7 +290,7 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
 
 // Lista um cliente pelo Id
 void listarClienteModel(struct ListaClientes *lista, int id) {
-    // Variável para verificar que cliente foi encotrado
+    // Variável para verificar que cliente foi encontrado
     int encontrado = 0;
 
     if (lista->qtdClientes == 0) {

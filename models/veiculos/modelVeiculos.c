@@ -172,7 +172,7 @@ int alocarVeiculosModel(struct ListaVeiculos *lista) {
     return 1;
 }
 
-// Realoca memória na lista de veículos de acordo com a necessidade em qtdAlocada
+// Realoca memória na lista de veículos conforme a necessidade em qtdAlocada
 int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhum registro salvo.\n\n");
@@ -205,7 +205,7 @@ void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *client
         return;
     }
 
-    //Cadastrando veiculo na memoria
+    //Cadastrando veiculo na memória
     cliente->id = lista->qtdVeiculos;
     cliente->deletado = 0;
 

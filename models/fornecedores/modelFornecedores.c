@@ -178,7 +178,7 @@ int alocarFornecedoresModel(struct ListaFornecedores *lista) {
     return 1;
 }
 
-// Realoca memória na lista de fornecedores de acordo com a necessidade em qtdAlocada
+// Realoca memória na lista de fornecedores conforme a necessidade em qtdAlocada
 int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada) {
     if (qtdAlocada == 0) {
         printf("Nenhuma alocação foi realizada\n\n");
@@ -291,7 +291,7 @@ void listarTodosFornecedoresModel(struct ListaFornecedores *lista) {
 
 // Lista um fornecedor pelo Id
 void listarFornecedoresModel(struct ListaFornecedores *lista, int id) {
-    // Variável para verificar que fornecedor foi encotrado
+    // Variável para verificar que fornecedor foi encontrado
     int encontrado = 0;
 
     if (lista->qtdFornecedores == 0) {

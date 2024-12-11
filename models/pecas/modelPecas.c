@@ -175,7 +175,7 @@ int alocarMemoriaPecaModel(struct ListaPecas *lista) {
     return 1;
 }
 
-// Realoca memória da peca de acordo com a quantidade que deseja alocar (qtdAloca)
+// Realoca memória da peca conforme a quantidade que deseja alocar (qtdAloca)
 int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
     if (qtdAloca == 0) {
         printf("Nenhuma alocação foi realizada.\n\n");

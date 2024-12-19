@@ -322,7 +322,8 @@ void listarOficinaModel(struct ListaOficinas *lista, int id) {
 }
 
 // Deleta uma oficina cadastrada
-void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos,
+void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
+                         struct ListaServicos *listaServicos,
                          struct ListaClientes *listaClientes, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0, existeRelacao = 0;
@@ -362,7 +363,8 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
     if (listaServicos->qtdServicos > 0) {
         for (int i = 0; i < listaServicos->qtdServicos; i++) {
             if (listaServicos->listaServicos[i].idOficina == id && listaServicos->listaServicos->deletado == 0) {
-                printf("Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um serviço que já está cadastrado.\n\n");
+                printf(
+                    "Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um serviço que já está cadastrado.\n\n");
                 existeRelacao = 1;
                 break;
             }

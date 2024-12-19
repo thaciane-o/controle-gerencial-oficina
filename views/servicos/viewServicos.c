@@ -17,7 +17,6 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
         }
-
     }
 
     do {
@@ -36,16 +35,16 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
         switch (opcaoSubmenus) {
             case 1:
                 cadastrarServico(lista, listaOficinas);
-            break;
+                break;
             case 2:
                 atualizarServico(lista, listaOficinas);
-            break;
+                break;
             case 3:
                 deletarServico(lista);
-            break;
+                break;
             case 4:
                 listarServico(lista);
-            break;
+                break;
             case 5:
                 if (opcaoArmazenamento != 3) {
                     if (lista->qtdServicos > 0) {
@@ -58,9 +57,9 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
                         listaOficinas->qtdOficinas = 0;
                     }
                 }
-            break;
+                break;
             default: printf("Opção inválida!\n\n");
-            break;
+                break;
         };
     } while (opcaoSubmenus != 5);
 }
@@ -168,21 +167,21 @@ void listarServico(struct ListaServicos *lista) {
         // Listagem de um único serviço
         case 1:
             printf("Insira o ID do serviço que deseja listar: ");
-        setbuf(stdin, NULL);
-        scanf("%d", &id);
-        listarServicoModel(lista, id);
-        break;
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            listarServicoModel(lista, id);
+            break;
         // Listagem por relação
         case 2:
             printf("Insira o ID da oficina desejada para a busca: ");
-        setbuf(stdin, NULL);
-        scanf("%d", &id);
-        buscarServicosPorOficinaModel(lista, id);
-        break;
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            buscarServicosPorOficinaModel(lista, id);
+            break;
         // Listagem de todos os serviços
         case 3:
             listarTodosServicoModel(lista);
-        break;
+            break;
         case 4:
             break;
         default: printf("Opção inválida!\n\n");

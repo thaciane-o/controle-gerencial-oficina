@@ -112,35 +112,35 @@ void armazenarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoA
         case 1:
             dadosFuncionarios = fopen("DadosFuncionarios.txt", "w");
 
-        if (dadosFuncionarios == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosFuncionarios == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdFuncionarios; i++) {
-            fprintf(dadosFuncionarios, "%d;%s;%s;%s;%.2f;%d;%d\n",
-                    lista->listaFuncionarios[i].id,
-                    lista->listaFuncionarios[i].nome,
-                    lista->listaFuncionarios[i].cpf,
-                    lista->listaFuncionarios[i].cargo,
-                    lista->listaFuncionarios[i].salario,
-                    lista->listaFuncionarios[i].idOficina,
-                    lista->listaFuncionarios[i].deletado);
-        }
+            for (int i = 0; i < lista->qtdFuncionarios; i++) {
+                fprintf(dadosFuncionarios, "%d;%s;%s;%s;%.2f;%d;%d\n",
+                        lista->listaFuncionarios[i].id,
+                        lista->listaFuncionarios[i].nome,
+                        lista->listaFuncionarios[i].cpf,
+                        lista->listaFuncionarios[i].cargo,
+                        lista->listaFuncionarios[i].salario,
+                        lista->listaFuncionarios[i].idOficina,
+                        lista->listaFuncionarios[i].deletado);
+            }
 
-        break;
+            break;
         case 2:
             dadosFuncionarios = fopen("DadosFuncionarios.bin", "wb");
 
-        if (dadosFuncionarios == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosFuncionarios == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdFuncionarios; i++) {
-            fwrite(&lista->listaFuncionarios[i], sizeof(struct Funcionarios), 1, dadosFuncionarios);
-        }
-        break;
+            for (int i = 0; i < lista->qtdFuncionarios; i++) {
+                fwrite(&lista->listaFuncionarios[i], sizeof(struct Funcionarios), 1, dadosFuncionarios);
+            }
+            break;
     }
 
     fclose(dadosFuncionarios);
@@ -179,7 +179,6 @@ int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
 
 // Cadastra um novo funcionário
 void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario) {
-
     int resultAlocacao = 0;
 
     if (lista->qtdFuncionarios == 0) {

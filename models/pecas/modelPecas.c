@@ -195,7 +195,6 @@ int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
 
 // Cadastra uma nova peca
 void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando) {
-
     int resultAlocacao = 0;
 
     if (lista->qtdPecas == 0) {

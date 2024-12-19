@@ -10,7 +10,7 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
         // Busca os dados armazenados em arquivos
-        if (lista->qtdVeiculos == 0){
+        if (lista->qtdVeiculos == 0) {
             buscarDadosVeiculosModel(lista, opcaoArmazenamento);
         }
         // Busca os dados em arquivos das tabelas relacionadas
@@ -55,7 +55,6 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
                         listaProprietarios->listaClientes = NULL;
                         listaProprietarios->qtdClientes = 0;
                     }
-
                 }
                 return;
             default:

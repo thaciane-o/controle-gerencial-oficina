@@ -179,7 +179,6 @@ int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca) {
 
 // Cadastra um novo serviço
 void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando) {
-
     int resultAlocacao = 0;
 
     if (lista->qtdServicos == 0) {

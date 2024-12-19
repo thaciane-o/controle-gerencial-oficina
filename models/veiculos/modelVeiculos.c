@@ -121,36 +121,36 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
         case 1:
             dadosVeiculos = fopen("DadosVeiculos.txt", "w");
 
-        if (dadosVeiculos == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosVeiculos == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdVeiculos; i++) {
-            //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
-            fprintf(dadosVeiculos, "%d;%s;%s;%s;%s;%d;%d;%d\n",
-                    lista->listaVeiculos[i].id,
-                    lista->listaVeiculos[i].modelo,
-                    lista->listaVeiculos[i].marca,
-                    lista->listaVeiculos[i].placa,
-                    lista->listaVeiculos[i].chassi,
-                    lista->listaVeiculos[i].anoFabricacao,
-                    lista->listaVeiculos[i].idProprietario,
-                    lista->listaVeiculos[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdVeiculos; i++) {
+                //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
+                fprintf(dadosVeiculos, "%d;%s;%s;%s;%s;%d;%d;%d\n",
+                        lista->listaVeiculos[i].id,
+                        lista->listaVeiculos[i].modelo,
+                        lista->listaVeiculos[i].marca,
+                        lista->listaVeiculos[i].placa,
+                        lista->listaVeiculos[i].chassi,
+                        lista->listaVeiculos[i].anoFabricacao,
+                        lista->listaVeiculos[i].idProprietario,
+                        lista->listaVeiculos[i].deletado);
+            }
+            break;
         case 2:
             dadosVeiculos = fopen("DadosVeiculos.bin", "wb");
 
-        if (dadosVeiculos == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosVeiculos == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdVeiculos; i++) {
-            fwrite(&lista->listaVeiculos[i], sizeof(struct Veiculos), 1, dadosVeiculos);
-        }
-        break;
+            for (int i = 0; i < lista->qtdVeiculos; i++) {
+                fwrite(&lista->listaVeiculos[i], sizeof(struct Veiculos), 1, dadosVeiculos);
+            }
+            break;
     }
     fclose(dadosVeiculos);
 

@@ -7,7 +7,8 @@
 #include "../../models/veiculos/modelVeiculos.h"
 
 // Menu de funcionalidades de clientes
-void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
+void gerenciarClientes(struct ListaClientes *lista, struct ListaVeiculos *listaVeiculos,
+                       struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
     int opcaoSubmenus;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -199,21 +200,21 @@ void listarClientes(struct ListaClientes *lista) {
         // Listagem de um único cliente
         case 1:
             printf("Insira o ID do cliente que deseja listar: ");
-        setbuf(stdin, NULL);
-        scanf("%d", &id);
-        listarClienteModel(lista, id);
-        break;
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            listarClienteModel(lista, id);
+            break;
         // Listagem por relação
         case 2:
             printf("Insira o ID da oficina desejada para a busca: ");
-        setbuf(stdin, NULL);
-        scanf("%d", &id);
-        buscarClientesPorOficinaModel(lista, id);
-        break;
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            buscarClientesPorOficinaModel(lista, id);
+            break;
         // Listagem de todos os clientes
         case 3:
             listarTodosClientesModel(lista);
-        break;
+            break;
         case 4:
             break;
         default: printf("Opção inválida!\n\n");

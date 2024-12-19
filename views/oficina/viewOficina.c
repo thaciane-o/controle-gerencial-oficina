@@ -7,7 +7,9 @@
 #include <stdlib.h>
 
 // Menu de funcionalidades de oficinas
-void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes, int opcaoArmazenamento) {
+void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
+                      struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
+                      int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -198,7 +200,8 @@ void listarOficina(struct ListaOficinas *lista) {
 }
 
 // Formulário de deleção de oficinas
-void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
+void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
+                    struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
     int id;
     // Pede o Id da oficina que será deletada
     printf("\n==============================\n"

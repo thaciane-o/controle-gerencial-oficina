@@ -124,36 +124,36 @@ void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazename
         case 1:
             dadosClientes = fopen("DadosClientes.txt", "w");
 
-        if (dadosClientes == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosClientes == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdClientes; i++) {
-            fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n",
-                    lista->listaClientes[i].id,
-                    lista->listaClientes[i].nome,
-                    lista->listaClientes[i].ddd,
-                    lista->listaClientes[i].telefone,
-                    lista->listaClientes[i].cpf_cnpj,
-                    lista->listaClientes[i].email,
-                    lista->listaClientes[i].endereco,
-                    lista->listaClientes[i].idOficina,
-                    lista->listaClientes[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdClientes; i++) {
+                fprintf(dadosClientes, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n",
+                        lista->listaClientes[i].id,
+                        lista->listaClientes[i].nome,
+                        lista->listaClientes[i].ddd,
+                        lista->listaClientes[i].telefone,
+                        lista->listaClientes[i].cpf_cnpj,
+                        lista->listaClientes[i].email,
+                        lista->listaClientes[i].endereco,
+                        lista->listaClientes[i].idOficina,
+                        lista->listaClientes[i].deletado);
+            }
+            break;
         case 2:
             dadosClientes = fopen("DadosClientes.bin", "wb");
 
-        if (dadosClientes == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosClientes == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdClientes; i++) {
-            fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
-        }
-        break;
+            for (int i = 0; i < lista->qtdClientes; i++) {
+                fwrite(&lista->listaClientes[i], sizeof(struct Clientes), 1, dadosClientes);
+            }
+            break;
     }
     fclose(dadosClientes);
 
@@ -194,7 +194,6 @@ int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
 
 // Cadastra um novo cliente
 void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente) {
-
     int resultAlocacao = 0;
 
     if (lista->qtdClientes == 0) {

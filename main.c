@@ -54,97 +54,122 @@ int main() {
     listaFuncionarios.qtdFuncionarios = 0;
 
     // Variáveis de controle do sistema
-    int opcaoMenu, opcaoArmazenamento = 0;
-
-    // Configuração de armazenamento inicial
-    do {
-        printf("Como deseja armazenar?\n"
-            "1. Texto\n"
-            "2. Binário\n"
-            "3. Memória\n"
-            "Escolha uma opção: ");
-        scanf("%d", &opcaoArmazenamento);
-    } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
+    int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
 
     // Menu principal do sistema
     do {
-        printf("\n=================================\n"
-            "|         MENU PRINCIPAL        |\n"
-            "=================================\n"
-            "|  1  | Oficina                 |\n"
-            "|  2  | Clientes                |\n"
-            "|  3  | Veículos                |\n"
-            "|  4  | Funcionários            |\n"
-            "|  5  | Serviços                |\n"
-            "|  6  | Fornecedores            |\n"
-            "|  7  | Peças                   |\n"
-            "|  8  | Sair                    |\n"
-            "=================================\n"
+        // Configuração de armazenamento inicial
+        do {
+            printf("\n===============================\n"
+                "|        ARMAZENAMENTO        |\n"
+                "===============================\n"
+                "| 1 | Texto                   |\n"
+                "| 2 | Binário                 |\n"
+                "| 3 | Memória                 |\n"
+                "===============================\n"
+                "Como deseja armazenar?  ");
+            scanf("%d", &opcaoArmazenamento);
+        } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
+
+        printf("\n=========================================\n"
+            "|             MENU PRINCIPAL            |\n"
+            "=========================================\n"
+            "|  1  | Cadastros                       |\n"
+            "|  2  | Agendamentos                    |\n"
+            "|  3  | Controle de estoque             |\n"
+            "|  4  | Gestão financeira               |\n"
+            "|  5  | Relatórios                      |\n"
+            "|  6  | Importação/exportação de dados  |\n"
+            "|  7  | Sair                            |\n"
+            "=========================================\n"
             "Escolha uma opção:\n");
         scanf("%d", &opcaoMenu);
 
         switch (opcaoMenu) {
+            // Menu de CRUD
             case 1:
-                gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes, opcaoArmazenamento);
-                break;
-            case 2:
-                gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
-                break;
-            case 3:
-                gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
-                break;
-            case 4:
-                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
-                break;
-            case 5:
-                gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
-                break;
-            case 6:
-                gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
-                break;
-            case 7:
-                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
-                break;
-            case 8:
-                if (listaClientes.qtdClientes > 0) {
-                    free(listaClientes.listaClientes);
-                    listaClientes.listaClientes = NULL;
-                }
+                do {
+                    printf("\n=================================\n"
+                        "|        MENU DE CADASTROS      |\n"
+                        "=================================\n"
+                        "|  1  | Oficina                 |\n"
+                        "|  2  | Clientes                |\n"
+                        "|  3  | Veículos                |\n"
+                        "|  4  | Funcionários            |\n"
+                        "|  5  | Serviços                |\n"
+                        "|  6  | Fornecedores            |\n"
+                        "|  7  | Peças                   |\n"
+                        "|  8  | Voltar                  |\n"
+                        "=================================\n"
+                        "Escolha uma opção:\n");
+                    scanf("%d", &opcaoCadastro);
 
-                if (listaPecas.qtdPecas > 0) {
-                    free(listaPecas.listaPecas);
-                    listaPecas.listaPecas = NULL;
-                }
+                    switch (opcaoCadastro) {
+                        case 1:
+                            gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes,
+                                             opcaoArmazenamento);
+                            break;
+                        case 2:
+                            gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
+                            break;
+                        case 3:
+                            gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
+                            break;
+                        case 4:
+                            gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
+                            break;
+                        case 5:
+                            gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
+                            break;
+                        case 6:
+                            gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
+                            break;
+                        case 7:
+                            gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
+                            break;
+                        case 8:
+                            if (listaClientes.qtdClientes > 0) {
+                                free(listaClientes.listaClientes);
+                                listaClientes.listaClientes = NULL;
+                            }
 
-                if (listaOficinas.qtdOficinas > 0) {
-                    free(listaOficinas.listaOficinas);
-                    listaOficinas.listaOficinas = NULL;
-                }
+                            if (listaPecas.qtdPecas > 0) {
+                                free(listaPecas.listaPecas);
+                                listaPecas.listaPecas = NULL;
+                            }
 
-                if (listaPecas.qtdPecas > 0) {
-                    free(listaPecas.listaPecas);
-                    listaPecas.listaPecas = NULL;
-                }
+                            if (listaOficinas.qtdOficinas > 0) {
+                                free(listaOficinas.listaOficinas);
+                                listaOficinas.listaOficinas = NULL;
+                            }
 
-                if (listaFornecedores.qtdFornecedores > 0) {
-                    free(listaFornecedores.listaFornecedores);
-                    listaFornecedores.listaFornecedores = NULL;
-                }
+                            if (listaPecas.qtdPecas > 0) {
+                                free(listaPecas.listaPecas);
+                                listaPecas.listaPecas = NULL;
+                            }
 
-                if (listaServicos.qtdServicos > 0) {
-                    free(listaServicos.listaServicos);
-                    listaServicos.listaServicos = NULL;
-                }
+                            if (listaFornecedores.qtdFornecedores > 0) {
+                                free(listaFornecedores.listaFornecedores);
+                                listaFornecedores.listaFornecedores = NULL;
+                            }
 
-                if (listaFuncionarios.qtdFuncionarios > 0) {
-                    free(listaFuncionarios.listaFuncionarios);
-                    listaFuncionarios.listaFuncionarios = NULL;
-                }
-                break;
-            default: printf("Opção inválida!\n\n");
+                            if (listaServicos.qtdServicos > 0) {
+                                free(listaServicos.listaServicos);
+                                listaServicos.listaServicos = NULL;
+                            }
+
+                            if (listaFuncionarios.qtdFuncionarios > 0) {
+                                free(listaFuncionarios.listaFuncionarios);
+                                listaFuncionarios.listaFuncionarios = NULL;
+                            }
+                            break;
+                        default: printf("Opção inválida!\n\n");
+                            break;
+                    }
+                } while (opcaoCadastro != 8);
                 break;
         }
-    } while (opcaoMenu != 8);
+    } while (opcaoMenu != 7);
 
     return 0;
 }

@@ -26,6 +26,9 @@
 #include "./views/servicos/viewServicos.h"
 #include "./models/servicos/modelServicos.h"
 
+#include "./views/agendamentos/viewAgendamentos.h"
+#include "./models/agendamentos/modelAgendamentos.h"
+
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
@@ -52,6 +55,9 @@ int main() {
 
     struct ListaFuncionarios listaFuncionarios;
     listaFuncionarios.qtdFuncionarios = 0;
+
+    struct ListaAgendamentos listaAgendamentos;
+    listaAgendamentos.qtdAgendamentos = 0;
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
@@ -168,6 +174,16 @@ int main() {
                     }
                 } while (opcaoCadastro != 8);
                 break;
+            case 2:
+                gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
+                                      opcaoArmazenamento);
+                break;
+            case 7:
+                if (listaAgendamentos.qtdAgendamentos > 0) {
+                    free(listaAgendamentos.listaAgendamentos);
+                    listaAgendamentos.listaAgendamentos = NULL;
+                }
+            break;
         }
     } while (opcaoMenu != 7);
 

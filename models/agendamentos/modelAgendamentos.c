@@ -200,7 +200,7 @@ void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendame
         return;
     }
 
-    //Cadastrando cliente na memória
+    //Cadastrando agendamento na memória
     agendamento->id = lista->qtdAgendamentos;
     agendamento->deletado = 0;
 
@@ -250,11 +250,11 @@ void listarTodosAgendamentosModel(struct ListaAgendamentos *lista) {
     if (lista->qtdAgendamentos > 0) {
         // Se há um ou mais cadastros, exibe todos
         for (int i = 0; i < lista->qtdAgendamentos; i++) {
-            //Verifica se o cliente esta deletado
+            // Verifica se o agendamento esta deletado
             if (lista->listaAgendamentos[i].deletado == 0) {
                 listado = 1;
                 printf("\n====================="
-                       "\n| AGENDAMENTO %d    |"
+                       "\n| AGENDAMENTO %d     |"
                        "\n====================="
                        "\nDATA E HORA: %s, %s"
                        "\nSERVIÇO: %d"
@@ -290,7 +290,7 @@ void listarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
         // Verifica se o agendamento está ou não deletado
         if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
             printf("\n====================="
-                   "\n| AGENDAMENTO %d    |"
+                   "\n| AGENDAMENTO %d     |"
                    "\n====================="
                    "\nDATA E HORA: %s, %s"
                    "\nSERVIÇO: %d"
@@ -313,7 +313,7 @@ void listarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
 }
 
 // Lista os agendamentos relacionados a um serviço, buscando pelo idServico
-void buscarAgendamentoPorServicoModel(struct ListaAgendamentos *lista, int idServico) {
+void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico) {
     int encontrado = 0;
 
     if (lista->qtdAgendamentos > 0) {
@@ -321,7 +321,7 @@ void buscarAgendamentoPorServicoModel(struct ListaAgendamentos *lista, int idSer
             if (lista->listaAgendamentos[i].idServico == idServico && lista->listaAgendamentos[i].deletado == 0) {
                 encontrado = 1;
                 printf("\n====================="
-                       "\n| AGENDAMENTO %d    |"
+                       "\n| AGENDAMENTO %d     |"
                        "\n====================="
                        "\nDATA E HORA: %s, %s"
                        "\nSERVIÇO: %d"
@@ -345,7 +345,7 @@ void buscarAgendamentoPorServicoModel(struct ListaAgendamentos *lista, int idSer
 }
 
 // Lista os agendamentos relacionados a um funcionário, buscando pelo idFuncionario
-void buscarAgendamentoPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario) {
+void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario) {
     int encontrado = 0;
 
     if (lista->qtdAgendamentos > 0) {
@@ -353,7 +353,7 @@ void buscarAgendamentoPorFuncionarioModel(struct ListaAgendamentos *lista, int i
             if (lista->listaAgendamentos[i].idServico == idFuncionario && lista->listaAgendamentos[i].deletado == 0) {
                 encontrado = 1;
                 printf("\n====================="
-                       "\n| AGENDAMENTO %d    |"
+                       "\n| AGENDAMENTO %d     |"
                        "\n====================="
                        "\nDATA E HORA: %s, %s"
                        "\nSERVIÇO: %d"
@@ -377,7 +377,7 @@ void buscarAgendamentoPorFuncionarioModel(struct ListaAgendamentos *lista, int i
 }
 
 // Lista os agendamentos relacionados a um veículo, buscando pelo idVeiculo
-void buscarAgendamentoPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo) {
+void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo) {
     int encontrado = 0;
 
     if (lista->qtdAgendamentos > 0) {
@@ -385,7 +385,7 @@ void buscarAgendamentoPorVeiculoModel(struct ListaAgendamentos *lista, int idVei
             if (lista->listaAgendamentos[i].idServico == idVeiculo && lista->listaAgendamentos[i].deletado == 0) {
                 encontrado = 1;
                 printf("\n====================="
-                       "\n| AGENDAMENTO %d    |"
+                       "\n| AGENDAMENTO %d     |"
                        "\n====================="
                        "\nDATA E HORA: %s, %s"
                        "\nSERVIÇO: %d"

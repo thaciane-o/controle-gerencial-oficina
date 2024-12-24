@@ -132,7 +132,7 @@ void atualizarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     printf("\n=================================\n"
         "|     ATUALIZAÇÃO DE CLIENTE    |\n"
         "=================================\n"
-        "Insira o cliente que deseja atualizar: ");
+        "Insira o ID do cliente que deseja atualizar: ");
     scanf("%d", &id);
 
     // Verifica se o ID inserido existe

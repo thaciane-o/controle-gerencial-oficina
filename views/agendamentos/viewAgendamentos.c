@@ -5,6 +5,7 @@
 #include "viewAgendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Menu de funcionalidades de agentamentos
 void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
@@ -50,13 +51,13 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 cadastrarAgendamentos(lista, listaFuncionarios, listaServicos, listaVeiculos);
                 break;
             case 2:
-                //atualizarCliente(lista, listaOficinas);
+                atualizarAgendamento(lista, listaFuncionarios, listaServicos, listaVeiculos);
                 break;
             case 3:
-                //deletarCliente(lista, listaVeiculos);
+                deletarAgendamento(lista);
                 break;
             case 4:
-                //listarClientes(lista);
+                listarAgendamentos(lista);
                 break;
             case 5:
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
@@ -96,9 +97,9 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     struct Agendamentos agendamento;
     int idFuncionarios, idServicos, idVeiculos;
 
-    printf("\n==================\n"
-        "|     AGENDAR    |\n"
-        "==================\n");
+    printf("\n=====================\n"
+        "|     AGENDAMENTO    |\n"
+        "=====================\n");
 
     printf("Insira o ID do serviço que será agendado: ");
     setbuf(stdin, NULL);
@@ -138,5 +139,153 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     setbuf(stdin, NULL);
     scanf(" %[^\n]", agendamento.hora);
 
+    for (int i = 0; i < lista->qtdAgendamentos; i++) {
+        if (lista->listaAgendamentos[i].idFuncionario == idFuncionarios &&
+            strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
+            strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
+            printf("Não é possível agendar um serviço com esse funcionário.\n\n");
+            return;
+        }
+    }
+
     cadastrarAgendamentosModel(lista, &agendamento);
+}
+
+// Formulário de atualização de agendamentos
+void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
+                          struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos) {
+    int id, idFuncionario, idVeiculo, idServico;
+    struct Agendamentos agendamento;
+
+    // Pede o ID do agendamento que será atualizado
+    printf("\n=====================================\n"
+        "|     ATUALIZAÇÃO DE AGENDAMENTO    |\n"
+        "=====================================\n"
+        "Insira o ID do agendamento que deseja atualizar: ");
+    scanf("%d", &id);
+
+    // Verifica se o ID inserido existe
+    int encontrado = verificarIDAgendamentoModel(lista, id);
+    if (encontrado == 0) {
+        return;
+    }
+
+    printf("Insira o ID do serviço que será agendado: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idServico);
+
+    printf("Insira o ID do funcionário que fará o serviço: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idFuncionario);
+
+    printf("Insira o ID do veículo a receber o serviço: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idVeiculo);
+
+    // Verificando existência do item relacionado
+    if (verificarIDServicoModel(listaServicos, idServico) == 0) {
+        return;
+    }
+
+    if (verificarIDFuncionariosModel(listaFuncionarios, idFuncionario) == 0) {
+        return;
+    }
+
+    if (verificarIDVeiculoModel(listaVeiculos, idVeiculo) == 0) {
+        return;
+    }
+
+    agendamento.idFuncionario = idFuncionario;
+    agendamento.idServico = idServico;
+    agendamento.idVeiculo = idServico;
+
+    // Preenchimento dos dados
+    printf("Insira a data prevista para realizar o serviço (DD/MM/YYYY): ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", agendamento.data);
+
+    printf("Insira a hora prevista para realizar o serviço (HH:MM): ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", agendamento.hora);
+
+    for (int i = 0; i < lista->qtdAgendamentos; i++) {
+        if (lista->listaAgendamentos[i].idFuncionario == idFuncionario &&
+            strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
+            strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
+            printf("Não é possível agendar um serviço com esse funcionário.\n\n");
+            return;
+        }
+    }
+
+    atualizarAgendamentosModel(lista, id, &agendamento);
+}
+
+// Listagem de agendamentos
+void listarAgendamentos(struct ListaAgendamentos *lista) {
+    int opcao, id;
+
+    // Pergunta o tipo de listagem
+    printf("\n=================================\n"
+        "|    LISTAGEM DE AGENDAMENTOS      |\n"
+        "====================================\n"
+        "| 1 | Busca por ID                 |\n"
+        "| 2 | Busca por ID do funcionário  |\n"
+        "| 3 | Busca por ID do veículo      |\n"
+        "| 4 | Busca por ID do serviço      |\n"
+        "| 5 | Listar todos                 |\n"
+        "| 6 | Voltar                       |\n"
+        "====================================\n"
+        "Escolha uma opção: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &opcao);
+
+    // Verifica a opção de listagem
+    switch (opcao) {
+        // Listagem de um único agendamento
+        case 1:
+            printf("Insira o ID do agendamento que deseja listar: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            listarAgendamentoModel(lista, id);
+            break;
+        // Listagem por relação
+        case 2:
+            printf("Insira o ID do funcionário desejado para a busca: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            buscarAgendamentosPorFuncionarioModel(lista, id);
+            break;
+        case 3:
+            printf("Insira o ID do veículo desejado para a busca: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            buscarAgendamentosPorVeiculoModel(lista, id);
+            break;
+        case 4:
+            printf("Insira o ID do serviço desejado para a busca: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            buscarAgendamentosPorServicoModel(lista, id);
+            break;
+        // Listagem de todos os agendamentos
+        case 5:
+            listarTodosAgendamentosModel(lista);
+            break;
+        case 6:
+            break;
+        default: printf("Opção inválida!\n\n");
+    }
+}
+
+// Formulário de deleção de agendamentos
+void deletarAgendamento(struct ListaAgendamentos *lista) {
+    int id;
+
+    // Pede o ID do agendamento que será deletada
+    printf("\n====================================\n"
+        "|     CANCELAMENTO DE AGENDAMENTO   |\n"
+        "====================================\n");
+    printf("Insira o ID do agendamento que deseja cancelar:");
+    scanf("%d", &id);
+    deletarAgendamentosModel(lista, id);
 }

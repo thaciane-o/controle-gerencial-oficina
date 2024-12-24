@@ -35,7 +35,7 @@ void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct 
 
 void listarTodosAgendamentosModel(struct ListaAgendamentos *lista);
 
-void listarAgendamentosModel(struct ListaAgendamentos *lista, int id);
+void listarAgendamentoModel(struct ListaAgendamentos *lista, int id);
 
 void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico);
 

@@ -5,11 +5,18 @@
 #include "../../models/veiculos/modelVeiculos.h"
 #include "../../models/servicos/modelServicos.h"
 
-void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
-                           struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos);
-
 void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
                        struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
                        int opcaoArmazenamento);
+
+void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
+                           struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos);
+
+void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
+                           struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos);
+
+void listarAgendamentos(struct ListaAgendamentos *lista);
+
+void deletarAgendamento(struct ListaAgendamentos *lista);
 
 #endif //AGENDAMENTOS_H

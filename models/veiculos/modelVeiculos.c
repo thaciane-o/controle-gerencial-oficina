@@ -1,4 +1,5 @@
 #include "modelVeiculos.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -350,13 +351,24 @@ void buscarVeiculosPorClienteModel(struct ListaVeiculos *lista, int idCliente) {
 }
 
 //Utilizei um modelo de deleção logica
-void deletarVeiculosModel(struct ListaVeiculos *lista, int id) {
+void deletarVeiculosModel(struct ListaVeiculos *lista, struct ListaAgendamentos *listaAgendamentos, int id) {
     int encontrado = 0;
 
     // Verifica se há algum cadastro
     if (lista->qtdVeiculos == 0) {
         printf("Nenhum veículo foi cadastrado!\n\n");
         return;
+    }
+
+    // Verifica relação com agendamento
+    if (listaAgendamentos->qtdAgendamentos > 0) {
+        for (int i = 0; i < listaAgendamentos->qtdAgendamentos; i++) {
+            if (listaAgendamentos->listaAgendamentos[i].idVeiculo == id && listaAgendamentos->listaAgendamentos[i].deletado == 0) {
+                printf(
+                    "Não foi possível deletar o veículo, pois os seus dados estão sendo utilizados em um agendamento que será realizado.\n\n");
+                return;
+            }
+        }
     }
 
     // Busca pelo id para fazer a deleção

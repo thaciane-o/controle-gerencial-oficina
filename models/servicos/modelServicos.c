@@ -1,4 +1,5 @@
 #include "modelServicos.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -327,7 +328,7 @@ void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina) {
 }
 
 // Deleta um serviço
-void deletarServicoModel(struct ListaServicos *lista, int id) {
+void deletarServicoModel(struct ListaServicos *lista, struct ListaAgendamentos *listaAgendamentos, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0;
 
@@ -335,6 +336,17 @@ void deletarServicoModel(struct ListaServicos *lista, int id) {
     if (lista->qtdServicos == 0) {
         printf("Nenhum serviço foi cadastrado.\n");
         return;
+    }
+
+    // Verifica relação com agendamento
+    if (listaAgendamentos->qtdAgendamentos > 0) {
+        for (int i = 0; i < listaAgendamentos->qtdAgendamentos; i++) {
+            if (listaAgendamentos->listaAgendamentos[i].idServico == id && listaAgendamentos->listaAgendamentos[i].deletado == 0) {
+                printf(
+                    "Não foi possível deletar o serviço, pois os seus dados estão sendo utilizados em um agendamento que será realizado.\n\n");
+                return;
+            }
+        }
     }
 
     // Busca pelo id para fazer a deleção

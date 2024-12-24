@@ -1,11 +1,15 @@
 #include "../../models/funcionarios/modelFuncionarios.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 #include "../../models/oficina/modelOficina.h"
 #include "viewFuncionarios.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../models/agendamentos/modelAgendamentos.h"
+
 // Menu de funcionalidades de funcionários
 void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas *listaOficinas,
+                          struct ListaAgendamentos *listaAgendamentos,
                           int opcaoArmazenamento) {
     int opcaoSubmenus;
     //Verifica se o programa esta rodando apenas em memória
@@ -17,6 +21,11 @@ void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
         // Busca os dados em arquivos das tabelas relacionadas
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
+        }
+
+        // Busca os dados em arquivos das tabelas relacionadas
+        if (lista->qtdFuncionarios > 0) {
+            buscarDadosAgendamentosModel(listaAgendamentos, opcaoArmazenamento);
         }
     }
 
@@ -41,7 +50,7 @@ void gerenciarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
                 atualizarFuncionario(lista, listaOficinas);
                 break;
             case 3:
-                deletarFuncionario(lista);
+                deletarFuncionario(lista, listaAgendamentos);
                 break;
             case 4:
                 listarFuncionario(lista);
@@ -197,7 +206,7 @@ void listarFuncionario(struct ListaFuncionarios *lista) {
 }
 
 // Formulário de deleção de funcionários
-void deletarFuncionario(struct ListaFuncionarios *lista) {
+void deletarFuncionario(struct ListaFuncionarios *lista, struct ListaAgendamentos *listaAgendamentos) {
     int id;
 
     // Pede o Id do funcionário que será deletada
@@ -207,5 +216,5 @@ void deletarFuncionario(struct ListaFuncionarios *lista) {
     printf("Insira o ID do funcionário que deseja deletar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    deletarFuncionariosModel(lista, id);
+    deletarFuncionariosModel(lista, listaAgendamentos, id);
 }

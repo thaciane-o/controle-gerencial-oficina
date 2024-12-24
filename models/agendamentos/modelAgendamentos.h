@@ -3,6 +3,7 @@
 #include "../../models/veiculos/modelVeiculos.h"
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 
 struct Agendamentos {
     int id;

@@ -1,11 +1,13 @@
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/oficina/modelOficina.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 #include "viewServicos.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 // Menu de funcionalidades de serviços
-void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
+void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOficinas,
+                      struct ListaAgendamentos *listaAgendamentos, int opcaoArmazenamento) {
     int opcaoSubmenus;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -13,9 +15,14 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
         if (lista->qtdServicos == 0) {
             buscarDadosServicoModel(lista, opcaoArmazenamento);
         }
+
         // Busca os dados em arquivos das tabelas relacionadas
         if (listaOficinas->qtdOficinas == 0) {
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
+        }
+
+        if (lista->qtdServicos > 0) {
+            buscarDadosAgendamentosModel(listaAgendamentos, opcaoArmazenamento);
         }
     }
 
@@ -40,7 +47,7 @@ void gerenciarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
                 atualizarServico(lista, listaOficinas);
                 break;
             case 3:
-                deletarServico(lista);
+                deletarServico(lista, listaAgendamentos);
                 break;
             case 4:
                 listarServico(lista);
@@ -189,7 +196,7 @@ void listarServico(struct ListaServicos *lista) {
 }
 
 // Formulário de deleção de serviços
-void deletarServico(struct ListaServicos *lista) {
+void deletarServico(struct ListaServicos *lista, struct ListaAgendamentos *listaAgendamentos) {
     int id;
 
     // Pede o Id do serviço que será deletada
@@ -199,5 +206,5 @@ void deletarServico(struct ListaServicos *lista) {
     printf("Insira o ID do serviço que deseja deletar:\n");
     setbuf(stdin, NULL);
     scanf("%d", &id);
-    deletarServicoModel(lista, id);
+    deletarServicoModel(lista, listaAgendamentos, id);
 }

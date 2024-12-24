@@ -123,13 +123,14 @@ int main() {
                                 gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
                                 break;
                             case 3:
-                                gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
+                                gerenciarVeiculos(&listaClientes, &listaVeiculos, &listaAgendamentos, opcaoArmazenamento);
                                 break;
                             case 4:
-                                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
+                                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, &listaAgendamentos,
+                                                     opcaoArmazenamento);
                                 break;
                             case 5:
-                                gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
+                                gerenciarServico(&listaServicos, &listaOficinas, &listaAgendamentos, opcaoArmazenamento);
                                 break;
                             case 6:
                                 gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
@@ -190,7 +191,6 @@ int main() {
                     break;
             }
         } while (opcaoMenu != 7);
-
     } while (opcaoArmazenamento != 4);
     return 0;
 }

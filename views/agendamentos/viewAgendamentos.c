@@ -36,10 +36,10 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         printf("\n==================================\n"
             "|      MENU DE AGENDAMENTOS      |\n"
             "==================================\n"
-            "|  1  | Cadastrar                |\n"
-            "|  2  | Atualizar                |\n"
-            "|  3  | Deletar                  |\n"
-            "|  4  | Listar                   |\n"
+            "|  1  | Agendar                  |\n"
+            "|  2  | Atualizar agendamento    |\n"
+            "|  3  | Cancelar agendamento     |\n"
+            "|  4  | Listar agendamento       |\n"
             "|  5  | Voltar                   |\n"
             "==================================\n"
             "Escolha uma opção: ");
@@ -96,9 +96,9 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     struct Agendamentos agendamento;
     int idFuncionarios, idServicos, idVeiculos;
 
-    printf("\n====================================\n"
-        "|     CADASTRO DE AGENDAMENTOS     |\n"
-        "====================================\n");
+    printf("\n==================\n"
+        "|     AGENDAR    |\n"
+        "==================\n");
 
     printf("Insira o ID do serviço que será agendado: ");
     setbuf(stdin, NULL);
@@ -108,9 +108,9 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     setbuf(stdin, NULL);
     scanf("%d", &idFuncionarios);
 
-    printf("Insira o ID do veículo que a receber o serviço: ");
+    printf("Insira o ID do veículo a receber o serviço: ");
     setbuf(stdin, NULL);
-    scanf("%d", &idServicos);
+    scanf("%d", &idVeiculos);
 
     // Verificando existência do item relacionado
     if (verificarIDServicoModel(listaServicos, idServicos) == 0) {

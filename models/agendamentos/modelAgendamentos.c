@@ -118,34 +118,34 @@ void armazenarDadosAgendamentosModel(struct ListaAgendamentos *lista, int opcaoA
         case 1:
             dadosAgendamentos = fopen("DadosAgendamentos.txt", "w");
 
-        if (dadosAgendamentos == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosAgendamentos == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdAgendamentos; i++) {
-            fprintf(dadosAgendamentos, "%d;%s;%s;%s;%s;%s;%s;%d;%d\n",
-                    lista->listaAgendamentos[i].id,
-                    lista->listaAgendamentos[i].data,
-                    lista->listaAgendamentos[i].hora,
-                    lista->listaAgendamentos[i].idFuncionario,
-                    lista->listaAgendamentos[i].idServico,
-                    lista->listaAgendamentos[i].idVeiculo,
-                    lista->listaAgendamentos[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdAgendamentos; i++) {
+                fprintf(dadosAgendamentos, "%d;%s;%s;%d;%d;%d;%d\n",
+                        lista->listaAgendamentos[i].id,
+                        lista->listaAgendamentos[i].data,
+                        lista->listaAgendamentos[i].hora,
+                        lista->listaAgendamentos[i].idFuncionario,
+                        lista->listaAgendamentos[i].idServico,
+                        lista->listaAgendamentos[i].idVeiculo,
+                        lista->listaAgendamentos[i].deletado);
+            }
+            break;
         case 2:
             dadosAgendamentos = fopen("DadosAgendamentos.bin", "wb");
 
-        if (dadosAgendamentos == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosAgendamentos == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdAgendamentos; i++) {
-            fwrite(&lista->listaAgendamentos[i], sizeof(struct Agendamentos), 1, dadosAgendamentos);
-        }
-        break;
+            for (int i = 0; i < lista->qtdAgendamentos; i++) {
+                fwrite(&lista->listaAgendamentos[i], sizeof(struct Agendamentos), 1, dadosAgendamentos);
+            }
+            break;
     }
     fclose(dadosAgendamentos);
 
@@ -206,5 +206,233 @@ void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendame
 
     lista->listaAgendamentos[lista->qtdAgendamentos - 1] = *agendamento;
 
-    printf("Agendamento realizado com sucesso!\n\n");
+    printf("Agendamento realizado com sucesso para a data %s às %s!\n\n", agendamento->data, agendamento->hora);
+}
+
+// Verifica a existência do id requisitado
+int verificarIDAgendamentoModel(struct ListaAgendamentos *lista, int id) {
+    // Procura o agendamento com o id inserido
+    if (lista->qtdAgendamentos > 0) {
+        for (int i = 0; i < lista->qtdAgendamentos; i++) {
+            if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
+                return 1;
+            }
+        }
+    } else {
+        printf("Nenhum agendamento foi realizado!\n\n");
+        return 0;
+    }
+
+    printf("Agendamento não encontrado!\n\n");
+
+    return 0;
+}
+
+// Atualiza o cadastro de um agendamento
+void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Agendamentos *agendamento) {
+    // Busca pelo id para fazer a alteração
+    for (int i = 0; i < lista->qtdAgendamentos; i++) {
+        if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
+            agendamento->id = lista->listaAgendamentos[i].id;
+            agendamento->deletado = lista->listaAgendamentos[i].deletado;
+            lista->listaAgendamentos[i] = *agendamento;
+            break;
+        }
+    }
+}
+
+// Lista todos os agendamentos
+void listarTodosAgendamentosModel(struct ListaAgendamentos *lista) {
+    // Variável para verificação de listagem
+    int listado = 0;
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdAgendamentos > 0) {
+        // Se há um ou mais cadastros, exibe todos
+        for (int i = 0; i < lista->qtdAgendamentos; i++) {
+            //Verifica se o cliente esta deletado
+            if (lista->listaAgendamentos[i].deletado == 0) {
+                listado = 1;
+                printf("\n====================="
+                       "\n| AGENDAMENTO %d    |"
+                       "\n====================="
+                       "\nDATA E HORA: %s, %s"
+                       "\nSERVIÇO: %d"
+                       "\nVEÍCULO: %d"
+                       "\nFUNCIONÁRIO: %d\n\n",
+                       lista->listaAgendamentos[i].id,
+                       lista->listaAgendamentos[i].data,
+                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].idServico,
+                       lista->listaAgendamentos[i].idVeiculo,
+                       lista->listaAgendamentos[i].idFuncionario);
+            }
+        }
+    }
+
+    // Se não houver, avisa que não há cadastros
+    if (listado == 0) {
+        printf("Nenhum agendamento realizado.\n\n");
+    }
+}
+
+// Lista um agendamento pelo Id
+void listarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
+    // Variável para verificar que agendamento foi encontrado
+    int encontrado = 0;
+
+    if (lista->qtdAgendamentos == 0) {
+        printf("Nenhum agendamento foi realizado!\n\n");
+        return;
+    }
+    // Se há um ou mais cadastros, procura pelo agendamento com o id desejado
+    for (int i = 0; i < lista->qtdAgendamentos; i++) {
+        // Verifica se o agendamento está ou não deletado
+        if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
+            printf("\n====================="
+                   "\n| AGENDAMENTO %d    |"
+                   "\n====================="
+                   "\nDATA E HORA: %s, %s"
+                   "\nSERVIÇO: %d"
+                   "\nVEÍCULO: %d"
+                   "\nFUNCIONÁRIO: %d\n\n",
+                   lista->listaAgendamentos[i].id,
+                   lista->listaAgendamentos[i].data,
+                   lista->listaAgendamentos[i].hora,
+                   lista->listaAgendamentos[i].idServico,
+                   lista->listaAgendamentos[i].idVeiculo,
+                   lista->listaAgendamentos[i].idFuncionario);
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Agendamento não encontrado!\n\n");
+    }
+}
+
+// Lista os agendamentos relacionados a um serviço, buscando pelo idServico
+void buscarAgendamentoPorServicoModel(struct ListaAgendamentos *lista, int idServico) {
+    int encontrado = 0;
+
+    if (lista->qtdAgendamentos > 0) {
+        for (int i = 0; i < lista->qtdAgendamentos; i++) {
+            if (lista->listaAgendamentos[i].idServico == idServico && lista->listaAgendamentos[i].deletado == 0) {
+                encontrado = 1;
+                printf("\n====================="
+                       "\n| AGENDAMENTO %d    |"
+                       "\n====================="
+                       "\nDATA E HORA: %s, %s"
+                       "\nSERVIÇO: %d"
+                       "\nVEÍCULO: %d"
+                       "\nFUNCIONÁRIO: %d\n\n",
+                       lista->listaAgendamentos[i].id,
+                       lista->listaAgendamentos[i].data,
+                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].idServico,
+                       lista->listaAgendamentos[i].idVeiculo,
+                       lista->listaAgendamentos[i].idFuncionario);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum agendamento encontrado.\n\n");
+        }
+    } else {
+        printf("Nenhum agendamento foi encontrado.\n\n");
+    }
+}
+
+// Lista os agendamentos relacionados a um funcionário, buscando pelo idFuncionario
+void buscarAgendamentoPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario) {
+    int encontrado = 0;
+
+    if (lista->qtdAgendamentos > 0) {
+        for (int i = 0; i < lista->qtdAgendamentos; i++) {
+            if (lista->listaAgendamentos[i].idServico == idFuncionario && lista->listaAgendamentos[i].deletado == 0) {
+                encontrado = 1;
+                printf("\n====================="
+                       "\n| AGENDAMENTO %d    |"
+                       "\n====================="
+                       "\nDATA E HORA: %s, %s"
+                       "\nSERVIÇO: %d"
+                       "\nVEÍCULO: %d"
+                       "\nFUNCIONÁRIO: %d\n\n",
+                       lista->listaAgendamentos[i].id,
+                       lista->listaAgendamentos[i].data,
+                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].idServico,
+                       lista->listaAgendamentos[i].idVeiculo,
+                       lista->listaAgendamentos[i].idFuncionario);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum agendamento encontrado.\n\n");
+        }
+    } else {
+        printf("Nenhum agendamento foi encontrado.\n\n");
+    }
+}
+
+// Lista os agendamentos relacionados a um veículo, buscando pelo idVeiculo
+void buscarAgendamentoPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo) {
+    int encontrado = 0;
+
+    if (lista->qtdAgendamentos > 0) {
+        for (int i = 0; i < lista->qtdAgendamentos; i++) {
+            if (lista->listaAgendamentos[i].idServico == idVeiculo && lista->listaAgendamentos[i].deletado == 0) {
+                encontrado = 1;
+                printf("\n====================="
+                       "\n| AGENDAMENTO %d    |"
+                       "\n====================="
+                       "\nDATA E HORA: %s, %s"
+                       "\nSERVIÇO: %d"
+                       "\nVEÍCULO: %d"
+                       "\nFUNCIONÁRIO: %d\n\n",
+                       lista->listaAgendamentos[i].id,
+                       lista->listaAgendamentos[i].data,
+                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].idServico,
+                       lista->listaAgendamentos[i].idVeiculo,
+                       lista->listaAgendamentos[i].idFuncionario);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum agendamento encontrado.\n\n");
+        }
+    } else {
+        printf("Nenhum agendamento foi encontrado.\n\n");
+    }
+}
+
+// Deleta um agendamento cadastrado
+void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id) {
+    int encontrado = 0;
+
+    // Verifica se há algum cadastro
+    if (lista->qtdAgendamentos == 0) {
+        printf("Nenhum agendamento foi realizado!\n\n");
+        return;
+    }
+
+    // Busca pelo id para fazer a deleção
+    for (int i = 0; i < lista->qtdAgendamentos; i++) {
+        if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
+            encontrado = 1;
+
+            lista->listaAgendamentos[i].deletado = 1;
+
+            printf("Agendamento cancelado com sucesso!\n\n");
+
+            break;
+        }
+    }
+
+    // Se não encontrar o id para deleção, avisa o usuário
+    if (!encontrado) {
+        printf("Agendamento não encontrado!\n\n");
+    }
 }

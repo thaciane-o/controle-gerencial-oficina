@@ -29,4 +29,20 @@ int realocarAgendamentosModel(struct ListaAgendamentos *lista, int qtdAlocada);
 
 void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendamentos *agendamento);
 
+int verificarIDAgendamentoModel(struct ListaAgendamentos *lista, int id);
+
+void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Agendamentos *agendamento);
+
+void listarTodosAgendamentosModel(struct ListaAgendamentos *lista);
+
+void listarAgendamentosModel(struct ListaAgendamentos *lista, int id);
+
+void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico);
+
+void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario);
+
+void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo);
+
+void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id);
+
 #endif //MODELAGENDAMENTOS_H

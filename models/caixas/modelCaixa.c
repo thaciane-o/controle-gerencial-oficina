@@ -47,6 +47,7 @@ void buscarDadosCaixasModel(struct ListaCaixas *lista, int opcaoArmazenamento) {
                 }
                 if (token != NULL) {
                     lista->listaCaixas[i].valorCaixa = atof(token);
+                    token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
                     lista->listaCaixas[i].idOficina = atoi(token);
@@ -230,6 +231,7 @@ void deletarCaixasModel(struct ListaCaixas *lista, int idOficina) {
 void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
     int encontrado = 0;
 
+
     if (lista->qtdCaixas > 0) {
         for (int i = 0; i < lista->qtdCaixas; i++) {
             if (lista->listaCaixas[i].idOficina == idOficina && lista->listaCaixas[i].deletado == 0) {
@@ -237,9 +239,10 @@ void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
                 printf("\n========================="
                        "\n| CAIXA DA OFICINA %d   |"
                        "\n========================="
-                       "\nVALOR DO CAIXA: R$%.2f",
+                       "\nVALOR DO CAIXA: R$%.2f\n\n",
                        idOficina,
                        lista->listaCaixas[i].valorCaixa);
+                break;
 
             }
         }

@@ -1,6 +1,7 @@
 #include "modelOficina.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
+#include "../../models/caixas/modelCaixa.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -194,7 +195,8 @@ int realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
 }
 
 // Cadastra uma nova oficina
-void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando) {
+void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando,
+                           struct ListaCaixas *listaCaixas) {
     int resultAlocacao = 0;
 
     if (lista->qtdOficinas == 0) {
@@ -216,6 +218,9 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
     lista->listaOficinas[lista->qtdOficinas - 1] = *oficinaCadastrando;
 
     printf("Oficina cadastrada com sucesso!\n\n");
+
+    // Cadastra caixa para a oficina
+    iniciarCaixasModel(listaCaixas, oficinaCadastrando->id);
 }
 
 // Verifica se o ID que deseja atualizar existe

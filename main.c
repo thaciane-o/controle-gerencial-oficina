@@ -26,6 +26,9 @@
 #include "./views/servicos/viewServicos.h"
 #include "./models/servicos/modelServicos.h"
 
+#include "./models/caixas/modelCaixa.h"
+#include "./views/financeiro/viewFinanceiro.h"
+
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
@@ -53,23 +56,31 @@ int main() {
     struct ListaFuncionarios listaFuncionarios;
     listaFuncionarios.qtdFuncionarios = 0;
 
+    struct ListaCaixas listaCaixas;
+    listaCaixas.qtdCaixas = 0;
+
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
 
+    /*
+     * TODO : Colocar configuração de armazenamento em tempo de execução (Trocar enquanto mexe no sistema)
+     */
+
+    // Configuração de armazenamento inicial
+    do {
+        printf("\n===============================\n"
+            "|        ARMAZENAMENTO        |\n"
+            "===============================\n"
+            "| 1 | Texto                   |\n"
+            "| 2 | Binário                 |\n"
+            "| 3 | Memória                 |\n"
+            "===============================\n"
+            "Como deseja armazenar?  ");
+        scanf("%d", &opcaoArmazenamento);
+    } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
+
     // Menu principal do sistema
     do {
-        // Configuração de armazenamento inicial
-        do {
-            printf("\n===============================\n"
-                "|        ARMAZENAMENTO        |\n"
-                "===============================\n"
-                "| 1 | Texto                   |\n"
-                "| 2 | Binário                 |\n"
-                "| 3 | Memória                 |\n"
-                "===============================\n"
-                "Como deseja armazenar?  ");
-            scanf("%d", &opcaoArmazenamento);
-        } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
 
         printf("\n=========================================\n"
             "|             MENU PRINCIPAL            |\n"
@@ -128,45 +139,71 @@ int main() {
                             gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
                             break;
                         case 8:
-                            if (listaClientes.qtdClientes > 0) {
-                                free(listaClientes.listaClientes);
-                                listaClientes.listaClientes = NULL;
-                            }
-
-                            if (listaPecas.qtdPecas > 0) {
-                                free(listaPecas.listaPecas);
-                                listaPecas.listaPecas = NULL;
-                            }
-
-                            if (listaOficinas.qtdOficinas > 0) {
-                                free(listaOficinas.listaOficinas);
-                                listaOficinas.listaOficinas = NULL;
-                            }
-
-                            if (listaPecas.qtdPecas > 0) {
-                                free(listaPecas.listaPecas);
-                                listaPecas.listaPecas = NULL;
-                            }
-
-                            if (listaFornecedores.qtdFornecedores > 0) {
-                                free(listaFornecedores.listaFornecedores);
-                                listaFornecedores.listaFornecedores = NULL;
-                            }
-
-                            if (listaServicos.qtdServicos > 0) {
-                                free(listaServicos.listaServicos);
-                                listaServicos.listaServicos = NULL;
-                            }
-
-                            if (listaFuncionarios.qtdFuncionarios > 0) {
-                                free(listaFuncionarios.listaFuncionarios);
-                                listaFuncionarios.listaFuncionarios = NULL;
-                            }
+                            // Sai do submenu
                             break;
                         default: printf("Opção inválida!\n\n");
                             break;
                     }
                 } while (opcaoCadastro != 8);
+                break;
+
+            // Menu de agendamentos
+            case 2:
+                break;
+
+            // Menu de controle de estoque
+            case 3:
+                break;
+
+            // Menu de gestão financeira
+            case 4:
+                gerenciarFinanceiro(&listaCaixas, &listaOficinas, opcaoArmazenamento);
+                break;
+
+            // Menu de relatórios
+            case 5:
+                break;
+
+            // Menu de importação/exportação
+            case 6:
+                break;
+
+            // Sair
+            case 7:
+                // Desaloca os ponteiros, caso ainda tenha algum.
+
+                    /*
+                     *  TODO : Colocar aqui TODAS as verificações para limpar ponteiros
+                     */
+
+                if (listaClientes.qtdClientes > 0) {
+                    free(listaClientes.listaClientes);
+                    listaClientes.listaClientes = NULL;
+                }
+                if (listaPecas.qtdPecas > 0) {
+                    free(listaPecas.listaPecas);
+                    listaPecas.listaPecas = NULL;
+                }
+                if (listaOficinas.qtdOficinas > 0) {
+                    free(listaOficinas.listaOficinas);
+                    listaOficinas.listaOficinas = NULL;
+                }
+                if (listaPecas.qtdPecas > 0) {
+                    free(listaPecas.listaPecas);
+                    listaPecas.listaPecas = NULL;
+                }
+                if (listaFornecedores.qtdFornecedores > 0) {
+                    free(listaFornecedores.listaFornecedores);
+                    listaFornecedores.listaFornecedores = NULL;
+                }
+                if (listaServicos.qtdServicos > 0) {
+                    free(listaServicos.listaServicos);
+                    listaServicos.listaServicos = NULL;
+                }
+                if (listaFuncionarios.qtdFuncionarios > 0) {
+                    free(listaFuncionarios.listaFuncionarios);
+                    listaFuncionarios.listaFuncionarios = NULL;
+                }
                 break;
         }
     } while (opcaoMenu != 7);

@@ -95,60 +95,85 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos) {
     struct Agendamentos agendamento;
-    int idFuncionarios, idServicos, idVeiculos;
+    int idFuncionarios, *idServicos, idVeiculos, qtdServicos = 0, idInput;
 
     printf("\n=====================\n"
-        "|     AGENDAMENTO    |\n"
+        "|     AGENDAMENTO   |\n"
         "=====================\n");
 
-    printf("Insira o ID do serviço que será agendado: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &idServicos);
+    do {
+        if (qtdServicos == 0) {
+            qtdServicos++;
+            idServicos = malloc(sizeof(int));
+        } else {
+            qtdServicos++;
+            idServicos = realloc(idServicos, qtdServicos * sizeof(int));
+        }
 
-    printf("Insira o ID do funcionário que fará o serviço: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &idFuncionarios);
+        printf("Insira o ID do serviço que será agendado (0 - finaliza a inserção): ");
+        setbuf(stdin, NULL);
+        scanf("%d", &idInput);
 
-    printf("Insira o ID do veículo a receber o serviço: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &idVeiculos);
+        // Verificando existência do item relacionado
+        if (idInput != 0) {
+            idServicos[qtdServicos - 1] = idInput;
+            verificarIDServicoModel(listaServicos, idServicos[qtdServicos - 1]);
+        }
+    } while (idInput != 0);
 
-    // Verificando existência do item relacionado
-    if (verificarIDServicoModel(listaServicos, idServicos) == 0) {
-        return;
-    }
+    if (qtdServicos > 1) {
+        printf("Insira o ID do funcionário que fará o serviço: ");
+        setbuf(stdin, NULL);
+        scanf("%d", &idFuncionarios);
 
-    if (verificarIDFuncionariosModel(listaFuncionarios, idFuncionarios) == 0) {
-        return;
-    }
+        printf("Insira o ID do veículo a receber o serviço: ");
+        setbuf(stdin, NULL);
+        scanf("%d", &idVeiculos);
 
-    if (verificarIDVeiculoModel(listaVeiculos, idVeiculos) == 0) {
-        return;
-    }
-
-    agendamento.idFuncionario = idFuncionarios;
-    agendamento.idServico = idServicos;
-    agendamento.idVeiculo = idServicos;
-
-    // Preenchimento dos dados
-    printf("Insira a data prevista para realizar o serviço (DD/MM/YYYY): ");
-    setbuf(stdin, NULL);
-    scanf(" %[^\n]", agendamento.data);
-
-    printf("Insira a hora prevista para realizar o serviço (HH:MM): ");
-    setbuf(stdin, NULL);
-    scanf(" %[^\n]", agendamento.hora);
-
-    for (int i = 0; i < lista->qtdAgendamentos; i++) {
-        if (lista->listaAgendamentos[i].idFuncionario == idFuncionarios &&
-            strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
-            strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
-            printf("Não é possível agendar um serviço com esse funcionário.\n\n");
+        // Verificando existência do item relacionado
+        if (verificarIDFuncionariosModel(listaFuncionarios, idFuncionarios) == 0) {
             return;
         }
+
+        if (verificarIDVeiculoModel(listaVeiculos, idVeiculos) == 0) {
+            return;
+        }
+
+        agendamento.idFuncionario = idFuncionarios;
+        agendamento.idVeiculo = idVeiculos;
+
+        // Preenchimento dos dados
+        printf("Insira a data prevista para realizar o serviço (DD/MM/YYYY): ");
+        setbuf(stdin, NULL);
+        scanf(" %[^\n]", agendamento.data);
+
+        printf("Insira a hora prevista para realizar o serviço (HH:MM): ");
+        setbuf(stdin, NULL);
+        scanf(" %[^\n]", agendamento.hora);
+
+        for (int i = 0; i < lista->qtdAgendamentos; i++) {
+            if (lista->listaAgendamentos[i].idFuncionario == idFuncionarios &&
+                strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
+                strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
+                printf("Não é possível agendar um serviço com esse funcionário.\n\n");
+                return;
+            }
+        }
+
+        for (int i = 0; i < (qtdServicos - 1); i++) {
+            agendamento.idServico = idServicos[i];
+            cadastrarAgendamentosModel(lista, &agendamento);
+        }
+
+        printf("Agendamento realizado com sucesso para a data %s às %s!\n\n", agendamento.data, agendamento.hora);
+    } else {
+        printf("Nenhum serviço agendado!\n\n");
     }
 
-    cadastrarAgendamentosModel(lista, &agendamento);
+    if (qtdServicos > 0) {
+        free(idServicos);
+        idServicos = NULL;
+    }
 }
 
 // Formulário de atualização de agendamentos

@@ -205,8 +205,6 @@ void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendame
     agendamento->deletado = 0;
 
     lista->listaAgendamentos[lista->qtdAgendamentos - 1] = *agendamento;
-
-    printf("Agendamento realizado com sucesso para a data %s às %s!\n\n", agendamento->data, agendamento->hora);
 }
 
 // Verifica a existência do id requisitado

@@ -217,7 +217,7 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
 
     lista->listaOficinas[lista->qtdOficinas - 1] = *oficinaCadastrando;
 
-    printf("Oficina cadastrada com sucesso!\n\n");
+    printf("\nOficina cadastrada com sucesso!\n");
 
     // Cadastra caixa para a oficina
     iniciarCaixasModel(listaCaixas, oficinaCadastrando->id);

@@ -1,6 +1,8 @@
 #ifndef MODELPAGAMENTOCLIENTE_H
 #define MODELPAGAMENTOCLIENTE_H
 
+#include "../caixas/modelCaixa.h"
+
 struct PagamentosCliente {
     int id;
     int tipoPagamento;
@@ -28,6 +30,8 @@ int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtd
 
 void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento);
 
+void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int idCliente);
 
+void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
 
 #endif //MODELPAGAMENTOCLIENTE_H

@@ -9,4 +9,6 @@ void consultarValorCaixa(struct ListaCaixas *lista);
 
 void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas, struct ListaPagamentosCliente *listaPagamentosCliente);
 
+void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosCliente, struct ListaCaixas *listaCaixas);
+
 #endif //FINANCEIRO_H

@@ -1,8 +1,9 @@
-
 #include "modelPagamentoCliente.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "../caixas/modelCaixa.h"
 
 // Busca os dados dos pagamentos de cliente nos arquivos
 void buscarDadosPagamentosClienteModel(struct ListaPagamentosCliente *lista, int opcaoArmazenamento) {
@@ -128,36 +129,36 @@ void armazenarDadosPagamentosClienteModel(struct ListaPagamentosCliente *lista, 
         case 1:
             dadosPagamentosCliente = fopen("DadosPagamentosCliente.txt", "w");
 
-        if (dadosPagamentosCliente == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosPagamentosCliente == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
-            fprintf(dadosPagamentosCliente, "%d;%d;%f;%s;%s;%s;%d;%d;%d\n",
-                    lista->listaPagamentosCliente[i].id,
-                    lista->listaPagamentosCliente[i].tipoPagamento,
-                    lista->listaPagamentosCliente[i].valor,
-                    lista->listaPagamentosCliente[i].dataPagamento,
-                    lista->listaPagamentosCliente[i].dataAReceber,
-                    lista->listaPagamentosCliente[i].dataRecebimento,
-                    lista->listaPagamentosCliente[i].idCaixa,
-                    lista->listaPagamentosCliente[i].idCliente,
-                    lista->listaPagamentosCliente[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+                fprintf(dadosPagamentosCliente, "%d;%d;%f;%s;%s;%s;%d;%d;%d\n",
+                        lista->listaPagamentosCliente[i].id,
+                        lista->listaPagamentosCliente[i].tipoPagamento,
+                        lista->listaPagamentosCliente[i].valor,
+                        lista->listaPagamentosCliente[i].dataPagamento,
+                        lista->listaPagamentosCliente[i].dataAReceber,
+                        lista->listaPagamentosCliente[i].dataRecebimento,
+                        lista->listaPagamentosCliente[i].idCaixa,
+                        lista->listaPagamentosCliente[i].idCliente,
+                        lista->listaPagamentosCliente[i].deletado);
+            }
+            break;
         case 2:
             dadosPagamentosCliente = fopen("DadosPagamentosCliente.bin", "wb");
 
-        if (dadosPagamentosCliente == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosPagamentosCliente == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
-            fwrite(&lista->listaPagamentosCliente[i], sizeof(struct PagamentosCliente), 1, dadosPagamentosCliente);
-        }
-        break;
+            for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+                fwrite(&lista->listaPagamentosCliente[i], sizeof(struct PagamentosCliente), 1, dadosPagamentosCliente);
+            }
+            break;
     }
     fclose(dadosPagamentosCliente);
 
@@ -187,7 +188,8 @@ int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtd
     }
 
     lista->qtdPagamentosCliente += qtdAlocada;
-    lista->listaPagamentosCliente = realloc(lista->listaPagamentosCliente, lista->qtdPagamentosCliente * sizeof(struct PagamentosCliente));
+    lista->listaPagamentosCliente = realloc(lista->listaPagamentosCliente,
+                                            lista->qtdPagamentosCliente * sizeof(struct PagamentosCliente));
 
     if (lista->listaPagamentosCliente == NULL) {
         printf("Erro: Memória insuficiente\n\n");
@@ -196,9 +198,8 @@ int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtd
     return 1;
 }
 
-// Formulário para cadastro de pagamento de cliente
+// Cadastro de pagamento de cliente
 void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento) {
-
     int resultAlocacao = 0;
 
     if (lista->qtdPagamentosCliente == 0) {
@@ -220,5 +221,80 @@ void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struc
     lista->listaPagamentosCliente[lista->qtdPagamentosCliente - 1] = *pagamento;
 
     printf("Pagamento cadastrado com sucesso!\n\n");
+}
 
+// Lista todas os pagamentos de um cliente desejado
+void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int idCliente) {
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosCliente > 0) {
+        int encontrado = 0;
+        char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
+        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+            if (lista->listaPagamentosCliente[i].idCliente == idCliente && lista->listaPagamentosCliente[i].deletado ==
+                0) {
+                encontrado = 1;
+                printf("\n============================\n"
+                    "| PAGAMENTO %d\n"
+                    "============================\n"
+                    "TIPO PAGAMENTO: %s\n"
+                    "DATA PAGAMENTO: %s\n"
+                    "DATA A RECEBER: %s\n"
+                    "DATA RECEBIMENTO: %s\n"
+                    "CLIENTE: %d\n",
+                    lista->listaPagamentosCliente[i].id,
+                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                    lista->listaPagamentosCliente[i].dataPagamento,
+                    lista->listaPagamentosCliente[i].dataAReceber,
+                    lista->listaPagamentosCliente[i].dataRecebimento,
+                    lista->listaPagamentosCliente[i].idCliente);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum pagamento encontrado\n\n");
+        }
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
+}
+
+// Lista todas as contas de uma oficina
+void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
+
+    int idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosCliente > 0) {
+        int encontrado = 0;
+        char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
+        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+            if (lista->listaPagamentosCliente[i].idCaixa == idCaixa && lista->listaPagamentosCliente[i].deletado ==
+                0) {
+                encontrado = 1;
+                printf("\n============================\n"
+                    "| PAGAMENTO %d\n"
+                    "============================\n"
+                    "TIPO PAGAMENTO: %s\n"
+                    "DATA PAGAMENTO: %s\n"
+                    "DATA A RECEBER: %s\n"
+                    "DATA RECEBIMENTO: %s\n"
+                    "CLIENTE: %d\n",
+                    lista->listaPagamentosCliente[i].id,
+                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                    lista->listaPagamentosCliente[i].dataPagamento,
+                    lista->listaPagamentosCliente[i].dataAReceber,
+                    lista->listaPagamentosCliente[i].dataRecebimento,
+                    lista->listaPagamentosCliente[i].idCliente);
+                }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum pagamento encontrado\n\n");
+        }
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
 }

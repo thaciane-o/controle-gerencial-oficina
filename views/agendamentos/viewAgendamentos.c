@@ -110,7 +110,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             idServicos = realloc(idServicos, qtdServicos * sizeof(int));
         }
 
-        printf("Insira o ID do serviço que será agendado (0 - finaliza a inserção): ");
+        printf("Insira o ID do serviço que será agendado (0 para finalizar): ");
         setbuf(stdin, NULL);
         scanf("%d", &idInput);
 

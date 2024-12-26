@@ -332,8 +332,8 @@ void listarOficinaModel(struct ListaOficinas *lista, int id) {
 
 // Deleta uma oficina cadastrada
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
-                         struct ListaServicos *listaServicos,
-                         struct ListaClientes *listaClientes, int id) {
+                         struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
+                         struct ListaCaixas *listaCaixas, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0, existeRelacao = 0;
 
@@ -398,5 +398,9 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
     // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Oficina não encontrada.\n\n");
+        return;
     }
+
+    // Se tiver encontrado, também deleta o caixa da oficina
+    deletarCaixasModel(listaCaixas, id);
 }

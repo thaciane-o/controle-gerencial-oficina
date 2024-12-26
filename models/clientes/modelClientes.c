@@ -404,3 +404,21 @@ void deletarClientesModel(struct ListaClientes *lista, struct ListaVeiculos *lis
         printf("Cliente não encontrado!\n\n");
     }
 }
+
+// Pega ID da oficina de um cliente desejado
+int getIdOficinaClientesModel(struct ListaClientes *lista, int idCliente) {
+    int encontrado = 0;
+
+    if (lista->qtdClientes > 0) {
+        for (int i = 0; i < lista->qtdClientes; i++) {
+            if (lista->listaClientes[i].deletado == 0 && lista->listaClientes[i].id == idCliente) {
+                return lista->listaClientes[i].idOficina;
+            }
+        }
+        printf("Nenhum cliente encontrado.\n\n");
+    } else {
+        printf("Nenhum cliente foi cadastrado.\n\n");
+    }
+
+    return -1;
+}

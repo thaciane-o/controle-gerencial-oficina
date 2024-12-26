@@ -33,4 +33,6 @@ void creditarDinheiroCaixaModel();
 // Remove dinheiro de um caixa
 void debitarDinheiroCaixaModel();
 */
+
+getIdCaixaModel(struct ListaCaixas *lista, int idOficina);
 #endif //MODELCAIXA_H

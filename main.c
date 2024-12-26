@@ -27,6 +27,7 @@
 #include "./models/servicos/modelServicos.h"
 
 #include "./models/caixas/modelCaixa.h"
+#include "./models/pagamentoCliente/modelPagamentoCliente.h"
 #include "./views/financeiro/viewFinanceiro.h"
 
 int main() {
@@ -58,6 +59,9 @@ int main() {
 
     struct ListaCaixas listaCaixas;
     listaCaixas.qtdCaixas = 0;
+
+    struct ListaPagamentosCliente listaPagamentosCliente;
+    listaPagamentosCliente.qtdPagamentosCliente = 0;
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
@@ -157,7 +161,7 @@ int main() {
 
             // Menu de gestão financeira
             case 4:
-                gerenciarFinanceiro(&listaCaixas, &listaOficinas, opcaoArmazenamento);
+                gerenciarFinanceiro(&listaCaixas, &listaOficinas, &listaClientes, &listaPagamentosCliente, opcaoArmazenamento);
                 break;
 
             // Menu de relatórios

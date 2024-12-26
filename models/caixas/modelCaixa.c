@@ -231,7 +231,6 @@ void deletarCaixasModel(struct ListaCaixas *lista, int idOficina) {
 void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
     int encontrado = 0;
 
-
     if (lista->qtdCaixas > 0) {
         for (int i = 0; i < lista->qtdCaixas; i++) {
             if (lista->listaCaixas[i].idOficina == idOficina && lista->listaCaixas[i].deletado == 0) {
@@ -254,4 +253,20 @@ void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
     } else {
         printf("Nenhum caixa foi cadastrado.\n\n");
     }
+}
+
+// Pega ID do caixa de uma oficina desejada
+int getIdCaixaModel(struct ListaCaixas *lista, int idOficina) {
+    if (lista->qtdCaixas > 0) {
+        for (int i = 0; i < lista->qtdCaixas; i++) {
+            if (lista->listaCaixas[i].idOficina == idOficina && lista->listaCaixas[i].deletado == 0) {
+                return lista->listaCaixas[i].id;
+            }
+        }
+        printf("Nenhum caixa encontrado.\n\n");
+    } else {
+        printf("Nenhum caixa foi cadastrado.\n\n");
+    }
+
+    return -1;
 }

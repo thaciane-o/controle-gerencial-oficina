@@ -223,5 +223,5 @@ void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lista
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
-    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, id);
+    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas, id);
 }

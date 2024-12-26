@@ -208,6 +208,14 @@ int main() {
                     free(listaFuncionarios.listaFuncionarios);
                     listaFuncionarios.listaFuncionarios = NULL;
                 }
+                if (listaCaixas.qtdCaixas > 0) {
+                    free(listaCaixas.listaCaixas);
+                    listaCaixas.listaCaixas = NULL;
+                }
+                if (listaPagamentosCliente.qtdPagamentosCliente > 0) {
+                    free(listaPagamentosCliente.listaPagamentosCliente);
+                    listaPagamentosCliente.listaPagamentosCliente = NULL;
+                }
                 break;
         }
     } while (opcaoMenu != 7);

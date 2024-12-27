@@ -42,6 +42,10 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         }
     }
 
+    /*
+    * TODO : Gerar efeitos financeiros e debitar peças dos estoques
+    */
+
     do {
         printf("\n==================================\n"
             "|      MENU DE AGENDAMENTOS      |\n"
@@ -210,7 +214,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             cadastrarAgendamentosModel(lista, &agendamento);
 
             strcpy(ordensServico.descricao, listaServicos->listaServicos[i].descricao);
-            ordensServico.idAgendamentos = lista->qtdAgendamentos - 1;
+            ordensServico.idAgendamentos = lista->qtdAgendamentos;
             ordensServico.valorTotal = listaServicos->listaServicos[i].preco;
 
             for (int j = 0; j < (qtdPecas - 1); j++) {
@@ -221,6 +225,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         }
 
         printf("Agendamento realizado com sucesso para a data %s às %s!\n\n", agendamento.data, agendamento.hora);
+        printf("Ordem de serviço emitida com sucesso!\n\n");
     } else {
         printf("Nenhum serviço agendado!\n\n");
     }

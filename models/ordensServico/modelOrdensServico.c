@@ -190,7 +190,6 @@ void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct Ordens
     }
 
     // Cadastrando ordem de serviço na memória
-    lista->qtdOrdensServico++;
     ordensServico->deletado = 0;
 
     lista->listaOrdensServico[lista->qtdOrdensServico - 1] = *ordensServico;

@@ -10,6 +10,7 @@
 // Menu de funcionalidades de agentamentos
 void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
+                           struct ListaOrdensServico *listaOrdensServico, struct ListaPecas *listaPecas,
                            int opcaoArmazenamento) {
     int opcaoSubmenus;
     //Verifica se o programa esta rodando apenas em memória
@@ -31,6 +32,14 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         if (listaServicos->qtdServicos == 0) {
             buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
         }
+
+        if (listaOrdensServico->qtdOrdensServico == 0) {
+            buscarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
+        }
+
+        if (listaPecas->qtdPecas == 0) {
+            buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
+        }
     }
 
     do {
@@ -48,7 +57,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarAgendamentos(lista, listaFuncionarios, listaServicos, listaVeiculos);
+                cadastrarAgendamentos(lista, listaFuncionarios, listaServicos, listaVeiculos, listaOrdensServico, listaPecas);
                 break;
             case 2:
                 atualizarAgendamento(lista, listaFuncionarios, listaServicos, listaVeiculos);
@@ -63,24 +72,37 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
                     if (lista->qtdAgendamentos > 0) {
                         armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
+                        armazenarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
                     }
 
                     if (listaVeiculos->qtdVeiculos > 0) {
-                        free(listaVeiculos->listaVeiculos);
                         listaVeiculos->listaVeiculos = NULL;
+                        free(listaVeiculos->listaVeiculos);
                         listaVeiculos->qtdVeiculos = 0;
                     }
 
                     if (listaServicos->qtdServicos > 0) {
-                        free(listaServicos->listaServicos);
                         listaServicos->listaServicos = NULL;
+                        free(listaServicos->listaServicos);
                         listaServicos->qtdServicos = 0;
                     }
 
                     if (listaFuncionarios->qtdFuncionarios > 0) {
-                        free(listaFuncionarios->listaFuncionarios);
                         listaFuncionarios->listaFuncionarios = NULL;
+                        free(listaFuncionarios->listaFuncionarios);
                         listaFuncionarios->qtdFuncionarios = 0;
+                    }
+
+                    if (listaOrdensServico->qtdOrdensServico > 0) {
+                        listaOrdensServico->listaOrdensServico = NULL;
+                        free(listaOrdensServico->listaOrdensServico);
+                        listaOrdensServico->qtdOrdensServico = 0;
+                    }
+
+                    if (listaPecas->qtdPecas > 0) {
+                        listaPecas->listaPecas = NULL;
+                        free(listaPecas->listaPecas);
+                        listaPecas->qtdPecas = 0;
                     }
                 }
                 return;
@@ -93,33 +115,51 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
 // Formulário de cadastro de agendamentos
 void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
-                           struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos) {
+                           struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
+                           struct ListaOrdensServico *listaOrdensServico, struct ListaPecas *listaPecas) {
     struct Agendamentos agendamento;
-    int idFuncionarios, *idServicos, idVeiculos, qtdServicos = 0, idInput;
+    struct OrdensServico ordensServico;
+    int idFuncionarios, idVeiculos, qtdServicos = 0, idInputServico, qtdPecas = 0, idInputPecas;
+    int *idServicos = malloc(sizeof(int));
+    int *idPecas = malloc(sizeof(int));
 
-    printf("\n=====================\n"
-        "|     AGENDAMENTO   |\n"
-        "=====================\n");
+    printf("\n======================\n"
+        "|     AGENDAMENTO    |\n"
+        "======================\n");
 
     do {
-        if (qtdServicos == 0) {
-            qtdServicos++;
-            idServicos = malloc(sizeof(int));
-        } else {
-            qtdServicos++;
+        qtdServicos++;
+        if (qtdServicos > 1) {
             idServicos = realloc(idServicos, qtdServicos * sizeof(int));
         }
 
         printf("Insira o ID do serviço que será agendado (0 para finalizar): ");
         setbuf(stdin, NULL);
-        scanf("%d", &idInput);
+        scanf("%d", &idInputServico);
 
         // Verificando existência do item relacionado
-        if (idInput != 0) {
-            idServicos[qtdServicos - 1] = idInput;
+        if (idInputServico != 0) {
+            idServicos[qtdServicos - 1] = idInputServico;
             verificarIDServicoModel(listaServicos, idServicos[qtdServicos - 1]);
+
+            do {
+                qtdPecas++;
+                if (qtdPecas > 1) {
+                    idPecas = realloc(idPecas, qtdPecas * sizeof(int));
+                }
+
+                printf("Insira o ID da peça que será necessária para realizar esse serviço (0 para finalizar): ");
+                setbuf(stdin, NULL);
+                scanf("%d", &idInputPecas);
+
+                // Verificando existência do item relacionado
+                if (idInputPecas != 0) {
+                    idPecas[qtdPecas - 1] = idInputPecas;
+                    verificarIDPecaModel(listaPecas, idPecas[qtdPecas - 1]);
+                }
+            } while (idInputPecas != 0);
         }
-    } while (idInput != 0);
+    } while (idInputServico != 0);
 
     if (qtdServicos > 1) {
         printf("Insira o ID do funcionário que fará o serviço: ");
@@ -156,6 +196,11 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
                 strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
                 printf("Não é possível agendar um serviço com esse funcionário.\n\n");
+                idPecas = NULL;
+                free(idPecas);
+
+                idServicos = NULL;
+                free(idServicos);
                 return;
             }
         }
@@ -163,6 +208,16 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         for (int i = 0; i < (qtdServicos - 1); i++) {
             agendamento.idServico = idServicos[i];
             cadastrarAgendamentosModel(lista, &agendamento);
+
+            strcpy(ordensServico.descricao, listaServicos->listaServicos[i].descricao);
+            ordensServico.idAgendamentos = lista->qtdAgendamentos - 1;
+            ordensServico.valorTotal = listaServicos->listaServicos[i].preco;
+
+            for (int j = 0; j < (qtdPecas - 1); j++) {
+                ordensServico.valorTotal += listaPecas->listaPecas[j].precoVenda;
+                ordensServico.idPecas = idPecas[j];
+                cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
+            }
         }
 
         printf("Agendamento realizado com sucesso para a data %s às %s!\n\n", agendamento.data, agendamento.hora);
@@ -170,10 +225,12 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         printf("Nenhum serviço agendado!\n\n");
     }
 
-    if (qtdServicos > 0) {
-        free(idServicos);
-        idServicos = NULL;
-    }
+    idPecas = NULL;
+    free(idPecas);
+
+    idServicos = NULL;
+    free(idServicos);
+
 }
 
 // Formulário de atualização de agendamentos

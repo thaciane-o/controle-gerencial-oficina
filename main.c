@@ -29,6 +29,8 @@
 #include "./views/agendamentos/viewAgendamentos.h"
 #include "./models/agendamentos/modelAgendamentos.h"
 
+#include "./models/ordensServico/modelOrdensServico.h"
+
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
@@ -58,6 +60,9 @@ int main() {
 
     struct ListaAgendamentos listaAgendamentos;
     listaAgendamentos.qtdAgendamentos = 0;
+
+    struct ListaOrdensServico listaOrdensServico;
+    listaOrdensServico.qtdOrdensServico = 0;
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
@@ -123,14 +128,16 @@ int main() {
                                 gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
                                 break;
                             case 3:
-                                gerenciarVeiculos(&listaClientes, &listaVeiculos, &listaAgendamentos, opcaoArmazenamento);
+                                gerenciarVeiculos(&listaClientes, &listaVeiculos, &listaAgendamentos,
+                                                  opcaoArmazenamento);
                                 break;
                             case 4:
                                 gerenciarFuncionario(&listaFuncionarios, &listaOficinas, &listaAgendamentos,
                                                      opcaoArmazenamento);
                                 break;
                             case 5:
-                                gerenciarServico(&listaServicos, &listaOficinas, &listaAgendamentos, opcaoArmazenamento);
+                                gerenciarServico(&listaServicos, &listaOficinas, &listaAgendamentos,
+                                                 opcaoArmazenamento);
                                 break;
                             case 6:
                                 gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
@@ -181,12 +188,18 @@ int main() {
                     break;
                 case 2:
                     gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
+                                          &listaOrdensServico, &listaPecas,
                                           opcaoArmazenamento);
                     break;
                 case 7:
                     if (listaAgendamentos.qtdAgendamentos > 0) {
                         free(listaAgendamentos.listaAgendamentos);
                         listaAgendamentos.listaAgendamentos = NULL;
+                    }
+
+                    if (listaOrdensServico.qtdOrdensServico > 0) {
+                        free(listaOrdensServico.listaOrdensServico);
+                        listaOrdensServico.listaOrdensServico = NULL;
                     }
                     break;
             }

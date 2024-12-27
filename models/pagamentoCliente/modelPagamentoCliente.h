@@ -34,4 +34,8 @@ void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int id
 
 void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
 
+void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
+
+void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
+
 #endif //MODELPAGAMENTOCLIENTE_H

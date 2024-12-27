@@ -150,6 +150,7 @@ void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosClien
             printf("Insira o ID da oficina que deseja consultar: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
+            listaPagamentosRecebidosClienteModel(listaPagamentosCliente, listaCaixas, id);
             break;
 
         case 4:
@@ -159,6 +160,7 @@ void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosClien
             printf("Insira o ID da oficina que deseja consultar: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
+            listaPagamentosNaoRecebidosClienteModel(listaPagamentosCliente, listaCaixas, id);
             break;
 
         case 5:

@@ -298,3 +298,83 @@ void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *l
         printf("Nenhum pagamento foi cadastrado\n\n");
     }
 }
+
+// Listar todas as contas já recebidas de uma oficina
+void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
+    int idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosCliente > 0) {
+        int encontrado = 0;
+        char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
+        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+            if (lista->listaPagamentosCliente[i].idCaixa == idCaixa && lista->listaPagamentosCliente[i].deletado ==
+                0 && strcmp(lista->listaPagamentosCliente[i].dataRecebimento, "Não pago") != 0) {
+                encontrado = 1;
+                printf("\n============================\n"
+                    "| PAGAMENTO %d\n"
+                    "============================\n"
+                    "TIPO PAGAMENTO: %s\n"
+                    "DATA PAGAMENTO: %s\n"
+                    "DATA A RECEBER: %s\n"
+                    "DATA RECEBIMENTO: %s\n"
+                    "CLIENTE: %d\n",
+                    lista->listaPagamentosCliente[i].id,
+                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                    lista->listaPagamentosCliente[i].dataPagamento,
+                    lista->listaPagamentosCliente[i].dataAReceber,
+                    lista->listaPagamentosCliente[i].dataRecebimento,
+                    lista->listaPagamentosCliente[i].idCliente);
+                }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum pagamento encontrado\n\n");
+        }
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
+}
+
+// Listar todas as contas não recebidas de uma oficina
+void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
+    int idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosCliente > 0) {
+        int encontrado = 0;
+        char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
+        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+            if (lista->listaPagamentosCliente[i].idCaixa == idCaixa && lista->listaPagamentosCliente[i].deletado ==
+                0 && strcmp(lista->listaPagamentosCliente[i].dataRecebimento, "Não pago") == 0) {
+                encontrado = 1;
+                printf("\n============================\n"
+                    "| PAGAMENTO %d\n"
+                    "============================\n"
+                    "TIPO PAGAMENTO: %s\n"
+                    "DATA PAGAMENTO: %s\n"
+                    "DATA A RECEBER: %s\n"
+                    "DATA RECEBIMENTO: %s\n"
+                    "CLIENTE: %d\n",
+                    lista->listaPagamentosCliente[i].id,
+                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                    lista->listaPagamentosCliente[i].dataPagamento,
+                    lista->listaPagamentosCliente[i].dataAReceber,
+                    lista->listaPagamentosCliente[i].dataRecebimento,
+                    lista->listaPagamentosCliente[i].idCliente);
+                }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum pagamento encontrado\n\n");
+        }
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
+}

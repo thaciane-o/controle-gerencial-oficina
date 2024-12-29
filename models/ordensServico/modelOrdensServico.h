@@ -26,4 +26,10 @@ int realocarOrdensServicoModel(struct ListaOrdensServico *lista, int qtdAlocada)
 
 void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico);
 
+void atualizarOrdensServicoModel(struct ListaOrdensServico *lista, int id, struct OrdensServico *ordensServico);
+
+void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id);
+
+void deletarOrdensServicoModel(struct ListaOrdensServico *lista, int id);
+
 #endif //MODELORDENSSERVICOS_H

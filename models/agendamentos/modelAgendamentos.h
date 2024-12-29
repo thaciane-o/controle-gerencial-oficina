@@ -4,6 +4,7 @@
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/agendamentos/modelAgendamentos.h"
+#include "../../models/ordensServico/modelOrdensServico.h"
 
 struct Agendamentos {
     int id;
@@ -34,7 +35,7 @@ int verificarIDAgendamentoModel(struct ListaAgendamentos *lista, int id);
 
 void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Agendamentos *agendamento);
 
-void listarTodosAgendamentosModel(struct ListaAgendamentos *lista);
+void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
 void listarAgendamentoModel(struct ListaAgendamentos *lista, int id);
 

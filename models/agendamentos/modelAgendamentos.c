@@ -2,6 +2,7 @@
 #include "../../models/veiculos/modelVeiculos.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
+#include "../../models/ordensServico/modelOrdensServico.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -240,7 +241,7 @@ void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct 
 }
 
 // Lista todos os agendamentos
-void listarTodosAgendamentosModel(struct ListaAgendamentos *lista) {
+void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico) {
     // Variável para verificação de listagem
     int listado = 0;
 
@@ -264,6 +265,9 @@ void listarTodosAgendamentosModel(struct ListaAgendamentos *lista) {
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
                        lista->listaAgendamentos[i].idFuncionario);
+                printf("%d\n", listaOrdensServico->qtdOrdensServico);
+
+                listarOrdensServicoModel(listaOrdensServico, lista->listaAgendamentos[i].id);
             }
         }
     }

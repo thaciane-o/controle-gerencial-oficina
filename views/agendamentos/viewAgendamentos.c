@@ -42,10 +42,6 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         }
     }
 
-    /*
-    * TODO : Gerar efeitos financeiros e debitar peças dos estoques
-    */
-
     do {
         printf("\n==================================\n"
             "|      MENU DE AGENDAMENTOS      |\n"
@@ -70,7 +66,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 deletarAgendamento(lista);
                 break;
             case 4:
-                listarAgendamentos(lista);
+                listarAgendamentos(lista, listaOrdensServico);
                 break;
             case 5:
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
@@ -308,7 +304,7 @@ void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionar
 }
 
 // Listagem de agendamentos
-void listarAgendamentos(struct ListaAgendamentos *lista) {
+void listarAgendamentos(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico) {
     int opcao, id;
 
     // Pergunta o tipo de listagem
@@ -356,7 +352,7 @@ void listarAgendamentos(struct ListaAgendamentos *lista) {
             break;
         // Listagem de todos os agendamentos
         case 5:
-            listarTodosAgendamentosModel(lista);
+            listarTodosAgendamentosModel(lista, listaOrdensServico);
             break;
         case 6:
             break;

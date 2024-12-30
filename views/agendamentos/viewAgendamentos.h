@@ -19,6 +19,6 @@ void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionar
 
 void listarAgendamentos(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
-void deletarAgendamento(struct ListaAgendamentos *lista);
+void deletarAgendamento(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
 #endif //AGENDAMENTOS_H

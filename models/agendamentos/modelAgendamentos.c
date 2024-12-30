@@ -258,15 +258,15 @@ void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaO
                        "\nDATA E HORA: %s, %s"
                        "\nSERVIÇO: %d"
                        "\nVEÍCULO: %d"
-                       "\nFUNCIONÁRIO: %d\n\n",
+                       "\nFUNCIONÁRIO: %d\n",
                        lista->listaAgendamentos[i].id,
                        lista->listaAgendamentos[i].data,
                        lista->listaAgendamentos[i].hora,
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
                        lista->listaAgendamentos[i].idFuncionario);
-                printf("%d\n", listaOrdensServico->qtdOrdensServico);
 
+                // Listando ordens de serviço
                 listarOrdensServicoModel(listaOrdensServico, lista->listaAgendamentos[i].id);
             }
         }
@@ -279,7 +279,7 @@ void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaO
 }
 
 // Lista um agendamento pelo Id
-void listarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
+void listarAgendamentoModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico) {
     // Variável para verificar que agendamento foi encontrado
     int encontrado = 0;
 
@@ -304,6 +304,10 @@ void listarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
                    lista->listaAgendamentos[i].idServico,
                    lista->listaAgendamentos[i].idVeiculo,
                    lista->listaAgendamentos[i].idFuncionario);
+
+            // Listando ordens de serviço
+            listarOrdensServicoModel(listaOrdensServico, lista->listaAgendamentos[i].id);
+
             encontrado = 1;
             break;
         }
@@ -315,7 +319,8 @@ void listarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
 }
 
 // Lista os agendamentos relacionados a um serviço, buscando pelo idServico
-void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico) {
+void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico,
+                                       struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
 
     if (lista->qtdAgendamentos > 0) {
@@ -335,6 +340,9 @@ void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idSe
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
                        lista->listaAgendamentos[i].idFuncionario);
+
+                // Listando ordens de serviço
+                listarOrdensServicoModel(listaOrdensServico, lista->listaAgendamentos[i].id);
             }
         }
 
@@ -347,7 +355,8 @@ void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idSe
 }
 
 // Lista os agendamentos relacionados a um funcionário, buscando pelo idFuncionario
-void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario) {
+void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario,
+                                           struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
 
     if (lista->qtdAgendamentos > 0) {
@@ -367,6 +376,9 @@ void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int 
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
                        lista->listaAgendamentos[i].idFuncionario);
+
+                // Listando ordens de serviço
+                listarOrdensServicoModel(listaOrdensServico, lista->listaAgendamentos[i].id);
             }
         }
 
@@ -379,7 +391,8 @@ void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int 
 }
 
 // Lista os agendamentos relacionados a um veículo, buscando pelo idVeiculo
-void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo) {
+void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo,
+                                       struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
 
     if (lista->qtdAgendamentos > 0) {
@@ -399,6 +412,9 @@ void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVe
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
                        lista->listaAgendamentos[i].idFuncionario);
+
+                // Listando ordens de serviço
+                listarOrdensServicoModel(listaOrdensServico, lista->listaAgendamentos[i].id);
             }
         }
 
@@ -411,7 +427,7 @@ void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVe
 }
 
 // Deleta um agendamento cadastrado
-void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id) {
+void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
 
     // Verifica se há algum cadastro
@@ -428,6 +444,13 @@ void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id) {
             lista->listaAgendamentos[i].deletado = 1;
 
             printf("Agendamento cancelado com sucesso!\n\n");
+
+            // Deletando ordens de serviço relacionadas ao agendamento (cascade)
+            for (int j = 0; j < listaOrdensServico->qtdOrdensServico; j++) {
+                if (listaOrdensServico->listaOrdensServico[j].idAgendamentos == id) {
+                    deletarOrdensServicoModel(listaOrdensServico, id);
+                }
+            }
 
             break;
         }

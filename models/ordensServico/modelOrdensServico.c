@@ -1,7 +1,4 @@
 #include "modelOrdensServico.h"
-
-#include <iso646.h>
-
 #include "../../models/pecas/modelPecas.h"
 #include "../../models/agendamentos/modelAgendamentos.h"
 #include <stdio.h>
@@ -16,7 +13,7 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
 
     switch (opcaoArmazenamento) {
         case 1:
-            dadosOrdensServico = fopen("DadosOrdensServiço.txt", "r");
+            dadosOrdensServico = fopen("DadosOrdensServico.txt", "r");
 
             if (dadosOrdensServico == NULL) {
                 return;
@@ -49,11 +46,11 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaOrdensServico[i].idAgendamentos = atoi(token);
+                    lista->listaOrdensServico[i].idPecas = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaOrdensServico[i].idPecas = atoi(token);
+                    lista->listaOrdensServico[i].idAgendamentos = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -212,7 +209,6 @@ void atualizarOrdensServicoModel(struct ListaOrdensServico *lista, int id, struc
     }
 }
 
-
 // Lista uma ordem de serviço pelo ID
 void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     if (lista->qtdOrdensServico == 0) {
@@ -224,7 +220,7 @@ void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
         // Verifica se a ordem de serviço está ou não deletado
         if (lista->listaOrdensServico[i].idAgendamentos == id && lista->listaOrdensServico[i].deletado == 0) {
-            printf("\n====================="
+            printf("====================="
                    "\n| ORDEM DE SERVIÇO  |"
                    "\n====================="
                    "\nDESCRIÇÃO DO SERVIÇO: %s"

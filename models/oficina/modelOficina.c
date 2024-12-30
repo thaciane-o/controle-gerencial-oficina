@@ -1,6 +1,7 @@
 #include "modelOficina.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
+#include "../../models/caixas/modelCaixa.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -27,11 +28,13 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             if (lista->qtdOficinas > 0) {
                 lista->listaOficinas = malloc(lista->qtdOficinas * sizeof(struct Oficinas));
             } else {
+                fclose(dadosOficinas);
                 return;
             }
 
             if (lista->listaOficinas == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosOficinas);
                 return;
             }
 
@@ -92,11 +95,13 @@ void buscarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazenamento
             if (lista->qtdOficinas > 0) {
                 lista->listaOficinas = malloc(lista->qtdOficinas * sizeof(struct Oficinas));
             } else {
+                fclose(dadosOficinas);
                 return;
             }
 
             if (lista->listaOficinas == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosOficinas);
                 return;
             }
 
@@ -190,7 +195,8 @@ int realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
 }
 
 // Cadastra uma nova oficina
-void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando) {
+void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando,
+                           struct ListaCaixas *listaCaixas) {
     int resultAlocacao = 0;
 
     if (lista->qtdOficinas == 0) {
@@ -211,7 +217,10 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
 
     lista->listaOficinas[lista->qtdOficinas - 1] = *oficinaCadastrando;
 
-    printf("Oficina cadastrada com sucesso!\n\n");
+    printf("\nOficina cadastrada com sucesso!\n");
+
+    // Cadastra caixa para a oficina
+    iniciarCaixasModel(listaCaixas, oficinaCadastrando->id);
 }
 
 // Verifica se o ID que deseja atualizar existe
@@ -323,8 +332,8 @@ void listarOficinaModel(struct ListaOficinas *lista, int id) {
 
 // Deleta uma oficina cadastrada
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
-                         struct ListaServicos *listaServicos,
-                         struct ListaClientes *listaClientes, int id) {
+                         struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
+                         struct ListaCaixas *listaCaixas, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0, existeRelacao = 0;
 
@@ -389,5 +398,9 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
     // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
         printf("Oficina não encontrada.\n\n");
+        return;
     }
+
+    // Se tiver encontrado, também deleta o caixa da oficina
+    deletarCaixasModel(listaCaixas, id);
 }

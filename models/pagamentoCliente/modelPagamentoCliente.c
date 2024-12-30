@@ -199,7 +199,8 @@ int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtd
 }
 
 // Cadastro de pagamento de cliente
-void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento) {
+void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento,
+                                     struct ListaCaixas *listaCaixas) {
     int resultAlocacao = 0;
 
     if (lista->qtdPagamentosCliente == 0) {
@@ -221,6 +222,11 @@ void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struc
     lista->listaPagamentosCliente[lista->qtdPagamentosCliente - 1] = *pagamento;
 
     printf("Pagamento cadastrado com sucesso!\n\n");
+
+    // Se pagamento com dinheiro, credita no caixa na hora
+    if (pagamento->tipoPagamento == 1) {
+        creditarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
+    }
 }
 
 // Lista todas os pagamentos de um cliente desejado
@@ -234,19 +240,19 @@ void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int id
                 0) {
                 encontrado = 1;
                 printf("\n============================\n"
-                    "| PAGAMENTO %d\n"
-                    "============================\n"
-                    "TIPO PAGAMENTO: %s\n"
-                    "DATA PAGAMENTO: %s\n"
-                    "DATA A RECEBER: %s\n"
-                    "DATA RECEBIMENTO: %s\n"
-                    "CLIENTE: %d\n",
-                    lista->listaPagamentosCliente[i].id,
-                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
-                    lista->listaPagamentosCliente[i].dataPagamento,
-                    lista->listaPagamentosCliente[i].dataAReceber,
-                    lista->listaPagamentosCliente[i].dataRecebimento,
-                    lista->listaPagamentosCliente[i].idCliente);
+                       "| PAGAMENTO %d\n"
+                       "============================\n"
+                       "TIPO PAGAMENTO: %s\n"
+                       "DATA PAGAMENTO: %s\n"
+                       "DATA A RECEBER: %s\n"
+                       "DATA RECEBIMENTO: %s\n"
+                       "CLIENTE: %d\n",
+                       lista->listaPagamentosCliente[i].id,
+                       tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                       lista->listaPagamentosCliente[i].dataPagamento,
+                       lista->listaPagamentosCliente[i].dataAReceber,
+                       lista->listaPagamentosCliente[i].dataRecebimento,
+                       lista->listaPagamentosCliente[i].idCliente);
             }
         }
 
@@ -259,8 +265,8 @@ void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int id
 }
 
 // Lista todas as contas de uma oficina
-void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
-
+void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas,
+                                                int idOficina) {
     int idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
@@ -275,20 +281,20 @@ void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *l
                 0) {
                 encontrado = 1;
                 printf("\n============================\n"
-                    "| PAGAMENTO %d\n"
-                    "============================\n"
-                    "TIPO PAGAMENTO: %s\n"
-                    "DATA PAGAMENTO: %s\n"
-                    "DATA A RECEBER: %s\n"
-                    "DATA RECEBIMENTO: %s\n"
-                    "CLIENTE: %d\n",
-                    lista->listaPagamentosCliente[i].id,
-                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
-                    lista->listaPagamentosCliente[i].dataPagamento,
-                    lista->listaPagamentosCliente[i].dataAReceber,
-                    lista->listaPagamentosCliente[i].dataRecebimento,
-                    lista->listaPagamentosCliente[i].idCliente);
-                }
+                       "| PAGAMENTO %d\n"
+                       "============================\n"
+                       "TIPO PAGAMENTO: %s\n"
+                       "DATA PAGAMENTO: %s\n"
+                       "DATA A RECEBER: %s\n"
+                       "DATA RECEBIMENTO: %s\n"
+                       "CLIENTE: %d\n",
+                       lista->listaPagamentosCliente[i].id,
+                       tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                       lista->listaPagamentosCliente[i].dataPagamento,
+                       lista->listaPagamentosCliente[i].dataAReceber,
+                       lista->listaPagamentosCliente[i].dataRecebimento,
+                       lista->listaPagamentosCliente[i].idCliente);
+            }
         }
 
         if (encontrado == 0) {
@@ -300,7 +306,8 @@ void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *l
 }
 
 // Listar todas as contas já recebidas de uma oficina
-void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
+void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas,
+                                          int idOficina) {
     int idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
@@ -315,20 +322,20 @@ void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, 
                 0 && strcmp(lista->listaPagamentosCliente[i].dataRecebimento, "Não pago") != 0) {
                 encontrado = 1;
                 printf("\n============================\n"
-                    "| PAGAMENTO %d\n"
-                    "============================\n"
-                    "TIPO PAGAMENTO: %s\n"
-                    "DATA PAGAMENTO: %s\n"
-                    "DATA A RECEBER: %s\n"
-                    "DATA RECEBIMENTO: %s\n"
-                    "CLIENTE: %d\n",
-                    lista->listaPagamentosCliente[i].id,
-                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
-                    lista->listaPagamentosCliente[i].dataPagamento,
-                    lista->listaPagamentosCliente[i].dataAReceber,
-                    lista->listaPagamentosCliente[i].dataRecebimento,
-                    lista->listaPagamentosCliente[i].idCliente);
-                }
+                       "| PAGAMENTO %d\n"
+                       "============================\n"
+                       "TIPO PAGAMENTO: %s\n"
+                       "DATA PAGAMENTO: %s\n"
+                       "DATA A RECEBER: %s\n"
+                       "DATA RECEBIMENTO: %s\n"
+                       "CLIENTE: %d\n",
+                       lista->listaPagamentosCliente[i].id,
+                       tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                       lista->listaPagamentosCliente[i].dataPagamento,
+                       lista->listaPagamentosCliente[i].dataAReceber,
+                       lista->listaPagamentosCliente[i].dataRecebimento,
+                       lista->listaPagamentosCliente[i].idCliente);
+            }
         }
 
         if (encontrado == 0) {
@@ -340,7 +347,8 @@ void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, 
 }
 
 // Listar todas as contas não recebidas de uma oficina
-void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
+void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas,
+                                             int idOficina) {
     int idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
@@ -355,20 +363,20 @@ void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *list
                 0 && strcmp(lista->listaPagamentosCliente[i].dataRecebimento, "Não pago") == 0) {
                 encontrado = 1;
                 printf("\n============================\n"
-                    "| PAGAMENTO %d\n"
-                    "============================\n"
-                    "TIPO PAGAMENTO: %s\n"
-                    "DATA PAGAMENTO: %s\n"
-                    "DATA A RECEBER: %s\n"
-                    "DATA RECEBIMENTO: %s\n"
-                    "CLIENTE: %d\n",
-                    lista->listaPagamentosCliente[i].id,
-                    tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
-                    lista->listaPagamentosCliente[i].dataPagamento,
-                    lista->listaPagamentosCliente[i].dataAReceber,
-                    lista->listaPagamentosCliente[i].dataRecebimento,
-                    lista->listaPagamentosCliente[i].idCliente);
-                }
+                       "| PAGAMENTO %d\n"
+                       "============================\n"
+                       "TIPO PAGAMENTO: %s\n"
+                       "DATA PAGAMENTO: %s\n"
+                       "DATA A RECEBER: %s\n"
+                       "DATA RECEBIMENTO: %s\n"
+                       "CLIENTE: %d\n",
+                       lista->listaPagamentosCliente[i].id,
+                       tiposPagamento[lista->listaPagamentosCliente[i].tipoPagamento - 1],
+                       lista->listaPagamentosCliente[i].dataPagamento,
+                       lista->listaPagamentosCliente[i].dataAReceber,
+                       lista->listaPagamentosCliente[i].dataRecebimento,
+                       lista->listaPagamentosCliente[i].idCliente);
+            }
         }
 
         if (encontrado == 0) {

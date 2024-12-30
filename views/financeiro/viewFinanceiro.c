@@ -55,7 +55,7 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
 
         switch (opcaoSubmenus) {
             case 1:
-                consultarValorCaixa(listaCaixas);
+                consultarValorCaixa(listaCaixas, listaPagamentosCliente);
                 break;
             case 2:
                 consultarContasAReceber(listaPagamentosCliente, listaCaixas);
@@ -108,7 +108,7 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
 }
 
 // Busca de valor de caixa de oficina
-void consultarValorCaixa(struct ListaCaixas *lista) {
+void consultarValorCaixa(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente) {
     int idOficina;
 
     printf("\n======================================\n"
@@ -119,7 +119,7 @@ void consultarValorCaixa(struct ListaCaixas *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
-    mostrarCaixasModel(lista, idOficina);
+    mostrarCaixasModel(lista, idOficina, listaPagamentosCliente);
 }
 
 // Busca por contas a receber
@@ -304,7 +304,7 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
         strcpy(pagamento.dataRecebimento, "Não pago");
     }
 
-    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento);
+    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);
 }
 
 // Efeuta pagamento a fornecedor (Oficina paga ao fornecedor)
@@ -360,5 +360,5 @@ void efetuarPagamentoFornecedor(struct ListaPagamentosFornecedor *listaPagamento
     setbuf(stdin, NULL);
     scanf(" %[^\n]", pagamento.dataPagamento);
 
-    cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento);
+    cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento, listaCaixas);
 }

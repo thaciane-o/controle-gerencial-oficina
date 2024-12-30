@@ -287,7 +287,7 @@ void listarTodosClientesModel(struct ListaClientes *lista) {
 
     // Se não houver, avisa que não há cadastros
     if (listado == 0) {
-        printf("Nenhum cliente cadastrado\n\n");
+        printf("Nenhum cliente cadastrado.\n\n");
     }
 }
 

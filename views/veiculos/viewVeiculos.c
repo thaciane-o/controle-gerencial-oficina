@@ -1,11 +1,13 @@
 #include "../../models/veiculos/modelVeiculos.h"
 #include "../../models/clientes/modelClientes.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 #include "viewVeiculos.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 // Menu de funcionalidades de veículos
-void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista, int opcaoArmazenamento) {
+void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVeiculos *lista,
+                       struct ListaAgendamentos *listaAgendamentos, int opcaoArmazenamento) {
     int opcaoSubmenus;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -16,6 +18,10 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
         // Busca os dados em arquivos das tabelas relacionadas
         if (listaProprietarios->qtdClientes == 0) {
             buscarDadosClientesModel(listaProprietarios, opcaoArmazenamento);
+        }
+
+        if (lista->qtdVeiculos > 0) {
+            buscarDadosAgendamentosModel(listaAgendamentos, opcaoArmazenamento);
         }
     }
 
@@ -40,7 +46,7 @@ void gerenciarVeiculos(struct ListaClientes *listaProprietarios, struct ListaVei
                 atualizarVeiculo(listaProprietarios, lista);
                 break;
             case 3:
-                deletarVeiculo(lista);
+                deletarVeiculo(lista, listaAgendamentos);
                 break;
             case 4:
                 listarVeiculo(lista);
@@ -206,7 +212,7 @@ void listarVeiculo(struct ListaVeiculos *lista) {
 }
 
 // Formulário de deleção de veículos
-void deletarVeiculo(struct ListaVeiculos *lista) {
+void deletarVeiculo(struct ListaVeiculos *lista, struct ListaAgendamentos *listaAgendamentos) {
     int id;
     // Pede o Id do veículo que será deletada
     printf("\n=================================\n"
@@ -214,5 +220,5 @@ void deletarVeiculo(struct ListaVeiculos *lista) {
         "=================================\n");
     printf("Insira o ID veículo que deseja deletar:");
     scanf("%d", &id);
-    deletarVeiculosModel(lista, id);
+    deletarVeiculosModel(lista, listaAgendamentos, id);
 }

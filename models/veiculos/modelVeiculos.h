@@ -1,6 +1,7 @@
 #ifndef MODELVEICULOS_H
 #define MODELVEICULOS_H
 
+#include "../../models/agendamentos/modelAgendamentos.h"
 
 struct Veiculos {
     int id;
@@ -28,7 +29,7 @@ int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada);
 
 void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *veiculo);
 
-void deletarVeiculosModel(struct ListaVeiculos *lista, int id);
+void deletarVeiculosModel(struct ListaVeiculos *lista, struct ListaAgendamentos *listaAgendamentos, int id);
 
 void atualizarVeiculosModel(struct ListaVeiculos *lista, int id, struct Veiculos *veiculo);
 

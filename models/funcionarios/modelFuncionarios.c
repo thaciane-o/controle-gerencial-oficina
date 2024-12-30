@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../agendamentos/modelAgendamentos.h"
+
 // Busca os dados de funcionários nos arquivos
 void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArmazenamento) {
     int i = 0;
@@ -359,13 +361,24 @@ void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOfi
 }
 
 // Deleta um funcionário cadastrado
-void deletarFuncionariosModel(struct ListaFuncionarios *lista, int id) {
+void deletarFuncionariosModel(struct ListaFuncionarios *lista, struct ListaAgendamentos *listaAgendamentos, int id) {
     int encontrado = 0;
 
     // Verifica se há algum cadastro
     if (lista->qtdFuncionarios == 0) {
         printf("Nenhum funcionário foi cadastrado!\n\n");
         return;
+    }
+
+    // Verifica relação com agendamento
+    if (listaAgendamentos->qtdAgendamentos > 0) {
+        for (int i = 0; i < listaAgendamentos->qtdAgendamentos; i++) {
+            if (listaAgendamentos->listaAgendamentos[i].idFuncionario == id && listaAgendamentos->listaAgendamentos[i].deletado == 0) {
+                printf(
+                    "Não foi possível deletar o funcionário, pois os seus dados estão sendo utilizados em um agendamento que será realizado.\n\n");
+                return;
+            }
+        }
     }
 
     // Busca pelo id para fazer a deleção

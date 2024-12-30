@@ -1,6 +1,8 @@
 #ifndef MODELFUNCIONARIOS_H
 #define MODELFUNCIONARIOS_H
 
+#include "../../models/agendamentos/modelAgendamentos.h"
+
 struct Funcionarios {
     int id;
     char nome[255];
@@ -26,7 +28,7 @@ int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada);
 
 void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario);
 
-void deletarFuncionariosModel(struct ListaFuncionarios *lista, int id);
+void deletarFuncionariosModel(struct ListaFuncionarios *lista, struct ListaAgendamentos *listaAgendamentos, int id);
 
 int verificarIDFuncionariosModel(struct ListaFuncionarios *lista, int id);
 

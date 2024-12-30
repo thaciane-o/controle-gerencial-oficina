@@ -242,17 +242,52 @@ void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
                        idOficina,
                        lista->listaCaixas[i].valorCaixa);
                 break;
-
             }
         }
 
         if (encontrado == 0) {
             printf("Nenhum caixa encontrado.\n\n");
         }
-
     } else {
         printf("Nenhum caixa foi cadastrado.\n\n");
     }
+}
+
+// Adiciona dinheiro a um caixa
+void creditarDinheiroCaixaModel() {
+}
+
+// Remove dinheiro de um caixa. Retorna -1 se a operação não foi bem sucedida.
+int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado) {
+    int encontrado = 0;
+
+    // Pega o ID do caixa
+    int idCaixa = getIdCaixaPorOficinaModel(lista, idOficina);
+    if (idCaixa == -1) {
+        return -1;
+    }
+
+    // Busca pelo caixa da oficina
+    if (lista->qtdCaixas > 0) {
+        for (int i = 0; i < lista->qtdCaixas; i++) {
+            if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
+                encontrado = 1;
+                if (lista->listaCaixas[i].valorCaixa >= valorDebitado) {
+                    lista->listaCaixas[i].valorCaixa -= valorDebitado;
+                    printf("Valor debitado com sucesso!\n\n");
+                    return 1;
+                }
+                printf("O caixa não possui saldo suficiente!\n\n");
+                break;
+            }
+        }
+        if (encontrado == 0) {
+            printf("Nenhum caixa foi encontrado!\n\n");
+        }
+    } else {
+        printf("Nenhum caixa foi registrado!\n\n");
+    }
+    return -1;
 }
 
 // Pega ID do caixa de uma oficina desejada

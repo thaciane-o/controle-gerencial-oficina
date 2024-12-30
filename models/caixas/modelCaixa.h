@@ -26,13 +26,11 @@ void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina);
 void deletarCaixasModel(struct ListaCaixas *lista, int idOficina);
 
 void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina);
-/*
+
 // Adiciona dinheiro a um caixa
 void creditarDinheiroCaixaModel();
 
-// Remove dinheiro de um caixa
-void debitarDinheiroCaixaModel();
-*/
+int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado)
 
 int getIdCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina);
 

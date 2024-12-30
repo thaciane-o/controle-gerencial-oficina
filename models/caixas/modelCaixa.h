@@ -34,5 +34,7 @@ void creditarDinheiroCaixaModel();
 void debitarDinheiroCaixaModel();
 */
 
-getIdCaixaModel(struct ListaCaixas *lista, int idOficina);
+int getIdCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina);
+
+int getIdOficinaPorCaixaModel(struct ListaCaixas *lista, int idCaixa);
 #endif //MODELCAIXA_H

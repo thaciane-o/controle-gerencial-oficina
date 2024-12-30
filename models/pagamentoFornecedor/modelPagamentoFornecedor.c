@@ -4,6 +4,7 @@
 #include <string.h>
 
 
+
 // Busca os dados dos pagamentos de fornecedor nos arquivos
 void buscarDadosPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, int opcaoArmazenamento) {
         int i = 0;
@@ -185,4 +186,112 @@ int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, i
         return 0;
     }
     return 1;
+}
+
+// Cadastro de pagamento a fornecedor
+void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento) {
+    int resultAlocacao = 0;
+
+    if (lista->qtdPagamentosFornecedor == 0) {
+        lista->qtdPagamentosFornecedor++;
+        resultAlocacao = alocarPagamentosFornecedorModel(lista);
+    } else {
+        resultAlocacao = realocarPagamentosFornecedorModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o Pagamento ao Fornecedor.\n\n");
+        return;
+    }
+
+    // Cadastrando pagamento na memória
+    pagamento->id = lista->qtdPagamentosFornecedor;
+    pagamento->deletado = 0;
+
+    lista->listaPagamentosFornecedor[lista->qtdPagamentosFornecedor - 1] = *pagamento;
+
+    printf("Pagamento cadastrado com sucesso!\n\n");
+
+}
+
+// Buscar contas pagas a fornecedor por oficina
+void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas, int idOficina) {
+
+    int idCaixa;
+    // Busca pelo caixa da oficina
+    idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosFornecedor > 0) {
+        int encontrado = 0;
+        char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
+        for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
+            if (lista->listaPagamentosFornecedor[i].idCaixa == idCaixa && lista->listaPagamentosFornecedor[i].deletado ==
+                0) {
+                encontrado = 1;
+                printf("\n============================\n"
+                    "| PAGAMENTO %d\n"
+                    "============================\n"
+                    "TIPO PAGAMENTO: %s\n"
+                    "DATA PAGAMENTO: %s\n"
+                    "VALOR: R$%.2f\n"
+                    "PAGO AO FORNECEDOR: %d\n",
+                    lista->listaPagamentosFornecedor[i].id,
+                    tiposPagamento[lista->listaPagamentosFornecedor[i].tipoPagamento - 1],
+                    lista->listaPagamentosFornecedor[i].dataPagamento,
+                    lista->listaPagamentosFornecedor[i].valor,
+                    lista->listaPagamentosFornecedor[i].idFornecedor);
+                }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum pagamento encontrado\n\n");
+        }
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
+}
+
+// Buscar contas pagas a fornecedor por oficina
+void listaPagamentosFornecedorPorFornecedorModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas, int idFornecedor) {
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosFornecedor > 0) {
+        int encontrado = 0;
+        char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
+        for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
+            if (lista->listaPagamentosFornecedor[i].idFornecedor == idFornecedor && lista->listaPagamentosFornecedor[i].deletado ==
+                0) {
+                encontrado = 1;
+
+                // Pega id da oficina que fez o pagamento
+                int idOficina = getIdOficinaPorCaixaModel(listaCaixas, lista->listaPagamentosFornecedor[i].idCaixa);
+                if (idOficina == -1) {
+                    continue;
+                }
+
+                printf("\n============================\n"
+                    "| PAGAMENTO %d\n"
+                    "============================\n"
+                    "TIPO PAGAMENTO: %s\n"
+                    "DATA PAGAMENTO: %s\n"
+                    "VALOR: R$%.2f\n"
+                    "OFICINA PAGANTE: %d\n",
+                    lista->listaPagamentosFornecedor[i].id,
+                    tiposPagamento[lista->listaPagamentosFornecedor[i].tipoPagamento - 1],
+                    lista->listaPagamentosFornecedor[i].dataPagamento,
+                    lista->listaPagamentosFornecedor[i].valor,
+                    idOficina);
+                }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhum pagamento encontrado\n\n");
+        }
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
 }

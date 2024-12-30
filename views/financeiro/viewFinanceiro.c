@@ -1,15 +1,19 @@
-#include "../../models/caixas/modelCaixa.h"
-#include "../../models/oficina/modelOficina.h"
-#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
-
 #include "viewFinanceiro.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../models/caixas/modelCaixa.h"
+#include "../../models/oficina/modelOficina.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/fornecedores/modelFornecedores.h"
+
 // Menu de funcionalidades do módulo financeiro
 void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *listaOficinas,
                          struct ListaClientes *listaClientes, struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                         struct ListaFornecedores *listaFornecedor,
                          int opcaoArmazenamento) {
     int opcaoSubmenus;
 
@@ -26,8 +30,12 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
         if (listaClientes->qtdClientes == 0) {
             buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
         }
+        if (listaFornecedor->qtdFornecedores == 0) {
+            buscarDadosFornecedoresModel(listaFornecedor, opcaoArmazenamento);
+        }
         if (listaCaixas->qtdCaixas > 0) {
             buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+            buscarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
         }
     }
 
@@ -53,13 +61,13 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
                 consultarContasAReceber(listaPagamentosCliente, listaCaixas);
                 break;
             case 3:
-                printf("Consultando contas a pagar");
+                consultarContasAPagar(listaPagamentosFornecedor, listaCaixas);
                 break;
             case 4:
                 registrarRecebimentoCliente(listaClientes, listaCaixas, listaPagamentosCliente);
                 break;
             case 5:
-                printf("Efetuar pagamento a fornecedor");
+                efetuarPagamentoFornecedor(listaPagamentosFornecedor, listaFornecedor, listaCaixas);
                 break;
             case 6:
                 if (opcaoArmazenamento != 3) {
@@ -69,6 +77,10 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
                     if (listaPagamentosCliente->qtdPagamentosCliente > 0 && listaPagamentosCliente->
                         listaPagamentosCliente != NULL) {
                         armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+                    }
+                    if (listaPagamentosFornecedor->qtdPagamentosFornecedor > 0 && listaPagamentosFornecedor->
+                        listaPagamentosFornecedor != NULL) {
+                        armazenarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
                     }
 
                     if (listaOficinas->qtdOficinas > 0) {
@@ -81,13 +93,18 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
                         listaClientes->listaClientes = NULL;
                         listaClientes->qtdClientes = 0;
                     }
+                    if (listaFornecedor->qtdFornecedores > 0) {
+                        free(listaFornecedor->listaFornecedores);
+                        listaFornecedor->listaFornecedores = NULL;
+                        listaFornecedor->qtdFornecedores = 0;
+                    }
                 }
                 return;
             default:
                 printf("Opção inválida!\n\n");
                 break;
         }
-    } while (opcaoSubmenus != 5);
+    } while (opcaoSubmenus != 6);
 }
 
 // Busca de valor de caixa de oficina
@@ -110,15 +127,15 @@ void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosClien
     int opcaoSubmenu;
     int id;
 
-    printf("\n========================================\n"
-        "|     CONSULTA DE CONTAS A RECEBER     |\n"
-        "========================================\n"
-        "|  1  | Buscar contas de cliente       |\n"
-        "|  2  | Listar todas as contas         |\n"
-        "|  3  | Listar contas recebidas        |\n"
-        "|  4  | Listar contas não recebidas    |\n"
-        "|  5  | Voltar                         |\n"
-        "========================================\n"
+    printf("\n==================================================\n"
+        "|          CONSULTA DE CONTAS A RECEBER          |\n"
+        "==================================================\n"
+        "|  1  | Buscar contas por cliente                |\n"
+        "|  2  | Buscar contas por oficina                |\n"
+        "|  3  | Buscar contas recebidas por oficina      |\n"
+        "|  4  | Listar contas não recebidas por oficina  |\n"
+        "|  5  | Voltar                                   |\n"
+        "==================================================\n"
         "Escolha uma opção: ");
     scanf("%d", &opcaoSubmenu);
 
@@ -134,9 +151,9 @@ void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosClien
             break;
 
         case 2:
-            printf("\n==================================\n"
-                "|     LISTAR TODAS AS CONTAS     |\n"
-                "==================================\n");
+            printf("\n====================================\n"
+                "|     LISTAR CONTAS DE OFICINA     |\n"
+                "====================================\n");
             printf("Insira o ID da oficina que deseja consultar: ");
             setbuf(stdin, NULL);
             scanf("%d", &id);
@@ -164,6 +181,53 @@ void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosClien
             break;
 
         case 5:
+            // Volta ao menu anterior
+            break;
+
+        default:
+            printf("Opção inválida, voltando ao menu anterior.");
+            break;
+    }
+}
+
+// Busca por contas a pagar
+void consultarContasAPagar(struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                           struct ListaCaixas *listaCaixas) {
+    int opcaoSubmenu;
+    int id;
+
+    printf("\n========================================\n"
+        "|      CONSULTA DE CONTAS A PAGAR      |\n"
+        "========================================\n"
+        "|  1  | Buscar contas por oficina      |\n"
+        "|  2  | Buscar contas por fornecedor   |\n"
+        "|  3  | Voltar                         |\n"
+        "========================================\n"
+        "Escolha uma opção: ");
+    scanf("%d", &opcaoSubmenu);
+
+    switch (opcaoSubmenu) {
+        case 1:
+            printf("\n=====================================\n"
+                "|     LISTAR CONTAS POR OFICINA     |\n"
+                "=====================================\n");
+            printf("Insira o ID da oficina que deseja consultar: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            listaPagamentosFornecedorPorOficinaModel(listaPagamentosFornecedor, listaCaixas, id);
+            break;
+
+        case 2:
+            printf("\n========================================\n"
+                "|     LISTAR CONTAS POR FORNECEDOR     |\n"
+                "========================================\n");
+            printf("Insira o ID do fornecedor que deseja consultar: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &id);
+            listaPagamentosFornecedorPorFornecedorModel(listaPagamentosFornecedor, listaCaixas, id);
+            break;
+
+        case 3:
             // Volta ao menu anterior
             break;
 
@@ -203,7 +267,7 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
     }
 
     // Busca ID do caixa da oficina que atende o cliente
-    idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
     }
@@ -225,7 +289,7 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
     setbuf(stdin, NULL);
     scanf("%f", &pagamento.valor);
 
-    printf("Insira a data do pagamento (dd/mm/yyyy): ");
+    printf("Insira a data do pagamento (DD/MM/AAAA): ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", pagamento.dataPagamento);
 
@@ -233,7 +297,7 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
         strcpy(pagamento.dataAReceber, pagamento.dataPagamento);
         strcpy(pagamento.dataRecebimento, pagamento.dataPagamento);
     } else {
-        printf("Insira a data de vencimento do cartão (dd/mm/yyyy): ");
+        printf("Insira a data de vencimento do cartão (DD/MM/AAAA): ");
         setbuf(stdin, NULL);
         scanf(" %[^\n]", &pagamento.dataAReceber);
 
@@ -241,4 +305,60 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
     }
 
     cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento);
+}
+
+// Efeuta pagamento a fornecedor (Oficina paga ao fornecedor)
+void efetuarPagamentoFornecedor(struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                                struct ListaFornecedores *listaFornecedores, struct ListaCaixas *listaCaixas) {
+    struct PagamentosFornecedor pagamento;
+    int idFornecedor;
+    int idOficina;
+    int idCaixa;
+    int tipoPagamento = 0;
+
+    printf("\n============================================\n"
+        "|     REGISTRAR PAGAMENTO A FORNECEDOR     |\n"
+        "============================================\n");
+
+    printf("Insira o ID do fornecedor que receberá o pagamento: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idFornecedor);
+
+    if (verificarIDFornecedoresModel(listaFornecedores, idFornecedor) == 0) {
+        return;
+    }
+    pagamento.idFornecedor = idFornecedor;
+
+    printf("Insira o ID da oficina que realiza o pagamento: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idOficina);
+
+    // Busca ID do caixa da oficina que está efetuando o pagamento
+    idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+    pagamento.idCaixa = idCaixa;
+
+    do {
+        printf("\n========================="
+            "\n| 1 | Dinheiro          |"
+            "\n| 2 | Cartão de crédito |"
+            "\n| 3 | Cartão de débito  |"
+            "\n=========================");
+        printf("\nInsira tipo de pagamento: ");
+        setbuf(stdin, NULL);
+        scanf("%d", &tipoPagamento);
+    } while (tipoPagamento < 1 || tipoPagamento > 3);
+    pagamento.tipoPagamento = tipoPagamento;
+
+    printf("Insira o valor do pagamento: R$");
+    setbuf(stdin, NULL);
+    scanf("%f", &pagamento.valor);
+
+    printf("Insira a data do pagamento (DD/MM/AAAA): ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", pagamento.dataPagamento);
+
+    cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento);
 }

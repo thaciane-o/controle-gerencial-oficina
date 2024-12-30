@@ -28,6 +28,7 @@
 
 #include "./models/caixas/modelCaixa.h"
 #include "./models/pagamentoCliente/modelPagamentoCliente.h"
+#include "./models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 #include "./views/financeiro/viewFinanceiro.h"
 
 int main() {
@@ -63,6 +64,10 @@ int main() {
     struct ListaPagamentosCliente listaPagamentosCliente;
     listaPagamentosCliente.qtdPagamentosCliente = 0;
 
+    struct ListaPagamentosFornecedor listaPagamentosFornecedor;
+    listaPagamentosFornecedor.qtdPagamentosFornecedor = 0;
+
+
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
 
@@ -85,7 +90,6 @@ int main() {
 
     // Menu principal do sistema
     do {
-
         printf("\n=========================================\n"
             "|             MENU PRINCIPAL            |\n"
             "=========================================\n"
@@ -161,7 +165,8 @@ int main() {
 
             // Menu de gestão financeira
             case 4:
-                gerenciarFinanceiro(&listaCaixas, &listaOficinas, &listaClientes, &listaPagamentosCliente, opcaoArmazenamento);
+                gerenciarFinanceiro(&listaCaixas, &listaOficinas, &listaClientes, &listaPagamentosCliente,
+                                    &listaPagamentosFornecedor, &listaFornecedores, opcaoArmazenamento);
                 break;
 
             // Menu de relatórios
@@ -176,9 +181,9 @@ int main() {
             case 7:
                 // Desaloca os ponteiros, caso ainda tenha algum.
 
-                    /*
-                     *  TODO : Colocar aqui TODAS as verificações para limpar ponteiros
-                     */
+                /*
+                 *  TODO : Colocar aqui TODAS as verificações para limpar ponteiros
+                 */
 
                 if (listaClientes.qtdClientes > 0) {
                     free(listaClientes.listaClientes);
@@ -215,6 +220,10 @@ int main() {
                 if (listaPagamentosCliente.qtdPagamentosCliente > 0) {
                     free(listaPagamentosCliente.listaPagamentosCliente);
                     listaPagamentosCliente.listaPagamentosCliente = NULL;
+                }
+                if (listaPagamentosFornecedor.qtdPagamentosFornecedor > 0) {
+                    free(listaPagamentosFornecedor.listaPagamentosFornecedor);
+                    listaPagamentosFornecedor.listaPagamentosFornecedor = NULL;
                 }
                 break;
         }

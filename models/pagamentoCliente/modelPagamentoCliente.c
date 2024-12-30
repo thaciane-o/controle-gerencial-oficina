@@ -261,7 +261,7 @@ void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int id
 // Lista todas as contas de uma oficina
 void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
 
-    int idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    int idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
     }
@@ -301,7 +301,7 @@ void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *l
 
 // Listar todas as contas já recebidas de uma oficina
 void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
-    int idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    int idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
     }
@@ -341,7 +341,7 @@ void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, 
 
 // Listar todas as contas não recebidas de uma oficina
 void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina) {
-    int idCaixa = getIdCaixaModel(listaCaixas, idOficina);
+    int idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
     if (idCaixa == -1) {
         return;
     }

@@ -25,11 +25,13 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             if (lista->qtdPecas > 0) {
                 lista->listaPecas = malloc(lista->qtdPecas * sizeof(struct Pecas));
             } else {
+                fclose(dadosPecas);
                 return;
             }
 
             if (lista->listaPecas == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosPecas);
                 return;
             }
 
@@ -94,11 +96,13 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             if (lista->qtdPecas > 0) {
                 lista->listaPecas = malloc(lista->qtdPecas * sizeof(struct Pecas));
             } else {
+                fclose(dadosPecas);
                 return;
             }
 
             if (lista->listaPecas == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosPecas);
                 return;
             }
 

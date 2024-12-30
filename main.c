@@ -31,6 +31,11 @@
 
 #include "./models/ordensServico/modelOrdensServico.h"
 
+#include "./models/caixas/modelCaixa.h"
+#include "./models/pagamentoCliente/modelPagamentoCliente.h"
+#include "./models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "./views/financeiro/viewFinanceiro.h"
+
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
@@ -64,9 +69,34 @@ int main() {
     struct ListaOrdensServico listaOrdensServico;
     listaOrdensServico.qtdOrdensServico = 0;
 
+    struct ListaCaixas listaCaixas;
+    listaCaixas.qtdCaixas = 0;
+
+    struct ListaPagamentosCliente listaPagamentosCliente;
+    listaPagamentosCliente.qtdPagamentosCliente = 0;
+
+    struct ListaPagamentosFornecedor listaPagamentosFornecedor;
+    listaPagamentosFornecedor.qtdPagamentosFornecedor = 0;
+
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
 
+    /*
+     * TODO : Colocar configuração de armazenamento em tempo de execução (Trocar enquanto mexe no sistema)
+     */
+
+    // Configuração de armazenamento inicial
+    do {
+        printf("\n===============================\n"
+            "|        ARMAZENAMENTO        |\n"
+            "===============================\n"
+            "| 1 | Texto                   |\n"
+            "| 2 | Binário                 |\n"
+            "| 3 | Memória                 |\n"
+            "===============================\n"
+            "Como deseja armazenar?  ");
+        scanf("%d", &opcaoArmazenamento);
+    } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
     // Menu principal do sistema
     do {
         // Configuração de armazenamento inicial
@@ -86,6 +116,21 @@ int main() {
                 return 0;
             }
 
+    // Menu principal do sistema
+    do {
+        printf("\n=========================================\n"
+            "|             MENU PRINCIPAL            |\n"
+            "=========================================\n"
+            "|  1  | Cadastros                       |\n"
+            "|  2  | Agendamentos                    |\n"
+            "|  3  | Controle de estoque             |\n"
+            "|  4  | Gestão financeira               |\n"
+            "|  5  | Relatórios                      |\n"
+            "|  6  | Importação/exportação de dados  |\n"
+            "|  7  | Sair                            |\n"
+            "=========================================\n"
+            "Escolha uma opção:\n");
+        scanf("%d", &opcaoMenu);
             printf("\n=========================================\n"
                 "|             MENU PRINCIPAL            |\n"
                 "=========================================\n"
@@ -119,91 +164,123 @@ int main() {
                             "Escolha uma opção:\n");
                         scanf("%d", &opcaoCadastro);
 
-                        switch (opcaoCadastro) {
-                            case 1:
-                                gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes,
-                                                 opcaoArmazenamento);
-                                break;
-                            case 2:
-                                gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
-                                break;
-                            case 3:
-                                gerenciarVeiculos(&listaClientes, &listaVeiculos, &listaAgendamentos,
-                                                  opcaoArmazenamento);
-                                break;
-                            case 4:
-                                gerenciarFuncionario(&listaFuncionarios, &listaOficinas, &listaAgendamentos,
-                                                     opcaoArmazenamento);
-                                break;
-                            case 5:
-                                gerenciarServico(&listaServicos, &listaOficinas, &listaAgendamentos,
-                                                 opcaoArmazenamento);
-                                break;
-                            case 6:
-                                gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
-                                break;
-                            case 7:
-                                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
-                                break;
-                            case 8:
-                                if (listaClientes.qtdClientes > 0) {
-                                    free(listaClientes.listaClientes);
-                                    listaClientes.listaClientes = NULL;
-                                }
+                    switch (opcaoCadastro) {
+                        case 1:
+                            gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes,
+                                             &listaCaixas, opcaoArmazenamento);
+                            break;
+                        case 2:
+                            gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
+                            break;
+                        case 3:
+                            gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
+                            break;
+                        case 4:
+                            gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
+                            break;
+                        case 5:
+                            gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
+                            break;
+                        case 6:
+                            gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
+                            break;
+                        case 7:
+                            gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
+                            break;
+                        case 8:
+                            // Sai do submenu
+                            break;
+                        default: printf("Opção inválida!\n\n");
+                            break;
+                    }
+                } while (opcaoCadastro != 8);
+                break;
 
-                                if (listaPecas.qtdPecas > 0) {
-                                    free(listaPecas.listaPecas);
-                                    listaPecas.listaPecas = NULL;
-                                }
-
-                                if (listaOficinas.qtdOficinas > 0) {
-                                    free(listaOficinas.listaOficinas);
-                                    listaOficinas.listaOficinas = NULL;
-                                }
-
-                                if (listaPecas.qtdPecas > 0) {
-                                    free(listaPecas.listaPecas);
-                                    listaPecas.listaPecas = NULL;
-                                }
-
-                                if (listaFornecedores.qtdFornecedores > 0) {
-                                    free(listaFornecedores.listaFornecedores);
-                                    listaFornecedores.listaFornecedores = NULL;
-                                }
-
-                                if (listaServicos.qtdServicos > 0) {
-                                    free(listaServicos.listaServicos);
-                                    listaServicos.listaServicos = NULL;
-                                }
-
-                                if (listaFuncionarios.qtdFuncionarios > 0) {
-                                    free(listaFuncionarios.listaFuncionarios);
-                                    listaFuncionarios.listaFuncionarios = NULL;
-                                }
-                                break;
-                            default: printf("Opção inválida!\n\n");
-                                break;
-                        }
-                    } while (opcaoCadastro != 8);
-                    break;
-                case 2:
-                    gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
+            // Menu de agendamentos
+            case 2:
+                gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
                                           &listaOrdensServico, &listaPecas,
                                           opcaoArmazenamento);
-                    break;
-                case 7:
-                    if (listaAgendamentos.qtdAgendamentos > 0) {
-                        free(listaAgendamentos.listaAgendamentos);
-                        listaAgendamentos.listaAgendamentos = NULL;
-                    }
+                break;
 
-                    if (listaOrdensServico.qtdOrdensServico > 0) {
-                        free(listaOrdensServico.listaOrdensServico);
-                        listaOrdensServico.listaOrdensServico = NULL;
-                    }
-                    break;
-            }
-        } while (opcaoMenu != 7);
-    } while (opcaoArmazenamento != 4);
+            // Menu de controle de estoque
+            case 3:
+                break;
+
+            // Menu de gestão financeira
+            case 4:
+                gerenciarFinanceiro(&listaCaixas, &listaOficinas, &listaClientes, &listaPagamentosCliente,
+                                    &listaPagamentosFornecedor, &listaFornecedores, opcaoArmazenamento);
+                break;
+
+            // Menu de relatórios
+            case 5:
+                break;
+
+            // Menu de importação/exportação
+            case 6:
+                break;
+
+            // Sair
+            case 7:
+                // Desaloca os ponteiros, caso ainda tenha algum.
+
+                /*
+                 *  TODO : Colocar aqui TODAS as verificações para limpar ponteiros
+                 */
+
+                if (listaClientes.qtdClientes > 0) {
+                    free(listaClientes.listaClientes);
+                    listaClientes.listaClientes = NULL;
+                }
+                if (listaPecas.qtdPecas > 0) {
+                    free(listaPecas.listaPecas);
+                    listaPecas.listaPecas = NULL;
+                }
+                if (listaOficinas.qtdOficinas > 0) {
+                    free(listaOficinas.listaOficinas);
+                    listaOficinas.listaOficinas = NULL;
+                }
+                if (listaPecas.qtdPecas > 0) {
+                    free(listaPecas.listaPecas);
+                    listaPecas.listaPecas = NULL;
+                }
+                if (listaFornecedores.qtdFornecedores > 0) {
+                    free(listaFornecedores.listaFornecedores);
+                    listaFornecedores.listaFornecedores = NULL;
+                }
+                if (listaServicos.qtdServicos > 0) {
+                    free(listaServicos.listaServicos);
+                    listaServicos.listaServicos = NULL;
+                }
+                if (listaFuncionarios.qtdFuncionarios > 0) {
+                    free(listaFuncionarios.listaFuncionarios);
+                    listaFuncionarios.listaFuncionarios = NULL;
+                }
+                if (listaCaixas.qtdCaixas > 0) {
+                    free(listaCaixas.listaCaixas);
+                    listaCaixas.listaCaixas = NULL;
+                }
+                if (listaPagamentosCliente.qtdPagamentosCliente > 0) {
+                    free(listaPagamentosCliente.listaPagamentosCliente);
+                    listaPagamentosCliente.listaPagamentosCliente = NULL;
+                }
+                if (listaPagamentosFornecedor.qtdPagamentosFornecedor > 0) {
+                    free(listaPagamentosFornecedor.listaPagamentosFornecedor);
+                    listaPagamentosFornecedor.listaPagamentosFornecedor = NULL;
+                }
+                if (listaAgendamentos.qtdAgendamentos > 0) {
+                    free(listaAgendamentos.listaAgendamentos);
+                    listaAgendamentos.listaAgendamentos = NULL;
+                }
+
+                if (listaOrdensServico.qtdOrdensServico > 0) {
+                    free(listaOrdensServico.listaOrdensServico);
+                    listaOrdensServico.listaOrdensServico = NULL;
+                }
+                break;
+        }
+    } while (opcaoMenu != 7);
+
     return 0;
 }

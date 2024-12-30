@@ -26,11 +26,13 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
             if (lista->qtdFuncionarios > 0) {
                 lista->listaFuncionarios = malloc(lista->qtdFuncionarios * sizeof(struct Funcionarios));
             } else {
+                fclose(dadosFuncionarios);
                 return;
             }
 
             if (lista->listaFuncionarios == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosFuncionarios);
                 return;
             }
 
@@ -86,11 +88,13 @@ void buscarDadosFuncionariosModel(struct ListaFuncionarios *lista, int opcaoArma
             if (lista->qtdFuncionarios > 0) {
                 lista->listaFuncionarios = malloc(lista->qtdFuncionarios * sizeof(struct Funcionarios));
             } else {
+                fclose(dadosFuncionarios);
                 return;
             }
 
             if (lista->listaFuncionarios == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosFuncionarios);
                 return;
             }
 

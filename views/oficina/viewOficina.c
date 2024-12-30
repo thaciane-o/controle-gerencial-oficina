@@ -3,13 +3,14 @@
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/clientes/modelClientes.h"
+#include "../../models/caixas/modelCaixa.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 // Menu de funcionalidades de oficinas
 void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                       struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
-                      int opcaoArmazenamento) {
+                      struct ListaCaixas *listaCaixas, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -22,6 +23,7 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
             buscarDadosFuncionariosModel(listaFuncionarios, opcaoArmazenamento);
             buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
             buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
+            buscarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
         }
     }
 
@@ -40,13 +42,13 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarOficina(lista);
+                cadastrarOficina(lista, listaCaixas);
                 break;
             case 2:
                 atualizarOficina(lista);
                 break;
             case 3:
-                deletarOficina(lista, listaFuncionarios, listaServicos, listaClientes);
+                deletarOficina(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas);
                 break;
             case 4:
                 listarOficina(lista);
@@ -71,6 +73,14 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                         listaServicos->listaServicos = NULL;
                         listaServicos->qtdServicos = 0;
                     }
+
+                    // Armazena os caixas
+                    if (listaCaixas->qtdCaixas) {
+                        armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
+                        free(listaCaixas->listaCaixas);
+                        listaCaixas->listaCaixas = NULL;
+                        listaCaixas->qtdCaixas = 0;
+                    }
                 }
                 break;
             default: printf("Opção inválida!\n\n");
@@ -80,7 +90,7 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
 }
 
 // Formulário de cadastro de oficinas
-void cadastrarOficina(struct ListaOficinas *lista) {
+void cadastrarOficina(struct ListaOficinas *lista, struct ListaCaixas *listaCaixas) {
     struct Oficinas oficinaCadastrando;
 
     printf("\n===============================\n"
@@ -112,7 +122,7 @@ void cadastrarOficina(struct ListaOficinas *lista) {
     setbuf(stdin, NULL);
     scanf("%f", &oficinaCadastrando.porcentagemLucro);
 
-    cadastrarOficinaModel(lista, &oficinaCadastrando);
+    cadastrarOficinaModel(lista, &oficinaCadastrando, listaCaixas);
 }
 
 // Formulário de atualização de oficinas
@@ -201,7 +211,8 @@ void listarOficina(struct ListaOficinas *lista) {
 
 // Formulário de deleção de oficinas
 void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
-                    struct ListaServicos *listaServicos, struct ListaClientes *listaClientes) {
+                    struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
+                    struct ListaCaixas *listaCaixas) {
     int id;
     // Pede o Id da oficina que será deletada
     printf("\n==============================\n"
@@ -212,5 +223,5 @@ void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lista
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
-    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, id);
+    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas, id);
 }

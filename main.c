@@ -63,12 +63,6 @@ int main() {
     struct ListaFuncionarios listaFuncionarios;
     listaFuncionarios.qtdFuncionarios = 0;
 
-    struct ListaAgendamentos listaAgendamentos;
-    listaAgendamentos.qtdAgendamentos = 0;
-
-    struct ListaOrdensServico listaOrdensServico;
-    listaOrdensServico.qtdOrdensServico = 0;
-
     struct ListaCaixas listaCaixas;
     listaCaixas.qtdCaixas = 0;
 
@@ -77,6 +71,12 @@ int main() {
 
     struct ListaPagamentosFornecedor listaPagamentosFornecedor;
     listaPagamentosFornecedor.qtdPagamentosFornecedor = 0;
+
+    struct ListaAgendamentos listaAgendamentos;
+    listaAgendamentos.qtdAgendamentos = 0;
+
+    struct ListaOrdensServico listaOrdensServico;
+    listaOrdensServico.qtdOrdensServico = 0;
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
@@ -97,24 +97,6 @@ int main() {
             "Como deseja armazenar?  ");
         scanf("%d", &opcaoArmazenamento);
     } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
-    // Menu principal do sistema
-    do {
-        // Configuração de armazenamento inicial
-        do {
-            printf("\n===============================\n"
-                "|        ARMAZENAMENTO        |\n"
-                "===============================\n"
-                "| 1 | Texto                   |\n"
-                "| 2 | Binário                 |\n"
-                "| 3 | Memória                 |\n"
-                "| 4 | Sair                    |\n"
-                "===============================\n"
-                "Como deseja armazenar?  ");
-            scanf("%d", &opcaoArmazenamento);
-
-            if (opcaoArmazenamento == 4) {
-                return 0;
-            }
 
     // Menu principal do sistema
     do {
@@ -131,38 +113,25 @@ int main() {
             "=========================================\n"
             "Escolha uma opção:\n");
         scanf("%d", &opcaoMenu);
-            printf("\n=========================================\n"
-                "|             MENU PRINCIPAL            |\n"
-                "=========================================\n"
-                "|  1  | Cadastros                       |\n"
-                "|  2  | Agendamentos                    |\n"
-                "|  3  | Controle de estoque             |\n"
-                "|  4  | Gestão financeira               |\n"
-                "|  5  | Relatórios                      |\n"
-                "|  6  | Importação/exportação de dados  |\n"
-                "|  7  | Voltar                          |\n"
-                "=========================================\n"
-                "Escolha uma opção:\n");
-            scanf("%d", &opcaoMenu);
 
-            switch (opcaoMenu) {
-                // Menu de CRUD
-                case 1:
-                    do {
-                        printf("\n=================================\n"
-                            "|        MENU DE CADASTROS      |\n"
-                            "=================================\n"
-                            "|  1  | Oficina                 |\n"
-                            "|  2  | Clientes                |\n"
-                            "|  3  | Veículos                |\n"
-                            "|  4  | Funcionários            |\n"
-                            "|  5  | Serviços                |\n"
-                            "|  6  | Fornecedores            |\n"
-                            "|  7  | Peças                   |\n"
-                            "|  8  | Voltar                  |\n"
-                            "=================================\n"
-                            "Escolha uma opção:\n");
-                        scanf("%d", &opcaoCadastro);
+        switch (opcaoMenu) {
+            // Menu de CRUD
+            case 1:
+                do {
+                    printf("\n=================================\n"
+                        "|        MENU DE CADASTROS      |\n"
+                        "=================================\n"
+                        "|  1  | Oficina                 |\n"
+                        "|  2  | Clientes                |\n"
+                        "|  3  | Veículos                |\n"
+                        "|  4  | Funcionários            |\n"
+                        "|  5  | Serviços                |\n"
+                        "|  6  | Fornecedores            |\n"
+                        "|  7  | Peças                   |\n"
+                        "|  8  | Voltar                  |\n"
+                        "=================================\n"
+                        "Escolha uma opção:\n");
+                    scanf("%d", &opcaoCadastro);
 
                     switch (opcaoCadastro) {
                         case 1:
@@ -173,13 +142,13 @@ int main() {
                             gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);
                             break;
                         case 3:
-                            gerenciarVeiculos(&listaClientes, &listaVeiculos, opcaoArmazenamento);
+                            gerenciarVeiculos(&listaClientes, &listaVeiculos, &listaAgendamentos, opcaoArmazenamento);
                             break;
                         case 4:
-                            gerenciarFuncionario(&listaFuncionarios, &listaOficinas, opcaoArmazenamento);
+                            gerenciarFuncionario(&listaFuncionarios, &listaOficinas, &listaAgendamentos, opcaoArmazenamento);
                             break;
                         case 5:
-                            gerenciarServico(&listaServicos, &listaOficinas, opcaoArmazenamento);
+                            gerenciarServico(&listaServicos, &listaOficinas, &listaAgendamentos, opcaoArmazenamento);
                             break;
                         case 6:
                             gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
@@ -199,8 +168,8 @@ int main() {
             // Menu de agendamentos
             case 2:
                 gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
-                                          &listaOrdensServico, &listaPecas,
-                                          opcaoArmazenamento);
+                                         &listaOrdensServico, &listaPecas,
+                                         opcaoArmazenamento);
                 break;
 
             // Menu de controle de estoque
@@ -273,7 +242,6 @@ int main() {
                     free(listaAgendamentos.listaAgendamentos);
                     listaAgendamentos.listaAgendamentos = NULL;
                 }
-
                 if (listaOrdensServico.qtdOrdensServico > 0) {
                     free(listaOrdensServico.listaOrdensServico);
                     listaOrdensServico.listaOrdensServico = NULL;

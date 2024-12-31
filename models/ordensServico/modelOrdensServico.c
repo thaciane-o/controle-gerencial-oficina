@@ -194,6 +194,9 @@ void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct Ordens
     ordensServico->deletado = 0;
 
     lista->listaOrdensServico[lista->qtdOrdensServico - 1] = *ordensServico;
+
+
+
 }
 
 // Atualiza o cadastro de uma ordem de serviço

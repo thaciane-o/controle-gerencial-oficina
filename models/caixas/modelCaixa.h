@@ -30,7 +30,7 @@ void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina);
 // Adiciona dinheiro a um caixa
 void creditarDinheiroCaixaModel();
 
-int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado)
+int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado);
 
 int getIdCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina);
 

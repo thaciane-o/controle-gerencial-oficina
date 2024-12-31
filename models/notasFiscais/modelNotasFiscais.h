@@ -6,6 +6,7 @@ struct notasFiscais {
     int id;
     int *idPecas;
     int *qtdPecas;
+    int tamListaPecas;
     float frete;
     float imposto;
     int idFornecedor;

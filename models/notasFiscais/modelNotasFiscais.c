@@ -40,17 +40,22 @@ void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArma
 
             while (fgets(linha, sizeof(linha), dadosNotasFiscais)) {
                 char *token = strtok(linha, ";");
+                char *token2, *token3;
 
                 if (token != NULL) {
                     lista->listaNotas[i].id = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    char *token2 = strtok(token, ",");
+                    token2 = token;
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    strcpy(lista->listaNotas[i].qtdPecas, token);
+                    token3 = token;
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaNotas[i].tamListaPecas = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -67,6 +72,20 @@ void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArma
                 }
                 if (token != NULL) {
                     lista->listaNotas[i].deletado = atoi(token);
+                }
+
+                lista->listaNotas[i].idPecas = malloc((*(&token2 + 1) - token2) * sizeof(int));
+                lista->listaNotas[i].qtdPecas = malloc((*(&token3 + 1) - token3) * sizeof(int));
+
+                token2 = strtok(token2, ",");
+                for (int j = 0; j < *(&token2 + 1) - token2; j++) {
+                    lista->listaNotas[i].idPecas[j] = (int) token2;
+                    token2 = strtok(NULL, ",");
+                }
+                token3 = strtok(token3, ",");
+                for (int j = 0; j < *(&token3 + 1) - token3; j++) {
+                    lista->listaNotas[i].qtdPecas[j] = (int) token3;
+                    token2 = strtok(NULL, ",");
                 }
 
                 i++;
@@ -123,24 +142,18 @@ void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoA
                 printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
                 return;
             }
-
             for (int i = 0; i < lista->qtdNotas; i++) {
                 char *token2, *token3;
-                token2 = (char *) malloc(
-                    (*(&lista->listaNotas[i].idPecas + 1) - lista->listaNotas[i].idPecas) * sizeof(char));
-                token3 = (char *) malloc(
-                    (*(&lista->listaNotas[i].qtdPecas + 1) - lista->listaNotas[i].qtdPecas) * sizeof(char));
 
-                for (int j = 0; j < *(&lista->listaNotas[i].idPecas + 1) - lista->listaNotas->idPecas; j++) {
-                    token2 += lista->listaNotas[i].idPecas[j];
-                    token2 += (char)",";
-                    token3 += lista->listaNotas[i].qtdPecas[j];
-                    token3 += (char)",";
-                }
-                fprintf(dadosNotas, "%d;%s;%s;%f;%f;%d;%d\n",
+                // for (int j = 0; j < lista->listaNotas[i].tamListaPecas; j++) {
+                //     token2 = ;
+                //     token3[j] = (char)(lista->listaNotas[i].qtdPecas[j]+",");
+                // }
+                fprintf(dadosNotas, "%d;%s;%s;%d;%f;%f;%d;%d\n",
                         lista->listaNotas[i].id,
                         token2,
                         token3,
+                        lista->listaNotas[i].tamListaPecas,
                         lista->listaNotas[i].frete,
                         lista->listaNotas[i].imposto,
                         lista->listaNotas[i].idFornecedor,

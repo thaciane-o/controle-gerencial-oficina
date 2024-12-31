@@ -5,6 +5,9 @@
 #ifndef MODELESTOQUES_H
 #define MODELESTOQUES_H
 
+#include "..\..\models\estoques\modelEstoques.h"
+#include "..\..\models\pecas\modelPecas.h"
+
 void verificarEstoqueMinimo(struct ListaPecas *lista);
 
 

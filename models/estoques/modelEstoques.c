@@ -10,12 +10,9 @@
 void verificarEstoqueMinimo(struct ListaPecas *lista) {
     for (int i = 0; i < lista->qtdPecas; i++) {
         if (lista->listaPecas[i].qtdEstoque < lista->listaPecas[i].estoqueMinimo) {
-            printf("\nESTOQUE ABAIXO DO MÍNIMO NA PEÇA: %d");
+            printf("\nESTOQUE ABAIXO DO MÍNIMO NA PEÇA: %d\n"
+                   "FORNECEDOR: %d\n\n", lista->listaPecas[i].id, lista->listaPecas[i].idFornecedor);
         }
     }
 }
 
-// void listarEstoquesModel(struct Pecas *lista) {
-//
-//
-// }

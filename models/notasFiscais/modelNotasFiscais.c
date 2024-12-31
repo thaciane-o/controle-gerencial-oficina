@@ -1,4 +1,7 @@
 #include "modelNotasFiscais.h"
+#include "..\..\models\estoques\modelEstoques.h"
+#include "..\..\models\pecas\modelPecas.h"
+#include "..\..\models\fornecedores\modelFornecedores.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,18 +77,24 @@ void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArma
                     lista->listaNotas[i].deletado = atoi(token);
                 }
 
-                lista->listaNotas[i].idPecas = malloc((*(&token2 + 1) - token2) * sizeof(int));
-                lista->listaNotas[i].qtdPecas = malloc((*(&token3 + 1) - token3) * sizeof(int));
+                lista->listaNotas[i].idPecas = malloc(sizeof(int));
+                lista->listaNotas[i].qtdPecas = malloc(sizeof(int));
 
+                int j = 0;
                 token2 = strtok(token2, ",");
-                for (int j = 0; j < *(&token2 + 1) - token2; j++) {
-                    lista->listaNotas[i].idPecas[j] = (int) token2;
+                while (token2 != NULL) {
+                    lista->listaNotas[i].idPecas = realloc(lista->listaNotas[i].idPecas,sizeof(int)*(j+1));
+                    lista->listaNotas[i].idPecas[j] = atoi(token2);
                     token2 = strtok(NULL, ",");
+                    j++;
                 }
                 token3 = strtok(token3, ",");
-                for (int j = 0; j < *(&token3 + 1) - token3; j++) {
-                    lista->listaNotas[i].qtdPecas[j] = (int) token3;
-                    token2 = strtok(NULL, ",");
+                j=0;
+                while (token3 != NULL) {
+                    lista->listaNotas[i].qtdPecas = realloc(lista->listaNotas[i].qtdPecas,sizeof(int)*(j+1));
+                    lista->listaNotas[i].qtdPecas[j] = atoi(token3);
+                    token3 = strtok(NULL, ",");
+                    j++;
                 }
 
                 i++;
@@ -143,16 +152,10 @@ void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoA
                 return;
             }
             for (int i = 0; i < lista->qtdNotas; i++) {
-                char *token2, *token3;
-
-                // for (int j = 0; j < lista->listaNotas[i].tamListaPecas; j++) {
-                //     token2 = ;
-                //     token3[j] = (char)(lista->listaNotas[i].qtdPecas[j]+",");
-                // }
                 fprintf(dadosNotas, "%d;%s;%s;%d;%f;%f;%d;%d\n",
                         lista->listaNotas[i].id,
-                        token2,
-                        token3,
+                        ordenarListaPecas(lista,lista->listaNotas[i].tamListaPecas, i, 0),
+                        ordenarListaPecas(lista,lista->listaNotas[i].tamListaPecas, i, 1),
                         lista->listaNotas[i].tamListaPecas,
                         lista->listaNotas[i].frete,
                         lista->listaNotas[i].imposto,
@@ -242,3 +245,66 @@ void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct notasFis
 
     printf("Nota cadastrada com sucesso!\n\n");
 }
+
+int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
+                                    struct notasFiscais *notaFiscal, int idPeca) {
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+
+        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idFornecedor == notaFiscal->idFornecedor) {
+            return 1;
+        }
+
+    }
+    printf("Esta peça não é fornecida pelo fornecedor digitado\n\n");
+    return 0;
+}
+
+char *ordenarListaPecas(struct ListaNotasFiscais *lista, int tamLista, int posicaoLista, int tipo) {
+    char* token;
+    token = malloc(sizeof (int) * tamLista);
+
+    for (int i = 0; i < tamLista; i++) {
+        char aux[sizeof(int)*2];
+        if (tipo == 0) {
+            if (i==0) {
+                sprintf(aux, "%d", lista->listaNotas[posicaoLista].idPecas[i]);
+                strcpy(token, aux);
+                strcat(token, ",");
+            } else {
+                sprintf(aux, "%d", lista->listaNotas[posicaoLista].idPecas[i]);
+                strcat(token, aux);
+                strcat(token, ",");
+            }
+        }
+        if (tipo == 1) {
+            if (i==0) {
+                sprintf(aux, "%d", lista->listaNotas[posicaoLista].qtdPecas[i]);
+                strcpy(token, aux);
+                strcat(token, ",");
+            } else {
+                sprintf(aux, "%d", lista->listaNotas[posicaoLista].qtdPecas[i]);
+                strcat(token, aux);
+                strcat(token, ",");
+            }
+        }
+
+    }
+    return token;
+}
+
+void listarTodasNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
+    struct ListaFornecedores *listaFornecedores) {
+
+}
+
+void listarNotaFiscalModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
+    struct ListaFornecedores *listaFornecedores, int id) {
+
+}
+
+void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
+    struct ListaFornecedores *listaFornecedores, int idFornecedor) {
+
+}
+
+

@@ -304,21 +304,17 @@ void creditarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOfici
 
 // Adiciona dinheiro a um caixa pelo ID do caixa
 void creditarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorCreditado) {
-    int encontrado = 0;
 
     // Busca pelo caixa da oficina
     if (lista->qtdCaixas > 0) {
         for (int i = 0; i < lista->qtdCaixas; i++) {
             if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
-                encontrado = 1;
                 lista->listaCaixas[i].valorCaixa += valorCreditado;
                 printf("Valor creditado com sucesso!\n\n");
                 return;
             }
         }
-        if (encontrado == 0) {
-            printf("Nenhum caixa foi encontrado!\n\n");
-        }
+        printf("Nenhum caixa foi encontrado!\n\n");
     } else {
         printf("Nenhum caixa foi registrado!\n\n");
     }

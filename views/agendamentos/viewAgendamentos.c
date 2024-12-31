@@ -2,6 +2,11 @@
 #include "../../models/veiculos/modelVeiculos.h"
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
+#include "../../models/ordensServico/modelOrdensServico.h"
+#include "../../models/pecas/modelPecas.h"
+#include "../../models/clientes/modelClientes.h"
+#include "../../models/caixas/modelCaixa.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
 #include "viewAgendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +16,8 @@
 void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
                            struct ListaOrdensServico *listaOrdensServico, struct ListaPecas *listaPecas,
-                           int opcaoArmazenamento) {
+                           struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
+                           struct ListaPagamentosCliente *listaPagamentosCliente, int opcaoArmazenamento) {
     int opcaoSubmenus;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -40,6 +46,18 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         if (listaPecas->qtdPecas == 0) {
             buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
         }
+
+        if (listaClientes->qtdClientes == 0) {
+            buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
+        }
+
+        if (listaCaixas->qtdCaixas == 0) {
+            buscarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
+        }
+
+        if (listaPagamentosCliente->qtdPagamentosCliente == 0) {
+            buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+        }
     }
 
     do {
@@ -57,7 +75,8 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarAgendamentos(lista, listaFuncionarios, listaServicos, listaVeiculos, listaOrdensServico, listaPecas);
+                cadastrarAgendamentos(lista, listaFuncionarios, listaServicos, listaVeiculos, listaOrdensServico,
+                                      listaPecas, listaClientes, listaCaixas, listaPagamentosCliente);
                 break;
             case 2:
                 atualizarAgendamento(lista, listaFuncionarios, listaServicos, listaVeiculos);
@@ -104,6 +123,22 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                         free(listaPecas->listaPecas);
                         listaPecas->qtdPecas = 0;
                     }
+
+                    if (listaClientes->qtdClientes > 0) {
+                        listaClientes->listaClientes = NULL;
+                        free(listaClientes->listaClientes);
+                        listaClientes->qtdClientes = 0;
+                    }
+
+                    // Armazena caixas alterados (Com novo saldo de pagamentos)
+                    if (listaCaixas->qtdCaixas > 0) {
+                        armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
+                    }
+
+                    // Armazena pagamentos realizados
+                    if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+                        armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+                    }
                 }
                 return;
             default:
@@ -116,12 +151,16 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 // Formulário de cadastro de agendamentos
 void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
-                           struct ListaOrdensServico *listaOrdensServico, struct ListaPecas *listaPecas) {
+                           struct ListaOrdensServico *listaOrdensServico, struct ListaPecas *listaPecas,
+                           struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
+                           struct ListaPagamentosCliente *listaPagamentosCliente) {
     struct Agendamentos agendamento;
     struct OrdensServico ordensServico;
     int idFuncionarios, idVeiculos, qtdServicos = 0, idInputServico, qtdPecas = 0, idInputPecas;
     int *idServicos = malloc(sizeof(int));
     int *idPecas = malloc(sizeof(int));
+    struct PagamentosCliente pagamento;
+    pagamento.valor = 0;
 
     printf("\n======================\n"
         "|     AGENDAMENTO    |\n"
@@ -210,6 +249,85 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             }
         }
 
+        /*
+         *  Dados para realizar o cadastro de pagamento do cliente
+         */
+
+        // Pegando o valor total do serviço: serviços + peças
+        for (int i = 0; i < (qtdServicos - 1); i++) {
+            pagamento.valor += listaServicos->listaServicos[i].preco;
+
+            // Pegando o valor total das peças
+            for (int j = 0; j < (qtdPecas - 1); j++) {
+                pagamento.valor += listaPecas->listaPecas[j].precoVenda;
+            }
+        }
+
+        // Pegando o tipo de pagamento do cliente, e mostrando o valor total do serviço
+        do {
+            printf("Valor total do serviço e peças usadas: R$%.2f", pagamento.valor);
+            printf("\n========================="
+                "\n| 1 | Dinheiro          |"
+                "\n| 2 | Cartão de crédito |"
+                "\n| 3 | Cartão de débito  |"
+                "\n=========================");
+            printf("\nInsira tipo de pagamento: ");
+            setbuf(stdin, NULL);
+            scanf("%d", &pagamento.tipoPagamento);
+        } while (pagamento.tipoPagamento < 1 || pagamento.tipoPagamento > 3);
+
+        // Pegando a data que foi realizado o pagamento
+        printf("Insira a data do pagamento (DD/MM/AAAA): ");
+        setbuf(stdin, NULL);
+        scanf(" %[^\n]", pagamento.dataPagamento);
+
+        // Ajustando data de recebimento, caso dinheiro, ou pedindo a data, caso cartão
+        if (pagamento.tipoPagamento == 1) {
+            strcpy(pagamento.dataAReceber, pagamento.dataPagamento);
+            strcpy(pagamento.dataRecebimento, pagamento.dataPagamento);
+        } else {
+            printf("Insira a data de vencimento do cartão (DD/MM/AAAA): ");
+            setbuf(stdin, NULL);
+            scanf(" %[^\n]", &pagamento.dataAReceber);
+            strcpy(pagamento.dataRecebimento, "Não pago");
+        }
+
+        // Pegando ID do cliente que faz o pagamento
+        int idClientePagando = getIdClientePorVeiculoModel(listaVeiculos, idVeiculos);
+        if (idClientePagando == -1) {
+            // Não encontrou, então cancela a operação
+            idPecas = NULL;
+            free(idPecas);
+
+            idServicos = NULL;
+            free(idServicos);
+            return;
+        }
+
+        // Pegando ID da oficina e do seu caixa para receber o pagamento
+        int getIdOficina = getIdOficinaClientesModel(listaClientes, idClientePagando);
+        int idCaixaRecebe = getIdCaixaPorOficinaModel(listaCaixas, getIdOficina);
+        if (idCaixaRecebe == -1) {
+            // Não encontrou, então cancela a operação
+            idPecas = NULL;
+            free(idPecas);
+
+            idServicos = NULL;
+            free(idServicos);
+            return;
+        }
+
+        // Atribui os IDs ao pagamento
+        pagamento.idCaixa = idCaixaRecebe;
+        pagamento.idCliente = idClientePagando;
+
+        // Cadastra o pagamento
+        cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);
+
+        /*
+         *   Fim de cadastro de pagamentos do cliente
+         */
+
         // Cadastrando agendamentos de cada serviço inserido
         for (int i = 0; i < (qtdServicos - 1); i++) {
             agendamento.idServico = idServicos[i];
@@ -239,7 +357,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
     idServicos = NULL;
     free(idServicos);
-
 }
 
 // Formulário de atualização de agendamentos

@@ -354,7 +354,7 @@ void buscarVeiculosPorClienteModel(struct ListaVeiculos *lista, int idCliente) {
     }
 }
 
-//Utilizei um modelo de deleção logica
+// Utilizei um modelo de deleção logica
 void deletarVeiculosModel(struct ListaVeiculos *lista, struct ListaAgendamentos *listaAgendamentos, int id) {
     int encontrado = 0;
 
@@ -392,4 +392,20 @@ void deletarVeiculosModel(struct ListaVeiculos *lista, struct ListaAgendamentos 
     if (!encontrado) {
         printf("Veículo não encontrado!\n\n");
     }
+}
+
+// Pega ID do cliente pelo ID do veículo
+int getIdClientePorVeiculoModel(struct ListaVeiculos *lista, int idVeiculo) {
+    if (lista->qtdVeiculos > 0) {
+        for (int i = 0; i < lista->qtdVeiculos; i++) {
+            if (lista->listaVeiculos[i].id == idVeiculo && lista->listaVeiculos[i].deletado == 0) {
+                return lista->listaVeiculos[i].idProprietario;
+            }
+        }
+        printf("Nenhum veículo encontrado.\n\n");
+    } else {
+        printf("Nenhum veículo foi cadastrado.\n\n");
+    }
+
+    return -1;
 }

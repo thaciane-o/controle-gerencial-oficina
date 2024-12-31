@@ -145,7 +145,8 @@ int main() {
                             gerenciarVeiculos(&listaClientes, &listaVeiculos, &listaAgendamentos, opcaoArmazenamento);
                             break;
                         case 4:
-                            gerenciarFuncionario(&listaFuncionarios, &listaOficinas, &listaAgendamentos, opcaoArmazenamento);
+                            gerenciarFuncionario(&listaFuncionarios, &listaOficinas, &listaAgendamentos,
+                                                 opcaoArmazenamento);
                             break;
                         case 5:
                             gerenciarServico(&listaServicos, &listaOficinas, &listaAgendamentos, opcaoArmazenamento);
@@ -168,8 +169,8 @@ int main() {
             // Menu de agendamentos
             case 2:
                 gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
-                                         &listaOrdensServico, &listaPecas,
-                                         opcaoArmazenamento);
+                                      &listaOrdensServico, &listaPecas, &listaClientes, &listaCaixas,
+                                      &listaPagamentosCliente, opcaoArmazenamento);
                 break;
 
             // Menu de controle de estoque

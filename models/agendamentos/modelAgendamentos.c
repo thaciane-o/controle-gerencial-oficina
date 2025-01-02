@@ -486,11 +486,22 @@ void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Li
 
 // Atualizar o agendamento ao ser finalizado
 void finalizarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
+
+    // Verifica se há algum cadastro
+    if (lista->qtdAgendamentos == 0) {
+        printf("Nenhum agendamento foi realizado!\n\n");
+        return;
+    }
+
     // Busca pelo id para fazer a alteração
     for (int i = 0; i < lista->qtdAgendamentos; i++) {
         if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
             lista->listaAgendamentos[i].finalizado = 1;
-            break;
+            printf("Agendamento finalizado com sucesso!\n\n");
+            return;
         }
     }
+
+    // Se não encontrar o id para deleção, avisa o usuário
+    printf("Agendamento não encontrado!\n\n");
 }

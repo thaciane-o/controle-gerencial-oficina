@@ -149,7 +149,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 printf("Opção inválida!\n\n");
                 break;
         }
-    } while (opcaoSubmenus != 5);
+    } while (opcaoSubmenus != 6);
 }
 
 // Formulário de cadastro de agendamentos

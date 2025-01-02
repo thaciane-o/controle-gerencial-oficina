@@ -69,7 +69,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             "|  3  | Cancelar agendamento     |\n"
             "|  4  | Listar agendamento       |\n"
             "|  5  | Finalizar agendamento    |\n"
-            "|  5  | Voltar                   |\n"
+            "|  6  | Voltar                   |\n"
             "==================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
@@ -89,6 +89,9 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 listarAgendamentos(lista, listaOrdensServico);
                 break;
             case 5:
+                finalizarAgendamento(lista);
+                break;
+            case 6:
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
                     if (lista->qtdAgendamentos > 0) {
                         armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
@@ -225,11 +228,11 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         agendamento.idVeiculo = idVeiculos;
 
         // Preenchimento dos dados
-        printf("Insira a data prevista para realizar o serviço (DD/MM/AAAA): ");
+        printf("Insira a data desejada para realizar o serviço (DD/MM/AAAA): ");
         setbuf(stdin, NULL);
         scanf(" %[^\n]", agendamento.data);
 
-        printf("Insira a hora prevista para realizar o serviço (HH:MM): ");
+        printf("Insira a hora desejada para realizar o serviço (HH:MM): ");
         setbuf(stdin, NULL);
         scanf(" %[^\n]", agendamento.hora);
 
@@ -497,4 +500,16 @@ void deletarAgendamento(struct ListaAgendamentos *lista, struct ListaOrdensServi
     printf("Insira o ID do agendamento que deseja cancelar:");
     scanf("%d", &id);
     deletarAgendamentosModel(lista, id, listaOrdensServico);
+}
+
+void finalizarAgendamento(struct ListaAgendamentos *lista) {
+    int id;
+
+    printf("\n===================================\n"
+       "|       FINALIZAR AGENDAMENTO     |\n"
+       "===================================\n");
+    printf("Qual agendamento deseja finalizar?");
+    scanf("%d", &id);
+
+    finalizarAgendamentoModel(lista, id);
 }

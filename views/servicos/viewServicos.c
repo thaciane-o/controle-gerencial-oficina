@@ -104,6 +104,9 @@ void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf(" %f", &servico.comissao);
 
+    printf("Insira o tempo previsto para realizar o serviço (em horas): ");
+    setbuf(stdin, NULL);
+    scanf(" %d", &servico.tempoGasto);
 
     cadastrarServicoModel(lista, &servico);
 }
@@ -149,6 +152,10 @@ void atualizarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     printf("Insira a comissão do serviço: ");
     setbuf(stdin, NULL);
     scanf(" %f", &servico.comissao);
+
+    printf("Insira o tempo previsto para realizar o serviço (em horas): ");
+    setbuf(stdin, NULL);
+    scanf(" %d", &servico.tempoGasto);
 
     atualizarServicoModel(lista, id, &servico);
 }

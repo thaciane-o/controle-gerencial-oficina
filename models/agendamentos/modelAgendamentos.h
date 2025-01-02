@@ -13,6 +13,7 @@ struct Agendamentos {
     int idVeiculo;
     int idServico;
     int idFuncionario;
+    int finalizado;
     int deletado;
 };
 
@@ -47,4 +48,6 @@ void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVe
 
 void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico);
 
-#endif //MODELAGENDAMENTOS_H
+void finalizarAgendamentoModel(struct ListaAgendamentos *lista, int id);
+
+#endif //MODELAGENDAMENTOS_H    

@@ -29,4 +29,6 @@ void listarAgendamentos(struct ListaAgendamentos *lista, struct ListaOrdensServi
 
 void deletarAgendamento(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
+void finalizarAgendamento(struct ListaAgendamentos *lista);
+
 #endif //AGENDAMENTOS_H

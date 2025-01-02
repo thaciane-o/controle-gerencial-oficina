@@ -8,6 +8,7 @@ struct OrdensServico {
     int idPecas;
     int idAgendamentos;
     float valorTotal;
+    int tempoGasto;
     int deletado;
 };
 

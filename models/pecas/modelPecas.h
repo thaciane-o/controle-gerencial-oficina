@@ -1,5 +1,6 @@
 #ifndef MODELPECAS_H
 #define MODELPECAS_H
+#include "../../models/ordensServico/modelOrdensServico.h"
 
 struct Pecas {
     int id;
@@ -28,7 +29,7 @@ int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca);
 
 void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando);
 
-void deletarPecaModel(struct ListaPecas *lista, int id);
+void deletarPecaModel(struct ListaPecas *lista, int id, struct ListaOrdensServico *listaOrdensServico);
 
 void atualizarPecaModel(struct ListaPecas *lista, int id, struct Pecas *pecaAlterando);
 

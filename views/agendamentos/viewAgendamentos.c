@@ -68,6 +68,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             "|  2  | Atualizar agendamento    |\n"
             "|  3  | Cancelar agendamento     |\n"
             "|  4  | Listar agendamento       |\n"
+            "|  5  | Finalizar agendamento    |\n"
             "|  5  | Voltar                   |\n"
             "==================================\n"
             "Escolha uma opção: ");
@@ -224,7 +225,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         agendamento.idVeiculo = idVeiculos;
 
         // Preenchimento dos dados
-        printf("Insira a data prevista para realizar o serviço (DD/MM/YYYY): ");
+        printf("Insira a data prevista para realizar o serviço (DD/MM/AAAA): ");
         setbuf(stdin, NULL);
         scanf(" %[^\n]", agendamento.data);
 
@@ -265,7 +266,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         // Pegando o tipo de pagamento do cliente, e mostrando o valor total do serviço
         do {
-            printf("Valor total do serviço e peças usadas: R$%.2f", pagamento.valor);
+            printf("\nValor total do serviço e peças usadas: R$%.2f", pagamento.valor);
             printf("\n========================="
                 "\n| 1 | Dinheiro          |"
                 "\n| 2 | Cartão de crédito |"

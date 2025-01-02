@@ -155,7 +155,7 @@ int main() {
                             gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
                             break;
                         case 7:
-                            gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
+                            gerenciarPeca(&listaPecas, &listaFornecedores, &listaOrdensServico, opcaoArmazenamento);
                             break;
                         case 8:
                             // Sai do submenu

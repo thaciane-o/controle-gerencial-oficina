@@ -7,9 +7,10 @@
 
 #include "..\..\models\estoques\modelEstoques.h"
 #include "..\..\models\pecas\modelPecas.h"
+#include "..\..\models\notasFiscais\modelNotasFiscais.h"
 
 void verificarEstoqueMinimo(struct ListaPecas *lista);
 
-
+char *ordenarListaPecas(struct ListaNotasFiscais *lista, int tamLista, int posicaoLista, int tipo);
 
 #endif //MODELESTOQUES_H

@@ -215,7 +215,7 @@ int main() {
                                           opcaoArmazenamento);
                     break;
                 case 3:
-                    gerenciarEstoques(&listaPecas, &listaFornecedores, &listaNotasFiscais, opcaoArmazenamento);
+                    gerenciarEstoques(&listaPecas, &listaFornecedores, &listaNotasFiscais, &listaOficinas, opcaoArmazenamento);
                     break;
                 case 7:
                     if (listaAgendamentos.qtdAgendamentos > 0) {

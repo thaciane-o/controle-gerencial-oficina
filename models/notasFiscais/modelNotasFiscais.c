@@ -2,15 +2,16 @@
 #include "..\..\models\estoques\modelEstoques.h"
 #include "..\..\models\pecas\modelPecas.h"
 #include "..\..\models\fornecedores\modelFornecedores.h"
+#include "..\..\models\oficina\modelOficina.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 // Busca dados das pecas no arquivo
-void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArmazenamento) {
+void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,  int opcaoArmazenamento) {
     int i = 0;
-    char linha[sizeof(struct notasFiscais)];
+    char linha[sizeof(struct notasFiscais) * sizeof(int)];
 
     FILE *dadosNotasFiscais;
 
@@ -67,6 +68,14 @@ void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArma
                 }
                 if (token != NULL) {
                     lista->listaNotas[i].imposto = atof(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaNotas[i].precoVendaTotal = atof(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaNotas[i].idOficina = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -152,13 +161,15 @@ void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoA
                 return;
             }
             for (int i = 0; i < lista->qtdNotas; i++) {
-                fprintf(dadosNotas, "%d;%s;%s;%d;%f;%f;%d;%d\n",
+                fprintf(dadosNotas, "%d;%s;%s;%d;%f;%f;%f;%d;%d;%d\n",
                         lista->listaNotas[i].id,
-                        ordenarListaPecas(lista,lista->listaNotas[i].tamListaPecas, i, 0),
-                        ordenarListaPecas(lista,lista->listaNotas[i].tamListaPecas, i, 1),
+                        ordenarListaPecas(lista, lista->listaNotas[i].tamListaPecas, i, 0),
+                        ordenarListaPecas(lista, lista->listaNotas[i].tamListaPecas, i, 1),
                         lista->listaNotas[i].tamListaPecas,
                         lista->listaNotas[i].frete,
                         lista->listaNotas[i].imposto,
+                        lista->listaNotas[i].precoVendaTotal,
+                        lista->listaNotas[i].idOficina,
                         lista->listaNotas[i].idFornecedor,
                         lista->listaNotas[i].deletado);
             }
@@ -173,7 +184,7 @@ void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoA
             }
 
             for (int i = 0; i < lista->qtdNotas; i++) {
-                fwrite(&lista->listaNotas[i], sizeof(struct notasFiscais), 1, dadosNotas);
+                fwrite(&lista->listaNotas[i], sizeof(struct notasFiscais) + sizeof(lista->listaNotas[i].idPecas) + sizeof(lista->listaNotas[i].qtdPecas), 1, dadosNotas);
             }
             break;
     }
@@ -209,9 +220,11 @@ int realocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdAlo
     }
 
     lista->qtdNotas += qtdAloca;
+
     lista->listaNotas = realloc(lista->listaNotas, lista->qtdNotas * sizeof(struct notasFiscais));
-    lista->listaNotas[lista->qtdNotas-1].idPecas = realloc(lista->listaNotas[lista->qtdNotas-1].idPecas, qtdPecas * sizeof(int));
-    lista->listaNotas[lista->qtdNotas-1].qtdPecas = realloc(lista->listaNotas[lista->qtdNotas-1].qtdPecas, qtdPecas * sizeof(int));
+
+    lista->listaNotas[lista->qtdNotas-1].idPecas = malloc(qtdPecas * sizeof(int));
+    lista->listaNotas[lista->qtdNotas-1].qtdPecas = malloc(qtdPecas * sizeof(int));
 
     // Verifica se a alocação deu certo
     if (lista->listaNotas == NULL) {
@@ -222,9 +235,32 @@ int realocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdAlo
 }
 
 // Cadastra uma nova peca
-void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct notasFiscais *novaNotaFiscal, int qtdPecas) {
-    int resultAlocacao = 0;
+void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct notasFiscais *novaNotaFiscal, struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas, int qtdPecas) {
+    int resultAlocacao = 0, totalPecas = 0;
+    float fretePorPeca, impostoPorPeca;
 
+    for (int i = 0; i < novaNotaFiscal->tamListaPecas; i++) {
+        totalPecas += novaNotaFiscal->qtdPecas[i];
+    }
+
+    impostoPorPeca = novaNotaFiscal->imposto/totalPecas;
+
+    fretePorPeca = novaNotaFiscal->frete/totalPecas;
+
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+        for (int j = 0; j < listaOficinas->qtdOficinas; j++) {
+            for (int k = 0; k < novaNotaFiscal->tamListaPecas; k++) {
+                if (listaPecas->listaPecas[i].id == novaNotaFiscal->idPecas[k] && listaOficinas->listaOficinas[j].id == novaNotaFiscal->idOficina) {
+
+                    listaPecas->listaPecas[i].qtdEstoque += novaNotaFiscal->qtdPecas[k];
+                    listaPecas->listaPecas[i].precoVenda = listaPecas->listaPecas[i].precoCusto + impostoPorPeca + fretePorPeca;
+                    listaPecas->listaPecas[i].precoVenda += listaPecas->listaPecas[i].precoVenda * listaOficinas->
+                            listaOficinas[j].porcentagemLucro / 100;
+                    novaNotaFiscal->precoVendaTotal += listaPecas->listaPecas[i].precoVenda * novaNotaFiscal->qtdPecas[k];
+                }
+            }
+        }
+    }
     if (lista->qtdNotas == 0) {
         lista->qtdNotas++;
         resultAlocacao = alocarMemoriaNotasFiscaisModel(lista, qtdPecas);
@@ -259,52 +295,200 @@ int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas, struct ListaF
     return 0;
 }
 
-char *ordenarListaPecas(struct ListaNotasFiscais *lista, int tamLista, int posicaoLista, int tipo) {
-    char* token;
-    token = malloc(sizeof (int) * tamLista);
-
-    for (int i = 0; i < tamLista; i++) {
-        char aux[sizeof(int)*2];
-        if (tipo == 0) {
-            if (i==0) {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].idPecas[i]);
-                strcpy(token, aux);
-                strcat(token, ",");
-            } else {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].idPecas[i]);
-                strcat(token, aux);
-                strcat(token, ",");
-            }
-        }
-        if (tipo == 1) {
-            if (i==0) {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].qtdPecas[i]);
-                strcpy(token, aux);
-                strcat(token, ",");
-            } else {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].qtdPecas[i]);
-                strcat(token, aux);
-                strcat(token, ",");
-            }
-        }
-
-    }
-    return token;
-}
-
 void listarTodasNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
     struct ListaFornecedores *listaFornecedores) {
+    int listado = 0, *encontraPecas, encontraFornecedor, aux = 0;
 
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdNotas > 0) {
+        // Se há um ou mais cadastros, exibe todos
+        for (int i = 0; i < lista->qtdNotas; i++) {
+            // Verifica se o índice atual existe
+            if (lista->listaNotas[i].deletado == 0) {
+                listado = 1;
+                for (int j = 0; j < listaFornecedores->qtdFornecedores; j++) {
+                    if (lista->listaNotas[i].idFornecedor == listaFornecedores->listaFornecedores[j].id) {
+
+                        encontraPecas = malloc(sizeof(int) * lista->listaNotas[i].tamListaPecas);
+
+                        int k = 0;
+                        aux = 0;
+                        while (aux != lista->listaNotas[i].tamListaPecas) {
+                            if (lista->listaNotas[i].idPecas[aux] == listaPecas->listaPecas[k].id) {
+                                encontraPecas[aux] = k;
+                                k = 0;
+                                aux++;
+                            }
+                            k++;
+                        }
+                        encontraFornecedor = j;
+                        break;
+                        }
+                }
+                printf("\n====================\n"
+                   "| NOTA FISCAL %d    |\n"
+                   "====================\n"
+                   "FORNECEDOR: %s\n"
+                   "CNPJ: %s\n"
+                   "FRETE: $%.2f  |  IMPOSTO $%.2f\n"
+                   "|                  PRODUTOS                 |",
+                   lista->listaNotas[i].id,
+                   listaFornecedores->listaFornecedores[encontraFornecedor].nomeFantasia,
+                   listaFornecedores->listaFornecedores[encontraFornecedor].cnpj,
+                   lista->listaNotas[i].frete,
+                   lista->listaNotas[i].imposto);
+                for (int j = 0; j < lista->listaNotas[i].tamListaPecas; j++) {
+                    printf("\n%s\n"
+                        "PREÇO CUSTO: $%.2f\n"
+                        "QUANTIDADE: %d\n"
+                        "TOTAL DA PEÇA: $%.2f\n\n",
+                        listaPecas->listaPecas[encontraPecas[j]].descricao,
+                        listaPecas->listaPecas[encontraPecas[j]].precoCusto,
+                        lista->listaNotas[i].qtdPecas[j],
+                        lista->listaNotas[i].qtdPecas[j] * listaPecas->listaPecas[encontraPecas[j]].precoCusto);
+                }
+                printf("PREÇO TOTAL: $%2.f\n\n", lista->listaNotas[i].precoVendaTotal);
+                free(encontraPecas);
+            }
+        }
+    }
+
+    // Se não houver, avisa que não há cadastros
+    if (listado == 0) {
+        printf("Nenhuma peça cadastrado\n\n");
+    }
 }
 
 void listarNotaFiscalModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
     struct ListaFornecedores *listaFornecedores, int id) {
 
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdNotas > 0) {
+        // Se há um ou mais cadastros, procura pela peça com o id desejado
+        int encontrado = -1, encontraFornecedor, *encontraPecas, aux;
+
+        for (int i = 0; i < lista->qtdNotas; i++) {
+            for (int j = 0; j < listaFornecedores->qtdFornecedores; j++) {
+                if (lista->listaNotas[i].id == id && lista->listaNotas[i].deletado == 0 && lista->listaNotas[i].
+                    idFornecedor == listaFornecedores->listaFornecedores[j].id) {
+
+                    encontraPecas = malloc(sizeof(int) * lista->listaNotas[i].tamListaPecas);
+
+                    int k = 0;
+                    aux = 0;
+                    while (aux != lista->listaNotas[i].tamListaPecas) {
+                        if (lista->listaNotas[i].idPecas[aux] == listaPecas->listaPecas[k].id) {
+                            encontraPecas[aux] = k;
+                            k = 0;
+                            aux++;
+                        }
+                        k++;
+                    }
+                    encontrado = i;
+                    encontraFornecedor = j;
+                    break;
+                }
+            }
+        }
+
+        if (encontrado != -1) {
+            printf("\n====================\n"
+                   "| NOTA FISCAL %d    |\n"
+                   "====================\n"
+                   "FORNECEDOR: %s\n"
+                   "CNPJ: %s\n"
+                   "FRETE: $%.2f  |  IMPOSTO $%.2f\n"
+                   "|                  PRODUTOS                 |",
+                   lista->listaNotas[encontrado].id,
+                   listaFornecedores->listaFornecedores[encontraFornecedor].nomeFantasia,
+                   listaFornecedores->listaFornecedores[encontraFornecedor].cnpj,
+                   lista->listaNotas[encontrado].frete,
+                   lista->listaNotas[encontrado].imposto);
+            for (int i = 0; i < lista->listaNotas[encontrado].tamListaPecas; i++) {
+                printf("\n%s\n"
+                    "PREÇO CUSTO: $%.2f\n"
+                    "QUANTIDADE: %d\n"
+                    "TOTAL DA PEÇA: $%.2f\n\n",
+                    listaPecas->listaPecas[encontraPecas[i]].descricao,
+                    listaPecas->listaPecas[encontraPecas[i]].precoCusto,
+                    lista->listaNotas[encontrado].qtdPecas[i],
+                    lista->listaNotas[encontrado].qtdPecas[i] * listaPecas->listaPecas[encontraPecas[i]].precoCusto);
+            }
+            printf("PREÇO TOTAL: $%2.f\n\n", lista->listaNotas[encontrado].precoVendaTotal);
+            free(encontraPecas);
+        } else {
+            printf("Nenhuma nota encontrada.\n\n");
+            free(encontraPecas);
+        }
+    } else {
+        // Se não houver, avisa que não há cadastros
+        printf("Nenhuma nota foi cadastrada.\n\n");
+    }
 }
 
 void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
     struct ListaFornecedores *listaFornecedores, int idFornecedor) {
+    int *encontraPecas, aux = 0, encontraFornecedor;
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdNotas > 0) {
+        // Se há um ou mais cadastros, procura pela peça com o id desejado
+        int encontrado = 0;
+        for (int i = 0; i < lista->qtdNotas; i++) {
+            for (int j = 0; j < listaFornecedores->qtdFornecedores; j++) {
+                if (lista->listaNotas[i].idFornecedor == idFornecedor && lista->listaNotas[i].deletado == 0 && idFornecedor == listaFornecedores->listaFornecedores[j].id) {
 
+                    encontraPecas = malloc(sizeof(int) * lista->listaNotas[i].tamListaPecas);
+
+                    int k = 0;
+                    aux = 0;
+                    while (aux != lista->listaNotas[i].tamListaPecas) {
+                        if (lista->listaNotas[i].idPecas[aux] == listaPecas->listaPecas[k].id) {
+                            encontraPecas[aux] = k;
+                            k = 0;
+                            aux++;
+                        }
+                        k++;
+                    }
+                    encontraFornecedor = j;
+                    break;
+                }
+            }
+            if (lista->listaNotas[i].idFornecedor == idFornecedor && lista->listaNotas[i].deletado == 0) {
+                encontrado = 1;
+                printf("\n====================\n"
+                       "| NOTA FISCAL %d    |\n"
+                       "====================\n"
+                       "FORNECEDOR: %s\n"
+                       "CNPJ: %s\n"
+                       "FRETE: $%.2f  |  IMPOSTO $%.2f\n"
+                       "|                  PRODUTOS                 |",
+                       lista->listaNotas[i].id,
+                       listaFornecedores->listaFornecedores[encontraFornecedor].nomeFantasia,
+                       listaFornecedores->listaFornecedores[encontraFornecedor].cnpj,
+                       lista->listaNotas[i].frete,
+                       lista->listaNotas[i].imposto);
+                for (int j = 0; j < lista->listaNotas[i].tamListaPecas; j++) {
+                    printf("\n%s\n"
+                        "PREÇO CUSTO: $%.2f\n"
+                        "QUANTIDADE: %d\n"
+                        "TOTAL DA PEÇA: $%.2f\n\n",
+                        listaPecas->listaPecas[encontraPecas[j]].descricao,
+                        listaPecas->listaPecas[encontraPecas[j]].precoCusto,
+                        lista->listaNotas[i].qtdPecas[j],
+                        lista->listaNotas[i].qtdPecas[j] * listaPecas->listaPecas[encontraPecas[j]].precoCusto);
+                }
+                printf("PREÇO TOTAL: $%2.f\n\n", lista->listaNotas[i].precoVendaTotal);
+                free(encontraPecas);
+            }
+        }
+
+        if (encontrado == 0) {
+            printf("Nenhuma nota encontrada.\n\n");
+        }
+    } else {
+        // Se não houver, avisa que não há cadastros
+        printf("Nenhuma nota foi cadastrada.\n\n");
+    }
 }
 
 

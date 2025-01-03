@@ -174,7 +174,7 @@ void listarPeca(struct ListaPecas *listaPecas) {
     int resp;
     // Pergunta o tipo de listagem
     printf("\n==================================\n"
-        "|     LISTAGEM DE FORNECEDOR     |\n"
+        "|     LISTAGEM DE PEÇAS          |\n"
         "==================================\n"
         "| 1 | Busca por ID               |\n"
         "| 2 | Busca por ID do Fornecedor |\n"

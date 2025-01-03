@@ -9,7 +9,6 @@ struct Servicos {
     char descricao[255];
     float preco;
     float comissao;
-    int tempoGasto;
     int deletado;
 };
 

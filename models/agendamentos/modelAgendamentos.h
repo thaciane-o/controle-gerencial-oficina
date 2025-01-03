@@ -8,8 +8,7 @@
 
 struct Agendamentos {
     int id;
-    char data[11];
-    char hora[6];
+    char datahoraInicial[17];
     int idVeiculo;
     int idServico;
     int idFuncionario;

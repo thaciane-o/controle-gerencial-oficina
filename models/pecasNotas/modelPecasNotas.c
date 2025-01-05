@@ -191,7 +191,7 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
     }
 
     if (resultAlocacao == 0) {
-        printf("Erro: Não foi possível cadastrar a peça.\n\n");
+        printf("Erro: Não foi possível cadastrar a relação Peca/Nota.\n\n");
         return;
     }
 
@@ -199,35 +199,15 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
     pecaNotaCadastrando->deletado = 0;
     lista->listaPecasNotas[lista->qtdPecasNotas - 1] = *pecaNotaCadastrando;
 
-    printf("Peça cadastrada com sucesso!\n\n");
+
 }
 
-// Verifica a existência do id requisitado
-int verificarIDPecaNotaModel(struct ListaPecasNotas *lista, int id) {
-    // Procura a peça com o id inserido
-    if (lista->qtdPecasNotas > 0) {
-        for (int i = 0; i < lista->qtdPecasNotas; i++) {
-            if (lista->listaPecasNotas[i].id == id && lista->listaPecasNotas[i].deletado == 0) {
-                return 1;
-            }
-        }
-    } else {
-        printf("Nenhuma peça foi cadastrada!\n\n");
-        return 0;
-    }
-
-    printf("Peca não encontrada!\n\n");
-    return 0;
-}
-
-
-// Deleta uma peça cadastrada
+// Deleta uma relação cadastrada
 void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id) {
     // Auxiliar para saber se encontrou o id.
 
     // Verifica se há algum cadastro
     if (lista->qtdPecasNotas == 0) {
-        printf("Nenhuma peça foi cadastrada.\n");
         return;
     }
 

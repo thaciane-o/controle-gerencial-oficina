@@ -232,7 +232,7 @@ void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct NotasFis
     }
 
     if (resultAlocacao == 0) {
-        printf("Erro: Não foi possível cadastrar a peça.\n\n");
+        printf("Erro: Não foi possível cadastrar a nota.\n\n");
         return;
     }
 

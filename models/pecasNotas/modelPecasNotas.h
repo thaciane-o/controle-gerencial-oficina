@@ -28,8 +28,6 @@ int realocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista, int qtdAloca);
 
 void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pecaNotaCadastrando);
 
-int verificarIDPecaNotaModel(struct ListaPecasNotas *lista, int id);
-
 void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id);
 
 #endif //MODELPECASNOTAS_H

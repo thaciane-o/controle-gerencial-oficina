@@ -40,6 +40,8 @@
 #include "./models/estoques/modelEstoques.h"
 
 #include "./models/notasFiscais/modelNotasFiscais.h"
+#include "./models/pecasNotas/modelPecasNotas.h"
+
 
 int main() {
     // Configuração para caracteres especiais
@@ -86,6 +88,9 @@ int main() {
 
     struct ListaNotasFiscais listaNotasFiscais;
     listaNotasFiscais.qtdNotas = 0;
+
+    struct ListaPecasNotas listaPecasNotas;
+    listaPecasNotas.qtdPecasNotas = 0;
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
@@ -215,7 +220,7 @@ int main() {
                                           opcaoArmazenamento);
                     break;
                 case 3:
-                    gerenciarEstoques(&listaPecas, &listaFornecedores, &listaNotasFiscais, &listaOficinas, opcaoArmazenamento);
+                    gerenciarEstoques(&listaPecas, &listaPecasNotas, &listaFornecedores, &listaNotasFiscais, &listaOficinas, opcaoArmazenamento);
                     break;
                 case 7:
                     if (listaAgendamentos.qtdAgendamentos > 0) {

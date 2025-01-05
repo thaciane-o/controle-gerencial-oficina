@@ -11,6 +11,8 @@
 
 void verificarEstoqueMinimo(struct ListaPecas *lista);
 
-char *ordenarListaPecas(struct ListaNotasFiscais *lista, int tamLista, int posicaoLista, int tipo);
+int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
+                                        struct NotasFiscais *notaFiscal, int idPeca);
+
 
 #endif //MODELESTOQUES_H

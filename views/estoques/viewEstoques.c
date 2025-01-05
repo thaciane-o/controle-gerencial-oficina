@@ -3,14 +3,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "..\..\models\oficina\modelOficina.h"
-#include "..\..\models\estoques\modelEstoques.h"
-#include "..\..\models\pecas\modelPecas.h"
-#include "..\..\models\fornecedores\modelFornecedores.h"
-#include "..\..\models\notasFiscais\modelNotasFiscais.h"
+#include "../../models/oficina/modelOficina.h"
+#include "../../models/estoques/modelEstoques.h"
+#include "../../models/pecas/modelPecas.h"
+#include "../../models/fornecedores/modelFornecedores.h"
+#include "../../models/notasFiscais/modelNotasFiscais.h"
+#include "../../models/pecasNotas/modelPecasNotas.h"
 
 
-void gerenciarEstoques(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
+void gerenciarEstoques(struct ListaPecas *listaPecas, struct ListaPecasNotas *listaPecasNotas,
+                       struct ListaFornecedores *listaFornecedores,
                        struct ListaNotasFiscais *listaNotas, struct ListaOficinas *listaOficinas, int opcaoArmazenamento) {
 int opcaoSubmenus;
 
@@ -22,8 +24,13 @@ int opcaoSubmenus;
         }
         // Busca os dados em arquivos das tabelas relacionadas
         if (listaPecas->qtdPecas > 0) {
-            buscarDadosNotasFiscaisModel(listaNotas, listaPecas, opcaoArmazenamento);
+            buscarDadosNotasFiscaisModel(listaNotas, opcaoArmazenamento);
         }
+
+        if (listaNotas->qtdNotas > 0) {
+            buscarDadosPecaNotaModel(listaPecasNotas, opcaoArmazenamento);
+        }
+
         if (listaFornecedores->qtdFornecedores == 0) {
             buscarDadosFornecedoresModel(listaFornecedores, opcaoArmazenamento);
         }
@@ -31,8 +38,9 @@ int opcaoSubmenus;
             buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
         }
     }
-    verificarEstoqueMinimo(listaPecas);
+
     do {
+        verificarEstoqueMinimo(listaPecas);
         printf("\n==========================================\n"
             "|          CONTROLE DE ESTOQUE           |\n"
             "==========================================\n"
@@ -46,12 +54,13 @@ int opcaoSubmenus;
 
         switch (opcaoSubmenus) {
             case 1:
-                realizarPedidoEstoque(listaNotas, listaPecas, listaFornecedores, listaOficinas);
+                realizarPedidoEstoque(listaNotas, listaPecasNotas, listaPecas, listaFornecedores, listaOficinas);
                 break;
             case 2:
-                listarNotasFiscais(listaPecas, listaNotas, listaFornecedores);
+                listarNotasFiscais(listaPecas, listaPecasNotas, listaNotas, listaFornecedores);
                 break;
             case 3:
+                deletarNotaFiscal(listaNotas, listaPecasNotas);
                 break;
             case 4:
                 if (opcaoArmazenamento != 3 && listaPecas->listaPecas != NULL) {
@@ -60,6 +69,9 @@ int opcaoSubmenus;
                     }
                     if (listaNotas->qtdNotas > 0) {
                         armazenarDadosNotasFiscaisModel(listaNotas, opcaoArmazenamento);
+                    }
+                    if (listaPecasNotas->qtdPecasNotas > 0) {
+                        armazenarDadosPecaNotaModel(listaPecasNotas, opcaoArmazenamento);
                     }
                     if (listaFornecedores->qtdFornecedores > 0) {
                         free(listaFornecedores->listaFornecedores);
@@ -82,10 +94,15 @@ int opcaoSubmenus;
 
 }
 
-void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores, struct ListaOficinas *listaOficinas) {
-    struct notasFiscais notaFiscal;
-    notaFiscal.tamListaPecas = 0, notaFiscal.precoVendaTotal = 0;
-    int varControleIdPecas;
+void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,
+                           struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
+                           struct ListaOficinas *listaOficinas) {
+    struct NotasFiscais notaFiscal;
+    struct PecasNotas pecaNota;
+
+    int totalPecas = 0, cadastrouPeca = 0;
+
+    notaFiscal.precoVendaTotal = 0;
 
     printf("Digite a Oficina que esta fazendo o pedido: ");
     scanf("%d", &notaFiscal.idOficina);
@@ -109,60 +126,43 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecas *l
 
     do {
         printf("\nInsira o ID de uma peça para o pedido (0 para finalizar): ");
-        scanf("%d", &varControleIdPecas);
+        scanf("%d", &pecaNota.idPeca);
 
-        if (varControleIdPecas != 0) {
+        pecaNota.idNota = lista->qtdNotas + 1;
 
-            notaFiscal.tamListaPecas++;
+        if (pecaNota.idPeca != 0) {
 
-            if (!verificarIDPecaModel(listaPecas, varControleIdPecas)) {
+            if (!verificarIDPecaModel(listaPecas, pecaNota.idPeca)) {
+                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
                 return;
             }
-            if (!verificarRelacaoFornecedorModel(listaPecas, listaFornecedores, &notaFiscal, varControleIdPecas)) {
+            if (!verificarRelacaoFornecedorModel(listaPecas, listaFornecedores, &notaFiscal, pecaNota.idPeca)) {
+                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
                 return;
             }
 
-            if (notaFiscal.tamListaPecas == 1) {
-                notaFiscal.idPecas = malloc(sizeof (int) * (notaFiscal.tamListaPecas));
-                if (notaFiscal.idPecas == NULL) {
-                    printf("Erro alocando memoria\n");
-                    return;
-                }
-                notaFiscal.qtdPecas = malloc(sizeof (int) * (notaFiscal.tamListaPecas));
-                if (notaFiscal.qtdPecas == NULL) {
-                    printf("Erro alocando memoria\n");
-                    return;
-                }
-
-            }else {
-                notaFiscal.idPecas = realloc(notaFiscal.idPecas,sizeof (int) * (notaFiscal.tamListaPecas));
-                if (notaFiscal.idPecas == NULL) {
-                    printf("Erro alocando memoria\n");
-                    return;
-                }
-                notaFiscal.qtdPecas = realloc(notaFiscal.qtdPecas, sizeof (int) * (notaFiscal.tamListaPecas));
-                if (notaFiscal.qtdPecas == NULL) {
-                    printf("Erro alocando memoria\n");
-                    return;
-                }
-            }
 
             printf("\nInsira a quantidade a ser pedida: ");
-            scanf("%d", &notaFiscal.qtdPecas[notaFiscal.tamListaPecas - 1]);
+            scanf("%d", &pecaNota.qtdPecas);
 
-            notaFiscal.idPecas[notaFiscal.tamListaPecas - 1] = varControleIdPecas;
+
+            totalPecas += pecaNota.idPeca;
+
+            cadastrarPecaNotaModel(listaPecasNotas, &pecaNota);
+            cadastrouPeca = 1;
         }
+    }while (pecaNota.idPeca != 0);
 
-    }while (varControleIdPecas != 0);
-
-    cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, notaFiscal.tamListaPecas);
+    if(cadastrouPeca != 0) {
+        cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, listaPecasNotas, totalPecas);
+    } else {
+        printf("\nPor favor, informe as peças que serão compradas\n");
+    }
 }
 
-// void atualizarEstoques(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores) {
-//     verificarEstoqueMinimo(listaPecas);
-// }
 
-void listarNotasFiscais(struct ListaPecas *lista, struct ListaNotasFiscais *listaNotasFiscais, struct ListaFornecedores *listaFornecedores) {
+void listarNotasFiscais(struct ListaPecas *lista, struct ListaPecasNotas *listaPecasNotas,
+                        struct ListaNotasFiscais *listaNotasFiscais, struct ListaFornecedores *listaFornecedores) {
     int resp;
     // Pergunta o tipo de listagem
     printf("\n==================================\n"
@@ -185,18 +185,18 @@ void listarNotasFiscais(struct ListaPecas *lista, struct ListaNotasFiscais *list
             printf("Insira o ID desejado para a busca: ");
         setbuf(stdin, NULL);
         scanf("%d", &id);
-        listarNotaFiscalModel(listaNotasFiscais, lista, listaFornecedores, id);
+        listarNotaFiscalModel(listaNotasFiscais, listaPecasNotas, lista, listaFornecedores, id);
         break;
         // Listagem por relação
         case 2:
             printf("Insira o ID do fornecedor desejado para a busca: ");
         setbuf(stdin, NULL);
         scanf("%d", &id);
-        buscarNotasFiscaisPorFornecedorModel(listaNotasFiscais, lista, listaFornecedores, id);
+        buscarNotasFiscaisPorFornecedorModel(listaNotasFiscais, listaPecasNotas, lista, listaFornecedores, id);
         break;
         // Listagem de todas as peças
         case 3:
-            listarTodasNotasFiscaisModel(listaNotasFiscais, lista, listaFornecedores);
+            listarTodasNotasFiscaisModel(listaNotasFiscais, listaPecasNotas, lista, listaFornecedores);
         break;
         case 4:
             break;
@@ -204,4 +204,18 @@ void listarNotasFiscais(struct ListaPecas *lista, struct ListaNotasFiscais *list
             printf("Opção inválida, voltando ao menu principal.\n\n");
         break;
     }
+}
+
+void deletarNotaFiscal(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas) {
+    int id;
+
+    // Pede o Id da peça que será deletada
+    printf("\n==============================\n"
+        "|   DELEÇÃO DE NOTA FISCAL    |\n"
+        "==============================\n");
+    printf("Insira o ID da peça que deseja deletar: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &id);
+
+    deletarNotaModel(lista, listaPecasNotas, id);
 }

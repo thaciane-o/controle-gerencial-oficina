@@ -17,36 +17,15 @@ void verificarEstoqueMinimo(struct ListaPecas *lista) {
     }
 }
 
+int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
+                                    struct NotasFiscais *notaFiscal, int idPeca) {
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
 
-char *ordenarListaPecas(struct ListaNotasFiscais *lista, int tamLista, int posicaoLista, int tipo) {
-    char *token;
-    token = malloc(sizeof (int) * tamLista);
+        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idFornecedor == notaFiscal->idFornecedor) {
+            return 1;
+        }
 
-    for (int i = 0; i < tamLista; i++) {
-        char aux[sizeof(int)*2];
-        if (tipo == 0) {
-            if (i==0) {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].idPecas[i]);
-                strcpy(token, aux);
-                strcat(token, ",");
-            } else {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].idPecas[i]);
-                strcat(token, aux);
-                strcat(token, ",");
-            }
-        }
-        if (tipo == 1) {
-            if (i==0) {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].qtdPecas[i]);
-                strcpy(token, aux);
-                strcat(token, ",");
-            } else {
-                sprintf(aux, "%d", lista->listaNotas[posicaoLista].qtdPecas[i]);
-                strcat(token, aux);
-                strcat(token, ",");
-            }
-        }
     }
-    return token;
+    printf("Esta peça não é fornecida pelo fornecedor digitado\n\n");
+    return 0;
 }
-

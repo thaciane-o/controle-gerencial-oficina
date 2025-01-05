@@ -3,19 +3,17 @@
 #define MODELNOTASFISCAIS_H
 
 #include "modelNotasFiscais.h"
+#include "..\..\models/pecasNotas/modelPecasNotas.h"
 #include "..\..\models\estoques\modelEstoques.h"
 #include "..\..\models\pecas\modelPecas.h"
 #include "..\..\models\fornecedores\modelFornecedores.h"
 #include "..\..\models\oficina\modelOficina.h"
 
-struct notasFiscais {
+struct NotasFiscais {
     int id;
-    int *idPecas;
-    int *qtdPecas;
     float frete;
     float imposto;
     float precoVendaTotal;
-    int tamListaPecas;
     int idOficina;
     int idFornecedor;
     int deletado;
@@ -23,30 +21,35 @@ struct notasFiscais {
 
 struct ListaNotasFiscais {
     int qtdNotas;
-    struct notasFiscais *listaNotas;
+    struct NotasFiscais *listaNotas;
 };
 
-void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,  int opcaoArmazenamento);
+void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista,  int opcaoArmazenamento);
 
 void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArmazenamento);
 
-int alocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdPecas);
+int alocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista);
 
-int realocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdAloca, int qtdPecas);
+int realocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdAloca);
 
-void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct notasFiscais *novaNotaFiscal,
-                                struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas, int qtdPecas);
+void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct NotasFiscais *novaNotaFiscal,
+                                struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas,
+                                struct ListaPecasNotas *listaPecasNotas, int totalPecas);
 
-    int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
-                                        struct notasFiscais *notaFiscal, int idPeca);
 
-    void listarTodasNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
-                                      struct ListaFornecedores *listaFornecedores);
+void listarTodasNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,
+                                  struct ListaPecas *listaPecas,
+                                  struct ListaFornecedores *listaFornecedores);
 
-    void listarNotaFiscalModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
-                               struct ListaFornecedores *listaFornecedores, int id);
+void listarNotaFiscalModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,
+                           struct ListaPecas *listaPecas,
+                           struct ListaFornecedores *listaFornecedores, int id);
 
-    void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struct ListaPecas *listaPecas,
-                                              struct ListaFornecedores *listaFornecedores, int idFornecedor);
+void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,
+                                          struct ListaPecas *listaPecas,
+                                          struct ListaFornecedores *listaFornecedores, int idFornecedor);
+
+void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas, int id);
+
 
 #endif //MODELNOTASFISCAIS_H

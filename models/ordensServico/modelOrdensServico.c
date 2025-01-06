@@ -267,16 +267,14 @@ void deletarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
             encontrado = 1;
 
             lista->listaOrdensServico[i].deletado = 1;
-
-            printf("Ordem de serviço cancelada com sucesso!\n\n");
-
-            break;
         }
     }
 
     // Se não encontrar o ID para deleção, avisa o usuário
     if (!encontrado) {
         printf("Ordem de serviço não encontrada!\n\n");
+    } else {
+        printf("Ordem de serviço cancelada com sucesso!\n\n");
     }
 }
 

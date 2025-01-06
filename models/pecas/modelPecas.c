@@ -237,7 +237,7 @@ int verificarIDPecaModel(struct ListaPecas *lista, int id) {
         return 0;
     }
 
-    printf("Peca não encontrada!\n\n");
+    printf("Peça não encontrada!\n\n");
     return 0;
 }
 

@@ -8,11 +8,11 @@
 
 struct Agendamentos {
     int id;
-    char data[11];
-    char hora[6];
+    char datahoraInicial[17];
     int idVeiculo;
     int idServico;
     int idFuncionario;
+    int finalizado;
     int deletado;
 };
 
@@ -37,14 +37,16 @@ void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct 
 
 void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
-void listarAgendamentoModel(struct ListaAgendamentos *lista, int id);
+void listarAgendamentoModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico);
 
-void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico);
+void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico, struct ListaOrdensServico *listaOrdensServico);
 
-void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario);
+void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario, struct ListaOrdensServico *listaOrdensServico);
 
-void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo);
+void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo, struct ListaOrdensServico *listaOrdensServico);
 
-void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id);
+void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico);
 
-#endif //MODELAGENDAMENTOS_H
+void finalizarAgendamentoModel(struct ListaAgendamentos *lista, int id);
+
+#endif //MODELAGENDAMENTOS_H    

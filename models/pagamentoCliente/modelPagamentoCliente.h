@@ -28,14 +28,19 @@ int alocarPagamentosClienteModel(struct ListaPagamentosCliente *lista);
 
 int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtdAlocada);
 
-void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento);
+void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento,
+                                     struct ListaCaixas *listaCaixas);
 
 void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int idCliente);
 
-void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
+void listarTodosPagamentosClienteDeOficinaModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas,
+                                                int idOficina);
 
-void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
+void listaPagamentosRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas,
+                                          int idOficina);
 
-void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas, int idOficina);
+void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *lista, struct ListaCaixas *listaCaixas,
+                                             int idOficina);
+
 
 #endif //MODELPAGAMENTOCLIENTE_H

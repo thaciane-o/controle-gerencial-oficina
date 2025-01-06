@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "../caixas/modelCaixa.h"
 
 // Busca os dados dos pagamentos de fornecedor nos arquivos
 void buscarDadosPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, int opcaoArmazenamento) {
-        int i = 0;
+    int i = 0;
 
     FILE *dadosPagamentosFornecedor;
 
@@ -26,7 +26,8 @@ void buscarDadosPagamentosFornecedorModel(struct ListaPagamentosFornecedor *list
             }
 
             if (lista->qtdPagamentosFornecedor > 0) {
-                lista->listaPagamentosFornecedor = malloc(lista->qtdPagamentosFornecedor * sizeof(struct PagamentosFornecedor));
+                lista->listaPagamentosFornecedor = malloc(
+                    lista->qtdPagamentosFornecedor * sizeof(struct PagamentosFornecedor));
             } else {
                 fclose(dadosPagamentosFornecedor);
                 return;
@@ -88,7 +89,8 @@ void buscarDadosPagamentosFornecedorModel(struct ListaPagamentosFornecedor *list
             }
 
             if (lista->qtdPagamentosFornecedor > 0) {
-                lista->listaPagamentosFornecedor = malloc(lista->qtdPagamentosFornecedor * sizeof(struct PagamentosFornecedor));
+                lista->listaPagamentosFornecedor = malloc(
+                    lista->qtdPagamentosFornecedor * sizeof(struct PagamentosFornecedor));
             } else {
                 fclose(dadosPagamentosFornecedor);
                 return;
@@ -121,34 +123,35 @@ void armazenarDadosPagamentosFornecedorModel(struct ListaPagamentosFornecedor *l
         case 1:
             dadosPagamentosFornecedor = fopen("DadosPagamentosFornecedor.txt", "w");
 
-        if (dadosPagamentosFornecedor == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosPagamentosFornecedor == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
-            fprintf(dadosPagamentosFornecedor, "%d;%d;%f;%s;%d;%d;%d\n",
-                    lista->listaPagamentosFornecedor[i].id,
-                    lista->listaPagamentosFornecedor[i].tipoPagamento,
-                    lista->listaPagamentosFornecedor[i].valor,
-                    lista->listaPagamentosFornecedor[i].dataPagamento,
-                    lista->listaPagamentosFornecedor[i].idCaixa,
-                    lista->listaPagamentosFornecedor[i].idFornecedor,
-                    lista->listaPagamentosFornecedor[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
+                fprintf(dadosPagamentosFornecedor, "%d;%d;%f;%s;%d;%d;%d\n",
+                        lista->listaPagamentosFornecedor[i].id,
+                        lista->listaPagamentosFornecedor[i].tipoPagamento,
+                        lista->listaPagamentosFornecedor[i].valor,
+                        lista->listaPagamentosFornecedor[i].dataPagamento,
+                        lista->listaPagamentosFornecedor[i].idCaixa,
+                        lista->listaPagamentosFornecedor[i].idFornecedor,
+                        lista->listaPagamentosFornecedor[i].deletado);
+            }
+            break;
         case 2:
             dadosPagamentosFornecedor = fopen("DadosPagamentosFornecedor.bin", "wb");
 
-        if (dadosPagamentosFornecedor == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosPagamentosFornecedor == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
-            fwrite(&lista->listaPagamentosFornecedor[i], sizeof(struct PagamentosFornecedor), 1, dadosPagamentosFornecedor);
-        }
-        break;
+            for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
+                fwrite(&lista->listaPagamentosFornecedor[i], sizeof(struct PagamentosFornecedor), 1,
+                       dadosPagamentosFornecedor);
+            }
+            break;
     }
     fclose(dadosPagamentosFornecedor);
 
@@ -189,7 +192,17 @@ int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, i
 }
 
 // Cadastro de pagamento a fornecedor
-void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento) {
+void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
+                                        struct ListaCaixas *listaCaixas) {
+    float saldoCaixa = getSaldoCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa);
+    if (saldoCaixa == -1) {
+        return;
+    }
+    if (saldoCaixa < pagamento->valor) {
+        printf("Não há saldo suficiente no caixa para realizar o pagamento!\n\n");
+        return;
+    }
+
     int resultAlocacao = 0;
 
     if (lista->qtdPagamentosFornecedor == 0) {
@@ -212,11 +225,13 @@ void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista,
 
     printf("Pagamento cadastrado com sucesso!\n\n");
 
+    // Debita o valor do pagamento
+    debitarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
 }
 
 // Buscar contas pagas a fornecedor por oficina
-void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas, int idOficina) {
-
+void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas,
+                                              int idOficina) {
     int idCaixa;
     // Busca pelo caixa da oficina
     idCaixa = getIdCaixaPorOficinaModel(listaCaixas, idOficina);
@@ -229,22 +244,23 @@ void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *
         int encontrado = 0;
         char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
         for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
-            if (lista->listaPagamentosFornecedor[i].idCaixa == idCaixa && lista->listaPagamentosFornecedor[i].deletado ==
+            if (lista->listaPagamentosFornecedor[i].idCaixa == idCaixa && lista->listaPagamentosFornecedor[i].deletado
+                ==
                 0) {
                 encontrado = 1;
                 printf("\n============================\n"
-                    "| PAGAMENTO %d\n"
-                    "============================\n"
-                    "TIPO PAGAMENTO: %s\n"
-                    "DATA PAGAMENTO: %s\n"
-                    "VALOR: R$%.2f\n"
-                    "PAGO AO FORNECEDOR: %d\n",
-                    lista->listaPagamentosFornecedor[i].id,
-                    tiposPagamento[lista->listaPagamentosFornecedor[i].tipoPagamento - 1],
-                    lista->listaPagamentosFornecedor[i].dataPagamento,
-                    lista->listaPagamentosFornecedor[i].valor,
-                    lista->listaPagamentosFornecedor[i].idFornecedor);
-                }
+                       "| PAGAMENTO %d\n"
+                       "============================\n"
+                       "TIPO PAGAMENTO: %s\n"
+                       "DATA PAGAMENTO: %s\n"
+                       "VALOR: R$%.2f\n"
+                       "PAGO AO FORNECEDOR: %d\n",
+                       lista->listaPagamentosFornecedor[i].id,
+                       tiposPagamento[lista->listaPagamentosFornecedor[i].tipoPagamento - 1],
+                       lista->listaPagamentosFornecedor[i].dataPagamento,
+                       lista->listaPagamentosFornecedor[i].valor,
+                       lista->listaPagamentosFornecedor[i].idFornecedor);
+            }
         }
 
         if (encontrado == 0) {
@@ -256,14 +272,15 @@ void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *
 }
 
 // Buscar contas pagas a fornecedor por oficina
-void listaPagamentosFornecedorPorFornecedorModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas, int idFornecedor) {
-
+void listaPagamentosFornecedorPorFornecedorModel(struct ListaPagamentosFornecedor *lista,
+                                                 struct ListaCaixas *listaCaixas, int idFornecedor) {
     // Verifica se há pelo menos um cadastro
     if (lista->qtdPagamentosFornecedor > 0) {
         int encontrado = 0;
         char tiposPagamento[3][20] = {"Dinheiro", "Cartão de crédito", "Cartão de débito"};
         for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
-            if (lista->listaPagamentosFornecedor[i].idFornecedor == idFornecedor && lista->listaPagamentosFornecedor[i].deletado ==
+            if (lista->listaPagamentosFornecedor[i].idFornecedor == idFornecedor && lista->listaPagamentosFornecedor[i].
+                deletado ==
                 0) {
                 encontrado = 1;
 
@@ -274,18 +291,18 @@ void listaPagamentosFornecedorPorFornecedorModel(struct ListaPagamentosFornecedo
                 }
 
                 printf("\n============================\n"
-                    "| PAGAMENTO %d\n"
-                    "============================\n"
-                    "TIPO PAGAMENTO: %s\n"
-                    "DATA PAGAMENTO: %s\n"
-                    "VALOR: R$%.2f\n"
-                    "OFICINA PAGANTE: %d\n",
-                    lista->listaPagamentosFornecedor[i].id,
-                    tiposPagamento[lista->listaPagamentosFornecedor[i].tipoPagamento - 1],
-                    lista->listaPagamentosFornecedor[i].dataPagamento,
-                    lista->listaPagamentosFornecedor[i].valor,
-                    idOficina);
-                }
+                       "| PAGAMENTO %d\n"
+                       "============================\n"
+                       "TIPO PAGAMENTO: %s\n"
+                       "DATA PAGAMENTO: %s\n"
+                       "VALOR: R$%.2f\n"
+                       "OFICINA PAGANTE: %d\n",
+                       lista->listaPagamentosFornecedor[i].id,
+                       tiposPagamento[lista->listaPagamentosFornecedor[i].tipoPagamento - 1],
+                       lista->listaPagamentosFornecedor[i].dataPagamento,
+                       lista->listaPagamentosFornecedor[i].valor,
+                       idOficina);
+            }
         }
 
         if (encontrado == 0) {

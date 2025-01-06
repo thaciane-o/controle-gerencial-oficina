@@ -26,10 +26,13 @@ int alocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista);
 
 int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, int qtdAlocada);
 
-void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento);
+void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
+                                        struct ListaCaixas *listaCaixas);
 
-void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas, int idOficina);
+void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas,
+                                              int idOficina);
 
-void listaPagamentosFornecedorPorFornecedorModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas, int idFornecedor);
+void listaPagamentosFornecedorPorFornecedorModel(struct ListaPagamentosFornecedor *lista,
+                                                 struct ListaCaixas *listaCaixas, int idFornecedor);
 
 #endif //MODELPAGAMENTOFORNECEDOR_H

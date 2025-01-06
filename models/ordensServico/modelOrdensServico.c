@@ -1,12 +1,10 @@
 #include "modelOrdensServico.h"
-
-#include <iso646.h>
-
 #include "../../models/pecas/modelPecas.h"
 #include "../../models/agendamentos/modelAgendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // Busca os dados de ordens de serviço nos arquivos
 void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoArmazenamento) {
@@ -16,7 +14,7 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
 
     switch (opcaoArmazenamento) {
         case 1:
-            dadosOrdensServico = fopen("DadosOrdensServiço.txt", "r");
+            dadosOrdensServico = fopen("DadosOrdensServico.txt", "r");
 
             if (dadosOrdensServico == NULL) {
                 return;
@@ -49,15 +47,23 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaOrdensServico[i].idAgendamentos = atoi(token);
-                    token = strtok(NULL, ";");
-                }
-                if (token != NULL) {
                     lista->listaOrdensServico[i].idPecas = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
+                    lista->listaOrdensServico[i].idAgendamentos = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
                     lista->listaOrdensServico[i].valorTotal = atof(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaOrdensServico[i].tempoGasto = atof(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    strcpy(lista->listaOrdensServico[i].datahoraFinal, token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -113,32 +119,34 @@ void armazenarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opca
         case 1:
             dadosOrdensServico = fopen("DadosOrdensServico.txt", "w");
 
-        if (dadosOrdensServico == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
-            return;
-        }
+            if (dadosOrdensServico == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo de texto.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdOrdensServico; i++) {
-            fprintf(dadosOrdensServico, "%s;%d;%d;%f;%d\n",
-                    lista->listaOrdensServico[i].descricao,
-                    lista->listaOrdensServico[i].idPecas,
-                    lista->listaOrdensServico[i].idAgendamentos,
-                    lista->listaOrdensServico[i].valorTotal,
-                    lista->listaOrdensServico[i].deletado);
-        }
-        break;
+            for (int i = 0; i < lista->qtdOrdensServico; i++) {
+                fprintf(dadosOrdensServico, "%s;%d;%d;%f;%f;%s;%d\n",
+                        lista->listaOrdensServico[i].descricao,
+                        lista->listaOrdensServico[i].idPecas,
+                        lista->listaOrdensServico[i].idAgendamentos,
+                        lista->listaOrdensServico[i].valorTotal,
+                        lista->listaOrdensServico[i].tempoGasto,
+                        lista->listaOrdensServico[i].datahoraFinal,
+                        lista->listaOrdensServico[i].deletado);
+            }
+            break;
         case 2:
             dadosOrdensServico = fopen("DadosOrdensServico.bin", "wb");
 
-        if (dadosOrdensServico == NULL) {
-            printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
-            return;
-        }
+            if (dadosOrdensServico == NULL) {
+                printf("Erro: Não foi possível abrir o arquivo binário.\n\n");
+                return;
+            }
 
-        for (int i = 0; i < lista->qtdOrdensServico; i++) {
-            fwrite(&lista->listaOrdensServico[i], sizeof(struct OrdensServico), 1, dadosOrdensServico);
-        }
-        break;
+            for (int i = 0; i < lista->qtdOrdensServico; i++) {
+                fwrite(&lista->listaOrdensServico[i], sizeof(struct OrdensServico), 1, dadosOrdensServico);
+            }
+            break;
     }
     fclose(dadosOrdensServico);
 
@@ -168,7 +176,8 @@ int realocarOrdensServicoModel(struct ListaOrdensServico *lista, int qtdAlocada)
     }
 
     lista->qtdOrdensServico += qtdAlocada;
-    lista->listaOrdensServico = realloc(lista->listaOrdensServico, lista->qtdOrdensServico * sizeof(struct OrdensServico));
+    lista->listaOrdensServico = realloc(lista->listaOrdensServico,
+                                        lista->qtdOrdensServico * sizeof(struct OrdensServico));
 
     if (lista->listaOrdensServico == NULL) {
         printf("Erro: Memória insuficiente\n\n");
@@ -212,7 +221,6 @@ void atualizarOrdensServicoModel(struct ListaOrdensServico *lista, int id, struc
     }
 }
 
-
 // Lista uma ordem de serviço pelo ID
 void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     if (lista->qtdOrdensServico == 0) {
@@ -224,17 +232,21 @@ void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
         // Verifica se a ordem de serviço está ou não deletado
         if (lista->listaOrdensServico[i].idAgendamentos == id && lista->listaOrdensServico[i].deletado == 0) {
-            printf("\n====================="
+            printf("====================="
                    "\n| ORDEM DE SERVIÇO  |"
                    "\n====================="
                    "\nDESCRIÇÃO DO SERVIÇO: %s"
                    "\nVALOR TOTAL: %f"
                    "\nAGENDAMENTO: %d"
-                   "\nPEÇA: %d\n\n",
+                   "\nPEÇA: %d"
+                   "\nTEMPO GASTO: %.2f hora(s)"
+                   "\nDATA E HORA FINALIZADA: %s\n",
                    lista->listaOrdensServico[i].descricao,
                    lista->listaOrdensServico[i].valorTotal,
                    lista->listaOrdensServico[i].idAgendamentos,
-                   lista->listaOrdensServico[i].idPecas);
+                   lista->listaOrdensServico[i].idPecas,
+                   lista->listaOrdensServico[i].tempoGasto,
+                   lista->listaOrdensServico[i].datahoraFinal);
         }
     }
 }
@@ -268,3 +280,81 @@ void deletarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     }
 }
 
+void finalizarOrdemServicoModel(struct ListaOrdensServico *lista, struct ListaAgendamentos *listaAgendamentos,
+                                int idAgendamento, int idServico) {
+    time_t now = time(NULL);
+    struct tm *local = localtime(&now);
+    struct tm tmInicial = {0};
+    struct tm tmFinal = {0};
+    int ordemEncontrada = 0, qtdOrdensServico = 0, qtdOrdensServicoFim = 0;
+
+    for (int i = 0; i < lista->qtdOrdensServico; i++) {
+        if (lista->listaOrdensServico[i].idAgendamentos == idAgendamento && lista->listaOrdensServico[i].deletado == 0
+            && listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico == idServico &&
+            listaAgendamentos->listaAgendamentos[idAgendamento - 1].finalizado == 0) {
+            qtdOrdensServico++;
+
+            // Convertendo data hora em string
+            strftime(lista->listaOrdensServico[i].datahoraFinal, sizeof(lista->listaOrdensServico[i].datahoraFinal),
+                     "%d/%m/%Y %H:%M", local);
+
+            // Convertendo string em struct tm
+            sscanf(listaAgendamentos->listaAgendamentos[idAgendamento - 1].datahoraInicial, "%d/%d/%d %d:%d",
+                   &tmInicial.tm_mday, &tmInicial.tm_mon, &tmInicial.tm_year,
+                   &tmInicial.tm_hour, &tmInicial.tm_min);
+            sscanf(lista->listaOrdensServico[i].datahoraFinal, "%d/%d/%d %d:%d",
+                   &tmFinal.tm_mday, &tmFinal.tm_mon, &tmFinal.tm_year,
+                   &tmFinal.tm_hour, &tmFinal.tm_min);
+
+            tmInicial.tm_mon -= 1;
+            tmInicial.tm_year -= 1900;
+
+            tmFinal.tm_mon -= 1;
+            tmFinal.tm_year -= 1900;
+
+            // Convertendo struct tm para time_t
+            time_t tempoInicial = mktime(&tmInicial);
+            time_t tempoFinal = mktime(&tmFinal);
+
+            if (tempoInicial == -1 || tempoFinal == -1) {
+                printf("Erro ao converter a data e hora.\n");
+                return;
+            }
+
+            // Calculando a diferença em horas
+            float tempoGastoAtual = difftime(tempoFinal, tempoInicial) / 3600;
+
+            // Subtraindo o tempo gasto de outras ordens de serviço finalizadas
+            for (int j = 0; j < lista->qtdOrdensServico; j++) {
+                if (i != j && strcmp(listaAgendamentos->listaAgendamentos[idAgendamento - 1].datahoraInicial,
+                                     listaAgendamentos->listaAgendamentos[j].datahoraInicial) == 0 &&
+                    lista->listaOrdensServico[j].deletado == 0 &&
+                    listaAgendamentos->listaAgendamentos[j].idServico != idServico) {
+                    tempoGastoAtual -= lista->listaOrdensServico[j].tempoGasto;
+                }
+            }
+
+            lista->listaOrdensServico[i].tempoGasto = tempoGastoAtual;
+            ordemEncontrada = 1;
+        }
+    }
+
+    for (int i = 0; i < lista->qtdOrdensServico; i++) {
+        if (lista->listaOrdensServico[i].datahoraFinal != NULL && lista->listaOrdensServico[i].idAgendamentos ==
+            idAgendamento) {
+            qtdOrdensServicoFim++;
+
+        }
+    }
+
+    if (qtdOrdensServico == qtdOrdensServicoFim) {
+        finalizarAgendamentoModel(listaAgendamentos, idAgendamento);
+    }
+
+    // Se não encontrar a ordem de serviço
+    if (!ordemEncontrada) {
+        printf("\nOrdem de serviço não encontrada.\n");
+    } else {
+        printf("\nOrdem de serviço finalizada com sucesso!\n");
+    }
+}

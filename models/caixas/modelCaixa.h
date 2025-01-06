@@ -1,6 +1,8 @@
 #ifndef MODELCAIXA_H
 #define MODELCAIXA_H
 
+#include "../pagamentoCliente/modelPagamentoCliente.h"
+
 struct Caixas {
     int id;
     float valorCaixa;
@@ -25,14 +27,22 @@ void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina);
 
 void deletarCaixasModel(struct ListaCaixas *lista, int idOficina);
 
-void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina);
+void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina, struct ListaPagamentosCliente *listaPagamentosCliente);
 
-// Adiciona dinheiro a um caixa
-void creditarDinheiroCaixaModel();
+void creditarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina, float valorCreditado);
+
+int debitarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado);
+
+void creditarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorCreditado);
+
+int debitarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorDebitado);
 
 int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado);
 
 int getIdCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina);
 
 int getIdOficinaPorCaixaModel(struct ListaCaixas *lista, int idCaixa);
+
+float getSaldoCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa);
+
 #endif //MODELCAIXA_H

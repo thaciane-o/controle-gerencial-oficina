@@ -13,7 +13,7 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
                          struct ListaFornecedores *listaFornecedor,
                          int opcaoArmazenamento);
 
-void consultarValorCaixa(struct ListaCaixas *lista);
+void consultarValorCaixa(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente);
 
 void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
                                  struct ListaPagamentosCliente *listaPagamentosCliente);

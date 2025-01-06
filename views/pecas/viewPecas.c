@@ -1,11 +1,12 @@
 #include "viewPecas.h"
 #include "../../models/pecas/modelPecas.h"
 #include "../../models/fornecedores/modelFornecedores.h"
+#include "../../models/ordensServico/modelOrdensServico.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 // Menu de funcionalidades de peças
-void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores, int opcaoArmazenamento) {
+void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores, struct ListaOrdensServico *listaOrdensServico, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -16,6 +17,10 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
         // Busca os dados em arquivos das tabelas relacionadas
         if (listaFornecedores->qtdFornecedores == 0) {
             buscarDadosFornecedoresModel(listaFornecedores, opcaoArmazenamento);
+        }
+
+        if (listaPecas->qtdPecas > 0) {
+            buscarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
         }
     }
 
@@ -40,7 +45,7 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
                 atualizarPeca(listaPecas, listaFornecedores);
                 break;
             case 3:
-                deletarPeca(listaPecas);
+                deletarPeca(listaPecas, listaOrdensServico);
                 break;
             case 4:
                 listarPeca(listaPecas);
@@ -215,7 +220,7 @@ void listarPeca(struct ListaPecas *listaPecas) {
 }
 
 // Formulário de deleção de peças
-void deletarPeca(struct ListaPecas *lista) {
+void deletarPeca(struct ListaPecas *lista, struct ListaOrdensServico *listaOrdensServico) {
     int id;
 
     // Pede o Id da peça que será deletada
@@ -226,5 +231,5 @@ void deletarPeca(struct ListaPecas *lista) {
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
-    deletarPecaModel(lista, id);
+    deletarPecaModel(lista, id, listaOrdensServico);
 }

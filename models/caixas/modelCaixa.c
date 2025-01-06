@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../pagamentoCliente/modelPagamentoCliente.h"
+
 // Busca os dados dos caixas nos arquivos
 void buscarDadosCaixasModel(struct ListaCaixas *lista, int opcaoArmazenamento) {
     int i = 0;
@@ -228,8 +230,25 @@ void deletarCaixasModel(struct ListaCaixas *lista, int idOficina) {
 }
 
 // Mostra valor de caixa de uma oficina em específico
-void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
+void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina,
+                        struct ListaPagamentosCliente *listaPagamentosCliente) {
     int encontrado = 0;
+
+    int idCaixa = getIdCaixaPorOficinaModel(lista, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+
+    float valorAReceber = 0;
+    if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+        for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
+            if (listaPagamentosCliente->listaPagamentosCliente[i].idCaixa == idCaixa && listaPagamentosCliente->
+                listaPagamentosCliente[i].deletado == 0 && strcmp(
+                    listaPagamentosCliente->listaPagamentosCliente[i].dataRecebimento, "Não pago") == 0) {
+                valorAReceber += listaPagamentosCliente->listaPagamentosCliente[i].valor;
+            }
+        }
+    }
 
     if (lista->qtdCaixas > 0) {
         for (int i = 0; i < lista->qtdCaixas; i++) {
@@ -238,9 +257,11 @@ void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
                 printf("\n========================="
                        "\n| CAIXA DA OFICINA %d   |"
                        "\n========================="
-                       "\nVALOR DO CAIXA: R$%.2f\n\n",
+                       "\nVALOR ATUAL DO CAIXA: R$%.2f"
+                       "\nVALOR A RECEBER: R$%.2f\n\n",
                        idOficina,
-                       lista->listaCaixas[i].valorCaixa);
+                       lista->listaCaixas[i].valorCaixa,
+                       valorAReceber);
                 break;
             }
         }
@@ -253,12 +274,54 @@ void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina) {
     }
 }
 
-// Adiciona dinheiro a um caixa
-void creditarDinheiroCaixaModel() {
+// Adiciona dinheiro a um caixa pelo ID da oficina
+void creditarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina, float valorCreditado) {
+    int encontrado = 0;
+
+    // Pega o ID do caixa
+    int idCaixa = getIdCaixaPorOficinaModel(lista, idOficina);
+    if (idCaixa == -1) {
+        return;
+    }
+
+    // Busca pelo caixa da oficina
+    if (lista->qtdCaixas > 0) {
+        for (int i = 0; i < lista->qtdCaixas; i++) {
+            if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
+                encontrado = 1;
+                lista->listaCaixas[i].valorCaixa += valorCreditado;
+                printf("Valor creditado com sucesso!\n\n");
+                return;
+            }
+        }
+        if (encontrado == 0) {
+            printf("Nenhum caixa foi encontrado!\n\n");
+        }
+    } else {
+        printf("Nenhum caixa foi registrado!\n\n");
+    }
 }
 
-// Remove dinheiro de um caixa. Retorna -1 se a operação não foi bem sucedida.
-int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado) {
+// Adiciona dinheiro a um caixa pelo ID do caixa
+void creditarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorCreditado) {
+
+    // Busca pelo caixa da oficina
+    if (lista->qtdCaixas > 0) {
+        for (int i = 0; i < lista->qtdCaixas; i++) {
+            if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
+                lista->listaCaixas[i].valorCaixa += valorCreditado;
+                printf("Valor creditado com sucesso!\n\n");
+                return;
+            }
+        }
+        printf("Nenhum caixa foi encontrado!\n\n");
+    } else {
+        printf("Nenhum caixa foi registrado!\n\n");
+    }
+}
+
+// Remove dinheiro de um caixa pelo ID da oficina. Retorna -1 se a operação não foi bem sucedida.
+int debitarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado) {
     int encontrado = 0;
 
     // Pega o ID do caixa
@@ -266,6 +329,33 @@ int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float va
     if (idCaixa == -1) {
         return -1;
     }
+
+    // Busca pelo caixa da oficina
+    if (lista->qtdCaixas > 0) {
+        for (int i = 0; i < lista->qtdCaixas; i++) {
+            if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
+                encontrado = 1;
+                if (lista->listaCaixas[i].valorCaixa >= valorDebitado) {
+                    lista->listaCaixas[i].valorCaixa -= valorDebitado;
+                    printf("Valor debitado com sucesso!\n\n");
+                    return 1;
+                }
+                printf("O caixa não possui saldo suficiente!\n\n");
+                break;
+            }
+        }
+        if (encontrado == 0) {
+            printf("Nenhum caixa foi encontrado!\n\n");
+        }
+    } else {
+        printf("Nenhum caixa foi registrado!\n\n");
+    }
+    return -1;
+}
+
+// Remove dinheiro de um caixa pelo ID do caixa. Retorna -1 se a operação não foi bem sucedida.
+int debitarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorDebitado) {
+    int encontrado = 0;
 
     // Busca pelo caixa da oficina
     if (lista->qtdCaixas > 0) {
@@ -314,7 +404,23 @@ int getIdOficinaPorCaixaModel(struct ListaCaixas *lista, int idCaixa) {
                 return lista->listaCaixas[i].idOficina;
             }
         }
-        printf("Nenhuma oficina encontrada.\n\n");
+        printf("Nenhum caixa encontrado.\n\n");
+    } else {
+        printf("Nenhum caixa foi cadastrado.\n\n");
+    }
+
+    return -1;
+}
+
+// Pega saldo do caixa pelo ID do caixa
+float getSaldoCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa) {
+    if (lista->qtdCaixas > 0) {
+        for (int i = 0; i < lista->qtdCaixas; i++) {
+            if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
+                return lista->listaCaixas[i].valorCaixa;
+            }
+        }
+        printf("Nenhum caixa encontrado.\n\n");
     } else {
         printf("Nenhum caixa foi cadastrado.\n\n");
     }

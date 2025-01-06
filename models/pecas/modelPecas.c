@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../../models/ordensServico/modelOrdensServico.h"
 
 // Busca dados das pecas no arquivo
 void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
@@ -375,7 +376,7 @@ void buscarPecasPorFornecedorModel(struct ListaPecas *lista, int idFornecedor) {
 }
 
 // Deleta uma peça cadastrada
-void deletarPecaModel(struct ListaPecas *lista, int id) {
+void deletarPecaModel(struct ListaPecas *lista, int id, struct ListaOrdensServico *listaOrdensServico) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0;
 
@@ -383,6 +384,17 @@ void deletarPecaModel(struct ListaPecas *lista, int id) {
     if (lista->qtdPecas == 0) {
         printf("Nenhuma peça foi cadastrada.\n");
         return;
+    }
+
+    // Verifica relação com ordens de serviço
+    if (listaOrdensServico->qtdOrdensServico > 0) {
+        for (int i = 0; i < listaOrdensServico->qtdOrdensServico; i++) {
+            if (listaOrdensServico->listaOrdensServico[i].idPecas == id && listaOrdensServico->listaOrdensServico[i].deletado == 0) {
+                printf(
+                    "Não foi possível deletar a peça, pois os seus dados estão sendo utilizados em uma ordem de serviço que foi emitida.\n\n");
+                return;
+            }
+        }
     }
 
     // Busca pelo id para fazer a deleção

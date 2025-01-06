@@ -41,4 +41,6 @@ void listarVeiculoModel(struct ListaVeiculos *lista, int id);
 
 void buscarVeiculosPorClienteModel(struct ListaVeiculos *lista, int idCliente);
 
+int getIdClientePorVeiculoModel(struct ListaVeiculos *lista, int idVeiculo);
+
 #endif //MODELVEICULOS_H

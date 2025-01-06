@@ -104,7 +104,6 @@ void cadastrarServico(struct ListaServicos *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf(" %f", &servico.comissao);
 
-
     cadastrarServicoModel(lista, &servico);
 }
 

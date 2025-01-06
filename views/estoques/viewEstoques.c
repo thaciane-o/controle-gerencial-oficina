@@ -78,10 +78,10 @@ int opcaoSubmenus;
                         listaFornecedores->listaFornecedores = NULL;
                         listaFornecedores->qtdFornecedores = 0;
                     }
-                    if (listaNotas->qtdNotas > 0) {
-                        free(listaNotas->listaNotas);
-                        listaNotas->listaNotas = NULL;
-                        listaNotas->qtdNotas = 0;
+                    if (listaOficinas->qtdOficinas > 0) {
+                        free(listaOficinas->listaOficinas);
+                        listaOficinas->listaOficinas = NULL;
+                        listaOficinas->qtdOficinas = 0;
                     }
                 }
                 return;

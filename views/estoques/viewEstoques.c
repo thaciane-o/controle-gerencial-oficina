@@ -151,8 +151,10 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
                         break;
                     }
                 }while (opcao != 2);
-                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
-                return;
+                if (opcao == 2) {
+                    deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
+                    return;
+                }
             }
             // Verifica se a peça possuí relação com o fornecedor
             if (!verificarRelacaoFornecedorModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
@@ -169,8 +171,10 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
                         break;
                     }
                 }while (opcao != 2);
-                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
-                return;
+                if (opcao == 2) {
+                    deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
+                    return;
+                }
             }
             // Verifica se a peça possuí relação com a oficina
             if (!verificarRelacaoOficinaModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
@@ -187,8 +191,10 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
                         break;
                     }
                 }while (opcao != 2);
-                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
-                return;
+                if (opcao == 2) {
+                    deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
+                    return;
+                }
             }
 
 

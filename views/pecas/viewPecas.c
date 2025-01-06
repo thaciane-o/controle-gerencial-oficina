@@ -67,6 +67,11 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOfi
                         listaFornecedores->listaFornecedores = NULL;
                         listaFornecedores->qtdFornecedores = 0;
                     }
+                    if (listaOficinas->qtdOficinas > 0) {
+                        free(listaOficinas->listaOficinas);
+                        listaOficinas->listaOficinas = NULL;
+                        listaOficinas->qtdOficinas = 0;
+                    }
                 }
                 break;
             default: printf("Opção inválida!\n\n");
@@ -97,7 +102,7 @@ void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOfi
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
-    if (verificarIDOficinaModel(listaOficinas, idOficina)) {
+    if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
         return;
     }
 
@@ -163,7 +168,7 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOfi
     setbuf(stdin, NULL);
     scanf("%d", &idOficina);
 
-    if (verificarIDOficinaModel(listaOficinas, idOficina)) {
+    if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
         return;
     }
 

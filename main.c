@@ -147,7 +147,8 @@ int main() {
 
                         switch (opcaoCadastro) {
                             case 1:
-                                gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes, &listaCaixas,
+                                gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes,
+                                                 &listaCaixas,
                                                  opcaoArmazenamento);
                                 break;
                             case 2:
@@ -214,11 +215,12 @@ int main() {
                     break;
                 case 2:
                     gerenciarAgendamentos(&listaAgendamentos, &listaFuncionarios, &listaServicos, &listaVeiculos,
-                                          &listaOrdensServico, &listaPecas,
-                                          opcaoArmazenamento);
+                                          &listaOrdensServico, &listaPecas, &listaClientes, &listaCaixas,
+                                          &listaPagamentosCliente, opcaoArmazenamento);
                     break;
                 case 3:
-                    gerenciarEstoques(&listaPecas, &listaPecasNotas, &listaFornecedores, &listaNotasFiscais, &listaOficinas, opcaoArmazenamento);
+                    gerenciarEstoques(&listaPecas, &listaPecasNotas, &listaFornecedores, &listaNotasFiscais,
+                                      &listaOficinas, opcaoArmazenamento);
                     break;
                 case 7:
                     if (listaAgendamentos.qtdAgendamentos > 0) {

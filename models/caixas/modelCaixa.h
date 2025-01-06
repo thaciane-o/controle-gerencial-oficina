@@ -37,6 +37,8 @@ void creditarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, 
 
 int debitarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorDebitado);
 
+int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado);
+
 int getIdCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina);
 
 int getIdOficinaPorCaixaModel(struct ListaCaixas *lista, int idCaixa);

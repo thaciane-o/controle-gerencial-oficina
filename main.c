@@ -36,12 +36,6 @@
 
 #include "./models/ordensServico/modelOrdensServico.h"
 
-#include "./views/estoques/viewEstoques.h"
-#include "./models/estoques/modelEstoques.h"
-
-#include "./models/notasFiscais/modelNotasFiscais.h"
-#include "./models/pecasNotas/modelPecasNotas.h"
-
 int main() {
     // Configuração para caracteres especiais
     system("chcp 65001");
@@ -83,12 +77,6 @@ int main() {
 
     struct ListaOrdensServico listaOrdensServico;
     listaOrdensServico.qtdOrdensServico = 0;
-
-    struct ListaNotasFiscais listaNotasFiscais;
-    listaNotasFiscais.qtdNotas = 0;
-
-    struct ListaPecasNotas listaPecasNotas;
-    listaPecasNotas.qtdPecasNotas = 0;
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
@@ -170,7 +158,7 @@ int main() {
                                 gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
                                 break;
                             case 7:
-                                gerenciarPeca(&listaPecas, &listaFornecedores, opcaoArmazenamento);
+                                gerenciarPeca(&listaPecas, &listaFornecedores, &listaOrdensServico, opcaoArmazenamento);
                                 break;
                             case 8:
                                 if (listaClientes.qtdClientes > 0) {
@@ -219,8 +207,6 @@ int main() {
                                           &listaPagamentosCliente, opcaoArmazenamento);
                     break;
                 case 3:
-                    gerenciarEstoques(&listaPecas, &listaPecasNotas, &listaFornecedores, &listaNotasFiscais,
-                                      &listaOficinas, opcaoArmazenamento);
                     break;
                 case 7:
                     if (listaAgendamentos.qtdAgendamentos > 0) {

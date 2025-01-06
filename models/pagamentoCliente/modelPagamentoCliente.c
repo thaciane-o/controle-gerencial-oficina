@@ -223,8 +223,8 @@ void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struc
 
     printf("Pagamento cadastrado com sucesso!\n\n");
 
-    // Se pagamento com dinheiro, credita no caixa na hora
-    if (pagamento->tipoPagamento == 1) {
+    // Se recebido, credita no caixa na hora
+    if (strcmp(pagamento->dataRecebimento, "Não pago") != 0) {
         creditarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
     }
 }

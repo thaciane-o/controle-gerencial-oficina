@@ -287,6 +287,22 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", &dataHora);
 
+        // Cadastrando pagamento, se -1 então teve erro
+        if (cadastrarPagamentoClienteAgendamento(listaPecas, listaVeiculos, listaClientes, listaCaixas,
+                                         listaPagamentosCliente, listaServicos, qtdServicos, qtdPecas,
+                                         idPecas, idServicos, idVeiculo) == -1) {
+            // Limpando os ponteiros
+            idPecas = NULL;
+            free(idPecas);
+
+            idPecaDoServico = NULL;
+            free(idPecaDoServico);
+
+            idServicos = NULL;
+            free(idServicos);
+            return;
+        }
+
         // Cadastrando agendamentos de cada serviço inserido
         for (int i = 0; i < qtdServicos; i++) {
             agendamento.idServico = idServicos[i];
@@ -315,6 +331,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     // Limpando os ponteiros
     idPecas = NULL;
     idPecaDoServico = NULL;
+
     free(idPecas);
     free(idPecaDoServico);
 
@@ -405,4 +422,107 @@ void finalizarOrdemServico(struct ListaAgendamentos *lista, struct ListaOrdensSe
     scanf("%d", &idServico);
 
     finalizarOrdemServicoModel(listaOrdensServico, lista, idAgendamento, idServico);
+}
+
+int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct ListaVeiculos *listaVeiculos,
+                                         struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
+                                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                                         struct ListaServicos *listaServicos, int qtdServicos, int qtdPecas,
+                                         int *idPecas, int *idServicos, int idVeiculos) {
+    struct PagamentosCliente pagamento;
+    pagamento.valor = 0;
+
+    // Pegando o valor total do serviço: serviços + peças
+    for (int i = 0; i < (qtdServicos - 1); i++) {
+        for (int j = 0; j < listaServicos->qtdServicos; j++) {
+            if (listaServicos->listaServicos[j].id == idServicos[i]) {
+                pagamento.valor += listaServicos->listaServicos[j].preco;
+                break;
+            }
+        }
+    }
+
+    // Pegando o valor total das peças
+    for (int i = 0; i < (qtdPecas - 1); i++) {
+        for (int j = 0; j < listaPecas->qtdPecas; j++) {
+            if (listaPecas->listaPecas[j].id == idPecas[i]) {
+                pagamento.valor += listaPecas->listaPecas[j].precoVenda;
+                break;
+            }
+        }
+    }
+
+    // Pegando o tipo de pagamento do cliente, e mostrando o valor total do serviço
+    do {
+        printf("\nValor total do serviço e peças usadas: R$%.2f", pagamento.valor);
+        printf("\n========================="
+            "\n| 1 | Dinheiro          |"
+            "\n| 2 | Cartão de crédito |"
+            "\n| 3 | Cartão de débito  |"
+            "\n=========================");
+        printf("\nInsira tipo de pagamento: ");
+        setbuf(stdin, NULL);
+        scanf("%d", &pagamento.tipoPagamento);
+    } while (pagamento.tipoPagamento < 1 || pagamento.tipoPagamento > 3);
+
+    // Pegando a data que foi realizado o pagamento
+    printf("Insira a data do pagamento (DD/MM/AAAA): ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", pagamento.dataPagamento);
+
+    // Ajustando data de recebimento, caso dinheiro, ou pedindo a data, caso cartão
+    if (pagamento.tipoPagamento == 1) {
+        strcpy(pagamento.dataAReceber, pagamento.dataPagamento);
+        strcpy(pagamento.dataRecebimento, pagamento.dataPagamento);
+    } else {
+        printf("Insira a data de vencimento do cartão (DD/MM/AAAA): ");
+        setbuf(stdin, NULL);
+        scanf(" %[^\n]", &pagamento.dataAReceber);
+
+        // Realiza as verificações de data
+        struct tm dataAReceber = {0};
+        sscanf(pagamento.dataAReceber, "%d/%d/%d",
+           &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
+        dataAReceber.tm_year -= 1900;
+        dataAReceber.tm_mon -= 1;
+        time_t tempoDataReceber = mktime(&dataAReceber);
+
+        if (tempoDataReceber == -1) {
+            printf("Erro ao converter a data e hora.\n");
+            return -1;
+        }
+
+        time_t tempoAgora = time(NULL);
+
+        if (tempoDataReceber <= tempoAgora) {
+            strftime(pagamento.dataRecebimento, sizeof(pagamento.dataRecebimento), "%d/%m/%Y", localtime(&tempoAgora));
+        } else {
+            strcpy(pagamento.dataRecebimento, "Não pago");
+        }
+    }
+
+    // Pegando ID do cliente que faz o pagamento
+    int idClientePagando = getIdClientePorVeiculoModel(listaVeiculos, idVeiculos);
+    if (idClientePagando == -1) {
+        // Não encontrou, então cancela a operação
+        return -1;
+    }
+
+    // Pegando ID da oficina e do seu caixa para receber o pagamento
+    int getIdOficina = getIdOficinaClientesModel(listaClientes, idClientePagando);
+    int idCaixaRecebe = getIdCaixaPorOficinaModel(listaCaixas, getIdOficina);
+    if (idCaixaRecebe == -1) {
+        // Não encontrou, então cancela a operação
+        return -1;
+    }
+
+    // Atribui os IDs ao pagamento
+    pagamento.idCaixa = idCaixaRecebe;
+    pagamento.idCliente = idClientePagando;
+
+    // Cadastra o pagamento
+    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);
+
+    // Retorna com sucesso
+    return 0;
 }

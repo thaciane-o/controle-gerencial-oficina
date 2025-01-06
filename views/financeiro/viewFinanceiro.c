@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "../../models/caixas/modelCaixa.h"
 #include "../../models/oficina/modelOficina.h"
@@ -301,7 +302,26 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
         setbuf(stdin, NULL);
         scanf(" %[^\n]", &pagamento.dataAReceber);
 
-        strcpy(pagamento.dataRecebimento, "Não pago");
+        // Realiza as verificações de data
+        struct tm dataAReceber = {0};
+        sscanf(pagamento.dataAReceber, "%d/%d/%d",
+           &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
+        dataAReceber.tm_year -= 1900;
+        dataAReceber.tm_mon -= 1;
+        time_t tempoDataReceber = mktime(&dataAReceber);
+
+        if (tempoDataReceber == -1) {
+            printf("Erro ao converter a data e hora.\n");
+            return;
+        }
+
+        time_t tempoAgora = time(NULL);
+
+        if (tempoDataReceber <= tempoAgora) {
+            strftime(pagamento.dataRecebimento, sizeof(pagamento.dataRecebimento), "%d/%m/%Y", localtime(&tempoAgora));
+        } else {
+            strcpy(pagamento.dataRecebimento, "Não pago");
+        }
     }
 
     cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);

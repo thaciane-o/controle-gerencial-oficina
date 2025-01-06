@@ -13,10 +13,11 @@ void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista,  int opcaoArm
     int i = 0;
 
     FILE *dadosNotas;
+    char linha[sizeof(struct NotasFiscais)*10];
 
     switch (opcaoArmazenamento) {
         case 1:
-            char linha[sizeof(struct NotasFiscais)*10];
+
             dadosNotas = fopen("DadosNotasFiscais.txt", "r");
 
             if (dadosNotas == NULL) {

@@ -2,11 +2,14 @@
 #include "../../models/pecas/modelPecas.h"
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "../../models/ordensServico/modelOrdensServico.h"
+#include "../../models/oficina/modelOficina.h"
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "../../models/oficina/modelOficina.h"
+
 // Menu de funcionalidades de peças
-void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores, struct ListaOrdensServico *listaOrdensServico, int opcaoArmazenamento) {
+void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas, struct ListaFornecedores *listaFornecedores, struct ListaOrdensServico *listaOrdensServico, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -17,6 +20,9 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
         // Busca os dados em arquivos das tabelas relacionadas
         if (listaFornecedores->qtdFornecedores == 0) {
             buscarDadosFornecedoresModel(listaFornecedores, opcaoArmazenamento);
+        }
+        if (listaOficinas->qtdOficinas == 0) {
+            buscarDadosOficinaModel(listaOficinas, opcaoArmazenamento);
         }
 
         if (listaPecas->qtdPecas > 0) {
@@ -39,10 +45,10 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
 
         switch (opcaoSubmenus) {
             case 1:
-                cadastrarPeca(listaPecas, listaFornecedores);
+                cadastrarPeca(listaPecas, listaOficinas, listaFornecedores);
                 break;
             case 2:
-                atualizarPeca(listaPecas, listaFornecedores);
+                atualizarPeca(listaPecas, listaOficinas, listaFornecedores);
                 break;
             case 3:
                 deletarPeca(listaPecas, listaOrdensServico);
@@ -61,6 +67,11 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
                         listaFornecedores->listaFornecedores = NULL;
                         listaFornecedores->qtdFornecedores = 0;
                     }
+                    if (listaOficinas->qtdOficinas > 0) {
+                        free(listaOficinas->listaOficinas);
+                        listaOficinas->listaOficinas = NULL;
+                        listaOficinas->qtdOficinas = 0;
+                    }
                 }
                 break;
             default: printf("Opção inválida!\n\n");
@@ -70,9 +81,9 @@ void gerenciarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
 }
 
 // Formulário de cadastro de peças
-void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores) {
+void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas, struct ListaFornecedores *listaFornecedores) {
     struct Pecas pecaCadastrando;
-    int idFornecedor;
+    int idFornecedor, idOficina;
 
     printf("\n===============================\n"
         "|      CADASTRO DE PEÇA       |\n"
@@ -87,6 +98,15 @@ void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
         return;
     }
 
+    printf("Insira o Id da oficina dona da peça: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idOficina);
+
+    if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
+        return;
+    }
+
+    pecaCadastrando.idOficina = idOficina;
     pecaCadastrando.idFornecedor = idFornecedor;
 
     // Preenchimento dos dados
@@ -118,9 +138,9 @@ void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
 }
 
 // Formulário de atualização de peças
-void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores) {
+void atualizarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas, struct ListaFornecedores *listaFornecedores) {
     struct Pecas pecaAtualizando;
-    int idFornecedor, idPeca;
+    int idFornecedor, idPeca, idOficina;
 
     // Pede o Id da peça que será atualizada
     printf("\n===============================\n"
@@ -144,6 +164,15 @@ void atualizarPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *list
         return;
     }
 
+    printf("Insira o Id da oficina dona da peça: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idOficina);
+
+    if (verificarIDOficinaModel(listaOficinas, idOficina) == 0) {
+        return;
+    }
+
+    pecaAtualizando.idOficina = idOficina;
     pecaAtualizando.idFornecedor = idFornecedor;
 
     //Preenchimento dos dados

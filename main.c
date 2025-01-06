@@ -4,7 +4,6 @@
 #include <locale.h>
 
 // Include de models e views
-
 #include "models/clientes/modelClientes.h"
 #include "views/clientes/viewClientes.h"
 

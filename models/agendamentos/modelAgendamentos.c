@@ -48,11 +48,7 @@ void buscarDadosAgendamentosModel(struct ListaAgendamentos *lista, int opcaoArma
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    strcpy(lista->listaAgendamentos[i].data, token);
-                    token = strtok(NULL, ";");
-                }
-                if (token != NULL) {
-                    strcpy(lista->listaAgendamentos[i].hora, token);
+                    strcpy(lista->listaAgendamentos[i].datahoraInicial, token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -65,6 +61,10 @@ void buscarDadosAgendamentosModel(struct ListaAgendamentos *lista, int opcaoArma
                 }
                 if (token != NULL) {
                     lista->listaAgendamentos[i].idVeiculo = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
+                    lista->listaAgendamentos[i].finalizado = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -125,13 +125,13 @@ void armazenarDadosAgendamentosModel(struct ListaAgendamentos *lista, int opcaoA
             }
 
             for (int i = 0; i < lista->qtdAgendamentos; i++) {
-                fprintf(dadosAgendamentos, "%d;%s;%s;%d;%d;%d;%d\n",
+                fprintf(dadosAgendamentos, "%d;%s;%d;%d;%d;%d;%d\n",
                         lista->listaAgendamentos[i].id,
-                        lista->listaAgendamentos[i].data,
-                        lista->listaAgendamentos[i].hora,
+                        lista->listaAgendamentos[i].datahoraInicial,
                         lista->listaAgendamentos[i].idFuncionario,
                         lista->listaAgendamentos[i].idServico,
                         lista->listaAgendamentos[i].idVeiculo,
+                        lista->listaAgendamentos[i].finalizado,
                         lista->listaAgendamentos[i].deletado);
             }
             break;
@@ -204,6 +204,7 @@ void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendame
     //Cadastrando agendamento na memória
     agendamento->id = lista->qtdAgendamentos;
     agendamento->deletado = 0;
+    agendamento->finalizado = 0;
 
     lista->listaAgendamentos[lista->qtdAgendamentos - 1] = *agendamento;
 }
@@ -244,6 +245,7 @@ void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct 
 void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico) {
     // Variável para verificação de listagem
     int listado = 0;
+    char finalizado[2][5] = {"Não", "Sim"};
 
     // Verifica se há pelo menos um cadastro
     if (lista->qtdAgendamentos > 0) {
@@ -252,18 +254,20 @@ void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaO
             // Verifica se o agendamento esta deletado
             if (lista->listaAgendamentos[i].deletado == 0) {
                 listado = 1;
+
                 printf("\n====================="
                        "\n| AGENDAMENTO %d     |"
                        "\n====================="
-                       "\nDATA E HORA: %s, %s"
+                       "\nDATA E HORA INICIADA: %s"
                        "\nSERVIÇO: %d"
                        "\nVEÍCULO: %d"
+                       "\nFINALIZADO: %s"
                        "\nFUNCIONÁRIO: %d\n",
                        lista->listaAgendamentos[i].id,
-                       lista->listaAgendamentos[i].data,
-                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].datahoraInicial,
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
+                       finalizado[lista->listaAgendamentos[i].finalizado],
                        lista->listaAgendamentos[i].idFuncionario);
 
                 // Listando ordens de serviço
@@ -282,6 +286,7 @@ void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaO
 void listarAgendamentoModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico) {
     // Variável para verificar que agendamento foi encontrado
     int encontrado = 0;
+    char finalizado[2][5] = {"Não", "Sim"};
 
     if (lista->qtdAgendamentos == 0) {
         printf("Nenhum agendamento foi realizado!\n\n");
@@ -294,15 +299,16 @@ void listarAgendamentoModel(struct ListaAgendamentos *lista, int id, struct List
             printf("\n====================="
                    "\n| AGENDAMENTO %d     |"
                    "\n====================="
-                   "\nDATA E HORA: %s, %s"
+                   "\nDATA E HORA INICIADA: %s"
                    "\nSERVIÇO: %d"
                    "\nVEÍCULO: %d"
-                   "\nFUNCIONÁRIO: %d\n\n",
+                   "\nFINALIZADO: %s"
+                   "\nFUNCIONÁRIO: %d\n",
                    lista->listaAgendamentos[i].id,
-                   lista->listaAgendamentos[i].data,
-                   lista->listaAgendamentos[i].hora,
+                   lista->listaAgendamentos[i].datahoraInicial,
                    lista->listaAgendamentos[i].idServico,
                    lista->listaAgendamentos[i].idVeiculo,
+                   finalizado[lista->listaAgendamentos[i].finalizado],
                    lista->listaAgendamentos[i].idFuncionario);
 
             // Listando ordens de serviço
@@ -322,6 +328,7 @@ void listarAgendamentoModel(struct ListaAgendamentos *lista, int id, struct List
 void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idServico,
                                        struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
+    char finalizado[2][5] = {"Não", "Sim"};
 
     if (lista->qtdAgendamentos > 0) {
         for (int i = 0; i < lista->qtdAgendamentos; i++) {
@@ -330,15 +337,16 @@ void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idSe
                 printf("\n====================="
                        "\n| AGENDAMENTO %d     |"
                        "\n====================="
-                       "\nDATA E HORA: %s, %s"
+                       "\nDATA E HORA INICIADA: %s"
                        "\nSERVIÇO: %d"
                        "\nVEÍCULO: %d"
-                       "\nFUNCIONÁRIO: %d\n\n",
+                       "\nFINALIZADO: %s"
+                       "\nFUNCIONÁRIO: %d\n",
                        lista->listaAgendamentos[i].id,
-                       lista->listaAgendamentos[i].data,
-                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].datahoraInicial,
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
+                       finalizado[lista->listaAgendamentos[i].finalizado],
                        lista->listaAgendamentos[i].idFuncionario);
 
                 // Listando ordens de serviço
@@ -358,6 +366,7 @@ void buscarAgendamentosPorServicoModel(struct ListaAgendamentos *lista, int idSe
 void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int idFuncionario,
                                            struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
+    char finalizado[2][5] = {"Não", "Sim"};
 
     if (lista->qtdAgendamentos > 0) {
         for (int i = 0; i < lista->qtdAgendamentos; i++) {
@@ -366,15 +375,16 @@ void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int 
                 printf("\n====================="
                        "\n| AGENDAMENTO %d     |"
                        "\n====================="
-                       "\nDATA E HORA: %s, %s"
+                       "\nDATA E HORA INICIADA: %s"
                        "\nSERVIÇO: %d"
                        "\nVEÍCULO: %d"
-                       "\nFUNCIONÁRIO: %d\n\n",
+                       "\nFINALIZADO: %s"
+                       "\nFUNCIONÁRIO: %d\n",
                        lista->listaAgendamentos[i].id,
-                       lista->listaAgendamentos[i].data,
-                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].datahoraInicial,
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
+                       finalizado[lista->listaAgendamentos[i].finalizado],
                        lista->listaAgendamentos[i].idFuncionario);
 
                 // Listando ordens de serviço
@@ -394,6 +404,7 @@ void buscarAgendamentosPorFuncionarioModel(struct ListaAgendamentos *lista, int 
 void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVeiculo,
                                        struct ListaOrdensServico *listaOrdensServico) {
     int encontrado = 0;
+    char finalizado[2][5] = {"Não", "Sim"};
 
     if (lista->qtdAgendamentos > 0) {
         for (int i = 0; i < lista->qtdAgendamentos; i++) {
@@ -402,15 +413,16 @@ void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVe
                 printf("\n====================="
                        "\n| AGENDAMENTO %d     |"
                        "\n====================="
-                       "\nDATA E HORA: %s, %s"
+                       "\nDATA E HORA INICIADA: %s"
                        "\nSERVIÇO: %d"
                        "\nVEÍCULO: %d"
-                       "\nFUNCIONÁRIO: %d\n\n",
+                       "\nFINALIZADO: %s"
+                       "\nFUNCIONÁRIO: %d\n",
                        lista->listaAgendamentos[i].id,
-                       lista->listaAgendamentos[i].data,
-                       lista->listaAgendamentos[i].hora,
+                       lista->listaAgendamentos[i].datahoraInicial,
                        lista->listaAgendamentos[i].idServico,
                        lista->listaAgendamentos[i].idVeiculo,
+                       finalizado[lista->listaAgendamentos[i].finalizado],
                        lista->listaAgendamentos[i].idFuncionario);
 
                 // Listando ordens de serviço
@@ -460,4 +472,27 @@ void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Li
     if (!encontrado) {
         printf("Agendamento não encontrado!\n\n");
     }
+}
+
+// Atualizar o agendamento ao ser finalizado
+void finalizarAgendamentoModel(struct ListaAgendamentos *lista, int id) {
+    // Verifica se há algum cadastro
+    if (lista->qtdAgendamentos == 0) {
+        printf("Nenhum agendamento foi realizado!\n\n");
+        return;
+    }
+
+    // Busca pelo id para fazer a alteração
+    for (int i = 0; i < lista->qtdAgendamentos; i++) {
+        if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0 && lista->
+            listaAgendamentos[i].finalizado == 0) {
+            lista->listaAgendamentos[i].finalizado = 1;
+            printf("Agendamento finalizado com sucesso!\n\n");
+
+            return;
+        }
+    }
+
+    // Se não encontrar o id para deleção, avisa o usuário
+    printf("Agendamento não encontrado!\n\n");
 }

@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 // Menu de funcionalidades de agentamentos
 void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
@@ -68,8 +69,8 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             "|  2  | Atualizar agendamento    |\n"
             "|  3  | Cancelar agendamento     |\n"
             "|  4  | Listar agendamento       |\n"
-            "|  5  | Finalizar agendamento    |\n"
-            "|  5  | Voltar                   |\n"
+            "|  5  | Finalizar serviço        |\n"
+            "|  6  | Voltar                   |\n"
             "==================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
@@ -89,6 +90,9 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 listarAgendamentos(lista, listaOrdensServico);
                 break;
             case 5:
+                finalizarOrdemServico(lista, listaOrdensServico);
+                break;
+            case 6:
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
                     if (lista->qtdAgendamentos > 0) {
                         armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
@@ -146,7 +150,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 printf("Opção inválida!\n\n");
                 break;
         }
-    } while (opcaoSubmenus != 5);
+    } while (opcaoSubmenus != 6);
 }
 
 // Formulário de cadastro de agendamentos
@@ -157,11 +161,14 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                            struct ListaPagamentosCliente *listaPagamentosCliente) {
     struct Agendamentos agendamento;
     struct OrdensServico ordensServico;
-    int idFuncionarios, idVeiculos, qtdServicos = 0, idInputServico, qtdPecas = 0, idInputPecas;
+    int idFuncionarios, idVeiculos, qtdServicos = 0, idInputServico, qtdPecas = 0, idInputPecas, dia, mes, ano, hora,
+            minuto;
     int *idServicos = malloc(sizeof(int));
     int *idPecas = malloc(sizeof(int));
+    int *idPecaDoServico = malloc(sizeof(int));
     struct PagamentosCliente pagamento;
     pagamento.valor = 0;
+    struct tm dataHora = {0};
 
     printf("\n======================\n"
         "|     AGENDAMENTO    |\n"
@@ -169,11 +176,10 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
     do {
         // Agendando 1 ou mais serviços
-        qtdServicos++;
         if (qtdServicos > 1) {
             idServicos = realloc(idServicos, qtdServicos * sizeof(int));
         }
-
+        qtdServicos++;
         printf("Insira o ID do serviço que será agendado (0 para finalizar): ");
         setbuf(stdin, NULL);
         scanf("%d", &idInputServico);
@@ -185,10 +191,11 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
             do {
                 // Inserindo 1 ou mais peças por serviço
-                qtdPecas++;
                 if (qtdPecas > 1) {
                     idPecas = realloc(idPecas, qtdPecas * sizeof(int));
+                    idPecaDoServico = realloc(idPecaDoServico, qtdPecas * sizeof(int));
                 }
+                qtdPecas++;
 
                 printf("Insira o ID da peça que será necessária para realizar esse serviço (0 para finalizar): ");
                 setbuf(stdin, NULL);
@@ -198,12 +205,17 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 if (idInputPecas != 0) {
                     idPecas[qtdPecas - 1] = idInputPecas;
                     verificarIDPecaModel(listaPecas, idPecas[qtdPecas - 1]);
+                    idPecaDoServico[qtdPecas - 1] = idInputServico;
+                } else {
+                    qtdPecas--;
                 }
             } while (idInputPecas != 0);
+        } else {
+            qtdServicos--;
         }
     } while (idInputServico != 0);
 
-    if (qtdServicos > 1) {
+    if (qtdServicos >= 1 && qtdPecas >= 1) {
         printf("Insira o ID do funcionário que fará o serviço: ");
         setbuf(stdin, NULL);
         scanf("%d", &idFuncionarios);
@@ -225,19 +237,44 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         agendamento.idVeiculo = idVeiculos;
 
         // Preenchimento dos dados
-        printf("Insira a data prevista para realizar o serviço (DD/MM/AAAA): ");
+        printf("Insira a data desejada para realizar o serviço (DD/MM/AAAA): ");
         setbuf(stdin, NULL);
-        scanf(" %[^\n]", agendamento.data);
+        scanf("%d/%d/%d", &dia, &mes, &ano);
 
-        printf("Insira a hora prevista para realizar o serviço (HH:MM): ");
+        printf("Insira a hora desejada para realizar o serviço (HH:MM): ");
         setbuf(stdin, NULL);
-        scanf(" %[^\n]", agendamento.hora);
+        scanf("%d:%d", &hora, &minuto);
+
+        dataHora.tm_mday = dia;
+        dataHora.tm_mon = mes - 1;
+        dataHora.tm_year = ano - 1900;
+        dataHora.tm_hour = hora;
+        dataHora.tm_min = minuto;
+        dataHora.tm_sec = 0;
+
+        time_t tempo = mktime(&dataHora);
+
+        if (tempo == -1) {
+            printf("Erro ao converter a data e hora.\n");
+            return;
+        }
 
         // Verificando se um funcionário já possui um serviço na data e hora inserida
         for (int i = 0; i < lista->qtdAgendamentos; i++) {
-            if (lista->listaAgendamentos[i].idFuncionario == idFuncionarios &&
-                strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
-                strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
+            sscanf(lista->listaAgendamentos[i].datahoraInicial, "%d/%d/%d %d:%d",
+                   &dataHora.tm_mday, &dataHora.tm_mon, &dataHora.tm_year,
+                   &dataHora.tm_hour, &dataHora.tm_min);
+
+            dataHora.tm_year -= 1900;
+            dataHora.tm_mon -= 1;
+            time_t tempoExistente = mktime(&dataHora);
+
+            if (tempoExistente == -1) {
+                printf("Erro ao converter a data e hora.\n");
+                return;
+            }
+
+            if (lista->listaAgendamentos[i].idFuncionario == idFuncionarios && tempoExistente == tempo) {
                 printf("Não é possível agendar um serviço com esse funcionário.\n\n");
 
                 // Limpando os ponteiros
@@ -249,6 +286,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 return;
             }
         }
+        strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", &dataHora);
 
         /*
          *  Dados para realizar o cadastro de pagamento do cliente
@@ -330,7 +368,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
          */
 
         // Cadastrando agendamentos de cada serviço inserido
-        for (int i = 0; i < (qtdServicos - 1); i++) {
+        for (int i = 0; i < qtdServicos; i++) {
             agendamento.idServico = idServicos[i];
             cadastrarAgendamentosModel(lista, &agendamento);
 
@@ -339,14 +377,16 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             ordensServico.valorTotal = listaServicos->listaServicos[i].preco;
 
             // Cadastrando ordens de serviço de cada peça inserida
-            for (int j = 0; j < (qtdPecas - 1); j++) {
-                ordensServico.valorTotal += listaPecas->listaPecas[j].precoVenda;
-                ordensServico.idPecas = idPecas[j];
-                cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
+            for (int j = 0; j < qtdPecas; j++) {
+                if (idPecaDoServico[j] == idServicos[i]) {
+                    ordensServico.valorTotal += listaPecas->listaPecas[j].precoVenda;
+                    ordensServico.idPecas = idPecas[j];
+                    cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
+                }
             }
         }
 
-        printf("Agendamento realizado com sucesso para a data %s às %s!\n\n", agendamento.data, agendamento.hora);
+        printf("Agendamento realizado com sucesso para a data %s!\n\n", agendamento.datahoraInicial);
         printf("Ordem de serviço emitida com sucesso!\n\n");
     } else {
         printf("Nenhum serviço agendado!\n\n");
@@ -363,8 +403,9 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 // Formulário de atualização de agendamentos
 void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
                           struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos) {
-    int id, idFuncionario, idVeiculo, idServico;
+    int id, idFuncionario, idVeiculo, idServico, dia, mes, ano, hora, minuto;
     struct Agendamentos agendamento;
+    struct tm dataHora = {0};
 
     // Pede o ID do agendamento que será atualizado
     printf("\n=====================================\n"
@@ -409,18 +450,29 @@ void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionar
     agendamento.idVeiculo = idServico;
 
     // Preenchimento dos dados
-    printf("Insira a data prevista para realizar o serviço (DD/MM/YYYY): ");
+    printf("Insira a data desejada para realizar o serviço (DD/MM/AAAA): ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", agendamento.data);
+    scanf("%d/%d/%d", &dia, &mes, &ano);
 
-    printf("Insira a hora prevista para realizar o serviço (HH:MM): ");
+    printf("Insira a hora desejada para realizar o serviço (HH:MM): ");
     setbuf(stdin, NULL);
-    scanf(" %[^\n]", agendamento.hora);
+    scanf("%d:%d", &hora, &minuto);
+
+    // Convertendo data e hora em struct tm
+    dataHora.tm_mday = dia;
+    dataHora.tm_mon = mes - 1;
+    dataHora.tm_year = ano - 1900;
+    dataHora.tm_hour = hora;
+    dataHora.tm_min = minuto;
+    dataHora.tm_sec = 0;
+
+    // Convertendo struct tm em string
+    strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", &dataHora);
 
     for (int i = 0; i < lista->qtdAgendamentos; i++) {
         if (lista->listaAgendamentos[i].idFuncionario == idFuncionario &&
-            strcmp(lista->listaAgendamentos[i].data, agendamento.data) == 0 &&
-            strcmp(lista->listaAgendamentos[i].hora, agendamento.hora) == 0) {
+            strcmp(lista->listaAgendamentos[i].datahoraInicial, agendamento.datahoraInicial) == 0 &&
+            strcmp(lista->listaAgendamentos[i].datahoraInicial, agendamento.datahoraInicial) == 0) {
             printf("Não é possível agendar um serviço com esse funcionário.\n\n");
             return;
         }
@@ -497,4 +549,19 @@ void deletarAgendamento(struct ListaAgendamentos *lista, struct ListaOrdensServi
     printf("Insira o ID do agendamento que deseja cancelar:");
     scanf("%d", &id);
     deletarAgendamentosModel(lista, id, listaOrdensServico);
+}
+
+void finalizarOrdemServico(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico) {
+    int idAgendamento, idServico;
+
+    printf("\n==================================\n"
+        "|   FINALIZAR ORDEM DE SERVIÇO   |\n"
+        "==================================\n");
+    printf("Insira o ID do agendamento:");
+    scanf("%d", &idAgendamento);
+
+    printf("Qual serviço deseja finalizar:");
+    scanf("%d", &idServico);
+
+    finalizarOrdemServicoModel(listaOrdensServico, lista, idAgendamento, idServico);
 }

@@ -8,6 +8,8 @@ struct OrdensServico {
     int idPecas;
     int idAgendamentos;
     float valorTotal;
+    float tempoGasto;
+    char datahoraFinal[17];
     int deletado;
 };
 
@@ -31,5 +33,8 @@ void atualizarOrdensServicoModel(struct ListaOrdensServico *lista, int id, struc
 void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id);
 
 void deletarOrdensServicoModel(struct ListaOrdensServico *lista, int id);
+
+void finalizarOrdemServicoModel(struct ListaOrdensServico *lista, struct ListaAgendamentos *listaAgendamentos,
+                                int idAgendamento, int idServico);
 
 #endif //MODELORDENSSERVICOS_H

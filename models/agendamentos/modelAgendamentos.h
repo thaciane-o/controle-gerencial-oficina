@@ -8,11 +8,11 @@
 
 struct Agendamentos {
     int id;
-    char data[11];
-    char hora[6];
+    char datahoraInicial[17];
     int idVeiculo;
     int idServico;
     int idFuncionario;
+    int finalizado;
     int deletado;
 };
 
@@ -47,4 +47,6 @@ void buscarAgendamentosPorVeiculoModel(struct ListaAgendamentos *lista, int idVe
 
 void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico);
 
-#endif //MODELAGENDAMENTOS_H
+void finalizarAgendamentoModel(struct ListaAgendamentos *lista, int id);
+
+#endif //MODELAGENDAMENTOS_H    

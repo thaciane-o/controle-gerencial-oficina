@@ -3,6 +3,7 @@
 #define MODELPECASNOTAS_H
 
 #include "../../models/pecas/modelPecas.h"
+#include "../../models/notasFiscais/modelNotasFiscais.h"
 
 struct PecasNotas {
     int id;
@@ -32,5 +33,7 @@ void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id);
 void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas);
 
 void verificarEstoqueMinimo(struct ListaPecas *lista);
+
+void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal, struct PecasNotas *pecaNota);
 
 #endif //MODELPECASNOTAS_H

@@ -121,6 +121,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
         return;
     }
 
+
     printf("\nInsira o valor do frete: ");
     scanf("%f", &notaFiscal.frete);
 
@@ -137,36 +138,55 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
 
             // verifica se peça existe
             if (!verificarIDPecaModel(listaPecas, pecaNota.idPeca)) {
-                // Se não, cadastra-se uma nova peça
-                struct Pecas novaPeca;
-
-                novaPeca.idFornecedor = notaFiscal.idFornecedor;
-
-                printf("Insira a descrição da peça: ");
+                // Se não, pode-se cadastrar uma nova peça
+                int opcao;
+                printf("Deseja cadastrar uma nova peça?\n"
+                       "1 - SIM\n"
+                       "2 - NÃO\n");
                 setbuf(stdin, NULL);
-                scanf(" %[^\n]s", novaPeca.descricao);
-
-                printf("Insira o fabricante da peça: ");
-                setbuf(stdin, NULL);
-                scanf(" %[^\n]s", novaPeca.fabricante);
-
-                printf("Insira o preço de custo da peça: R$");
-                setbuf(stdin, NULL);
-                scanf("%f", &novaPeca.precoCusto);
-
-                novaPeca.precoVenda = 0;
-                novaPeca.qtdEstoque = 0;
-
-                printf("Insira a quantidade de peças mínimas no estoque: ");
-                setbuf(stdin, NULL);
-                scanf("%d", &novaPeca.estoqueMinimo);
-
-                pecaNota.idPeca = listaPecas->qtdPecas + 1;
-
-                cadastrarPecaModel(listaPecas, &novaPeca);
+                scanf("%d", &opcao);
+                do {
+                    if (opcao == 1) {
+                        cadastrarNovaPecaModel(listaPecas, &notaFiscal, &pecaNota);
+                        break;
+                    }
+                }while (opcao != 2);
+                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
+                return;
             }
-            // verifica se a peça possuí relação com o fornecedor
+            // Verifica se a peça possuí relação com o fornecedor
             if (!verificarRelacaoFornecedorModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
+                // Se não, pode-se cadastrar uma nova peça
+                int opcao;
+                printf("Deseja cadastrar uma nova peça?\n"
+                       "1 - SIM\n"
+                       "2 - NÃO\n");
+                setbuf(stdin, NULL);
+                scanf("%d", &opcao);
+                do {
+                    if (opcao == 1) {
+                        cadastrarNovaPecaModel(listaPecas, &notaFiscal, &pecaNota);
+                        break;
+                    }
+                }while (opcao != 2);
+                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
+                return;
+            }
+            // Verifica se a peça possuí relação com a oficina
+            if (!verificarRelacaoOficinaModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
+                // Se não, pode-se cadastrar uma nova peça
+                int opcao;
+                printf("\nDeseja cadastrar uma nova peça?\n"
+                       "1 - SIM\n"
+                       "2 - NÃO\n");
+                setbuf(stdin, NULL);
+                scanf("%d", &opcao);
+                do {
+                    if (opcao == 1) {
+                        cadastrarNovaPecaModel(listaPecas, &notaFiscal, &pecaNota);
+                        break;
+                    }
+                }while (opcao != 2);
                 deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
                 return;
             }

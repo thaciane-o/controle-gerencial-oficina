@@ -53,6 +53,8 @@ void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *l
 int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas,
                                     struct NotasFiscais *notaFiscal, int idPeca);
 
+int verificarRelacaoOficinaModel(struct ListaPecas *listaPecas,
+                                    struct NotasFiscais *notaFiscal, int idPeca);
 
 
 

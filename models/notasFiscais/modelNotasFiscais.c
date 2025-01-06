@@ -131,7 +131,7 @@ void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoA
                 return;
             }
             for (int i = 0; i < lista->qtdNotas; i++) {
-                fprintf(dadosNotas, "%d;%f;%f;%f;%d;%d;%d\n",
+                fprintf(dadosNotas, "%d;%.2f;%.2f;%.2f;%d;%d;%d\n",
                         lista->listaNotas[i].id,
                         lista->listaNotas[i].frete,
                         lista->listaNotas[i].imposto,
@@ -489,5 +489,18 @@ int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas,
 
     }
     printf("Esta peça não é fornecida pelo fornecedor digitado\n\n");
+    return 0;
+}
+
+int verificarRelacaoOficinaModel(struct ListaPecas *listaPecas,
+                                    struct NotasFiscais *notaFiscal, int idPeca) {
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+
+        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idOficina == notaFiscal->idOficina) {
+            return 1;
+        }
+
+    }
+    printf("A oficina fornecida não é proprietaria desta peça\n\n");
     return 0;
 }

@@ -1,5 +1,6 @@
 #include "modelPecasNotas.h"
 #include "../../models/pecas/modelPecas.h"
+#include "../../models/notasFiscais/modelNotasFiscais.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,7 +14,7 @@ void buscarDadosPecaNotaModel(struct ListaPecasNotas *lista, int opcaoArmazename
 
     switch (opcaoArmazenamento) {
         case 1:
-            char linha[sizeof(struct PecasNotas)*10];
+            char linha[sizeof(struct PecasNotas)];
             dadosPecas = fopen("DadosPecasNotas.txt", "r");
 
             if (dadosPecas == NULL) {
@@ -241,6 +242,36 @@ void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdP
 
 }
 
+void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal, struct PecasNotas *pecaNota) {
+    struct Pecas novaPeca;
+
+    novaPeca.idFornecedor = notaFiscal->idFornecedor;
+    novaPeca.idOficina = notaFiscal->idOficina;
+
+    printf("Insira a descrição da peça: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]s", novaPeca.descricao);
+
+    printf("Insira o fabricante da peça: ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]s", novaPeca.fabricante);
+
+    printf("Insira o preço de custo da peça: R$");
+    setbuf(stdin, NULL);
+    scanf("%f", &novaPeca.precoCusto);
+
+    novaPeca.precoVenda = 0;
+    novaPeca.qtdEstoque = 0;
+
+    printf("Insira a quantidade de peças mínimas no estoque: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &novaPeca.estoqueMinimo);
+
+    pecaNota->idPeca = listaPecas->qtdPecas + 1;
+
+    cadastrarPecaModel(listaPecas, &novaPeca);
+}
+
 // Verifica peças com estoque abaixo do mínimo
 void verificarEstoqueMinimo(struct ListaPecas *lista) {
 
@@ -253,3 +284,4 @@ void verificarEstoqueMinimo(struct ListaPecas *lista) {
         }
     }
 }
+

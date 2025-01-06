@@ -10,6 +10,7 @@ struct Pecas {
     float precoVenda;
     int qtdEstoque;
     int estoqueMinimo;
+    int idOficina;
     int idFornecedor;
     int deletado;
 };

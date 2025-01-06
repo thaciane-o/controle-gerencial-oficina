@@ -3,17 +3,16 @@
 #define MODELNOTASFISCAIS_H
 
 #include "modelNotasFiscais.h"
-#include "..\..\models/pecasNotas/modelPecasNotas.h"
-#include "..\..\models\estoques\modelEstoques.h"
-#include "..\..\models\pecas\modelPecas.h"
-#include "..\..\models\fornecedores\modelFornecedores.h"
-#include "..\..\models\oficina\modelOficina.h"
+#include "../../models/pecasNotas/modelPecasNotas.h"
+#include "../../models/pecas/modelPecas.h"
+#include "../../models/fornecedores/modelFornecedores.h"
+#include "../../models/oficina/modelOficina.h"
 
 struct NotasFiscais {
     int id;
     float frete;
     float imposto;
-    float precoVendaTotal;
+    float totalNota;
     int idOficina;
     int idFornecedor;
     int deletado;
@@ -50,6 +49,11 @@ void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struc
                                           struct ListaFornecedores *listaFornecedores, int idFornecedor);
 
 void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas, int id);
+
+int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas,
+                                    struct NotasFiscais *notaFiscal, int idPeca);
+
+
 
 
 #endif //MODELNOTASFISCAIS_H

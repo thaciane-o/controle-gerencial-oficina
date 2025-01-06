@@ -37,7 +37,6 @@
 #include "./models/ordensServico/modelOrdensServico.h"
 
 #include "./views/estoques/viewEstoques.h"
-#include "./models/estoques/modelEstoques.h"
 
 #include "./models/notasFiscais/modelNotasFiscais.h"
 #include "./models/pecasNotas/modelPecasNotas.h"

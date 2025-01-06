@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 #include "../../models/oficina/modelOficina.h"
-#include "../../models/estoques/modelEstoques.h"
 #include "../../models/pecas/modelPecas.h"
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "../../models/notasFiscais/modelNotasFiscais.h"
@@ -39,8 +38,9 @@ int opcaoSubmenus;
         }
     }
 
+    // Chama uma função para verificar os estoques em necessidade
+    verificarEstoqueMinimo(listaPecas);
     do {
-        verificarEstoqueMinimo(listaPecas);
         printf("\n==========================================\n"
             "|          CONTROLE DE ESTOQUE           |\n"
             "==========================================\n"
@@ -94,6 +94,7 @@ int opcaoSubmenus;
 
 }
 
+// Realiza pedido de novas peças
 void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,
                            struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
                            struct ListaOficinas *listaOficinas) {
@@ -102,11 +103,12 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
 
     int totalPecas = 0, cadastrouPeca = 0;
 
-    notaFiscal.precoVendaTotal = 0;
+    notaFiscal.totalNota = 0;
 
     printf("Digite a Oficina que esta fazendo o pedido: ");
     scanf("%d", &notaFiscal.idOficina);
 
+    // verifica existência da oficina
     if (!verificarIDOficinaModel(listaOficinas, notaFiscal.idOficina)) {
         return;
     }
@@ -114,6 +116,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
     printf("Digite o fornecedor das peças: ");
     scanf("%d", &notaFiscal.idFornecedor);
 
+    // verifica se o fornecedor existe
     if(!verificarIDFornecedoresModel(listaFornecedores, notaFiscal.idFornecedor)) {
         return;
     }
@@ -132,11 +135,38 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
 
         if (pecaNota.idPeca != 0) {
 
+            // verifica se peça existe
             if (!verificarIDPecaModel(listaPecas, pecaNota.idPeca)) {
-                deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
-                return;
+                // Se não, cadastra-se uma nova peça
+                struct Pecas novaPeca;
+
+                novaPeca.idFornecedor = notaFiscal.idFornecedor;
+
+                printf("Insira a descrição da peça: ");
+                setbuf(stdin, NULL);
+                scanf(" %[^\n]s", novaPeca.descricao);
+
+                printf("Insira o fabricante da peça: ");
+                setbuf(stdin, NULL);
+                scanf(" %[^\n]s", novaPeca.fabricante);
+
+                printf("Insira o preço de custo da peça: R$");
+                setbuf(stdin, NULL);
+                scanf("%f", &novaPeca.precoCusto);
+
+                novaPeca.precoVenda = 0;
+                novaPeca.qtdEstoque = 0;
+
+                printf("Insira a quantidade de peças mínimas no estoque: ");
+                setbuf(stdin, NULL);
+                scanf("%d", &novaPeca.estoqueMinimo);
+
+                pecaNota.idPeca = listaPecas->qtdPecas + 1;
+
+                cadastrarPecaModel(listaPecas, &novaPeca);
             }
-            if (!verificarRelacaoFornecedorModel(listaPecas, listaFornecedores, &notaFiscal, pecaNota.idPeca)) {
+            // verifica se a peça possuí relação com o fornecedor
+            if (!verificarRelacaoFornecedorModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
                 deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas+1);
                 return;
             }
@@ -145,14 +175,15 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
             printf("\nInsira a quantidade a ser pedida: ");
             scanf("%d", &pecaNota.qtdPecas);
 
-
-            totalPecas += pecaNota.idPeca;
+            // Soma a quantidade de peças que foi pedida
+            totalPecas += pecaNota.qtdPecas;
 
             cadastrarPecaNotaModel(listaPecasNotas, &pecaNota);
             cadastrouPeca = 1;
         }
     }while (pecaNota.idPeca != 0);
 
+    // Verifica se pelo menos uma peça foi cadastrada
     if(cadastrouPeca != 0) {
         cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, listaPecasNotas, totalPecas);
     } else {

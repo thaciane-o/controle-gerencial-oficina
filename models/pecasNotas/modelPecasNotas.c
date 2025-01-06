@@ -1,10 +1,11 @@
 #include "modelPecasNotas.h"
+#include "../../models/pecas/modelPecas.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Busca dados das pecas no arquivo
+// Busca dados das relações no arquivo
 void buscarDadosPecaNotaModel(struct ListaPecasNotas *lista, int opcaoArmazenamento) {
     int i = 0;
 
@@ -103,7 +104,7 @@ void buscarDadosPecaNotaModel(struct ListaPecasNotas *lista, int opcaoArmazename
     fclose(dadosPecas);
 }
 
-// Armazena os dados das pecas no arquivo
+// Armazena os dados das relações no arquivo
 void armazenarDadosPecaNotaModel(struct ListaPecasNotas *lista, int opcaoArmazenamento) {
     FILE *dadosPecas;
 
@@ -148,7 +149,7 @@ void armazenarDadosPecaNotaModel(struct ListaPecasNotas *lista, int opcaoArmazen
     lista->qtdPecasNotas = 0;
 }
 
-// Aloca a memória inicial para a lista de peças
+// Aloca a memória inicial para a lista de relações
 int alocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista) {
     lista->qtdPecasNotas = 1;
     lista->listaPecasNotas = malloc(sizeof(struct PecasNotas));
@@ -160,7 +161,7 @@ int alocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista) {
     return 1;
 }
 
-// Realoca memória da peca conforme a quantidade que deseja alocar (qtdAloca)
+// Realoca memória da relação conforme a quantidade que deseja alocar (qtdAloca)
 int realocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista, int qtdAloca) {
     if (qtdAloca == 0) {
         printf("Nenhuma alocação foi realizada.\n\n");
@@ -178,7 +179,7 @@ int realocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista, int qtdAloca) {
     return 1;
 }
 
-// Cadastra uma nova peca
+// Cadastra uma nova relação peça/nota
 void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pecaNotaCadastrando) {
     int resultAlocacao = 0;
 
@@ -202,7 +203,7 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
 
 }
 
-// Deleta uma relação cadastrada
+// Deleta uma relação peça/nota cadastrada
 void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id) {
     // Auxiliar para saber se encontrou o id.
 
@@ -215,6 +216,40 @@ void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id) {
     for (int i = 0; i < lista->qtdPecasNotas; i++) {
         if (lista->listaPecasNotas[i].idNota == id && lista->listaPecasNotas[i].deletado == 0) {
             lista->listaPecasNotas[i].deletado = 1;
+        }
+    }
+}
+
+// Retira uma certa quantidade de peças de determinado estoque
+void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas) {
+
+    // Inicia busca pela peça requisitada
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+        if (listaPecas->listaPecas[i].id == idPeca) {
+            // Verifica se há peças suficientes no estoque
+            if (listaPecas->listaPecas[i].qtdEstoque < qtdPecasRequisitadas) {
+
+                printf("A quantidade de peças no estoque é insuficiente!\n");
+            }else {
+
+                listaPecas->listaPecas[i].qtdEstoque -= qtdPecasRequisitadas;
+                printf("Peças debitadas do estoque com sucesso!\n");
+            }
+            break;
+        }
+    }
+
+}
+
+// Verifica peças com estoque abaixo do mínimo
+void verificarEstoqueMinimo(struct ListaPecas *lista) {
+
+    // Percorrendo lista de peças
+    for (int i = 0; i < lista->qtdPecas; i++) {
+        // Listando peças cujo o estoque está abaixo do mínimo
+        if (lista->listaPecas[i].qtdEstoque < lista->listaPecas[i].estoqueMinimo) {
+            printf("\nESTOQUE ABAIXO DO MÍNIMO NA PEÇA: %d\n"
+                   "FORNECEDOR: %d\n", lista->listaPecas[i].id, lista->listaPecas[i].idFornecedor);
         }
     }
 }

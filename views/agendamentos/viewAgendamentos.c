@@ -66,11 +66,10 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             "|      MENU DE AGENDAMENTOS      |\n"
             "==================================\n"
             "|  1  | Agendar                  |\n"
-            "|  2  | Atualizar agendamento    |\n"
-            "|  3  | Cancelar agendamento     |\n"
-            "|  4  | Listar agendamento       |\n"
-            "|  5  | Finalizar serviço        |\n"
-            "|  6  | Voltar                   |\n"
+            "|  2  | Cancelar agendamento     |\n"
+            "|  3  | Listar agendamento       |\n"
+            "|  4  | Finalizar serviço        |\n"
+            "|  5  | Voltar                   |\n"
             "==================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
@@ -81,19 +80,15 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                                       listaPecas, listaClientes, listaCaixas, listaPagamentosCliente);
                 break;
             case 2:
-                atualizarAgendamento(lista, listaFuncionarios, listaServicos, listaVeiculos, listaPecas,
-                                     listaOrdensServico);
-                break;
-            case 3:
                 deletarAgendamento(lista, listaOrdensServico);
                 break;
-            case 4:
+            case 3:
                 listarAgendamentos(lista, listaOrdensServico);
                 break;
-            case 5:
+            case 4:
                 finalizarOrdemServico(lista, listaOrdensServico);
                 break;
-            case 6:
+            case 5:
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
                     if (lista->qtdAgendamentos > 0) {
                         armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
@@ -151,7 +146,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 printf("Opção inválida!\n\n");
                 break;
         }
-    } while (opcaoSubmenus != 6);
+    } while (opcaoSubmenus != 5);
 }
 
 // Formulário de cadastro de agendamentos

@@ -51,7 +51,7 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
-                    lista->listaOrdensServico[i].idAgendamentos = atoi(token);
+                    lista->listaOrdensServico[i].idAgendamento = atoi(token);
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
@@ -128,7 +128,7 @@ void armazenarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opca
                 fprintf(dadosOrdensServico, "%s;%d;%d;%f;%f;%s;%d\n",
                         lista->listaOrdensServico[i].descricao,
                         lista->listaOrdensServico[i].idPecas,
-                        lista->listaOrdensServico[i].idAgendamentos,
+                        lista->listaOrdensServico[i].idAgendamento,
                         lista->listaOrdensServico[i].valorTotal,
                         lista->listaOrdensServico[i].tempoGasto,
                         lista->listaOrdensServico[i].datahoraFinal,
@@ -208,19 +208,6 @@ void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct Ordens
     lista->listaOrdensServico[lista->qtdOrdensServico - 1] = *ordensServico;
 }
 
-// Atualiza o cadastro de uma ordem de serviço
-void atualizarOrdensServicoModel(struct ListaOrdensServico *lista, int id, struct OrdensServico *ordensServico) {
-    // Busca pelo id para fazer a alteração
-    for (int i = 0; i < lista->qtdOrdensServico; i++) {
-        if (lista->listaOrdensServico[i].idAgendamentos == id && lista->listaOrdensServico[i].deletado == 0) {
-            ordensServico->idAgendamentos = lista->listaOrdensServico[i].idAgendamentos;
-            ordensServico->deletado = lista->listaOrdensServico[i].deletado;
-            lista->listaOrdensServico[i] = *ordensServico;
-            break;
-        }
-    }
-}
-
 // Lista uma ordem de serviço pelo ID
 void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     if (lista->qtdOrdensServico == 0) {
@@ -231,7 +218,7 @@ void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     // Se há um ou mais cadastros, procura pela ordem de serviço com o ID desejado
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
         // Verifica se a ordem de serviço está ou não deletado
-        if (lista->listaOrdensServico[i].idAgendamentos == id && lista->listaOrdensServico[i].deletado == 0) {
+        if (lista->listaOrdensServico[i].idAgendamento == id && lista->listaOrdensServico[i].deletado == 0) {
             printf("====================="
                    "\n| ORDEM DE SERVIÇO  |"
                    "\n====================="
@@ -243,7 +230,7 @@ void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
                    "\nDATA E HORA FINALIZADA: %s\n",
                    lista->listaOrdensServico[i].descricao,
                    lista->listaOrdensServico[i].valorTotal,
-                   lista->listaOrdensServico[i].idAgendamentos,
+                   lista->listaOrdensServico[i].idAgendamento,
                    lista->listaOrdensServico[i].idPecas,
                    lista->listaOrdensServico[i].tempoGasto,
                    lista->listaOrdensServico[i].datahoraFinal);
@@ -263,7 +250,7 @@ void deletarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
 
     // Busca pelo ID para fazer a deleção
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
-        if (lista->listaOrdensServico[i].idAgendamentos == id && lista->listaOrdensServico[i].deletado == 0) {
+        if (lista->listaOrdensServico[i].idAgendamento == id && lista->listaOrdensServico[i].deletado == 0) {
             encontrado = 1;
 
             lista->listaOrdensServico[i].deletado = 1;
@@ -287,7 +274,7 @@ void finalizarOrdemServicoModel(struct ListaOrdensServico *lista, struct ListaAg
     int ordemEncontrada = 0, qtdOrdensServico = 0, qtdOrdensServicoFim = 0;
 
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
-        if (lista->listaOrdensServico[i].idAgendamentos == idAgendamento && lista->listaOrdensServico[i].deletado == 0
+        if (lista->listaOrdensServico[i].idAgendamento == idAgendamento && lista->listaOrdensServico[i].deletado == 0
             && listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico == idServico &&
             listaAgendamentos->listaAgendamentos[idAgendamento - 1].finalizado == 0) {
             qtdOrdensServico++;
@@ -338,7 +325,7 @@ void finalizarOrdemServicoModel(struct ListaOrdensServico *lista, struct ListaAg
     }
 
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
-        if (lista->listaOrdensServico[i].datahoraFinal != NULL && lista->listaOrdensServico[i].idAgendamentos ==
+        if (lista->listaOrdensServico[i].datahoraFinal != NULL && lista->listaOrdensServico[i].idAgendamento ==
             idAgendamento) {
             qtdOrdensServicoFim++;
 

@@ -228,19 +228,6 @@ int verificarIDAgendamentoModel(struct ListaAgendamentos *lista, int id) {
     return 0;
 }
 
-// Atualiza o cadastro de um agendamento
-void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Agendamentos *agendamento) {
-    // Busca pelo id para fazer a alteração
-    for (int i = 0; i < lista->qtdAgendamentos; i++) {
-        if (lista->listaAgendamentos[i].id == id && lista->listaAgendamentos[i].deletado == 0) {
-            agendamento->id = lista->listaAgendamentos[i].id;
-            agendamento->deletado = lista->listaAgendamentos[i].deletado;
-            lista->listaAgendamentos[i] = *agendamento;
-            break;
-        }
-    }
-}
-
 // Lista todos os agendamentos
 void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico) {
     // Variável para verificação de listagem
@@ -459,7 +446,7 @@ void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Li
 
             // Deletando ordens de serviço relacionadas ao agendamento (cascade)
             for (int j = 0; j < listaOrdensServico->qtdOrdensServico; j++) {
-                if (listaOrdensServico->listaOrdensServico[j].idAgendamentos == id) {
+                if (listaOrdensServico->listaOrdensServico[j].idAgendamento == id) {
                     deletarOrdensServicoModel(listaOrdensServico, id);
                 }
             }

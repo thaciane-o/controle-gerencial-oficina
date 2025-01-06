@@ -6,7 +6,7 @@
 struct OrdensServico {
     char descricao[255];
     int idPecas;
-    int idAgendamentos;
+    int idAgendamento;
     float valorTotal;
     float tempoGasto;
     char datahoraFinal[17];
@@ -27,8 +27,6 @@ int alocarOrdensServicoModel(struct ListaOrdensServico *lista);
 int realocarOrdensServicoModel(struct ListaOrdensServico *lista, int qtdAlocada);
 
 void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico);
-
-void atualizarOrdensServicoModel(struct ListaOrdensServico *lista, int id, struct OrdensServico *ordensServico);
 
 void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id);
 

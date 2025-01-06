@@ -298,7 +298,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             cadastrarAgendamentosModel(lista, &agendamento);
 
             strcpy(ordensServico.descricao, listaServicos->listaServicos[i].descricao);
-            ordensServico.idAgendamentos = lista->qtdAgendamentos;
+            ordensServico.idAgendamento = lista->qtdAgendamentos;
             ordensServico.valorTotal = listaServicos->listaServicos[i].preco;
 
             // Cadastrando ordens de serviço de cada peça inserida
@@ -325,116 +325,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
     idServicos = NULL;
     free(idServicos);
-}
-
-// Formulário de atualização de agendamentos
-void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
-                          struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
-                          struct ListaPecas *listaPecas, struct ListaOrdensServico *listaOrdensServico) {
-    int id, idFuncionario, idVeiculo, idServico, dia, mes, ano, hora, minuto, idInputPecas, qtdPecas = 0;
-    struct Agendamentos agendamento;
-    struct OrdensServico ordensServico;
-    int *idPecas = malloc(sizeof(int));
-    struct tm dataHora = {0};
-
-    // Pede o ID do agendamento que será atualizado
-    printf("\n=====================================\n"
-        "|     ATUALIZAÇÃO DE AGENDAMENTO    |\n"
-        "=====================================\n"
-        "Insira o ID do agendamento que deseja atualizar: ");
-    scanf("%d", &id);
-
-    deletarOrdensServicoModel(listaOrdensServico, id);
-
-    // Verifica se o ID inserido existe
-    int encontrado = verificarIDAgendamentoModel(lista, id);
-    if (encontrado == 0) {
-        return;
-    }
-
-    printf("Insira o ID do serviço que será agendado: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &idServico);
-
-    do {
-        // Inserindo 1 ou mais peças por serviço
-        if (qtdPecas > 1) {
-            idPecas = realloc(idPecas, qtdPecas * sizeof(int));
-        }
-        qtdPecas++;
-
-        printf("Insira o ID da peça que será necessária para realizar esse serviço (0 para finalizar): ");
-        setbuf(stdin, NULL);
-        scanf("%d", &idInputPecas);
-
-        // Verificando existência do item relacionado
-        if (idInputPecas != 0) {
-            idPecas[qtdPecas - 1] = idInputPecas;
-            verificarIDPecaModel(listaPecas, idInputPecas);
-        } else {
-            qtdPecas--;
-        }
-    } while (idInputPecas != 0);
-
-    printf("Insira o ID do funcionário que fará o serviço: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &idFuncionario);
-
-    printf("Insira o ID do veículo a receber o serviço: ");
-    setbuf(stdin, NULL);
-    scanf("%d", &idVeiculo);
-
-    // Verificando existência do item relacionado
-    if (verificarIDServicoModel(listaServicos, idServico) == 0) {
-        return;
-    }
-
-    if (verificarIDFuncionariosModel(listaFuncionarios, idFuncionario) == 0) {
-        return;
-    }
-
-    if (verificarIDVeiculoModel(listaVeiculos, idVeiculo) == 0) {
-        return;
-    }
-
-    agendamento.idFuncionario = idFuncionario;
-    agendamento.idServico = idServico;
-    agendamento.idVeiculo = idVeiculo;
-
-    // Preenchimento dos dados
-    printf("Insira a data desejada para realizar o serviço (DD/MM/AAAA): ");
-    setbuf(stdin, NULL);
-    scanf("%d/%d/%d", &dia, &mes, &ano);
-
-    printf("Insira a hora desejada para realizar o serviço (HH:MM): ");
-    setbuf(stdin, NULL);
-    scanf("%d:%d", &hora, &minuto);
-
-    // Convertendo data e hora em struct tm
-    dataHora.tm_mday = dia;
-    dataHora.tm_mon = mes - 1;
-    dataHora.tm_year = ano - 1900;
-    dataHora.tm_hour = hora;
-    dataHora.tm_min = minuto;
-    dataHora.tm_sec = 0;
-
-    // Convertendo struct tm em string
-    strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", &dataHora);
-
-    atualizarAgendamentosModel(lista, id, &agendamento);
-
-    // Cadastrando ordens de serviço de cada peça inserida
-    for (int i = 0; i < qtdPecas; i++) {
-        strcpy(ordensServico.descricao, listaServicos->listaServicos[idServico].descricao);
-        ordensServico.idAgendamentos = id;
-        ordensServico.valorTotal = listaServicos->listaServicos[idServico].preco;
-        ordensServico.valorTotal += listaPecas->listaPecas[i].precoVenda;
-        ordensServico.idPecas = idPecas[i];
-        cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
-    }
-
-    idPecas = NULL;
-    free(idPecas);
 }
 
 // Listagem de agendamentos

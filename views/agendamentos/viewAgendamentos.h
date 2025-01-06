@@ -22,10 +22,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                            struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
                            struct ListaPagamentosCliente *listaPagamentosCliente);
 
-void atualizarAgendamento(struct ListaAgendamentos *lista, struct ListaFuncionarios *listaFuncionarios,
-                          struct ListaServicos *listaServicos, struct ListaVeiculos *listaVeiculos,
-                          struct ListaPecas *listaPecas, struct ListaOrdensServico *listaOrdensServico);
-
 void listarAgendamentos(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
 void deletarAgendamento(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);

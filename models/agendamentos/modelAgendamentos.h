@@ -33,8 +33,6 @@ void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendame
 
 int verificarIDAgendamentoModel(struct ListaAgendamentos *lista, int id);
 
-void atualizarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Agendamentos *agendamento);
-
 void listarTodosAgendamentosModel(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
 void listarAgendamentoModel(struct ListaAgendamentos *lista, int id, struct ListaOrdensServico *listaOrdensServico);

@@ -89,6 +89,12 @@ int main() {
     struct ListaOrdensServico listaOrdensServico;
     listaOrdensServico.qtdOrdensServico = 0;
 
+    struct ListaNotasFiscais listaNotasFiscais;
+    listaNotasFiscais.qtdNotas = 0;
+
+    struct ListaPecasNotas listaPecasNotas;
+    listaPecasNotas.qtdPecasNotas = 0;
+
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
 
@@ -186,6 +192,8 @@ int main() {
 
             // Menu de controle de estoque
             case 3:
+                gerenciarEstoques(&listaPecas, &listaPecasNotas, &listaFornecedores, &listaNotasFiscais, &listaOficinas,
+                                  opcaoArmazenamento);
                 break;
 
             // Menu de gestão financeira

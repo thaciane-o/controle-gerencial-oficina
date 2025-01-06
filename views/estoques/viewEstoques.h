@@ -6,9 +6,9 @@
 #define VIEWESTOQUES_H
 
 #include "../../models/oficina/modelOficina.h"
-#include "..\..\models\pecas\modelPecas.h"
-#include "..\..\models\fornecedores\modelFornecedores.h"
-#include "..\..\models\notasFiscais\modelNotasFiscais.h"
+#include "../../models/pecas/modelPecas.h"
+#include "../../models/fornecedores/modelFornecedores.h"
+#include "../../models/notasFiscais/modelNotasFiscais.h"
 
 void gerenciarEstoques(struct ListaPecas *listaPecas, struct ListaPecasNotas *listaPecasNotas,
                        struct ListaFornecedores *listaFornecedores,

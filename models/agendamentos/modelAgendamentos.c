@@ -30,11 +30,13 @@ void buscarDadosAgendamentosModel(struct ListaAgendamentos *lista, int opcaoArma
             if (lista->qtdAgendamentos > 0) {
                 lista->listaAgendamentos = malloc(lista->qtdAgendamentos * sizeof(struct Agendamentos));
             } else {
+                fclose(dadosAgendamentos);
                 return;
             }
 
             if (lista->listaAgendamentos == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosAgendamentos);
                 return;
             }
 
@@ -90,11 +92,13 @@ void buscarDadosAgendamentosModel(struct ListaAgendamentos *lista, int opcaoArma
             if (lista->qtdAgendamentos > 0) {
                 lista->listaAgendamentos = malloc(lista->qtdAgendamentos * sizeof(struct Agendamentos));
             } else {
+                fclose(dadosAgendamentos);
                 return;
             }
 
             if (lista->listaAgendamentos == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosAgendamentos);
                 return;
             }
 

@@ -29,11 +29,13 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
             if (lista->qtdOrdensServico > 0) {
                 lista->listaOrdensServico = malloc(lista->qtdOrdensServico * sizeof(struct OrdensServico));
             } else {
+                fclose(dadosOrdensServico);
                 return;
             }
 
             if (lista->listaOrdensServico == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosOrdensServico);
                 return;
             }
 
@@ -89,11 +91,13 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
             if (lista->qtdOrdensServico > 0) {
                 lista->listaOrdensServico = malloc(lista->qtdOrdensServico * sizeof(struct OrdensServico));
             } else {
+                fclose(dadosOrdensServico);
                 return;
             }
 
             if (lista->listaOrdensServico == NULL) {
                 printf("Erro: Memória insuficiente. Cancelando abertura de arquivo.\n\n");
+                fclose(dadosOrdensServico);
                 return;
             }
 

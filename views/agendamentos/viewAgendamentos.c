@@ -91,6 +91,26 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 break;
             case 5:
                 if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
+                    // Armazena caixas alterados (Com novo saldo de pagamentos)
+                    if (listaCaixas->qtdCaixas > 0) {
+                        armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
+                    }
+
+                    // Armazena pagamentos realizados
+                    if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+                        armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+                    }
+
+                    // Armazena peças alteradas
+                    if (listaPecas->qtdPecas > 0) {
+                        armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
+                    }
+
+                    // Armazena ordem serviço alteradas
+                    if (listaOrdensServico->qtdOrdensServico > 0) {
+                        armazenarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
+                    }
+
                     if (lista->qtdAgendamentos > 0) {
                         armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
                         armazenarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
@@ -130,21 +150,6 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                         listaClientes->listaClientes = NULL;
                         free(listaClientes->listaClientes);
                         listaClientes->qtdClientes = 0;
-                    }
-
-                    // Armazena caixas alterados (Com novo saldo de pagamentos)
-                    if (listaCaixas->qtdCaixas > 0) {
-                        armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
-                    }
-
-                    // Armazena pagamentos realizados
-                    if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
-                        armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
-                    }
-
-                    // Armazena peças alteradas
-                    if (listaPecas->qtdPecas > 0) {
-                        armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
                     }
                 }
                 return;

@@ -175,7 +175,7 @@ int realocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista, int qtdAloca) {
 
     // Verifica se a alocação deu certo
     if (lista->listaPecasNotas == NULL) {
-        printf("Erro: Memória insuficiente\n\n");
+        printf("Erro: Memória insuficiente.\n\n");
         return 0;
     }
     return 1;
@@ -194,7 +194,7 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
     }
 
     if (resultAlocacao == 0) {
-        printf("Erro: Não foi possível cadastrar a relação Peca/Nota.\n\n");
+        printf("Erro: Não foi possível cadastrar a relação Peça/Nota.\n\n");
         return;
     }
 
@@ -227,10 +227,10 @@ void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdP
         if (listaPecas->listaPecas[i].id == idPeca) {
             // Verifica se há peças suficientes no estoque
             if (listaPecas->listaPecas[i].qtdEstoque < qtdPecasRequisitadas) {
-                printf("A quantidade de peças no estoque é insuficiente!\n");
+                printf("A quantidade de peças no estoque é insuficiente!\n\n");
             } else {
                 listaPecas->listaPecas[i].qtdEstoque -= qtdPecasRequisitadas;
-                printf("Peças debitadas do estoque com sucesso!\n");
+                printf("Peças debitadas do estoque com sucesso!\n\n");
             }
             break;
         }

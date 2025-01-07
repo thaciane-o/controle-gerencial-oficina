@@ -1,4 +1,3 @@
-
 #ifndef MODELPECASNOTAS_H
 #define MODELPECASNOTAS_H
 
@@ -34,6 +33,7 @@ void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdP
 
 void verificarEstoqueMinimo(struct ListaPecas *lista);
 
-void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal, struct PecasNotas *pecaNota);
+void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal,
+                            struct PecasNotas *pecaNota);
 
 #endif //MODELPECASNOTAS_H

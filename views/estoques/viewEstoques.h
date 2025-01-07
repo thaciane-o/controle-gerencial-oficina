@@ -12,7 +12,8 @@
 
 void gerenciarEstoques(struct ListaPecas *listaPecas, struct ListaPecasNotas *listaPecasNotas,
                        struct ListaFornecedores *listaFornecedores,
-                       struct ListaNotasFiscais *listaNotas, struct ListaOficinas *listaOficinas, int opcaoArmazenamento);
+                       struct ListaNotasFiscais *listaNotas, struct ListaOficinas *listaOficinas,
+                       int opcaoArmazenamento);
 
 void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,
                            struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,

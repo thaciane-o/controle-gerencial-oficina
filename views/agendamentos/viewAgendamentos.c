@@ -141,6 +141,11 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
                         armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
                     }
+
+                    // Armazena peças alteradas
+                    if (listaPecas->qtdPecas > 0) {
+                        armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
+                    }
                 }
                 return;
             default:
@@ -163,6 +168,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     int *idServicos = malloc(sizeof(int));
     int *idPecas = malloc(sizeof(int));
     int *idPecaDoServico = malloc(sizeof(int));
+    int *qtdPecasRequisitadas = malloc(sizeof(int));
     struct PagamentosCliente pagamento;
     pagamento.valor = 0;
     struct tm dataHora = {0};
@@ -191,14 +197,13 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 if (qtdPecas > 1) {
                     idPecas = realloc(idPecas, qtdPecas * sizeof(int));
                     idPecaDoServico = realloc(idPecaDoServico, qtdPecas * sizeof(int));
+                    qtdPecasRequisitadas = realloc(qtdPecasRequisitadas, qtdPecas * sizeof(int));
                 }
                 qtdPecas++;
 
                 printf("Insira o ID da peça que será necessária para realizar esse serviço (0 para finalizar): ");
                 setbuf(stdin, NULL);
                 scanf("%d", &idInputPecas);
-
-                debitarPecaEstoqueModel(listaPecas, idInputPecas, 1);
 
                 // Verificando existência do item relacionado
                 if (idInputPecas != 0) {
@@ -207,6 +212,13 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     idPecaDoServico[qtdPecas - 1] = idInputServico;
                 } else {
                     qtdPecas--;
+                }
+
+                if (idInputPecas != 0) {
+                    printf("Insira a quantidade necessária dessa peça: ");
+                    setbuf(stdin, NULL);
+                    scanf("%d", &qtdPecasRequisitadas[qtdPecas - 1]);
+                    debitarPecaEstoqueModel(listaPecas, idInputPecas, qtdPecasRequisitadas[qtdPecas - 1]);
                 }
             } while (idInputPecas != 0);
         } else {
@@ -279,8 +291,10 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 // Limpando os ponteiros
                 idPecas = NULL;
                 idPecaDoServico = NULL;
+                qtdPecasRequisitadas = NULL;
                 free(idPecas);
                 free(idPecaDoServico);
+                free(qtdPecasRequisitadas);
 
                 idServicos = NULL;
                 free(idServicos);
@@ -296,16 +310,16 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                                          idPecas, idServicos, idVeiculo) == -1) {
             // Limpando os ponteiros
             idPecas = NULL;
-            free(idPecas);
-
             idPecaDoServico = NULL;
+            qtdPecasRequisitadas = NULL;
+            free(idPecas);
             free(idPecaDoServico);
+            free(qtdPecasRequisitadas);
 
             idServicos = NULL;
             free(idServicos);
             return;
         }
-
         // Cadastrando agendamentos de cada serviço inserido
         for (int i = 0; i < qtdServicos; i++) {
             agendamento.idServico = idServicos[i];
@@ -318,7 +332,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             // Cadastrando ordens de serviço de cada peça inserida
             for (int j = 0; j < qtdPecas; j++) {
                 if (idPecaDoServico[j] == idServicos[i]) {
-                    ordensServico.valorTotal += listaPecas->listaPecas[j].precoVenda;
+                    ordensServico.valorTotal += listaPecas->listaPecas[j].precoVenda * qtdPecasRequisitadas[j];
                     ordensServico.idPecas = idPecas[j];
                     cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
                 }
@@ -334,9 +348,10 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     // Limpando os ponteiros
     idPecas = NULL;
     idPecaDoServico = NULL;
-
+    qtdPecasRequisitadas = NULL;
     free(idPecas);
     free(idPecaDoServico);
+    free(qtdPecasRequisitadas);
 
     idServicos = NULL;
     free(idServicos);

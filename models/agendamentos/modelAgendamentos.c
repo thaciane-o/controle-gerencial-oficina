@@ -450,7 +450,6 @@ void deletarAgendamentosModel(struct ListaAgendamentos *lista, int id, struct Li
                     deletarOrdensServicoModel(listaOrdensServico, id);
                 }
             }
-
             break;
         }
     }

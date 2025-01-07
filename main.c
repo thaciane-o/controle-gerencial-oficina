@@ -152,7 +152,7 @@ int main() {
                     switch (opcaoCadastro) {
                         case 1:
                             gerenciarOficina(&listaOficinas, &listaFuncionarios, &listaServicos, &listaClientes,
-                                             &listaCaixas, opcaoArmazenamento);
+                                             &listaCaixas, &listaPecas, opcaoArmazenamento);
                             break;
                         case 2:
                             gerenciarClientes(&listaClientes, &listaVeiculos, &listaOficinas, opcaoArmazenamento);

@@ -29,9 +29,12 @@ int alocarMemoriaOficinaModel(struct ListaOficinas *lista);
 
 int realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
 
-void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando, struct ListaCaixas *listaCaixas);
+void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando,
+                           struct ListaCaixas *listaCaixas);
 
-void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios, struct ListaServicos *listaServicos, struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas, int id);
+void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
+                         struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
+                         struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas, int id);
 
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando);
 

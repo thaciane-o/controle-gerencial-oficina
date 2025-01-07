@@ -333,7 +333,7 @@ void listarOficinaModel(struct ListaOficinas *lista, int id) {
 // Deleta uma oficina cadastrada
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
-                         struct ListaCaixas *listaCaixas, int id) {
+                         struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0, existeRelacao = 0;
 
@@ -371,9 +371,21 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
     // Verifica relações com serviços
     if (listaServicos->qtdServicos > 0) {
         for (int i = 0; i < listaServicos->qtdServicos; i++) {
-            if (listaServicos->listaServicos[i].idOficina == id && listaServicos->listaServicos->deletado == 0) {
+            if (listaServicos->listaServicos[i].idOficina == id && listaServicos->listaServicos[i].deletado == 0) {
                 printf(
                     "Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em um serviço que já está cadastrado.\n\n");
+                existeRelacao = 1;
+                break;
+            }
+        }
+    }
+
+    // Verifica relações com peças
+    if (listaPecas->qtdPecas > 0) {
+        for (int i = 0; i < listaPecas->qtdPecas; i++) {
+            if (listaPecas->listaPecas[i].idOficina == id && listaPecas->listaPecas[i].deletado == 0) {
+                printf(
+                    "Não foi possível deletar a oficina, pois os seus dados estão sendo utilizados em uma peça que já está cadastrada.\n\n");
                 existeRelacao = 1;
                 break;
             }

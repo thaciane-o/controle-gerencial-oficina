@@ -28,4 +28,10 @@ void deletarAgendamento(struct ListaAgendamentos *lista, struct ListaOrdensServi
 
 void finalizarOrdemServico(struct ListaAgendamentos *lista, struct ListaOrdensServico *listaOrdensServico);
 
+int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct ListaVeiculos *listaVeiculos,
+                                         struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
+                                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                                         struct ListaServicos *listaServicos, int qtdServicos, int qtdPecas,
+                                         int *idPecas, int *idServicos, int idVeiculos);
+
 #endif //AGENDAMENTOS_H

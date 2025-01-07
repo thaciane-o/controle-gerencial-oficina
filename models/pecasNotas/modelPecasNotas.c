@@ -11,10 +11,11 @@ void buscarDadosPecaNotaModel(struct ListaPecasNotas *lista, int opcaoArmazename
     int i = 0;
 
     FILE *dadosPecas;
+    char linha[sizeof(struct PecasNotas)];
 
     switch (opcaoArmazenamento) {
         case 1:
-            char linha[sizeof(struct PecasNotas)];
+
             dadosPecas = fopen("DadosPecasNotas.txt", "r");
 
             if (dadosPecas == NULL) {

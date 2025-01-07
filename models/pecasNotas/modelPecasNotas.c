@@ -201,8 +201,6 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
     pecaNotaCadastrando->id = lista->qtdPecasNotas;
     pecaNotaCadastrando->deletado = 0;
     lista->listaPecasNotas[lista->qtdPecasNotas - 1] = *pecaNotaCadastrando;
-
-
 }
 
 // Deleta uma relação peça/nota cadastrada
@@ -224,26 +222,23 @@ void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id) {
 
 // Retira uma certa quantidade de peças de determinado estoque
 void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas) {
-
     // Inicia busca pela peça requisitada
     for (int i = 0; i < listaPecas->qtdPecas; i++) {
         if (listaPecas->listaPecas[i].id == idPeca) {
             // Verifica se há peças suficientes no estoque
             if (listaPecas->listaPecas[i].qtdEstoque < qtdPecasRequisitadas) {
-
                 printf("A quantidade de peças no estoque é insuficiente!\n");
-            }else {
-
+            } else {
                 listaPecas->listaPecas[i].qtdEstoque -= qtdPecasRequisitadas;
                 printf("Peças debitadas do estoque com sucesso!\n");
             }
             break;
         }
     }
-
 }
 
-void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal, struct PecasNotas *pecaNota) {
+void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal,
+                            struct PecasNotas *pecaNota) {
     struct Pecas novaPeca;
 
     novaPeca.idFornecedor = notaFiscal->idFornecedor;
@@ -275,7 +270,6 @@ void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *
 
 // Verifica peças com estoque abaixo do mínimo
 void verificarEstoqueMinimo(struct ListaPecas *lista) {
-
     // Percorrendo lista de peças
     for (int i = 0; i < lista->qtdPecas; i++) {
         // Listando peças cujo o estoque está abaixo do mínimo
@@ -285,4 +279,3 @@ void verificarEstoqueMinimo(struct ListaPecas *lista) {
         }
     }
 }
-

@@ -7,6 +7,7 @@
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/caixas/modelCaixa.h"
 #include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pecasNotas/modelPecasNotas.h"
 #include "viewAgendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -196,6 +197,8 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 printf("Insira o ID da peça que será necessária para realizar esse serviço (0 para finalizar): ");
                 setbuf(stdin, NULL);
                 scanf("%d", &idInputPecas);
+
+                debitarPecaEstoqueModel(listaPecas, idInputPecas, 1);
 
                 // Verificando existência do item relacionado
                 if (idInputPecas != 0) {

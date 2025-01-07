@@ -70,6 +70,10 @@ void buscarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
+                    lista->listaPecas[i].idOficina = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
                     lista->listaPecas[i].idFornecedor = atoi(token);
                     token = strtok(NULL, ";");
                 }
@@ -133,7 +137,7 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             }
 
             for (int i = 0; i < lista->qtdPecas; i++) {
-                fprintf(dadosPecas, "%d;%s;%s;%f;%f;%d;%d;%d;%d\n",
+                fprintf(dadosPecas, "%d;%s;%s;%f;%f;%d;%d;%d;%d;%d\n",
                         lista->listaPecas[i].id,
                         lista->listaPecas[i].descricao,
                         lista->listaPecas[i].fabricante,
@@ -141,6 +145,7 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
                         lista->listaPecas[i].precoVenda,
                         lista->listaPecas[i].qtdEstoque,
                         lista->listaPecas[i].estoqueMinimo,
+                        lista->listaPecas[i].idOficina,
                         lista->listaPecas[i].idFornecedor,
                         lista->listaPecas[i].deletado);
             }

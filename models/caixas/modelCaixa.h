@@ -2,6 +2,7 @@
 #define MODELCAIXA_H
 
 #include "../pagamentoCliente/modelPagamentoCliente.h"
+#include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
 
 struct Caixas {
     int id;
@@ -25,9 +26,11 @@ int realocarCaixasModel(struct ListaCaixas *lista, int qtdAlocada);
 
 void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina);
 
-void deletarCaixasModel(struct ListaCaixas *lista, int idOficina);
+void deletarCaixasModel(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente,
+                        struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int idOficina);
 
-void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina, struct ListaPagamentosCliente *listaPagamentosCliente);
+void mostrarCaixasModel(struct ListaCaixas *lista, int idOficina,
+                        struct ListaPagamentosCliente *listaPagamentosCliente);
 
 void creditarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina, float valorCreditado);
 
@@ -36,8 +39,6 @@ int debitarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina
 void creditarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorCreditado);
 
 int debitarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorDebitado);
-
-int debitarDinheiroCaixaModel(struct ListaCaixas *lista, int idOficina, float valorDebitado);
 
 int getIdCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina);
 

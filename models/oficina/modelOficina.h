@@ -4,6 +4,8 @@
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/caixas/modelCaixa.h"
+#include "../pagamentoCliente/modelPagamentoCliente.h"
+#include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
 
 struct Oficinas {
     int id;
@@ -34,7 +36,9 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
 
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
-                         struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas, int id);
+                         struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas,
+                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int id);
 
 void atualizarOficinaModel(struct ListaOficinas *lista, int id, struct Oficinas *oficinaAlterando);
 

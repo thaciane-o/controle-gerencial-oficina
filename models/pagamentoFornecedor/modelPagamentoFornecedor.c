@@ -193,7 +193,7 @@ int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, i
 
 // Cadastro de pagamento a fornecedor
 int cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
-                                        struct ListaCaixas *listaCaixas) {
+                                       struct ListaCaixas *listaCaixas) {
     float saldoCaixa = getSaldoCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa);
     if (saldoCaixa == -1) {
         return -1;

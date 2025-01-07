@@ -4,13 +4,14 @@
 #include <string.h>
 
 #include "../pagamentoCliente/modelPagamentoCliente.h"
+#include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
 
 // Busca os dados dos caixas nos arquivos
 void buscarDadosCaixasModel(struct ListaCaixas *lista, int opcaoArmazenamento) {
     int i = 0;
 
     FILE *dadosCaixas;
-    char linha[sizeof(struct Caixas)*10];
+    char linha[sizeof(struct Caixas) * 10];
 
     switch (opcaoArmazenamento) {
         case 1:
@@ -200,7 +201,8 @@ void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina) {
 }
 
 // Deleta caixa ao deletar uma oficina
-void deletarCaixasModel(struct ListaCaixas *lista, int idOficina) {
+void deletarCaixasModel(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente,
+                        struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int idOficina) {
     int encontrado = 0;
 
     // Verifica se há algum cadastro
@@ -209,22 +211,41 @@ void deletarCaixasModel(struct ListaCaixas *lista, int idOficina) {
         return;
     }
 
-    // Busca pelo id para fazer a deleção
-    for (int i = 0; i < lista->qtdCaixas; i++) {
-        if (lista->listaCaixas[i].idOficina == idOficina && lista->listaCaixas[i].deletado == 0) {
-            encontrado = 1;
-
-            lista->listaCaixas[i].deletado = 1;
-
-            printf("Caixa deletado com sucesso!\n\n");
-
-            break;
-        }
+    int idCaixa = getIdCaixaPorOficinaModel(lista, idOficina);
+    if (idCaixa == -1) {
+        printf("Caixa não encontrado!\n\n");
+        return;
     }
 
-    // Se não encontrar o id para deleção, avisa o usuário
-    if (!encontrado) {
-        printf("Caixa não encontrado!\n\n");
+    // Busca e deleta todos os pagamentos de clientes relacionados a esse caixa
+    if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+        for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
+            if (listaPagamentosCliente->listaPagamentosCliente[i].idCaixa == idCaixa && listaPagamentosCliente->
+                listaPagamentosCliente[i].deletado == 0) {
+                listaPagamentosCliente->listaPagamentosCliente[i].deletado = 1;
+            }
+        }
+        printf("Pagamentos de clientes referentes ao caixa %d foram deletados com sucesso!\n", idCaixa);
+    }
+
+    // Busca e deleta todos os pagamentos de fornecedores relacionados a esse caixa
+    if (listaPagamentosFornecedor->qtdPagamentosFornecedor > 0) {
+        for (int i = 0; i < listaPagamentosFornecedor->qtdPagamentosFornecedor; i++) {
+            if (listaPagamentosFornecedor->listaPagamentosFornecedor[i].idCaixa == idCaixa && listaPagamentosFornecedor
+                ->listaPagamentosFornecedor[i].deletado == 0) {
+                listaPagamentosFornecedor->listaPagamentosFornecedor[i].deletado = 1;
+            }
+        }
+        printf("Pagamentos de fornecedores referentes ao caixa %d foram deletados com sucesso!\n", idCaixa);
+    }
+
+    // Busca pelo id para fazer a deleção
+    for (int i = 0; i < lista->qtdCaixas; i++) {
+        if (lista->listaCaixas[i].id == idCaixa && lista->listaCaixas[i].deletado == 0) {
+            lista->listaCaixas[i].deletado = 1;
+            printf("Caixa deletado com sucesso!\n\n");
+            break;
+        }
     }
 }
 
@@ -303,7 +324,6 @@ void creditarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOfici
 
 // Adiciona dinheiro a um caixa pelo ID do caixa
 void creditarDinheiroCaixaPorCaixaModel(struct ListaCaixas *lista, int idCaixa, float valorCreditado) {
-
     // Busca pelo caixa da oficina
     if (lista->qtdCaixas > 0) {
         for (int i = 0; i < lista->qtdCaixas; i++) {

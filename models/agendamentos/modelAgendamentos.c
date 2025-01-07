@@ -1,7 +1,8 @@
 #include "modelAgendamentos.h"
 #include "../../models/veiculos/modelVeiculos.h"
-#include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
+#include "../../models/funcionarios/modelFuncionarios.h"
+#include "../../models/agendamentos/modelAgendamentos.h"
 #include "../../models/ordensServico/modelOrdensServico.h"
 #include <stdio.h>
 #include <stdlib.h>

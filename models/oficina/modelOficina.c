@@ -2,6 +2,8 @@
 #include "../../models/funcionarios/modelFuncionarios.h"
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/caixas/modelCaixa.h"
+#include "../pagamentoCliente/modelPagamentoCliente.h"
+#include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -333,7 +335,9 @@ void listarOficinaModel(struct ListaOficinas *lista, int id) {
 // Deleta uma oficina cadastrada
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
-                         struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas, int id) {
+                         struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas,
+                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0, existeRelacao = 0;
 
@@ -413,6 +417,7 @@ void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *
         return;
     }
 
-    // Se tiver encontrado, também deleta o caixa da oficina
-    deletarCaixasModel(listaCaixas, id);
+    // Deleta o caixa da oficina
+    deletarCaixasModel(listaCaixas, listaPagamentosCliente, listaPagamentosFornecedor, id);
+
 }

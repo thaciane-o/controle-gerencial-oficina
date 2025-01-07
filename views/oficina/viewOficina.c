@@ -5,13 +5,17 @@
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/caixas/modelCaixa.h"
 #include "../../models/pecas/modelPecas.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 // Menu de funcionalidades de oficinas
 void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                       struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
-                      struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas, int opcaoArmazenamento) {
+                      struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas,
+                      struct ListaPagamentosCliente *listaPagamentosCliente,
+                      struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
     //Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
@@ -26,6 +30,8 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
             buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
             buscarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
             buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
+            buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+            buscarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
         }
     }
 
@@ -50,7 +56,8 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                 atualizarOficina(lista);
                 break;
             case 3:
-                deletarOficina(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas, listaPecas);
+                deletarOficina(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas, listaPecas,
+                               listaPagamentosCliente, listaPagamentosFornecedor);
                 break;
             case 4:
                 listarOficina(lista);
@@ -87,6 +94,20 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                         free(listaCaixas->listaCaixas);
                         listaCaixas->listaCaixas = NULL;
                         listaCaixas->qtdCaixas = 0;
+                    }
+
+                    // Armazena os pagamentos
+                    if (listaPagamentosCliente->qtdPagamentosCliente) {
+                        armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+                        free(listaPagamentosCliente->listaPagamentosCliente);
+                        listaPagamentosCliente->listaPagamentosCliente = NULL;
+                        listaPagamentosCliente->qtdPagamentosCliente = 0;
+                    }
+                    if (listaPagamentosFornecedor->qtdPagamentosFornecedor) {
+                        armazenarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
+                        free(listaPagamentosFornecedor->listaPagamentosFornecedor);
+                        listaPagamentosFornecedor->listaPagamentosFornecedor = NULL;
+                        listaPagamentosFornecedor->qtdPagamentosFornecedor = 0;
                     }
                 }
                 break;
@@ -219,7 +240,9 @@ void listarOficina(struct ListaOficinas *lista) {
 // Formulário de deleção de oficinas
 void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                     struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,
-                    struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas) {
+                    struct ListaCaixas *listaCaixas, struct ListaPecas *listaPecas,
+                    struct ListaPagamentosCliente *listaPagamentosCliente,
+                    struct ListaPagamentosFornecedor *listaPagamentosFornecedor) {
     int id;
     // Pede o Id da oficina que será deletada
     printf("\n==============================\n"
@@ -230,5 +253,6 @@ void deletarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lista
     setbuf(stdin, NULL);
     scanf("%d", &id);
 
-    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas, listaPecas, id);
+    deletarOficinaModel(lista, listaFuncionarios, listaServicos, listaClientes, listaCaixas, listaPecas,
+                        listaPagamentosCliente, listaPagamentosFornecedor, id);
 }

@@ -1,4 +1,3 @@
-
 #ifndef MODELNOTASFISCAIS_H
 #define MODELNOTASFISCAIS_H
 
@@ -23,7 +22,7 @@ struct ListaNotasFiscais {
     struct NotasFiscais *listaNotas;
 };
 
-void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista,  int opcaoArmazenamento);
+void buscarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArmazenamento);
 
 void armazenarDadosNotasFiscaisModel(struct ListaNotasFiscais *lista, int opcaoArmazenamento);
 
@@ -54,8 +53,7 @@ int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas,
                                     struct NotasFiscais *notaFiscal, int idPeca);
 
 int verificarRelacaoOficinaModel(struct ListaPecas *listaPecas,
-                                    struct NotasFiscais *notaFiscal, int idPeca);
-
+                                 struct NotasFiscais *notaFiscal, int idPeca);
 
 
 #endif //MODELNOTASFISCAIS_H

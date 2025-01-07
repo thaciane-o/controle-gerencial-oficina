@@ -137,6 +137,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
         return;
     }
 
+
     printf("\nInsira o valor do frete: ");
     scanf("%f", &notaFiscal.frete);
 

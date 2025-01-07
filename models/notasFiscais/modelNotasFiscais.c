@@ -316,8 +316,11 @@ void listarNotaFiscalModel(struct ListaNotasFiscais *lista, struct ListaPecasNot
                    "====================\n"
                    "FORNECEDOR: %s\n"
                    "CNPJ: %s\n"
-                   "FRETE: $%.2f  |  IMPOSTO $%.2f\n"
-                   "|          PRODUTOS           |",
+                   "FRETE: $%.2f\n"
+                   "IMPOSTO $%.2f\n"
+                   "\n====================\n"
+                     "|     PRODUTOS     |\n"
+                     "====================\n",
                    lista->listaNotas[encontrado].id,
                    listaFornecedores->listaFornecedores[encontraFornecedor].nomeFantasia,
                    listaFornecedores->listaFornecedores[encontraFornecedor].cnpj,
@@ -376,7 +379,7 @@ void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struc
             if (lista->listaNotas[i].idFornecedor == idFornecedor && lista->listaNotas[i].deletado == 0) {
                 encontrado = 1;
                 printf("\n====================\n"
-                       "| NOTA FISCAL %d    |\n"
+                       "|  NOTA FISCAL %d  |\n"
                        "====================\n"
                        "FORNECEDOR: %s\n"
                        "CNPJ: %s\n"
@@ -427,7 +430,7 @@ void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *l
 
     // Verifica se há algum cadastro
     if (lista->qtdNotas == 0) {
-        printf("Nenhuma nota foi cadastrada.\n");
+        printf("Nenhuma nota foi cadastrada.\n\n");
         return;
     }
 
@@ -437,14 +440,14 @@ void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *l
             encontrado = 1;
             lista->listaNotas[i].deletado = 1;
             deletarPecaNotaModel(listaPecasNotas, lista->listaNotas[i].id);
-            printf("Nota deletada com sucesso!\n");
+            printf("Nota deletada com sucesso!\n\n");
             break;
         }
     }
 
     // Se não encontrar o id para deleção, avisa o usuário
     if (!encontrado) {
-        printf("Nota não encontrada.\n");
+        printf("Nota não encontrada.\n\n");
     }
 }
 

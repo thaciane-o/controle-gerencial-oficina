@@ -10,6 +10,7 @@ void buscarDadosCaixasModel(struct ListaCaixas *lista, int opcaoArmazenamento) {
     int i = 0;
 
     FILE *dadosCaixas;
+    char linha[sizeof(struct Caixas)*10];
 
     switch (opcaoArmazenamento) {
         case 1:
@@ -18,8 +19,6 @@ void buscarDadosCaixasModel(struct ListaCaixas *lista, int opcaoArmazenamento) {
             if (dadosCaixas == NULL) {
                 return;
             }
-
-            char linha[sizeof(struct Caixas)];
 
             while (fgets(linha, sizeof(linha), dadosCaixas)) {
                 lista->qtdCaixas++;
@@ -115,7 +114,7 @@ void armazenarDadosCaixasModel(struct ListaCaixas *lista, int opcaoArmazenamento
             }
 
             for (int i = 0; i < lista->qtdCaixas; i++) {
-                fprintf(dadosCaixas, "%d;%f;%d;%d\n",
+                fprintf(dadosCaixas, "%d;%.2f;%d;%d\n",
                         lista->listaCaixas[i].id,
                         lista->listaCaixas[i].valorCaixa,
                         lista->listaCaixas[i].idOficina,

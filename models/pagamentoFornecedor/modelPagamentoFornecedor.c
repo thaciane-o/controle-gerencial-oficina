@@ -192,15 +192,15 @@ int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, i
 }
 
 // Cadastro de pagamento a fornecedor
-void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
+int cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
                                         struct ListaCaixas *listaCaixas) {
     float saldoCaixa = getSaldoCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa);
     if (saldoCaixa == -1) {
-        return;
+        return -1;
     }
     if (saldoCaixa < pagamento->valor) {
         printf("Não há saldo suficiente no caixa para realizar o pagamento!\n\n");
-        return;
+        return -1;
     }
 
     int resultAlocacao = 0;
@@ -214,7 +214,7 @@ void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista,
 
     if (resultAlocacao == 0) {
         printf("Erro: Não foi possível cadastrar o Pagamento ao Fornecedor.\n\n");
-        return;
+        return -1;
     }
 
     // Cadastrando pagamento na memória
@@ -227,6 +227,8 @@ void cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista,
 
     // Debita o valor do pagamento
     debitarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
+
+    return 0;
 }
 
 // Buscar contas pagas a fornecedor por oficina

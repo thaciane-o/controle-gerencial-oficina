@@ -32,6 +32,6 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
                                          struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
                                          struct ListaPagamentosCliente *listaPagamentosCliente,
                                          struct ListaServicos *listaServicos, int qtdServicos, int qtdPecas,
-                                         int *idPecas, int *idServicos, int idVeiculos);
+                                         int *idPecas, int *idServicos, int idVeiculos, float valorAgendamento);
 
 #endif //AGENDAMENTOS_H

@@ -368,3 +368,20 @@ void deletarServicoModel(struct ListaServicos *lista, struct ListaAgendamentos *
         printf("Serviço não encontrado.\n");
     }
 }
+
+// Pega valor do serviço pelo seu id
+float getValorServicoPorIdModel(struct ListaServicos *lista, int id) {
+
+    if (lista->qtdServicos > 0) {
+        for (int i = 0; i < lista->qtdServicos; i++) {
+            if (lista->listaServicos[i].id == id && lista->listaServicos[i].deletado == 0) {
+                return lista->listaServicos[i].preco;
+            }
+        }
+        printf("Serviço não encontrado.\n\n");
+    } else {
+        printf("Não há serviços cadastrados.\n\n");
+    }
+
+    return -1;
+}

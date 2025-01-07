@@ -192,7 +192,7 @@ int main() {
             // Menu de controle de estoque
             case 3:
                 gerenciarEstoques(&listaPecas, &listaPecasNotas, &listaFornecedores, &listaNotasFiscais, &listaOficinas,
-                                  opcaoArmazenamento);
+                                  &listaPagamentosFornecedor, &listaCaixas, opcaoArmazenamento);
                 break;
 
             // Menu de gestão financeira

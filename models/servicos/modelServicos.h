@@ -39,5 +39,6 @@ void listarServicoModel(struct ListaServicos *lista, int id);
 
 void buscarServicosPorOficinaModel(struct ListaServicos *lista, int idOficina);
 
+float getValorServicoPorIdModel(struct ListaServicos *lista, int id);
 
 #endif //MODELSERVICOS_H

@@ -42,4 +42,6 @@ void listarPecaModel(struct ListaPecas *lista, int id);
 
 void buscarPecasPorFornecedorModel(struct ListaPecas *lista, int idFornecedor);
 
+float getValorPecaPorIdModel(struct ListaPecas *lista, int id);
+
 #endif //MODELPECAS_H

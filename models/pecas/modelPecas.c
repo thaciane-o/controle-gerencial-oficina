@@ -394,7 +394,8 @@ void deletarPecaModel(struct ListaPecas *lista, int id, struct ListaOrdensServic
     // Verifica relação com ordens de serviço
     if (listaOrdensServico->qtdOrdensServico > 0) {
         for (int i = 0; i < listaOrdensServico->qtdOrdensServico; i++) {
-            if (listaOrdensServico->listaOrdensServico[i].idPecas == id && listaOrdensServico->listaOrdensServico[i].deletado == 0) {
+            if (listaOrdensServico->listaOrdensServico[i].idPecas == id && listaOrdensServico->listaOrdensServico[i].
+                deletado == 0) {
                 printf(
                     "Não foi possível deletar a peça, pois os seus dados estão sendo utilizados em uma ordem de serviço que foi emitida.\n\n");
                 return;
@@ -416,4 +417,20 @@ void deletarPecaModel(struct ListaPecas *lista, int id, struct ListaOrdensServic
     if (!encontrado) {
         printf("Peça não encontrada.\n");
     }
+}
+
+// Pega o valor de uma peça pelo seu id
+float getValorPecaPorIdModel(struct ListaPecas *lista, int id) {
+    if (lista->qtdPecas > 0) {
+        for (int i = 0; i < lista->qtdPecas; i++) {
+            if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
+                return lista->listaPecas[i].precoVenda;
+            }
+        }
+        printf("Peça não encontrada.\n\n");
+    } else {
+        printf("Nenhuma peça foi cadastrada no sistema.\n\n");
+    }
+
+    return -1;
 }

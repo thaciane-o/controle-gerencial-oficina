@@ -162,9 +162,8 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
     int *idServicos = malloc(sizeof(int));
     int *idPecas = malloc(sizeof(int));
     int *idPecaDoServico = malloc(sizeof(int));
-    struct PagamentosCliente pagamento;
-    pagamento.valor = 0;
     struct tm dataHora = {0};
+    float valorAgendamento = 0;
 
     printf("\n======================\n"
         "|     AGENDAMENTO    |\n"
@@ -185,6 +184,8 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             idServicos[qtdServicos - 1] = idInputServico;
             verificarIDServicoModel(listaServicos, idServicos[qtdServicos - 1]);
 
+            valorAgendamento += getValorServicoPorIdModel(listaServicos, idInputServico);
+
             do {
                 // Inserindo 1 ou mais peças por serviço
                 if (qtdPecas > 1) {
@@ -202,6 +203,9 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     idPecas[qtdPecas - 1] = idInputPecas;
                     verificarIDPecaModel(listaPecas, idPecas[qtdPecas - 1]);
                     idPecaDoServico[qtdPecas - 1] = idInputServico;
+
+                    valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas);
+
                 } else {
                     qtdPecas--;
                 }
@@ -290,7 +294,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         // Cadastrando pagamento, se -1 então teve erro
         if (cadastrarPagamentoClienteAgendamento(listaPecas, listaVeiculos, listaClientes, listaCaixas,
                                          listaPagamentosCliente, listaServicos, qtdServicos, qtdPecas,
-                                         idPecas, idServicos, idVeiculo) == -1) {
+                                         idPecas, idServicos, idVeiculo, valorAgendamento) == -1) {
             // Limpando os ponteiros
             idPecas = NULL;
             free(idPecas);
@@ -428,29 +432,9 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
                                          struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
                                          struct ListaPagamentosCliente *listaPagamentosCliente,
                                          struct ListaServicos *listaServicos, int qtdServicos, int qtdPecas,
-                                         int *idPecas, int *idServicos, int idVeiculos) {
+                                         int *idPecas, int *idServicos, int idVeiculos, float valorAgendamento) {
     struct PagamentosCliente pagamento;
-    pagamento.valor = 0;
-
-    // Pegando o valor total do serviço: serviços + peças
-    for (int i = 0; i < (qtdServicos - 1); i++) {
-        for (int j = 0; j < listaServicos->qtdServicos; j++) {
-            if (listaServicos->listaServicos[j].id == idServicos[i]) {
-                pagamento.valor += listaServicos->listaServicos[j].preco;
-                break;
-            }
-        }
-    }
-
-    // Pegando o valor total das peças
-    for (int i = 0; i < (qtdPecas - 1); i++) {
-        for (int j = 0; j < listaPecas->qtdPecas; j++) {
-            if (listaPecas->listaPecas[j].id == idPecas[i]) {
-                pagamento.valor += listaPecas->listaPecas[j].precoVenda;
-                break;
-            }
-        }
-    }
+    pagamento.valor = valorAgendamento;
 
     // Pegando o tipo de pagamento do cliente, e mostrando o valor total do serviço
     do {

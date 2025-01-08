@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "../pagamentoCliente/modelPagamentoCliente.h"
 #include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
@@ -370,6 +371,72 @@ int debitarDinheiroCaixaPorOficinaModel(struct ListaCaixas *lista, int idOficina
         printf("Nenhum caixa foi registrado!\n\n");
     }
     return -1;
+}
+
+// Atualiza os pagamentos e valores do caixa ao iniciar o sistema
+void atualizarPagamentosRecebidosModel(struct ListaCaixas *lista,
+                                       struct ListaPagamentosCliente *listaPagamentosCliente,
+                                       int opcaoArmazenamento) {
+    // Abre os caixas
+    if (lista->qtdCaixas == 0) {
+        buscarDadosCaixasModel(lista, opcaoArmazenamento);
+    }
+
+    // Abre os pagamentos de clientes
+    if (listaPagamentosCliente->qtdPagamentosCliente == 0) {
+        buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+    }
+
+    // Se não tiver caixas ou não tiver pagamentos, finaliza
+    if (lista->qtdCaixas == 0 || listaPagamentosCliente->qtdPagamentosCliente == 0) {
+        return;
+    }
+
+    // Pega a data atual
+    time_t dataHoje = time(NULL);
+
+    // Variável para datas dos pagamentos
+    struct tm aReceber = {0};
+    time_t dataAReceber = 0;
+
+    // Passa por todos os pagamentos de cliente
+    for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
+
+        // Verifica se não foi pago
+        if (listaPagamentosCliente->listaPagamentosCliente[i].deletado == 0 &&
+            strcmp(listaPagamentosCliente->listaPagamentosCliente[i].dataRecebimento, "Não pago") == 0) {
+            // Transforma a string em tipo data
+            sscanf(listaPagamentosCliente->listaPagamentosCliente[i].dataAReceber, "%d/%d/%d",
+                   &aReceber.tm_mday, &aReceber.tm_mon, &aReceber.tm_year);
+            aReceber.tm_year -= 1900;
+            aReceber.tm_mon -= 1;
+            dataAReceber = mktime(&aReceber);
+
+            // Verifica se a data foi transformada corretamente
+            if (dataAReceber == -1) {
+                continue;
+            }
+
+            // Verifica se a data a receber já passou, ou é hoje
+            if (dataAReceber <= dataHoje) {
+                // Ajusta data de recebimento
+                strftime(listaPagamentosCliente->listaPagamentosCliente[i].dataRecebimento,
+                         sizeof(listaPagamentosCliente->listaPagamentosCliente[i].dataRecebimento), "%d/%m/%Y",
+                         localtime(&dataHoje));
+
+                // Credita pagamento no caixa
+                creditarDinheiroCaixaPorCaixaModel(lista, listaPagamentosCliente->listaPagamentosCliente[i].idCaixa,
+                                                   listaPagamentosCliente->listaPagamentosCliente[i].valor);
+            }
+        }
+    }
+
+    // Armazena os dados atualizados
+    armazenarDadosCaixasModel(lista, opcaoArmazenamento);
+    armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+
+    // Mensagem de confirmação
+    printf("Pagamentos atualizados!\n\n");
 }
 
 // Remove dinheiro de um caixa pelo ID do caixa. Retorna -1 se a operação não foi bem sucedida.

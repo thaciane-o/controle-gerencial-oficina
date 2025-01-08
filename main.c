@@ -114,6 +114,11 @@ int main() {
         scanf("%d", &opcaoArmazenamento);
     } while (opcaoArmazenamento < 1 || opcaoArmazenamento > 3);
 
+    // Atualiza todos os pagamentos pendentes
+    if (opcaoArmazenamento != 3) {
+        atualizarPagamentosRecebidosModel(&listaCaixas, &listaPagamentosCliente, opcaoArmazenamento);
+    }
+
     // Menu principal do sistema
     do {
         printf("\n=========================================\n"

@@ -111,9 +111,9 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                         armazenarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
                     }
 
+                    // Armazena agendamentos alteradas
                     if (lista->qtdAgendamentos > 0) {
                         armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
-                        armazenarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
                     }
 
                     if (listaVeiculos->qtdVeiculos > 0) {
@@ -282,34 +282,36 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         }
 
         // Verificando se um funcionário já possui um serviço na data e hora inserida
-        for (int i = 0; i < lista->qtdAgendamentos; i++) {
-            sscanf(lista->listaAgendamentos[i].datahoraInicial, "%d/%d/%d %d:%d",
-                   &dataHora.tm_mday, &dataHora.tm_mon, &dataHora.tm_year,
-                   &dataHora.tm_hour, &dataHora.tm_min);
+        if (lista->qtdAgendamentos > 1) {
+            for (int i = 0; i < lista->qtdAgendamentos; i++) {
+                sscanf(lista->listaAgendamentos[i].datahoraInicial, "%d/%d/%d %d:%d",
+                       &dataHora.tm_mday, &dataHora.tm_mon, &dataHora.tm_year,
+                       &dataHora.tm_hour, &dataHora.tm_min);
 
-            dataHora.tm_year -= 1900;
-            dataHora.tm_mon -= 1;
-            time_t tempoExistente = mktime(&dataHora);
+                dataHora.tm_year -= 1900;
+                dataHora.tm_mon -= 1;
+                time_t tempoExistente = mktime(&dataHora);
 
-            if (tempoExistente == -1) {
-                printf("Erro ao converter a data e hora.\n");
-                return;
-            }
+                if (tempoExistente == -1) {
+                    printf("Erro ao converter a data e hora.\n");
+                    return;
+                }
 
-            if (lista->listaAgendamentos[i].idFuncionario == idFuncionario && tempoExistente == tempo) {
-                printf("Não é possível agendar um serviço com esse funcionário.\n\n");
+                if (lista->listaAgendamentos[i].idFuncionario == idFuncionario && tempoExistente == tempo) {
+                    printf("Não é possível agendar um serviço com esse funcionário.\n\n");
 
-                // Limpando os ponteiros
-                idPecas = NULL;
-                idPecaDoServico = NULL;
-                qtdPecasRequisitadas = NULL;
-                free(idPecas);
-                free(idPecaDoServico);
-                free(qtdPecasRequisitadas);
+                    // Limpando os ponteiros
+                    idPecas = NULL;
+                    idPecaDoServico = NULL;
+                    qtdPecasRequisitadas = NULL;
+                    free(idPecas);
+                    free(idPecaDoServico);
+                    free(qtdPecasRequisitadas);
 
-                idServicos = NULL;
-                free(idServicos);
-                return;
+                    idServicos = NULL;
+                    free(idServicos);
+                    return;
+                }
             }
         }
 
@@ -331,6 +333,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             free(idServicos);
             return;
         }
+
         // Cadastrando agendamentos de cada serviço inserido
         for (int i = 0; i < qtdServicos; i++) {
             agendamento.idServico = idServicos[i];

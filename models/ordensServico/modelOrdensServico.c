@@ -129,7 +129,7 @@ void armazenarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opca
             }
 
             for (int i = 0; i < lista->qtdOrdensServico; i++) {
-                fprintf(dadosOrdensServico, "%s;%d;%d;%f;%f;%s;%d\n",
+                fprintf(dadosOrdensServico, "%s;%d;%d;%.2f;%.2f;%s;%d\n",
                         lista->listaOrdensServico[i].descricao,
                         lista->listaOrdensServico[i].idPecas,
                         lista->listaOrdensServico[i].idAgendamento,
@@ -207,6 +207,8 @@ void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct Ordens
     }
 
     // Cadastrando ordem de serviço na memória
+    strcpy(ordensServico->datahoraFinal, "NF");
+    ordensServico->tempoGasto = 0;
     ordensServico->deletado = 0;
 
     lista->listaOrdensServico[lista->qtdOrdensServico - 1] = *ordensServico;
@@ -223,21 +225,36 @@ void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     for (int i = 0; i < lista->qtdOrdensServico; i++) {
         // Verifica se a ordem de serviço está ou não deletado
         if (lista->listaOrdensServico[i].idAgendamento == id && lista->listaOrdensServico[i].deletado == 0) {
-            printf("====================="
-                   "\n| ORDEM DE SERVIÇO  |"
-                   "\n====================="
-                   "\nDESCRIÇÃO DO SERVIÇO: %s"
-                   "\nVALOR TOTAL: %f"
-                   "\nAGENDAMENTO: %d"
-                   "\nPEÇA: %d"
-                   "\nTEMPO GASTO: %.2f hora(s)"
-                   "\nDATA E HORA FINALIZADA: %s\n",
-                   lista->listaOrdensServico[i].descricao,
-                   lista->listaOrdensServico[i].valorTotal,
-                   lista->listaOrdensServico[i].idAgendamento,
-                   lista->listaOrdensServico[i].idPecas,
-                   lista->listaOrdensServico[i].tempoGasto,
-                   lista->listaOrdensServico[i].datahoraFinal);
+            if (strcmp(lista->listaOrdensServico[i].datahoraFinal, "NF") == 0) {
+                printf("====================="
+                       "\n| ORDEM DE SERVIÇO  |"
+                       "\n====================="
+                       "\nDESCRIÇÃO DO SERVIÇO: %s"
+                       "\nVALOR TOTAL: %f"
+                       "\nAGENDAMENTO: %d"
+                       "\nPEÇA: %d"
+                       "\nO SERVIÇO AINDA ESTÁ EM ANDAMENTO\n",
+                       lista->listaOrdensServico[i].descricao,
+                       lista->listaOrdensServico[i].valorTotal,
+                       lista->listaOrdensServico[i].idAgendamento,
+                       lista->listaOrdensServico[i].idPecas);
+            } else {
+                printf("====================="
+                       "\n| ORDEM DE SERVIÇO  |"
+                       "\n====================="
+                       "\nDESCRIÇÃO DO SERVIÇO: %s"
+                       "\nVALOR TOTAL: %f"
+                       "\nAGENDAMENTO: %d"
+                       "\nPEÇA: %d"
+                       "\nTEMPO GASTO: %.2f hora(s)"
+                       "\nDATA E HORA FINALIZADA: %s\n",
+                       lista->listaOrdensServico[i].descricao,
+                       lista->listaOrdensServico[i].valorTotal,
+                       lista->listaOrdensServico[i].idAgendamento,
+                       lista->listaOrdensServico[i].idPecas,
+                       lista->listaOrdensServico[i].tempoGasto,
+                       lista->listaOrdensServico[i].datahoraFinal);
+            }
         }
     }
 }
@@ -332,7 +349,6 @@ void finalizarOrdemServicoModel(struct ListaOrdensServico *lista, struct ListaAg
         if (lista->listaOrdensServico[i].datahoraFinal != NULL && lista->listaOrdensServico[i].idAgendamento ==
             idAgendamento) {
             qtdOrdensServicoFim++;
-
         }
     }
 

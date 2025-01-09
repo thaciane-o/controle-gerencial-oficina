@@ -129,7 +129,7 @@ void armazenarDadosPagamentosFornecedorModel(struct ListaPagamentosFornecedor *l
             }
 
             for (int i = 0; i < lista->qtdPagamentosFornecedor; i++) {
-                fprintf(dadosPagamentosFornecedor, "%d;%d;%f;%s;%d;%d;%d\n",
+                fprintf(dadosPagamentosFornecedor, "%d;%d;%.2f;%s;%d;%d;%d\n",
                         lista->listaPagamentosFornecedor[i].id,
                         lista->listaPagamentosFornecedor[i].tipoPagamento,
                         lista->listaPagamentosFornecedor[i].valor,

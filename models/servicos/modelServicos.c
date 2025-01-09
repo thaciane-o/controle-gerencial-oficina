@@ -121,7 +121,7 @@ void armazenarDadosServicoModel(struct ListaServicos *lista, int opcaoArmazename
             }
 
             for (int i = 0; i < lista->qtdServicos; i++) {
-                fprintf(dadosServicos, "%d;%s;%f;%f;%d;%d;\n",
+                fprintf(dadosServicos, "%d;%s;%.2f;%.2f;%d;%d;\n",
                         lista->listaServicos[i].id,
                         lista->listaServicos[i].descricao,
                         lista->listaServicos[i].preco,

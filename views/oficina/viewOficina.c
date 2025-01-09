@@ -64,9 +64,19 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                 break;
             case 5:
                 if (opcaoArmazenamento != 3) {
-                    if (lista->qtdOficinas) {
+                    if (lista->qtdOficinas > 0) {
                         armazenarDadosOficinaModel(lista, opcaoArmazenamento);
                     }
+                    if (listaCaixas->qtdCaixas > 0) {
+                        armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
+                    }
+                    if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+                        armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+                    }
+                    if (listaPagamentosFornecedor->qtdPagamentosFornecedor > 0) {
+                        armazenarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
+                    }
+
                     if (listaFuncionarios->qtdFuncionarios) {
                         free(listaFuncionarios->listaFuncionarios);
                         listaFuncionarios->listaFuncionarios = NULL;
@@ -88,27 +98,7 @@ void gerenciarOficina(struct ListaOficinas *lista, struct ListaFuncionarios *lis
                         listaPecas->qtdPecas = 0;
                     }
 
-                    // Armazena os caixas
-                    if (listaCaixas->qtdCaixas) {
-                        armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
-                        free(listaCaixas->listaCaixas);
-                        listaCaixas->listaCaixas = NULL;
-                        listaCaixas->qtdCaixas = 0;
-                    }
 
-                    // Armazena os pagamentos
-                    if (listaPagamentosCliente->qtdPagamentosCliente) {
-                        armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
-                        free(listaPagamentosCliente->listaPagamentosCliente);
-                        listaPagamentosCliente->listaPagamentosCliente = NULL;
-                        listaPagamentosCliente->qtdPagamentosCliente = 0;
-                    }
-                    if (listaPagamentosFornecedor->qtdPagamentosFornecedor) {
-                        armazenarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
-                        free(listaPagamentosFornecedor->listaPagamentosFornecedor);
-                        listaPagamentosFornecedor->listaPagamentosFornecedor = NULL;
-                        listaPagamentosFornecedor->qtdPagamentosFornecedor = 0;
-                    }
                 }
                 break;
             default: printf("Opção inválida!\n\n");

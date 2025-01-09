@@ -52,54 +52,23 @@ int main() {
     setlocale(LC_ALL, "PT_BR");
 
     // Declaração de variáveis dos dados do sistema
-    struct ListaClientes listaClientes;
-    listaClientes.qtdClientes = 0;
-
-    struct ListaVeiculos listaVeiculos;
-    listaVeiculos.qtdVeiculos = 0;
-
-    struct ListaOficinas listaOficinas;
-    listaOficinas.qtdOficinas = 0;
-
-    struct ListaPecas listaPecas;
-    listaPecas.qtdPecas = 0;
-
-    struct ListaFornecedores listaFornecedores;
-    listaFornecedores.qtdFornecedores = 0;
-
-    struct ListaServicos listaServicos;
-    listaServicos.qtdServicos = 0;
-
-    struct ListaFuncionarios listaFuncionarios;
-    listaFuncionarios.qtdFuncionarios = 0;
-
-    struct ListaCaixas listaCaixas;
-    listaCaixas.qtdCaixas = 0;
-
-    struct ListaPagamentosCliente listaPagamentosCliente;
-    listaPagamentosCliente.qtdPagamentosCliente = 0;
-
-    struct ListaPagamentosFornecedor listaPagamentosFornecedor;
-    listaPagamentosFornecedor.qtdPagamentosFornecedor = 0;
-
-    struct ListaAgendamentos listaAgendamentos;
-    listaAgendamentos.qtdAgendamentos = 0;
-
-    struct ListaOrdensServico listaOrdensServico;
-    listaOrdensServico.qtdOrdensServico = 0;
-
-    struct ListaNotasFiscais listaNotasFiscais;
-    listaNotasFiscais.qtdNotas = 0;
-
-    struct ListaPecasNotas listaPecasNotas;
-    listaPecasNotas.qtdPecasNotas = 0;
+    struct ListaClientes listaClientes = {0, NULL};
+    struct ListaVeiculos listaVeiculos = {0, NULL};
+    struct ListaOficinas listaOficinas = {0, NULL};
+    struct ListaPecas listaPecas = {0, NULL};
+    struct ListaFornecedores listaFornecedores = {0, NULL};
+    struct ListaServicos listaServicos = {0, NULL};
+    struct ListaFuncionarios listaFuncionarios = {0, NULL};
+    struct ListaCaixas listaCaixas = {0, NULL};
+    struct ListaPagamentosCliente listaPagamentosCliente = {0, NULL};
+    struct ListaPagamentosFornecedor listaPagamentosFornecedor = {0, NULL};
+    struct ListaAgendamentos listaAgendamentos = {0, NULL};
+    struct ListaOrdensServico listaOrdensServico = {0, NULL};
+    struct ListaNotasFiscais listaNotasFiscais = {0, NULL};
+    struct ListaPecasNotas listaPecasNotas = {0, NULL};
 
     // Variáveis de controle do sistema
     int opcaoMenu, opcaoCadastro, opcaoArmazenamento = 0;
-
-    /*
-     * TODO : Colocar configuração de armazenamento em tempo de execução (Trocar enquanto mexe no sistema)
-     */
 
     // Configuração de armazenamento inicial
     do {
@@ -177,7 +146,8 @@ int main() {
                             gerenciarFornecedor(&listaFornecedores, &listaPecas, opcaoArmazenamento);
                             break;
                         case 7:
-                            gerenciarPeca(&listaPecas, &listaOficinas, &listaFornecedores, &listaOrdensServico, opcaoArmazenamento);
+                            gerenciarPeca(&listaPecas, &listaOficinas, &listaFornecedores, &listaOrdensServico,
+                                          opcaoArmazenamento);
                             break;
                         case 8:
                             // Sai do submenu
@@ -209,20 +179,21 @@ int main() {
 
             // Menu de relatórios
             case 5:
+                /*
+                 *  TODO : Terceira/Última entrega
+                 */
                 break;
 
             // Menu de importação/exportação
             case 6:
+                /*
+                 *  TODO : Terceira/Última entrega
+                 */
                 break;
 
             // Sair
             case 7:
                 // Desaloca os ponteiros, caso ainda tenha algum.
-
-                /*
-                 *  TODO : Colocar aqui TODAS as verificações para limpar ponteiros
-                 */
-
                 if (listaClientes.qtdClientes > 0) {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
@@ -270,6 +241,13 @@ int main() {
                 if (listaOrdensServico.qtdOrdensServico > 0) {
                     free(listaOrdensServico.listaOrdensServico);
                     listaOrdensServico.listaOrdensServico = NULL;
+                }
+                if (listaNotasFiscais.qtdNotas > 0) {
+                    free(listaNotasFiscais.listaNotas);
+                    listaNotasFiscais.listaNotas = NULL;
+                }
+                if (listaPecasNotas.listaPecasNotas > 0) {
+                    listaPecasNotas.listaPecasNotas = NULL;
                 }
                 break;
         }

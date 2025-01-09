@@ -21,7 +21,7 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                            struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
                            struct ListaPagamentosCliente *listaPagamentosCliente, int opcaoArmazenamento) {
     int opcaoSubmenus;
-    //Verifica se o programa esta rodando apenas em memória
+    // Verifica tipo de armazenamento para buscar dados
     if (opcaoArmazenamento != 3) {
         // Busca os dados armazenados em arquivos
         if (lista->qtdAgendamentos == 0) {
@@ -32,31 +32,24 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         if (listaVeiculos->qtdVeiculos == 0) {
             buscarDadosVeiculosModel(listaVeiculos, opcaoArmazenamento);
         }
-
         if (listaFuncionarios->qtdFuncionarios == 0) {
             buscarDadosFuncionariosModel(listaFuncionarios, opcaoArmazenamento);
         }
-
         if (listaServicos->qtdServicos == 0) {
             buscarDadosServicoModel(listaServicos, opcaoArmazenamento);
         }
-
         if (listaOrdensServico->qtdOrdensServico == 0) {
             buscarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
         }
-
         if (listaPecas->qtdPecas == 0) {
             buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
         }
-
         if (listaClientes->qtdClientes == 0) {
             buscarDadosClientesModel(listaClientes, opcaoArmazenamento);
         }
-
         if (listaCaixas->qtdCaixas == 0) {
             buscarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
         }
-
         if (listaPagamentosCliente->qtdPagamentosCliente == 0) {
             buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
         }
@@ -90,67 +83,47 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                 finalizarOrdemServico(lista, listaOrdensServico);
                 break;
             case 5:
-                if (opcaoArmazenamento != 3 && lista->listaAgendamentos != NULL) {
-                    // Armazena caixas alterados (Com novo saldo de pagamentos)
+                // Armazena dados no tipo de armazenamento desejado e limpa ponteiros
+                if (opcaoArmazenamento != 3) {
+                    // Armazena dados alterados (Os ponteiros também são limpos)
+                    if (lista->qtdAgendamentos > 0) {
+                        armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
+                    }
                     if (listaCaixas->qtdCaixas > 0) {
                         armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
                     }
-
-                    // Armazena pagamentos realizados
                     if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
                         armazenarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
                     }
-
-                    // Armazena peças alteradas
                     if (listaPecas->qtdPecas > 0) {
                         armazenarDadosPecaModel(listaPecas, opcaoArmazenamento);
                     }
-
-                    // Armazena ordem serviço alteradas
                     if (listaOrdensServico->qtdOrdensServico > 0) {
                         armazenarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
                     }
 
-                    // Armazena agendamentos alteradas
-                    if (lista->qtdAgendamentos > 0) {
-                        armazenarDadosAgendamentosModel(lista, opcaoArmazenamento);
-                    }
-
-                    if (listaVeiculos->qtdVeiculos > 0) {
-                        listaVeiculos->listaVeiculos = NULL;
-                        free(listaVeiculos->listaVeiculos);
-                        listaVeiculos->qtdVeiculos = 0;
-                    }
-
-                    if (listaServicos->qtdServicos > 0) {
-                        listaServicos->listaServicos = NULL;
-                        free(listaServicos->listaServicos);
-                        listaServicos->qtdServicos = 0;
-                    }
-
+                    // Limpa ponteiros restantes
                     if (listaFuncionarios->qtdFuncionarios > 0) {
-                        listaFuncionarios->listaFuncionarios = NULL;
                         free(listaFuncionarios->listaFuncionarios);
+                        listaFuncionarios->listaFuncionarios = NULL;
                         listaFuncionarios->qtdFuncionarios = 0;
                     }
-
-                    if (listaOrdensServico->qtdOrdensServico > 0) {
-                        listaOrdensServico->listaOrdensServico = NULL;
-                        free(listaOrdensServico->listaOrdensServico);
-                        listaOrdensServico->qtdOrdensServico = 0;
+                    if (listaServicos->qtdServicos > 0) {
+                        free(listaServicos->listaServicos);
+                        listaServicos->listaServicos = NULL;
+                        listaServicos->qtdServicos = 0;
                     }
-
-                    if (listaPecas->qtdPecas > 0) {
-                        listaPecas->listaPecas = NULL;
-                        free(listaPecas->listaPecas);
-                        listaPecas->qtdPecas = 0;
+                    if (listaVeiculos->qtdVeiculos > 0) {
+                        free(listaVeiculos->listaVeiculos);
+                        listaVeiculos->listaVeiculos = NULL;
+                        listaVeiculos->qtdVeiculos = 0;
                     }
-
                     if (listaClientes->qtdClientes > 0) {
-                        listaClientes->listaClientes = NULL;
                         free(listaClientes->listaClientes);
+                        listaClientes->listaClientes = NULL;
                         listaClientes->qtdClientes = 0;
                     }
+
                 }
                 return;
             default:

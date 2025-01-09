@@ -137,7 +137,7 @@ void armazenarDadosPecaModel(struct ListaPecas *lista, int opcaoArmazenamento) {
             }
 
             for (int i = 0; i < lista->qtdPecas; i++) {
-                fprintf(dadosPecas, "%d;%s;%s;%f;%f;%d;%d;%d;%d;%d\n",
+                fprintf(dadosPecas, "%d;%s;%s;%.2f;%.2f;%d;%d;%d;%d;%d\n",
                         lista->listaPecas[i].id,
                         lista->listaPecas[i].descricao,
                         lista->listaPecas[i].fabricante,

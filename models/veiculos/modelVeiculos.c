@@ -132,7 +132,6 @@ void armazenarDadosVeiculosModel(struct ListaVeiculos *lista, int opcaoArmazenam
             }
 
             for (int i = 0; i < lista->qtdVeiculos; i++) {
-                //Adicionando ";" ao armazenar os dados e um "\n" no final, teremos maior controle sobre o acesso aos dados posteriormente
                 fprintf(dadosVeiculos, "%d;%s;%s;%s;%s;%d;%d;%d\n",
                         lista->listaVeiculos[i].id,
                         lista->listaVeiculos[i].modelo,

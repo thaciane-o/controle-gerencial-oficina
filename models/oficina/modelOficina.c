@@ -133,7 +133,7 @@ void armazenarDadosOficinaModel(struct ListaOficinas *lista, int opcaoArmazename
             }
 
             for (int i = 0; i < lista->qtdOficinas; i++) {
-                fprintf(dadosOficinas, "%d;%s;%s;%s;%s;%s;%f;%d\n",
+                fprintf(dadosOficinas, "%d;%s;%s;%s;%s;%s;%.2f;%d\n",
                         lista->listaOficinas[i].id,
                         lista->listaOficinas[i].nome,
                         lista->listaOficinas[i].endereco,

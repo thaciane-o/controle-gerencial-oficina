@@ -202,7 +202,20 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     printf("Insira a quantidade necessária dessa peça: ");
                     setbuf(stdin, NULL);
                     scanf("%d", &qtdPecasRequisitadas[qtdPecas - 1]);
-                    debitarPecaEstoqueModel(listaPecas, idInputPecas, qtdPecasRequisitadas[qtdPecas - 1]);
+                    // Verificando se há peças suficientes no estoque
+                    if (!debitarPecaEstoqueModel(listaPecas, idInputPecas, qtdPecasRequisitadas[qtdPecas - 1])) {
+                        // Limpando os ponteiros
+                        idPecas = NULL;
+                        idPecaDoServico = NULL;
+                        qtdPecasRequisitadas = NULL;
+                        free(idPecas);
+                        free(idPecaDoServico);
+                        free(qtdPecasRequisitadas);
+
+                        idServicos = NULL;
+                        free(idServicos);
+                        return;
+                    }
                 }
             } while (idInputPecas != 0);
         } else {
@@ -221,10 +234,30 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         // Verificando existência do item relacionado
         if (verificarIDFuncionariosModel(listaFuncionarios, idFuncionario) == 0) {
+            // Limpando os ponteiros
+            idPecas = NULL;
+            idPecaDoServico = NULL;
+            qtdPecasRequisitadas = NULL;
+            free(idPecas);
+            free(idPecaDoServico);
+            free(qtdPecasRequisitadas);
+
+            idServicos = NULL;
+            free(idServicos);
             return;
         }
 
         if (verificarIDVeiculoModel(listaVeiculos, idVeiculo) == 0) {
+            // Limpando os ponteiros
+            idPecas = NULL;
+            idPecaDoServico = NULL;
+            qtdPecasRequisitadas = NULL;
+            free(idPecas);
+            free(idPecaDoServico);
+            free(qtdPecasRequisitadas);
+
+            idServicos = NULL;
+            free(idServicos);
             return;
         }
 
@@ -251,6 +284,16 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         if (tempo == -1) {
             printf("Erro ao converter a data e hora.\n");
+            // Limpando os ponteiros
+            idPecas = NULL;
+            idPecaDoServico = NULL;
+            qtdPecasRequisitadas = NULL;
+            free(idPecas);
+            free(idPecaDoServico);
+            free(qtdPecasRequisitadas);
+
+            idServicos = NULL;
+            free(idServicos);
             return;
         }
 
@@ -267,6 +310,16 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
                 if (tempoExistente == -1) {
                     printf("Erro ao converter a data e hora.\n");
+                    // Limpando os ponteiros
+                    idPecas = NULL;
+                    idPecaDoServico = NULL;
+                    qtdPecasRequisitadas = NULL;
+                    free(idPecas);
+                    free(idPecaDoServico);
+                    free(qtdPecasRequisitadas);
+
+                    idServicos = NULL;
+                    free(idServicos);
                     return;
                 }
 
@@ -303,6 +356,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             free(qtdPecasRequisitadas);
 
             idServicos = NULL;
+            free(idServicos);
             free(idServicos);
             return;
         }

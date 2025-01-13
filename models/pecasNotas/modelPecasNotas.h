@@ -29,7 +29,7 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
 
 void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id);
 
-void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas);
+int debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas);
 
 void verificarEstoqueMinimo(struct ListaPecas *lista);
 

@@ -221,20 +221,22 @@ void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id) {
 }
 
 // Retira uma certa quantidade de peças de determinado estoque
-void debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas) {
+int debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas) {
     // Inicia busca pela peça requisitada
     for (int i = 0; i < listaPecas->qtdPecas; i++) {
         if (listaPecas->listaPecas[i].id == idPeca) {
             // Verifica se há peças suficientes no estoque
             if (listaPecas->listaPecas[i].qtdEstoque < qtdPecasRequisitadas) {
                 printf("A quantidade de peças no estoque é insuficiente!\n\n");
-            } else {
-                listaPecas->listaPecas[i].qtdEstoque -= qtdPecasRequisitadas;
-                printf("Peças debitadas do estoque com sucesso!\n\n");
+                return 0;
             }
-            break;
+            listaPecas->listaPecas[i].qtdEstoque -= qtdPecasRequisitadas;
+            printf("Peças debitadas do estoque com sucesso!\n\n");
+            return 1;
         }
     }
+    printf("Peça não encontrada\n\n");
+    return 0;
 }
 
 void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal,

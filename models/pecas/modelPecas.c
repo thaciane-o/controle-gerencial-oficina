@@ -295,7 +295,7 @@ void listarTodosPecaModel(struct ListaPecas *lista) {
 
     // Se não houver, avisa que não há cadastros
     if (listado == 0) {
-        printf("Nenhuma peça cadastrado\n\n");
+        printf("Nenhuma peça cadastrada.\n\n");
     }
 }
 

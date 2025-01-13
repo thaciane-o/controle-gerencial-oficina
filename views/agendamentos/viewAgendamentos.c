@@ -341,7 +341,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             }
         }
 
-        strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", &dataHora);
+        strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", localtime(&tempo));
 
         // Cadastrando pagamento, se -1 então teve erro
         if (cadastrarPagamentoClienteAgendamento(listaPecas, listaVeiculos, listaClientes, listaCaixas,
@@ -365,7 +365,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         for (int i = 0; i < qtdServicos; i++) {
             agendamento.idServico = idServicos[i];
             cadastrarAgendamentosModel(lista, &agendamento);
-
             strcpy(ordensServico.descricao, listaServicos->listaServicos[i].descricao);
             ordensServico.idAgendamento = lista->qtdAgendamentos;
             ordensServico.valorTotal = listaServicos->listaServicos[i].preco;

@@ -450,3 +450,57 @@ int getIndiceVetorPorIdPecaModel(struct ListaPecas *listaPecas, int id) {
     printf("Serviço não encontrado.");
     return -1;
 }
+
+// Verifica peças com estoque abaixo do mínimo
+void verificarEstoqueMinimo(struct ListaPecas *lista) {
+    // Percorrendo lista de peças
+    for (int i = 0; i < lista->qtdPecas; i++) {
+        // Listando peças cujo o estoque está abaixo do mínimo
+        if (lista->listaPecas[i].qtdEstoque < lista->listaPecas[i].estoqueMinimo) {
+            printf("\nESTOQUE ABAIXO DO MÍNIMO NA PEÇA: %d\n"
+                   "FORNECEDOR: %d\n"
+                   "OFICINA: %d\n", lista->listaPecas[i].id, lista->listaPecas[i].idFornecedor, lista->listaPecas[i].idOficina);
+        }
+    }
+}
+
+// Retira uma certa quantidade de peças de determinado estoque
+int debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas) {
+    // Inicia busca pela peça requisitada
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+        if (listaPecas->listaPecas[i].id == idPeca) {
+            // Verifica se há peças suficientes no estoque
+            if (listaPecas->listaPecas[i].qtdEstoque < qtdPecasRequisitadas) {
+                printf("A quantidade de peças no estoque é insuficiente!\n\n");
+                return 0;
+            }
+            listaPecas->listaPecas[i].qtdEstoque -= qtdPecasRequisitadas;
+            printf("Peças debitadas do estoque com sucesso!\n\n");
+            return 1;
+        }
+    }
+    printf("Peça não encontrada\n\n");
+    return 0;
+}
+
+int verificarRelacaoPecaComFornecedorModel(struct ListaPecas *listaPecas,
+                                    int idFornecedor, int idPeca) {
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idFornecedor == idFornecedor) {
+            return 1;
+            }
+    }
+    printf("Esta peça não é fornecida pelo fornecedor digitado\n\n");
+    return 0;
+}
+
+int verificarRelacaoPecaComOficinaModel(struct ListaPecas *listaPecas,
+                                 int idOficina, int idPeca) {
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idOficina == idOficina) {
+            return 1;
+        }
+    }
+    printf("A oficina fornecida não é proprietária desta peça\n\n");
+    return 0;
+}

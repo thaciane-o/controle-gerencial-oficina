@@ -396,3 +396,14 @@ void deletarFuncionariosModel(struct ListaFuncionarios *lista, struct ListaAgend
         printf("Funcionário não encontrado!\n\n");
     }
 }
+
+int verificarRelacaoFuncionarioComOficinaModel(struct ListaFuncionarios *listaFuncionarios,
+                                 int idOficina, int idFuncionario) {
+    for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
+        if (idFuncionario == listaFuncionarios->listaFuncionarios[i].id && listaFuncionarios->listaFuncionarios[i].idOficina == idOficina) {
+            return 1;
+        }
+    }
+    printf("A oficina fornecida não é proprietária desta peça\n\n");
+    return 0;
+}

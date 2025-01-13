@@ -40,4 +40,7 @@ void listarFuncionariosModel(struct ListaFuncionarios *lista, int id);
 
 void buscarFuncionarioPorOficinaModel(struct ListaFuncionarios *lista, int idOficina);
 
+int verificarRelacaoFuncionarioComOficinaModel(struct ListaFuncionarios *listaFuncionarios,
+                                 int idOficina, int idFuncionario);
+
 #endif //MODELFUNCIONARIOS_H

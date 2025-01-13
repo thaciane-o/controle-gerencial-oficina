@@ -402,3 +402,14 @@ int getIndiceVetorPorIdServicoModel(struct ListaServicos *listaServicos, int id)
     printf("Serviço não encontrado.");
     return -1;
 }
+
+int verificarRelacaoServicoComOficinaModel(struct ListaServicos *listaServicos,
+                                 int idOficina, int idServico) {
+    for (int i = 0; i < listaServicos->qtdServicos; i++) {
+        if (idServico == listaServicos->listaServicos[i].id && listaServicos->listaServicos[i].idOficina == idOficina) {
+            return 1;
+        }
+    }
+    printf("A oficina fornecida não fornece este serviço\n\n");
+    return 0;
+}

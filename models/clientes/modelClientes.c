@@ -422,3 +422,14 @@ int getIdOficinaClientesModel(struct ListaClientes *lista, int idCliente) {
 
     return -1;
 }
+
+int verificarRelacaoClienteComOficinaModel(struct ListaClientes *listaClientes,
+                                 int idOficina, int idCliente) {
+    for (int i = 0; i < listaClientes->qtdClientes; i++) {
+        if (idCliente == listaClientes->listaClientes[i].id && listaClientes->listaClientes[i].idOficina == idOficina) {
+            return 1;
+        }
+    }
+    printf("A oficina fornecida não é proprietária desta peça\n\n");
+    return 0;
+}

@@ -29,10 +29,6 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
 
 void deletarPecaNotaModel(struct ListaPecasNotas *lista, int id);
 
-int debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas);
-
-void verificarEstoqueMinimo(struct ListaPecas *lista);
-
 void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *notaFiscal,
                             struct PecasNotas *pecaNota);
 

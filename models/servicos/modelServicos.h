@@ -43,4 +43,7 @@ float getValorServicoPorIdModel(struct ListaServicos *lista, int id);
 
 int getIndiceVetorPorIdServicoModel(struct ListaServicos *listaServicos, int id);
 
+int verificarRelacaoServicoComOficinaModel(struct ListaServicos *listaServicos,
+                                 int idOficina, int idServico);
+
 #endif //MODELSERVICOS_H

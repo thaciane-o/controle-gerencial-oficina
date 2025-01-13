@@ -46,4 +46,14 @@ float getValorPecaPorIdModel(struct ListaPecas *lista, int id);
 
 int getIndiceVetorPorIdPecaModel(struct ListaPecas *listaPecas, int id);
 
+int debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPecasRequisitadas);
+
+void verificarEstoqueMinimo(struct ListaPecas *lista);
+
+int verificarRelacaoPecaComFornecedorModel(struct ListaPecas *listaPecas,
+                                    int idFornecedor, int idPeca);
+
+int verificarRelacaoPecaComOficinaModel(struct ListaPecas *listaPecas,
+                                 int idOficina, int idPeca);
+
 #endif //MODELPECAS_H

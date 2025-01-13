@@ -451,25 +451,4 @@ void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *l
     }
 }
 
-int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas,
-                                    struct NotasFiscais *notaFiscal, int idPeca) {
-    for (int i = 0; i < listaPecas->qtdPecas; i++) {
-        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idFornecedor == notaFiscal->
-            idFornecedor) {
-            return 1;
-        }
-    }
-    printf("Esta peça não é fornecida pelo fornecedor digitado\n\n");
-    return 0;
-}
 
-int verificarRelacaoOficinaModel(struct ListaPecas *listaPecas,
-                                 struct NotasFiscais *notaFiscal, int idPeca) {
-    for (int i = 0; i < listaPecas->qtdPecas; i++) {
-        if (idPeca == listaPecas->listaPecas[i].id && listaPecas->listaPecas[i].idOficina == notaFiscal->idOficina) {
-            return 1;
-        }
-    }
-    printf("A oficina fornecida não é proprietaria desta peça\n\n");
-    return 0;
-}

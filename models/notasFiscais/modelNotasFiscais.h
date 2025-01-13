@@ -49,11 +49,5 @@ void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struc
 
 void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas, int id);
 
-int verificarRelacaoFornecedorModel(struct ListaPecas *listaPecas,
-                                    struct NotasFiscais *notaFiscal, int idPeca);
-
-int verificarRelacaoOficinaModel(struct ListaPecas *listaPecas,
-                                 struct NotasFiscais *notaFiscal, int idPeca);
-
 
 #endif //MODELNOTASFISCAIS_H

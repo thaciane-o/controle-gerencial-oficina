@@ -44,4 +44,7 @@ void buscarClientesPorOficinaModel(struct ListaClientes *lista, int idOficina);
 
 int getIdOficinaClientesModel(struct ListaClientes *lista, int idCliente);
 
+int verificarRelacaoClienteComOficinaModel(struct ListaClientes *listaClientes,
+                                 int idOficina, int idCliente);
+
 #endif //MODELCLIENTES_H

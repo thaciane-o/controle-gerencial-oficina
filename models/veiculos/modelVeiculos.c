@@ -408,3 +408,14 @@ int getIdClientePorVeiculoModel(struct ListaVeiculos *lista, int idVeiculo) {
 
     return -1;
 }
+
+int verificarRelacaoVeiculoComOficinaModel(struct ListaVeiculos *listaVeiculos,
+                                 int idCliente, int idVeiculo) {
+    for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
+        if (idVeiculo == listaVeiculos->listaVeiculos[i].id && listaVeiculos->listaVeiculos[i].idProprietario == idCliente) {
+            return 1;
+        }
+    }
+    printf("O cliente não é proprietário deste veículo\n\n");
+    return 0;
+}

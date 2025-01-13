@@ -172,7 +172,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
                 }
             }
             // Verifica se a peça possuí relação com o fornecedor
-            if (!verificarRelacaoFornecedorModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
+            if (!verificarRelacaoPecaComFornecedorModel(listaPecas, notaFiscal.idFornecedor, pecaNota.idPeca)) {
                 // Se não, pode-se cadastrar uma nova peça
                 int opcao;
                 printf("Deseja cadastrar uma nova peça?\n"
@@ -192,7 +192,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
                 }
             }
             // Verifica se a peça possuí relação com a oficina
-            if (!verificarRelacaoOficinaModel(listaPecas, &notaFiscal, pecaNota.idPeca)) {
+            if (!verificarRelacaoPecaComOficinaModel(listaPecas, notaFiscal.idOficina, pecaNota.idPeca)) {
                 // Se não, pode-se cadastrar uma nova peça
                 int opcao;
                 printf("\nDeseja cadastrar uma nova peça?\n"
@@ -252,16 +252,17 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
     }
     notaFiscal.totalNota += notaFiscal.imposto + notaFiscal.frete;
 
-    // Cadastra o pagamento de fornecedor
-    if (cadastrarPagamentoFornecedorEstoque(listaPagamentosFornecedor, listaCaixas, notaFiscal.totalNota,
-                                            notaFiscal.idFornecedor, notaFiscal.idOficina) == -1) {
-        printf("Cancelando cadastro de nota fiscal.\n\n");
-        deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas + 1);
-        return;
-    }
 
     // Verifica se pelo menos uma peça foi cadastrada
     if (cadastrouPeca != 0) {
+        // Cadastra o pagamento de fornecedor
+        if (cadastrarPagamentoFornecedorEstoque(listaPagamentosFornecedor, listaCaixas, notaFiscal.totalNota,
+                                                notaFiscal.idFornecedor, notaFiscal.idOficina) == -1) {
+            printf("Cancelando cadastro de nota fiscal.\n\n");
+            deletarPecaNotaModel(listaPecasNotas, lista->qtdNotas + 1);
+            return;
+        }
+
         cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, listaPecasNotas, totalPecas);
     } else {
         printf("\nPor favor, informe as peças que serão compradas\n");

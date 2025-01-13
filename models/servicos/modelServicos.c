@@ -345,7 +345,8 @@ void deletarServicoModel(struct ListaServicos *lista, struct ListaAgendamentos *
     // Verifica relação com agendamento
     if (listaAgendamentos->qtdAgendamentos > 0) {
         for (int i = 0; i < listaAgendamentos->qtdAgendamentos; i++) {
-            if (listaAgendamentos->listaAgendamentos[i].idServico == id && listaAgendamentos->listaAgendamentos[i].deletado == 0) {
+            if (listaAgendamentos->listaAgendamentos[i].idServico == id && listaAgendamentos->listaAgendamentos[i].
+                deletado == 0) {
                 printf(
                     "Não foi possível deletar o serviço, pois os seus dados estão sendo utilizados em um agendamento que será realizado.\n\n");
                 return;
@@ -371,7 +372,6 @@ void deletarServicoModel(struct ListaServicos *lista, struct ListaAgendamentos *
 
 // Pega valor do serviço pelo seu id
 float getValorServicoPorIdModel(struct ListaServicos *lista, int id) {
-
     if (lista->qtdServicos > 0) {
         for (int i = 0; i < lista->qtdServicos; i++) {
             if (lista->listaServicos[i].id == id && lista->listaServicos[i].deletado == 0) {
@@ -383,5 +383,22 @@ float getValorServicoPorIdModel(struct ListaServicos *lista, int id) {
         printf("Não há serviços cadastrados.\n\n");
     }
 
+    return -1;
+}
+
+// Pega índice do array pelo id do serviço
+int getIndiceVetorPorIdServicoModel(struct ListaServicos *listaServicos, int id) {
+    if (listaServicos->qtdServicos <= 0) {
+        return -1;
+    }
+
+    for (int i = 0; i < listaServicos->qtdServicos; i++) {
+        if (listaServicos->listaServicos[i].deletado == 0 &&
+            listaServicos->listaServicos[i].id == id) {
+            return i;
+        }
+    }
+
+    printf("Serviço não encontrado.");
     return -1;
 }

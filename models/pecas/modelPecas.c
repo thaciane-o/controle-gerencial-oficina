@@ -434,3 +434,19 @@ float getValorPecaPorIdModel(struct ListaPecas *lista, int id) {
 
     return -1;
 }
+
+int getIndiceVetorPorIdPecaModel(struct ListaPecas *listaPecas, int id) {
+    if (listaPecas->qtdPecas <= 0) {
+        return -1;
+    }
+
+    for (int i = 0; i < listaPecas->qtdPecas; i++) {
+        if (listaPecas->listaPecas[i].deletado == 0 &&
+            listaPecas->listaPecas[i].id == id) {
+            return i;
+        }
+    }
+
+    printf("Serviço não encontrado.");
+    return -1;
+}

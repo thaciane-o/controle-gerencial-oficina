@@ -123,7 +123,6 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                         listaClientes->listaClientes = NULL;
                         listaClientes->qtdClientes = 0;
                     }
-
                 }
                 return;
             default:
@@ -193,7 +192,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     idPecaDoServico[qtdPecas - 1] = idInputServico;
 
                     valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas);
-
                 } else {
                     qtdPecas--;
                 }
@@ -345,8 +343,8 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         // Cadastrando pagamento, se -1 então teve erro
         if (cadastrarPagamentoClienteAgendamento(listaPecas, listaVeiculos, listaClientes, listaCaixas,
-                                         listaPagamentosCliente, listaServicos, qtdServicos, qtdPecas,
-                                         idPecas, idServicos, idVeiculo, valorAgendamento) == -1) {
+                                                 listaPagamentosCliente, listaServicos, qtdServicos, qtdPecas,
+                                                 idPecas, idServicos, idVeiculo, valorAgendamento) == -1) {
             // Limpando os ponteiros
             idPecas = NULL;
             idPecaDoServico = NULL;
@@ -363,16 +361,20 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         // Cadastrando agendamentos de cada serviço inserido
         for (int i = 0; i < qtdServicos; i++) {
+            int indiceServico = getIndiceVetorPorIdServicoModel(listaServicos, idServicos[i]);
+
             agendamento.idServico = idServicos[i];
             cadastrarAgendamentosModel(lista, &agendamento);
-            strcpy(ordensServico.descricao, listaServicos->listaServicos[i].descricao);
+            strcpy(ordensServico.descricao, listaServicos->listaServicos[indiceServico].descricao);
             ordensServico.idAgendamento = lista->qtdAgendamentos;
-            ordensServico.valorTotal = listaServicos->listaServicos[i].preco;
+            ordensServico.valorTotal = listaServicos->listaServicos[indiceServico].preco;
 
             // Cadastrando ordens de serviço de cada peça inserida
             for (int j = 0; j < qtdPecas; j++) {
                 if (idPecaDoServico[j] == idServicos[i]) {
-                    ordensServico.valorTotal += listaPecas->listaPecas[j].precoVenda * qtdPecasRequisitadas[j];
+                    int indicePeca = getIndiceVetorPorIdPecaModel(listaPecas, idPecas[j]);
+
+                    ordensServico.valorTotal += listaPecas->listaPecas[indicePeca].precoVenda * qtdPecasRequisitadas[j];
                     ordensServico.idPecas = idPecas[j];
                     cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
                 }
@@ -520,7 +522,7 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
         // Realiza as verificações de data
         struct tm dataAReceber = {0};
         sscanf(pagamento.dataAReceber, "%d/%d/%d",
-           &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
+               &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
         dataAReceber.tm_year -= 1900;
         dataAReceber.tm_mon -= 1;
         time_t tempoDataReceber = mktime(&dataAReceber);

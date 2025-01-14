@@ -191,7 +191,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     verificarIDPecaModel(listaPecas, idPecas[qtdPecas - 1]);
                     idPecaDoServico[qtdPecas - 1] = idInputServico;
 
-                    valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas);
                 } else {
                     qtdPecas--;
                 }
@@ -214,6 +213,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                         free(idServicos);
                         return;
                     }
+                    valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas) * qtdPecasRequisitadas[qtdPecas-1];
                 }
             } while (idInputPecas != 0);
         } else {

@@ -234,7 +234,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
             for (int k = 0; k < listaPecasNotas->qtdPecasNotas; k++) {
                 if (listaPecas->listaPecas[i].id == listaPecasNotas->listaPecasNotas[k].idPeca && listaPecasNotas->
                     listaPecasNotas[k].idNota == lista->qtdNotas + 1 && listaOficinas->listaOficinas[j].id ==
-                    notaFiscal.idOficina) {
+                    notaFiscal.idOficina && listaPecasNotas->listaPecasNotas[k].deletado == 0) {
                     // Atualizando quantidade em estoque
                     listaPecas->listaPecas[i].qtdEstoque += listaPecasNotas->listaPecasNotas[k].qtdPecas;
 

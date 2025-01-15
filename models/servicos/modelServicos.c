@@ -403,6 +403,7 @@ int getIndiceVetorPorIdServicoModel(struct ListaServicos *listaServicos, int id)
     return -1;
 }
 
+// Verifica se existe uma relação entre o serviço fornecido e alguma oficina
 int verificarRelacaoServicoComOficinaModel(struct ListaServicos *listaServicos,
                                  int idOficina, int idServico) {
     for (int i = 0; i < listaServicos->qtdServicos; i++) {

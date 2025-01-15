@@ -423,6 +423,7 @@ int getIdOficinaClientesModel(struct ListaClientes *lista, int idCliente) {
     return -1;
 }
 
+// Verifica se existe uma relação entre o cliente fornecido e alguma oficina
 int verificarRelacaoClienteComOficinaModel(struct ListaClientes *listaClientes,
                                  int idOficina, int idCliente) {
     for (int i = 0; i < listaClientes->qtdClientes; i++) {
@@ -430,6 +431,6 @@ int verificarRelacaoClienteComOficinaModel(struct ListaClientes *listaClientes,
             return 1;
         }
     }
-    printf("A oficina fornecida não é proprietária desta peça\n\n");
+    printf("A oficina não presta serviços para este cliente!\n\n");
     return 0;
 }

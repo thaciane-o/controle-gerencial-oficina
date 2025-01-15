@@ -288,7 +288,7 @@ void listarTodasNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaP
 
     // Se não houver, avisa que não há cadastros
     if (listado == 0) {
-        printf("Nenhuma Nota cadastrado\n\n");
+        printf("Nenhuma nota cadastrado\n\n");
     }
 }
 
@@ -366,7 +366,7 @@ void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struc
     int encontraFornecedor;
     // Verifica se há pelo menos um cadastro
     if (lista->qtdNotas > 0) {
-        // Se há um ou mais cadastros, procura pela peça com o id desejado
+        // Se há um ou mais cadastros, procura pela nota com o id desejado
         int encontrado = 0;
         for (int i = 0; i < lista->qtdNotas; i++) {
             // Encontra o fornecedor da peça atual
@@ -429,7 +429,7 @@ void buscarNotasFiscaisPorFornecedorModel(struct ListaNotasFiscais *lista, struc
     }
 }
 
-// Deleção de nota
+// Deleção de nota pelo id
 void deletarNotaModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas, int id) {
     // Auxiliar para saber se encontrou o id.
     int encontrado = 0;

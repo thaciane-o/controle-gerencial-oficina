@@ -190,7 +190,7 @@ int realocarOrdensServicoModel(struct ListaOrdensServico *lista, int qtdAlocada)
     return 1;
 }
 
-// Cadastra uma nova ordem de servico
+// Cadastra uma nova ordem de serviço
 void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico) {
     int resultAlocacao = 0;
 
@@ -286,6 +286,7 @@ void deletarOrdensServicoModel(struct ListaOrdensServico *lista, int id) {
     }
 }
 
+// Finaliza uma ordem de serviço
 void finalizarOrdemServicoModel(struct ListaOrdensServico *lista, struct ListaAgendamentos *listaAgendamentos,
                                 int idAgendamento, int idServico) {
     time_t now = time(NULL);

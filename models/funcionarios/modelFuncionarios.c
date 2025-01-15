@@ -397,6 +397,7 @@ void deletarFuncionariosModel(struct ListaFuncionarios *lista, struct ListaAgend
     }
 }
 
+// Verifica se existe uma relação entre o funcionário fornecido e alguma oficina
 int verificarRelacaoFuncionarioComOficinaModel(struct ListaFuncionarios *listaFuncionarios,
                                  int idOficina, int idFuncionario) {
     for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
@@ -404,6 +405,6 @@ int verificarRelacaoFuncionarioComOficinaModel(struct ListaFuncionarios *listaFu
             return 1;
         }
     }
-    printf("A oficina fornecida não é proprietária desta peça\n\n");
+    printf("Este funcionário não trabalha para a oficina fornecida!\n\n");
     return 0;
 }

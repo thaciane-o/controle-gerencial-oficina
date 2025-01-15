@@ -55,6 +55,8 @@ void gerenciarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
         }
     }
 
+    // Chama uma função para verificar os estoques em necessidade
+    verificarEstoqueMinimo(listaPecas);
     do {
         printf("\n==================================\n"
             "|      MENU DE AGENDAMENTOS      |\n"
@@ -334,7 +336,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
         strftime(agendamento.datahoraInicial, sizeof(agendamento.datahoraInicial), "%d/%m/%Y %H:%M", localtime(&tempo));
 
-        // Cadastrando pagamento, se -1 então teve erro
+        // Cadastrando pagamento, se "-1" então teve erro
         if (cadastrarPagamentoClienteAgendamento(listaPecas, listaVeiculos, listaClientes, listaCaixas,
                                                  listaPagamentosCliente, listaServicos, qtdServicos, qtdPecas,
                                                  idPecas, idServicos, idVeiculo, valorAgendamento) == -1) {

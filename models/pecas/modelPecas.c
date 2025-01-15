@@ -435,6 +435,7 @@ float getValorPecaPorIdModel(struct ListaPecas *lista, int id) {
     return -1;
 }
 
+// Pega o índice do id da peça no array
 int getIndiceVetorPorIdPecaModel(struct ListaPecas *listaPecas, int id) {
     if (listaPecas->qtdPecas <= 0) {
         return -1;
@@ -447,7 +448,7 @@ int getIndiceVetorPorIdPecaModel(struct ListaPecas *listaPecas, int id) {
         }
     }
 
-    printf("Serviço não encontrado.");
+    printf("Peça não encontrada.");
     return -1;
 }
 
@@ -457,9 +458,9 @@ void verificarEstoqueMinimo(struct ListaPecas *lista) {
     for (int i = 0; i < lista->qtdPecas; i++) {
         // Listando peças cujo o estoque está abaixo do mínimo
         if (lista->listaPecas[i].qtdEstoque < lista->listaPecas[i].estoqueMinimo) {
-            printf("\nESTOQUE ABAIXO DO MÍNIMO NA PEÇA: %d\n"
-                   "FORNECEDOR: %d\n"
-                   "OFICINA: %d\n", lista->listaPecas[i].id, lista->listaPecas[i].idFornecedor, lista->listaPecas[i].idOficina);
+            printf("\nEstoque abaixo do mínimo na peça: %d\n"
+                   "Fornecedor: %d\n"
+                   "Oficina: %d\n", lista->listaPecas[i].id, lista->listaPecas[i].idFornecedor, lista->listaPecas[i].idOficina);
         }
     }
 }
@@ -483,6 +484,7 @@ int debitarPecaEstoqueModel(struct ListaPecas *listaPecas, int idPeca, int qtdPe
     return 0;
 }
 
+// Verifica se existe uma relação entre a peça fornecida e algum fornecedor
 int verificarRelacaoPecaComFornecedorModel(struct ListaPecas *listaPecas,
                                     int idFornecedor, int idPeca) {
     for (int i = 0; i < listaPecas->qtdPecas; i++) {
@@ -494,6 +496,7 @@ int verificarRelacaoPecaComFornecedorModel(struct ListaPecas *listaPecas,
     return 0;
 }
 
+// Verifica se existe uma relação entre a peça fornecida e alguma oficina
 int verificarRelacaoPecaComOficinaModel(struct ListaPecas *listaPecas,
                                  int idOficina, int idPeca) {
     for (int i = 0; i < listaPecas->qtdPecas; i++) {
@@ -505,6 +508,7 @@ int verificarRelacaoPecaComOficinaModel(struct ListaPecas *listaPecas,
     return 0;
 }
 
+// Pega o valor atual do estoque da peça fornecida pelo ID
 int getQtdEstoquePecaModel(struct ListaPecas *lista, int id) {
 
     // Busca pela quantidade de peças da peça
@@ -521,9 +525,10 @@ int getQtdEstoquePecaModel(struct ListaPecas *lista, int id) {
     return -1;
 }
 
+// Pega o valor do estoque mínimo da peça fornecida pelo ID
 int getQtdEstoqueMinimoPecaModel(struct ListaPecas *lista, int id) {
 
-    // Busca pela quantidade de peças minimas da peça
+    // Busca pela quantidade de peças mínimas da peça
     if (lista->qtdPecas > 0) {
         for (int i = 0; i < lista->qtdPecas; i++) {
             if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {

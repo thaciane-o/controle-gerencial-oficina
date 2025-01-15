@@ -19,7 +19,7 @@ void gerenciarEstoques(struct ListaPecas *listaPecas, struct ListaPecasNotas *li
                        int opcaoArmazenamento) {
     int opcaoSubmenus;
 
-    //Verifica se o programa esta rodando apenas em memória
+    // Verifica se o programa esta rodando apenas em memória
     if (opcaoArmazenamento != 3) {
         // Busca os dados armazenados em arquivos
         if (listaPecas->qtdPecas == 0) {
@@ -264,13 +264,14 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
             return;
         }
 
+        // Cadastra a nova nota fiscal
         cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, listaPecasNotas, totalPecas);
     } else {
         printf("\nPor favor, informe as peças que serão compradas\n");
     }
 }
 
-
+// Listagem de notas fiscais
 void listarNotasFiscais(struct ListaPecas *lista, struct ListaPecasNotas *listaPecasNotas,
                         struct ListaNotasFiscais *listaNotasFiscais, struct ListaFornecedores *listaFornecedores) {
     int resp;
@@ -290,7 +291,7 @@ void listarNotasFiscais(struct ListaPecas *lista, struct ListaPecasNotas *listaP
     // Verifica a opção de listagem
     int id = 0;
     switch (resp) {
-        // Listagem de uma única peça
+        // Listagem de uma única nota
         case 1:
             printf("Insira o ID desejado para a busca: ");
             setbuf(stdin, NULL);
@@ -304,7 +305,7 @@ void listarNotasFiscais(struct ListaPecas *lista, struct ListaPecasNotas *listaP
             scanf("%d", &id);
             buscarNotasFiscaisPorFornecedorModel(listaNotasFiscais, listaPecasNotas, lista, listaFornecedores, id);
             break;
-        // Listagem de todas as peças
+        // Listagem de todas as notas
         case 3:
             listarTodasNotasFiscaisModel(listaNotasFiscais, listaPecasNotas, lista, listaFornecedores);
             break;
@@ -316,10 +317,11 @@ void listarNotasFiscais(struct ListaPecas *lista, struct ListaPecasNotas *listaP
     }
 }
 
+// Deleta nota fiscal
 void deletarNotaFiscal(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas) {
     int id;
 
-    // Pede o Id da peça que será deletada
+    // Pede o Id da nota que será deletada
     printf("\n================================\n"
         "|    DELEÇÃO DE NOTA FISCAL    |\n"
         "================================\n");
@@ -330,6 +332,7 @@ void deletarNotaFiscal(struct ListaNotasFiscais *lista, struct ListaPecasNotas *
     deletarNotaModel(lista, listaPecasNotas, id);
 }
 
+// Cadastrando pagamento de fornecedor
 int cadastrarPagamentoFornecedorEstoque(struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
                                         struct ListaCaixas *listaCaixas, float valorNota, int idFornecedor,
                                         int idOficina) {

@@ -409,7 +409,8 @@ int getIdClientePorVeiculoModel(struct ListaVeiculos *lista, int idVeiculo) {
     return -1;
 }
 
-int verificarRelacaoVeiculoComOficinaModel(struct ListaVeiculos *listaVeiculos,
+// Verifica se existe uma relação entre o veículo fornecido e algum cliente
+int verificarRelacaoVeiculoComClienteModel(struct ListaVeiculos *listaVeiculos,
                                  int idCliente, int idVeiculo) {
     for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
         if (idVeiculo == listaVeiculos->listaVeiculos[i].id && listaVeiculos->listaVeiculos[i].idProprietario == idCliente) {

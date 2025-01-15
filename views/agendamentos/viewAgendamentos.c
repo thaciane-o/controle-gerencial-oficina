@@ -510,6 +510,19 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
     setbuf(stdin, NULL);
     scanf(" %[^\n]", pagamento.dataPagamento);
 
+    // Realiza as verificações de data
+    struct tm dataPagamento = {0};
+    sscanf(pagamento.dataAReceber, "%d/%d/%d",
+           &dataPagamento.tm_mday, &dataPagamento.tm_mon, &dataPagamento.tm_year);
+    dataPagamento.tm_year -= 1900;
+    dataPagamento.tm_mon -= 1;
+    time_t tempoPagamento = mktime(&dataPagamento);
+
+    if (tempoPagamento == -1) {
+        printf("Erro ao converter a data e hora.\n");
+        return -1;
+    }
+
     // Ajustando data de recebimento, caso dinheiro, ou pedindo a data, caso cartão
     if (pagamento.tipoPagamento == 1) {
         strcpy(pagamento.dataAReceber, pagamento.dataPagamento);

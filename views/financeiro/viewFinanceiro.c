@@ -48,7 +48,7 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
             "|  2  | Consultar contas a receber       |\n"
             "|  3  | Consultar contas a pagar         |\n"
             "|  4  | Registrar recebimento de cliente |\n"
-            "|  5  | Efetuar pagamento a fornecedor   |\n"
+            "|  5  | Efetuar pagamento ao fornecedor  |\n"
             "|  6  | Voltar                           |\n"
             "==========================================\n"
             "Escolha uma opção: ");
@@ -294,6 +294,19 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
     setbuf(stdin, NULL);
     scanf(" %[^\n]", pagamento.dataPagamento);
 
+    // Realiza as verificações de data
+    struct tm dataPagamento = {0};
+    sscanf(pagamento.dataPagamento, "%d/%d/%d",
+           &dataPagamento.tm_mday, &dataPagamento.tm_mon, &dataPagamento.tm_year);
+    dataPagamento.tm_year -= 1900;
+    dataPagamento.tm_mon -= 1;
+    time_t tempoDataPagamento = mktime(&dataPagamento);
+
+    if (tempoDataPagamento == -1) {
+        printf("Erro ao converter a data do pagamento.\n");
+        return;
+    }
+
     if (pagamento.tipoPagamento == 1) {
         strcpy(pagamento.dataAReceber, pagamento.dataPagamento);
         strcpy(pagamento.dataRecebimento, pagamento.dataPagamento);
@@ -305,7 +318,7 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
         // Realiza as verificações de data
         struct tm dataAReceber = {0};
         sscanf(pagamento.dataAReceber, "%d/%d/%d",
-           &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
+               &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
         dataAReceber.tm_year -= 1900;
         dataAReceber.tm_mon -= 1;
         time_t tempoDataReceber = mktime(&dataAReceber);
@@ -336,9 +349,9 @@ void efetuarPagamentoFornecedor(struct ListaPagamentosFornecedor *listaPagamento
     int idCaixa;
     int tipoPagamento = 0;
 
-    printf("\n============================================\n"
-        "|     REGISTRAR PAGAMENTO A FORNECEDOR     |\n"
-        "============================================\n");
+    printf("\n=============================================\n"
+        "|     REGISTRAR PAGAMENTO AO FORNECEDOR     |\n"
+        "=============================================\n");
 
     printf("Insira o ID do fornecedor que receberá o pagamento: ");
     setbuf(stdin, NULL);
@@ -379,6 +392,19 @@ void efetuarPagamentoFornecedor(struct ListaPagamentosFornecedor *listaPagamento
     printf("Insira a data do pagamento (DD/MM/AAAA): ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", pagamento.dataPagamento);
+
+    // Realiza as verificações de data
+    struct tm dataPagamento = {0};
+    sscanf(pagamento.dataPagamento, "%d/%d/%d",
+           &dataPagamento.tm_mday, &dataPagamento.tm_mon, &dataPagamento.tm_year);
+    dataPagamento.tm_year -= 1900;
+    dataPagamento.tm_mon -= 1;
+    time_t tempoDataPagamento = mktime(&dataPagamento);
+
+    if (tempoDataPagamento == -1) {
+        printf("Erro ao converter a data do pagamento.\n");
+        return;
+    }
 
     cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento, listaCaixas);
 }

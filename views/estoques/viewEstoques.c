@@ -320,9 +320,9 @@ void deletarNotaFiscal(struct ListaNotasFiscais *lista, struct ListaPecasNotas *
     int id;
 
     // Pede o Id da peça que será deletada
-    printf("\n==============================\n"
-        "|   DELEÇÃO DE NOTA FISCAL    |\n"
-        "==============================\n");
+    printf("\n================================\n"
+        "|    DELEÇÃO DE NOTA FISCAL    |\n"
+        "================================\n");
     printf("Insira o ID da nota que deseja deletar: ");
     setbuf(stdin, NULL);
     scanf("%d", &id);

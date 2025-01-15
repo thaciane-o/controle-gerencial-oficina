@@ -56,4 +56,8 @@ int verificarRelacaoPecaComFornecedorModel(struct ListaPecas *listaPecas,
 int verificarRelacaoPecaComOficinaModel(struct ListaPecas *listaPecas,
                                  int idOficina, int idPeca);
 
+int getQtdEstoquePecaModel(struct ListaPecas *lista, int id);
+
+int getQtdEstoqueMinimoPecaModel(struct ListaPecas *lista, int id);
+
 #endif //MODELPECAS_H

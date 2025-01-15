@@ -190,7 +190,6 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     idPecas[qtdPecas - 1] = idInputPecas;
                     verificarIDPecaModel(listaPecas, idPecas[qtdPecas - 1]);
                     idPecaDoServico[qtdPecas - 1] = idInputServico;
-
                 } else {
                     qtdPecas--;
                 }
@@ -200,20 +199,14 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     setbuf(stdin, NULL);
                     scanf("%d", &qtdPecasRequisitadas[qtdPecas - 1]);
                     // Verificando se há peças suficientes no estoque
-                    if (!debitarPecaEstoqueModel(listaPecas, idInputPecas, qtdPecasRequisitadas[qtdPecas - 1])) {
-                        // Limpando os ponteiros
-                        idPecas = NULL;
-                        idPecaDoServico = NULL;
-                        qtdPecasRequisitadas = NULL;
-                        free(idPecas);
-                        free(idPecaDoServico);
-                        free(qtdPecasRequisitadas);
-
-                        idServicos = NULL;
-                        free(idServicos);
-                        return;
+                    int qtdPecasEstoque = getQtdEstoquePecaModel(listaPecas, idInputPecas);
+                    int qtdPecasEstoqueMin = getQtdEstoqueMinimoPecaModel(listaPecas, idInputPecas);
+                    if (qtdPecasEstoque >= qtdPecasEstoqueMin && qtdPecasEstoque != -1 && qtdPecasEstoqueMin != -1) {
+                        valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas) * qtdPecasRequisitadas[
+                            qtdPecas - 1];
+                    } else {
+                        qtdPecas--;
                     }
-                    valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas) * qtdPecasRequisitadas[qtdPecas-1];
                 }
             } while (idInputPecas != 0);
         } else {
@@ -357,6 +350,22 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             free(idServicos);
             free(idServicos);
             return;
+        }
+
+        // Debitando peças utilizadas
+        for (int i = 0; i < qtdPecas; i++) {
+            if (!debitarPecaEstoqueModel(listaPecas, idPecas[i], qtdPecasRequisitadas[i])) {
+                // Limpando os ponteiros, caso algo dê errado
+                idPecas = NULL;
+                idPecaDoServico = NULL;
+                qtdPecasRequisitadas = NULL;
+                free(idPecas);
+                free(idPecaDoServico);
+                free(qtdPecasRequisitadas);
+                idServicos = NULL;
+                free(idServicos);
+                return;
+            }
         }
 
         // Cadastrando agendamentos de cada serviço inserido
@@ -512,14 +521,14 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
 
     // Realiza as verificações de data
     struct tm dataPagamento = {0};
-    sscanf(pagamento.dataAReceber, "%d/%d/%d",
+    sscanf(pagamento.dataPagamento, "%d/%d/%d",
            &dataPagamento.tm_mday, &dataPagamento.tm_mon, &dataPagamento.tm_year);
     dataPagamento.tm_year -= 1900;
     dataPagamento.tm_mon -= 1;
     time_t tempoPagamento = mktime(&dataPagamento);
 
     if (tempoPagamento == -1) {
-        printf("Erro ao converter a data e hora.\n");
+        printf("Erro ao converter a data de pagamento.\n");
         return -1;
     }
 
@@ -541,7 +550,7 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
         time_t tempoDataReceber = mktime(&dataAReceber);
 
         if (tempoDataReceber == -1) {
-            printf("Erro ao converter a data e hora.\n");
+            printf("Erro ao converter a data a receber.\n");
             return -1;
         }
 

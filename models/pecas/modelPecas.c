@@ -504,3 +504,35 @@ int verificarRelacaoPecaComOficinaModel(struct ListaPecas *listaPecas,
     printf("A oficina fornecida não é proprietária desta peça\n\n");
     return 0;
 }
+
+int getQtdEstoquePecaModel(struct ListaPecas *lista, int id) {
+
+    // Busca pela quantidade de peças da peça
+    if (lista->qtdPecas > 0) {
+        for (int i = 0; i < lista->qtdPecas; i++) {
+            if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
+                return lista->listaPecas[i].qtdEstoque;
+            }
+        }
+        printf("Peça não encontrada.\n\n");
+    } else {
+        printf("Não há peças cadastradas no sistema\n\n");
+    }
+    return -1;
+}
+
+int getQtdEstoqueMinimoPecaModel(struct ListaPecas *lista, int id) {
+
+    // Busca pela quantidade de peças minimas da peça
+    if (lista->qtdPecas > 0) {
+        for (int i = 0; i < lista->qtdPecas; i++) {
+            if (lista->listaPecas[i].id == id && lista->listaPecas[i].deletado == 0) {
+                return lista->listaPecas[i].estoqueMinimo;
+            }
+        }
+        printf("Peça não encontrada.\n\n");
+    } else {
+        printf("Não há peças cadastradas no sistema\n\n");
+    }
+    return -1;
+}

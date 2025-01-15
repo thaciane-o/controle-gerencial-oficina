@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/pecas/modelPecas.h"
@@ -358,6 +359,19 @@ int cadastrarPagamentoFornecedorEstoque(struct ListaPagamentosFornecedor *listaP
     printf("Insira a data do pagamento (DD/MM/AAAA): ");
     setbuf(stdin, NULL);
     scanf(" %[^\n]", pagamento.dataPagamento);
+
+    // Realiza as verificações de data
+    struct tm dataPagamento = {0};
+    sscanf(pagamento.dataPagamento, "%d/%d/%d",
+           &dataPagamento.tm_mday, &dataPagamento.tm_mon, &dataPagamento.tm_year);
+    dataPagamento.tm_year -= 1900;
+    dataPagamento.tm_mon -= 1;
+    time_t tempoPagamento = mktime(&dataPagamento);
+
+    if (tempoPagamento == -1) {
+        printf("Erro ao converter a data de pagamento.\n");
+        return -1;
+    }
 
     pagamento.idFornecedor = idFornecedor;
 

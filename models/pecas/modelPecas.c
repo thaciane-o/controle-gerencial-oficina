@@ -459,8 +459,11 @@ void verificarEstoqueMinimo(struct ListaPecas *lista) {
         // Listando peças cujo o estoque está abaixo do mínimo
         if (lista->listaPecas[i].qtdEstoque < lista->listaPecas[i].estoqueMinimo) {
             printf("\nEstoque abaixo do mínimo na peça: %d\n"
+                   "Quantidade de peças faltantes: %d\n"
                    "Fornecedor: %d\n"
-                   "Oficina: %d\n", lista->listaPecas[i].id, lista->listaPecas[i].idFornecedor, lista->listaPecas[i].idOficina);
+                   "Oficina: %d\n", lista->listaPecas[i].id,
+                   lista->listaPecas[i].estoqueMinimo - lista->listaPecas[i].qtdEstoque,
+                   lista->listaPecas[i].idFornecedor, lista->listaPecas[i].idOficina);
         }
     }
 }

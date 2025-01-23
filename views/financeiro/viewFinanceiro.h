@@ -18,6 +18,9 @@ void consultarValorCaixa(struct ListaCaixas *lista, struct ListaPagamentosClient
 void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct ListaCaixas *listaCaixas,
                                  struct ListaPagamentosCliente *listaPagamentosCliente);
 
+void alterarFormaPagamentoCliente(struct ListaPagamentosCliente *listaPagamentosCliente,
+                                  struct ListaClientes *listaClientes);
+
 void consultarContasAReceber(struct ListaPagamentosCliente *listaPagamentosCliente, struct ListaCaixas *listaCaixas);
 
 void consultarContasAPagar(struct ListaPagamentosFornecedor *listaPagamentosFornecedor,

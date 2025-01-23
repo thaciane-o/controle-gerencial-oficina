@@ -41,16 +41,17 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
     }
 
     do {
-        printf("\n==========================================\n"
-            "|               FINANCEIRO               |\n"
-            "==========================================\n"
-            "|  1  | Consultar valor de caixa         |\n"
-            "|  2  | Consultar contas a receber       |\n"
-            "|  3  | Consultar contas a pagar         |\n"
-            "|  4  | Registrar recebimento de cliente |\n"
-            "|  5  | Efetuar pagamento ao fornecedor  |\n"
-            "|  6  | Voltar                           |\n"
-            "==========================================\n"
+        printf("\n================================================\n"
+            "|                    FINANCEIRO                |\n"
+            "================================================\n"
+            "|  1  | Consultar valor de caixa               |\n"
+            "|  2  | Consultar contas a receber             |\n"
+            "|  3  | Consultar contas a pagar               |\n"
+            "|  4  | Registrar recebimento de cliente       |\n"
+            "|  5  | Alterar forma de pagamento de cliente  |\n"
+            "|  6  | Efetuar pagamento ao fornecedor        |\n"
+            "|  7  | Voltar                                 |\n"
+            "================================================\n"
             "Escolha uma opção: ");
         scanf("%d", &opcaoSubmenus);
 
@@ -68,9 +69,12 @@ void gerenciarFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *
                 registrarRecebimentoCliente(listaClientes, listaCaixas, listaPagamentosCliente);
                 break;
             case 5:
-                efetuarPagamentoFornecedor(listaPagamentosFornecedor, listaFornecedor, listaCaixas);
+                alterarFormaPagamentoCliente(listaPagamentosCliente, listaClientes);
                 break;
             case 6:
+                efetuarPagamentoFornecedor(listaPagamentosFornecedor, listaFornecedor, listaCaixas);
+                break;
+            case 7:
                 if (opcaoArmazenamento != 3) {
                     if (listaCaixas->qtdCaixas > 0 && listaCaixas->listaCaixas != NULL) {
                         armazenarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
@@ -338,6 +342,102 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
     }
 
     cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);
+}
+
+// Formulário para alterar forma de pagamento de um cliente
+void alterarFormaPagamentoCliente(struct ListaPagamentosCliente *listaPagamentosCliente,
+                                  struct ListaClientes *listaClientes) {
+    int idCliente, idPagamento, novoPagamento;
+    char novaDataPagamento[11], novaDataAReceber[11], novaDataRecebimento[11];
+
+    printf("\n=================================================\n"
+        "|     ALTERAR FORMA DE PAGAMENTO DE CLIENTE     |\n"
+        "=================================================\n");
+
+    // Pede o id do cliente para o usuário
+    printf("Insira o ID do cliente que está fazendo o pagamento: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idCliente);
+
+    // Verificando existência de cliente
+    if (verificarIDClienteModel(listaClientes, idCliente) == 0) {
+        return;
+    }
+
+    // Pede o id do pagamento que deseja reaizar a alteração
+    printf("Insira o ID do pagamento que deseja fazer a alteração: ");
+    setbuf(stdin, NULL);
+    scanf("%d", &idPagamento);
+
+    // Verifica se o pagamento é referente a esse cliente
+    if (verificarClienteEmPagamentoCliente(listaPagamentosCliente, idCliente, idPagamento) == -1) {
+        return;
+    }
+
+    // PERGUNTA O NOVO TIPO DE PAGAMENTO
+    printf("Insira o novo tipo de pagamento:");
+    do {
+        printf("\n========================="
+            "\n| 1 | Dinheiro          |"
+            "\n| 2 | Cartão de crédito |"
+            "\n| 3 | Cartão de débito  |"
+            "\n=========================");
+        printf("\nInsira tipo de pagamento: ");
+        setbuf(stdin, NULL);
+        scanf("%d", &novoPagamento);
+    } while (novoPagamento < 1 || novoPagamento > 3);
+
+    // PEDIR NOVAS DATAS
+    printf("Insira a data do pagamento (DD/MM/AAAA): ");
+    setbuf(stdin, NULL);
+    scanf(" %[^\n]", novaDataPagamento);
+
+    // Realiza as verificações de data
+    struct tm dataPagamento = {0};
+    sscanf(novaDataPagamento, "%d/%d/%d",
+           &dataPagamento.tm_mday, &dataPagamento.tm_mon, &dataPagamento.tm_year);
+    dataPagamento.tm_year -= 1900;
+    dataPagamento.tm_mon -= 1;
+    time_t tempoDataPagamento = mktime(&dataPagamento);
+
+    if (tempoDataPagamento == -1) {
+        printf("Erro ao converter a nova data do pagamento.\n");
+        return;
+    }
+
+    // Ajusta as novas datas
+    if (novoPagamento == 1) {
+        strcpy(novaDataAReceber, novaDataPagamento);
+        strcpy(novaDataRecebimento, novaDataPagamento);
+    } else {
+        printf("Insira a data de vencimento do cartão (DD/MM/AAAA): ");
+        setbuf(stdin, NULL);
+        scanf(" %[^\n]", novaDataAReceber);
+
+        // Realiza as verificações de data
+        struct tm dataAReceber = {0};
+        sscanf(novaDataAReceber, "%d/%d/%d",
+               &dataAReceber.tm_mday, &dataAReceber.tm_mon, &dataAReceber.tm_year);
+        dataAReceber.tm_year -= 1900;
+        dataAReceber.tm_mon -= 1;
+        time_t tempoDataReceber = mktime(&dataAReceber);
+
+        if (tempoDataReceber == -1) {
+            printf("Erro ao converter a data e hora.\n");
+            return;
+        }
+
+        time_t tempoAgora = time(NULL);
+
+        if (tempoDataReceber <= tempoAgora) {
+            strftime(novaDataRecebimento, sizeof(novaDataRecebimento), "%d/%m/%Y", localtime(&tempoAgora));
+        } else {
+            strcpy(novaDataRecebimento, "Não pago");
+        }
+    }
+
+    // Envia para o model e realiza a alteração
+    atualizarFormaPagamentoClienteModel(listaPagamentosCliente, idPagamento, novoPagamento, novaDataPagamento, novaDataRecebimento, novaDataAReceber);
 }
 
 // Efeuta pagamento a fornecedor (Oficina paga ao fornecedor)

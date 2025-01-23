@@ -229,6 +229,29 @@ void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struc
     }
 }
 
+// Atualiza formas de pagamento
+void atualizarFormaPagamentoClienteModel(struct ListaPagamentosCliente *lista, int idPagamento,
+    int tipoPagamento, char dataPagamento[11], char dataRecebimento[11], char dataAReceber[11]) {
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosCliente > 0) {
+        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+            if (lista->listaPagamentosCliente[i].id == idPagamento &&
+                lista->listaPagamentosCliente[i].deletado == 0) {
+                lista->listaPagamentosCliente[i].tipoPagamento = tipoPagamento;
+                strcpy(lista->listaPagamentosCliente[i].dataPagamento, dataPagamento);
+                strcpy(lista->listaPagamentosCliente[i].dataRecebimento, dataRecebimento);
+                strcpy(lista->listaPagamentosCliente[i].dataAReceber, dataAReceber);
+                printf("Pagamento atualizado com sucesso!\n\n");
+                return;
+            }
+        }
+        printf("Nenhum pagamento encontrado\n\n");
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
+}
+
 // Lista todos os pagamentos de um cliente desejado
 void listarPagamentosDeClienteModel(struct ListaPagamentosCliente *lista, int idCliente) {
     // Verifica se há pelo menos um cadastro
@@ -385,4 +408,26 @@ void listaPagamentosNaoRecebidosClienteModel(struct ListaPagamentosCliente *list
     } else {
         printf("Nenhum pagamento foi cadastrado\n\n");
     }
+}
+
+int verificarClienteEmPagamentoCliente(struct ListaPagamentosCliente *lista, int idCliente, int idPagamento) {
+
+    // Verifica se há pelo menos um cadastro
+    if (lista->qtdPagamentosCliente > 0) {
+        for (int i = 0; i < lista->qtdPagamentosCliente; i++) {
+            if (lista->listaPagamentosCliente[i].idCliente == idCliente &&
+                lista->listaPagamentosCliente[i].id == idPagamento &&
+                lista->listaPagamentosCliente[i].deletado == 0) {
+                if (strcmp(lista->listaPagamentosCliente[i].dataRecebimento, "Não pago") != 0) {
+                    printf("O pagamento já foi finalizado.\n\n");
+                    return -1;
+                }
+                return 0;
+            }
+        }
+        printf("Nenhum pagamento encontrado\n\n");
+    } else {
+        printf("Nenhum pagamento foi cadastrado\n\n");
+    }
+    return -1;
 }

@@ -45,6 +45,7 @@
 #include "./models/notasFiscais/modelNotasFiscais.h"
 #include "./models/pecasNotas/modelPecasNotas.h"
 
+#include "./views/relatorios/viewRelatorios.h"
 
 int main() {
     // Configuração para caracteres especiais
@@ -179,9 +180,8 @@ int main() {
 
             // Menu de relatórios
             case 5:
-                /*
-                 *  TODO : Terceira/Última entrega
-                 */
+                gerenciarRelatorios(&listaOficinas, &listaClientes, &listaVeiculos, &listaFuncionarios, &listaServicos,
+                                    &listaFornecedores, &listaPecas, opcaoArmazenamento);
                 break;
 
             // Menu de importação/exportação

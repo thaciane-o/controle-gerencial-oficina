@@ -121,7 +121,7 @@ void buscarDadosClientesModel(struct ListaClientes *lista, int opcaoArmazenament
 
 // Armazena os dados de clientes nos arquivos
 void armazenarDadosClienteModel(struct ListaClientes *lista, int opcaoArmazenamento) {
-    //Abrindo ou criando arquivo para adicionar cadastros
+    // Abrindo ou criando arquivo para adicionar cadastros
     FILE *dadosClientes;
 
     switch (opcaoArmazenamento) {

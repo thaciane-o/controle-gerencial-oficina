@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 #include "./viewRelatorios.h"
-#include "../../models/relatorios/modelRelatorioCliente.h"
+#include "../../models/relatorios/clientes/modelRelatorioCliente.h"
+#include "../../models/relatorios/oficinas/modelRelatorioOficina.h"
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
@@ -77,7 +78,7 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
             case 5:
                 break;
             case 6:
-                // Limpa ponteiros dos cadastros básicos
+                // Limpa os ponteiros
                 if (listaOficinas->qtdOficinas > 0) {
                     free(listaOficinas->listaOficinas);
                     listaOficinas->listaOficinas = NULL;
@@ -148,39 +149,19 @@ void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct Lista
             "Escolha uma opção para imprimir o relatório: ");
         scanf("%d", &opcaoSubmenus);
 
-        switch (opcaoSubmenus) {
-            case 1:
-
-                break;
-            case 2:
-                filtroRelatorioBasico(listaClientes, listaOficinas, opcaoSubmenus);
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-            case 6:
-
-                break;
-            case 7:
-
-                break;
-            case 8:
-
-                return;
-            default: printf("Opção inválida!\n\n");
-                break;
+        if (opcaoSubmenus == 8) {
+            return;
         }
+
+        filtroRelatorioBasico(listaOficinas, listaClientes, listaVeiculos, listaFuncionarios, listaServicos,
+                              listaFornecedores, listaPecas, opcaoSubmenus);
     }
 }
 
-void filtroRelatorioBasico(struct ListaClientes *listaClientes, struct ListaOficinas *listaOficinas,
-                           int tipoRelatorio) {
+void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
+                           struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
+                           struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
+                           struct ListaPecas *listaPecas, int tipoRelatorio) {
     int id = 0, opcaoFiltro = 0;
     char nome[255];
 
@@ -202,7 +183,11 @@ void filtroRelatorioBasico(struct ListaClientes *listaClientes, struct ListaOfic
 
                 switch (tipoRelatorio) {
                     case 1:
-
+                        if (formaDeImprimir() == 1) {
+                            imprimirRelatorioOficina(listaOficinas, nome, id);
+                        } else {
+                            armazenarRelatorioOficina(listaOficinas, nome, id);
+                        }
                         break;
                     case 2:
                         if (formaDeImprimir() == 1) {
@@ -226,9 +211,6 @@ void filtroRelatorioBasico(struct ListaClientes *listaClientes, struct ListaOfic
                     case 7:
 
                         break;
-                    case 8:
-
-                        return;
                     default: printf("Opção inválida!\n\n");
                         break;
                 }
@@ -241,7 +223,11 @@ void filtroRelatorioBasico(struct ListaClientes *listaClientes, struct ListaOfic
 
                 switch (tipoRelatorio) {
                     case 1:
-
+                        if (formaDeImprimir() == 1) {
+                            imprimirRelatorioOficina(listaOficinas, nome, id);
+                        } else {
+                            armazenarRelatorioOficina(listaOficinas, nome, id);
+                        }
                         break;
                     case 2:
                         if (formaDeImprimir() == 1) {
@@ -265,9 +251,6 @@ void filtroRelatorioBasico(struct ListaClientes *listaClientes, struct ListaOfic
                     case 7:
 
                         break;
-                    case 8:
-
-                        return;
                     default: printf("Opção inválida!\n\n");
                         break;
                 }

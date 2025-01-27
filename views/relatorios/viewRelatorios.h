@@ -19,7 +19,10 @@ void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct Lista
                                struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
                                struct ListaPecas *listaPecas);
 
-void filtroRelatorioBasico(struct ListaClientes *listaClientes, struct ListaOficinas *listaOficinas, int tipoRelatorio);
+void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
+                           struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
+                           struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
+                           struct ListaPecas *listaPecas, int tipoRelatorio);
 
 int formaDeImprimir();
 

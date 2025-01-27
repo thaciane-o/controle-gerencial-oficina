@@ -2,18 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../oficina/modelOficina.h"
-#include "../clientes/modelClientes.h"
+#include "../../oficina/modelOficina.h"
+#include "../../clientes/modelClientes.h"
 
+// Imprime o relatório na tela
 void imprimirRelatorioCliente(struct ListaClientes *listaClientes, struct ListaOficinas *listaOficinas, char *nome,
                               int id) {
     int existeClientes = 0;
 
-    // Verifica se há pelo menos um cadastro
+    // Verifica se há pelo menos um registro
     if (listaClientes->qtdClientes > 0) {
-        // Se há um ou mais cadastros, exibe todos
+        // Exibe todos os registros
         for (int i = 0; i < listaClientes->qtdClientes; i++) {
-            //Verifica se o cliente esta deletado
+            // Verifica se está não está deletado e aplica os filtros
             if (listaClientes->listaClientes[i].deletado == 0 &&
                 ((strlen(nome) > 0 && strstr(listaClientes->listaClientes[i].nome, nome) != NULL) ||
                  (id != 0 && listaClientes->listaClientes[i].id == id))) {
@@ -39,11 +40,13 @@ void imprimirRelatorioCliente(struct ListaClientes *listaClientes, struct ListaO
         }
     }
 
+    // Verifica se não há registros
     if (!existeClientes) {
         printf("Nenhum cliente foi cadastrado.\n\n");
     }
 }
 
+// Armazena o relatório em arquivo
 void armazenarRelatorioCliente(struct ListaClientes *listaClientes, struct ListaOficinas *listaOficinas, char *nome,
                                int id) {
     // Abrindo ou criando arquivo para adicionar dados

@@ -38,7 +38,7 @@ void imprimirRelatorioOficina(struct ListaOficinas *listaOficinas, char *nome, i
 
     // Verifica se não há registros
     if (!existeOficinas) {
-        printf("Nenhuma oficina foi cadastrado.\n\n");
+        printf("Nenhuma oficina foi cadastrada.\n\n");
     }
 }
 

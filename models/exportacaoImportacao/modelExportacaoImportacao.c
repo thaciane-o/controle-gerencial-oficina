@@ -171,6 +171,40 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
         fprintf(exportacao, "\t</tabela>\n");
     }
 
+    // Verifica exportação de Fornecedores
+    if (opcoesExportacao[4] == 1) {
+        fprintf(exportacao, "\t<tabela=fornecedor>\n");
+        if (listaFornecedores->qtdFornecedores > 0) {
+            for (int i = 0; i < listaFornecedores->qtdFornecedores; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<nomeFantasia>%s</nomeFantasia>\n"
+                        "\t\t\t<razaoSocial>%s</razaoSocial>\n"
+                        "\t\t\t<inscricaoEstadual>%s</inscricaoEstadual>\n"
+                        "\t\t\t<cnpj>%s</cnpj>\n"
+                        "\t\t\t<endereco>%s</endereco>\n"
+                        "\t\t\t<ddd>%s</ddd>\n"
+                        "\t\t\t<telefone>%s</telefone>\n"
+                        "\t\t\t<email>%s</email>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaFornecedores->listaFornecedores[i].id,
+                        listaFornecedores->listaFornecedores[i].nomeFantasia,
+                        listaFornecedores->listaFornecedores[i].razaoSocial,
+                        listaFornecedores->listaFornecedores[i].inscricaoEstadual,
+                        listaFornecedores->listaFornecedores[i].cnpj,
+                        listaFornecedores->listaFornecedores[i].endereco,
+                        listaFornecedores->listaFornecedores[i].ddd,
+                        listaFornecedores->listaFornecedores[i].telefone,
+                        listaFornecedores->listaFornecedores[i].email,
+                        listaFornecedores->listaFornecedores[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
     // Finaliza o arquivo XML
     fprintf(exportacao, "</dados>\n");
 

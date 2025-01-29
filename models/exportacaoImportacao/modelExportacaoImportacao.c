@@ -137,6 +137,40 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
         fprintf(exportacao, "\t</tabela>\n");
     }
 
+    // Verifica exportação de Peças
+    if (opcoesExportacao[3] == 1) {
+        fprintf(exportacao, "\t<tabela=peca>\n");
+        if (listaPecas->qtdPecas > 0) {
+            for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<descricao>%s</descricao>\n"
+                        "\t\t\t<fabricante>%s</fabricante>\n"
+                        "\t\t\t<precoCusto>%.2f</precoCusto>\n"
+                        "\t\t\t<precoVenda>%.2f</precoVenda>\n"
+                        "\t\t\t<qtdEstoque>%d</qtdEstoque>\n"
+                        "\t\t\t<estoqueMinimo>%d</estoqueMinimo>\n"
+                        "\t\t\t<idOficina>%d</idOficina>\n"
+                        "\t\t\t<idFornecedor>%d</idFornecedor>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaPecas->listaPecas[i].id,
+                        listaPecas->listaPecas[i].descricao,
+                        listaPecas->listaPecas[i].fabricante,
+                        listaPecas->listaPecas[i].precoCusto,
+                        listaPecas->listaPecas[i].precoVenda,
+                        listaPecas->listaPecas[i].qtdEstoque,
+                        listaPecas->listaPecas[i].estoqueMinimo,
+                        listaPecas->listaPecas[i].idOficina,
+                        listaPecas->listaPecas[i].idFornecedor,
+                        listaPecas->listaPecas[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
     // Finaliza o arquivo XML
     fprintf(exportacao, "</dados>\n");
 

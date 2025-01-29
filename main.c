@@ -30,20 +30,15 @@
 
 #include "./models/ordensServico/modelOrdensServico.h"
 
+#include "./views/financeiro/viewFinanceiro.h"
 #include "./models/caixas/modelCaixa.h"
 #include "./models/pagamentoCliente/modelPagamentoCliente.h"
 #include "./models/pagamentoFornecedor/modelPagamentoFornecedor.h"
-#include "./views/financeiro/viewFinanceiro.h"
-
-#include "./views/agendamentos/viewAgendamentos.h"
-#include "./models/agendamentos/modelAgendamentos.h"
-
-#include "./models/ordensServico/modelOrdensServico.h"
 
 #include "./views/estoques/viewEstoques.h"
-
 #include "./models/notasFiscais/modelNotasFiscais.h"
 #include "./models/pecasNotas/modelPecasNotas.h"
+#include "views/exportacaoImportacao/viewExportacaoImportacao.h"
 
 #include "./views/relatorios/viewRelatorios.h"
 
@@ -186,9 +181,21 @@ int main() {
 
             // Menu de importação/exportação
             case 6:
-                /*
-                 *  TODO : Terceira/Última entrega
-                 */
+                gerenciarExportacaoImportacao(&listaClientes,
+                                              &listaVeiculos,
+                                              &listaOficinas,
+                                              &listaPecas,
+                                              &listaFornecedores,
+                                              &listaServicos,
+                                              &listaFuncionarios,
+                                              &listaCaixas,
+                                              &listaPagamentosCliente,
+                                              &listaPagamentosFornecedor,
+                                              &listaAgendamentos,
+                                              &listaOrdensServico,
+                                              &listaNotasFiscais,
+                                              &listaPecasNotas,
+                                              opcaoArmazenamento);
                 break;
 
             // Sair
@@ -198,9 +205,9 @@ int main() {
                     free(listaClientes.listaClientes);
                     listaClientes.listaClientes = NULL;
                 }
-                if (listaPecas.qtdPecas > 0) {
-                    free(listaPecas.listaPecas);
-                    listaPecas.listaPecas = NULL;
+                if (listaVeiculos.qtdVeiculos > 0) {
+                    free(listaVeiculos.listaVeiculos);
+                    listaVeiculos.listaVeiculos = NULL;
                 }
                 if (listaOficinas.qtdOficinas > 0) {
                     free(listaOficinas.listaOficinas);
@@ -247,6 +254,7 @@ int main() {
                     listaNotasFiscais.listaNotas = NULL;
                 }
                 if (listaPecasNotas.listaPecasNotas > 0) {
+                    free(listaPecasNotas.listaPecasNotas);
                     listaPecasNotas.listaPecasNotas = NULL;
                 }
                 break;

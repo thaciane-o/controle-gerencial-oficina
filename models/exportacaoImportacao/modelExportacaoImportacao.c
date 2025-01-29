@@ -205,6 +205,32 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
         fprintf(exportacao, "\t</tabela>\n");
     }
 
+    // Verifica exportação de Serviços
+    if (opcoesExportacao[5] == 1) {
+        fprintf(exportacao, "\t<tabela=servico>\n");
+        if (listaServicos->qtdServicos > 0) {
+            for (int i = 0; i < listaServicos->qtdServicos; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<idOficina>%d</idOficina>\n"
+                        "\t\t\t<descricao>%s</descricao>\n"
+                        "\t\t\t<preco>%.2f</preco>\n"
+                        "\t\t\t<comissao>%.2f</comissao>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaServicos->listaServicos[i].id,
+                        listaServicos->listaServicos[i].idOficina,
+                        listaServicos->listaServicos[i].descricao,
+                        listaServicos->listaServicos[i].preco,
+                        listaServicos->listaServicos[i].comissao,
+                        listaServicos->listaServicos[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
     // Finaliza o arquivo XML
     fprintf(exportacao, "</dados>\n");
 

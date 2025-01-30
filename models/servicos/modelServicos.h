@@ -2,6 +2,7 @@
 #define MODELSERVICOS_H
 
 #include "../../models/agendamentos/modelAgendamentos.h"
+#include "../../models/servicos/modelServicos.h"
 
 struct Servicos {
     int id;

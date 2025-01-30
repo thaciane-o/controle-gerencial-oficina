@@ -1,8 +1,8 @@
 #ifndef MODELCAIXA_H
 #define MODELCAIXA_H
 
-#include "../pagamentoCliente/modelPagamentoCliente.h"
-#include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 
 struct Caixas {
     int id;

@@ -2,6 +2,7 @@
 #define CLIENTES_H
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
+#include "../../models/oficina/modelOficina.h"
 
 void cadastrarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOficinas);
 

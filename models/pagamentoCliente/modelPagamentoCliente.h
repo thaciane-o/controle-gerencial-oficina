@@ -1,7 +1,7 @@
 #ifndef MODELPAGAMENTOCLIENTE_H
 #define MODELPAGAMENTOCLIENTE_H
 
-#include "../caixas/modelCaixa.h"
+#include "../../models/caixas/modelCaixa.h"
 
 struct PagamentosCliente {
     int id;

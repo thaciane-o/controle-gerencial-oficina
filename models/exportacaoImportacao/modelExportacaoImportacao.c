@@ -72,7 +72,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         listaClientes->listaClientes[i].deletado);
             }
         } else {
-            fprintf(exportacao, "<!-- Não há registros -->\n");
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
         }
         fprintf(exportacao, "\t</tabela>\n");
     }
@@ -102,7 +102,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         listaVeiculos->listaVeiculos[i].deletado);
             }
         } else {
-            fprintf(exportacao, "<!-- Não há registros -->\n");
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
         }
         fprintf(exportacao, "\t</tabela>\n");
     }
@@ -132,7 +132,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         listaOficinas->listaOficinas[i].deletado);
             }
         } else {
-            fprintf(exportacao, "<!-- Não há registros -->\n");
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
         }
         fprintf(exportacao, "\t</tabela>\n");
     }
@@ -166,7 +166,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         listaPecas->listaPecas[i].deletado);
             }
         } else {
-            fprintf(exportacao, "<!-- Não há registros -->\n");
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
         }
         fprintf(exportacao, "\t</tabela>\n");
     }
@@ -200,7 +200,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         listaFornecedores->listaFornecedores[i].deletado);
             }
         } else {
-            fprintf(exportacao, "<!-- Não há registros -->\n");
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
         }
         fprintf(exportacao, "\t</tabela>\n");
     }
@@ -226,7 +226,225 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         listaServicos->listaServicos[i].deletado);
             }
         } else {
-            fprintf(exportacao, "<!-- Não há registros -->\n");
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Funcionarios
+    if (opcoesExportacao[6] == 1) {
+        fprintf(exportacao, "\t<tabela=funcionario>\n");
+        if (listaFuncionarios->qtdFuncionarios > 0) {
+            for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<nome>%s</nome>\n"
+                        "\t\t\t<cpf>%s</cpf>\n"
+                        "\t\t\t<cargo>%s</cargo>\n"
+                        "\t\t\t<salario>%.2f</salario>\n"
+                        "\t\t\t<idOficina>%d</idOficina>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaFuncionarios->listaFuncionarios[i].id,
+                        listaFuncionarios->listaFuncionarios[i].nome,
+                        listaFuncionarios->listaFuncionarios[i].cpf,
+                        listaFuncionarios->listaFuncionarios[i].cargo,
+                        listaFuncionarios->listaFuncionarios[i].salario,
+                        listaFuncionarios->listaFuncionarios[i].idOficina,
+                        listaFuncionarios->listaFuncionarios[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Caixas
+    if (opcoesExportacao[7] == 1) {
+        fprintf(exportacao, "\t<tabela=caixa>\n");
+        if (listaCaixas->qtdCaixas > 0) {
+            for (int i = 0; i < listaCaixas->qtdCaixas; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<valorCaixa>%.2f</valorCaixa>\n"
+                        "\t\t\t<idOficina>%d</idOficina>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaCaixas->listaCaixas[i].id,
+                        listaCaixas->listaCaixas[i].valorCaixa,
+                        listaCaixas->listaCaixas[i].idOficina,
+                        listaCaixas->listaCaixas[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Pagamentos de Cliente
+    if (opcoesExportacao[8] == 1) {
+        fprintf(exportacao, "\t<tabela=pagamentoCliente>\n");
+        if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+            for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<tipoPagamento>%d</tipoPagamento>\n"
+                        "\t\t\t<valor>%.2f</valor>\n"
+                        "\t\t\t<dataPagamento>%s</dataPagamento>\n"
+                        "\t\t\t<dataAReceber>%s</dataAReceber>\n"
+                        "\t\t\t<dataRecebimento>%s</dataRecebimento>\n"
+                        "\t\t\t<idCaixa>%d</idCaixa>\n"
+                        "\t\t\t<idCliente>%d</idCliente>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaPagamentosCliente->listaPagamentosCliente[i].id,
+                        listaPagamentosCliente->listaPagamentosCliente[i].tipoPagamento,
+                        listaPagamentosCliente->listaPagamentosCliente[i].valor,
+                        listaPagamentosCliente->listaPagamentosCliente[i].dataPagamento,
+                        listaPagamentosCliente->listaPagamentosCliente[i].dataAReceber,
+                        listaPagamentosCliente->listaPagamentosCliente[i].dataRecebimento,
+                        listaPagamentosCliente->listaPagamentosCliente[i].idCaixa,
+                        listaPagamentosCliente->listaPagamentosCliente[i].idCliente,
+                        listaPagamentosCliente->listaPagamentosCliente[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Pagamentos a Fornecedor
+    if (opcoesExportacao[9] == 1) {
+        fprintf(exportacao, "\t<tabela=pagamentoFornecedor>\n");
+        if (listaPagamentosFornecedor->qtdPagamentosFornecedor > 0) {
+            for (int i = 0; i < listaPagamentosFornecedor->qtdPagamentosFornecedor; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<tipoPagamento>%d</tipoPagamento>\n"
+                        "\t\t\t<valor>%.2f</valor>\n"
+                        "\t\t\t<dataPagamento>%s</dataPagamento>\n"
+                        "\t\t\t<idCaixa>%d</idCaixa>\n"
+                        "\t\t\t<idFornecedor>%d</idFornecedor>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].id,
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].tipoPagamento,
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].valor,
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].dataPagamento,
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].idCaixa,
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].idFornecedor,
+                        listaPagamentosFornecedor->listaPagamentosFornecedor[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Agendamentos
+    if (opcoesExportacao[10] == 1) {
+        fprintf(exportacao, "\t<tabela=agendamento>\n");
+        if (listaAgendamentos->qtdAgendamentos > 0) {
+            for (int i = 0; i < listaAgendamentos->qtdAgendamentos; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<datahoraInicial>%s</datahoraInicial>\n"
+                        "\t\t\t<idVeiculo>%d</idVeiculo>\n"
+                        "\t\t\t<idServico>%d</idServico>\n"
+                        "\t\t\t<idFuncionario>%d</idFuncionario>\n"
+                        "\t\t\t<finalizado>%d</finalizado>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaAgendamentos->listaAgendamentos[i].id,
+                        listaAgendamentos->listaAgendamentos[i].datahoraInicial,
+                        listaAgendamentos->listaAgendamentos[i].idVeiculo,
+                        listaAgendamentos->listaAgendamentos[i].idServico,
+                        listaAgendamentos->listaAgendamentos[i].idFuncionario,
+                        listaAgendamentos->listaAgendamentos[i].finalizado,
+                        listaAgendamentos->listaAgendamentos[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Ordens de Servico
+    if (opcoesExportacao[11] == 1) {
+        fprintf(exportacao, "\t<tabela=ordemServico>\n");
+        if (listaOrdensServico->qtdOrdensServico > 0) {
+            for (int i = 0; i < listaOrdensServico->qtdOrdensServico; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<descricao>%s</descricao>\n"
+                        "\t\t\t<idPecas>%d</idPecas>\n"
+                        "\t\t\t<idAgendamento>%d</idAgendamento>\n"
+                        "\t\t\t<valorTotal>%.2f</valorTotal>\n"
+                        "\t\t\t<tempoGasto>%.2f</tempoGasto>\n"
+                        "\t\t\t<datahoraFinal>%s</datahoraFinal>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaOrdensServico->listaOrdensServico[i].descricao,
+                        listaOrdensServico->listaOrdensServico[i].idPecas,
+                        listaOrdensServico->listaOrdensServico[i].idAgendamento,
+                        listaOrdensServico->listaOrdensServico[i].valorTotal,
+                        listaOrdensServico->listaOrdensServico[i].tempoGasto,
+                        listaOrdensServico->listaOrdensServico[i].datahoraFinal,
+                        listaOrdensServico->listaOrdensServico[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Notas Fiscais
+    if (opcoesExportacao[12] == 1) {
+        fprintf(exportacao, "\t<tabela=notaFiscal>\n");
+        if (listaNotasFiscais->qtdNotas > 0) {
+            for (int i = 0; i < listaNotasFiscais->qtdNotas; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<frete>%.2f</frete>\n"
+                        "\t\t\t<imposto>%.2f</imposto>\n"
+                        "\t\t\t<totalNota>%.2f</totalNota>\n"
+                        "\t\t\t<idOficina>%d</idOficina>\n"
+                        "\t\t\t<idFornecedor>%d</idFornecedor>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaNotasFiscais->listaNotas[i].id,
+                        listaNotasFiscais->listaNotas[i].frete,
+                        listaNotasFiscais->listaNotas[i].imposto,
+                        listaNotasFiscais->listaNotas[i].totalNota,
+                        listaNotasFiscais->listaNotas[i].idOficina,
+                        listaNotasFiscais->listaNotas[i].idFornecedor,
+                        listaNotasFiscais->listaNotas[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
+        }
+        fprintf(exportacao, "\t</tabela>\n");
+    }
+
+    // Verifica exportação de Pecas em Notas
+    if (opcoesExportacao[13] == 1) {
+        fprintf(exportacao, "\t<tabela=pecaNota>\n");
+        if (listaPecasNotas->qtdPecasNotas > 0) {
+            for (int i = 0; i < listaPecasNotas->qtdPecasNotas; i++) {
+                fprintf(exportacao, "\t\t<registro>\n"
+                        "\t\t\t<id>%d</id>\n"
+                        "\t\t\t<idNota>%d</idNota>\n"
+                        "\t\t\t<idPeca>%d</idPeca>\n"
+                        "\t\t\t<qtdPecas>%d</qtdPecas>\n"
+                        "\t\t\t<deletado>%d</deletado>\n"
+                        "\t\t</registro>\n",
+                        listaPecasNotas->listaPecasNotas[i].id,
+                        listaPecasNotas->listaPecasNotas[i].idNota,
+                        listaPecasNotas->listaPecasNotas[i].idPeca,
+                        listaPecasNotas->listaPecasNotas[i].qtdPecas,
+                        listaPecasNotas->listaPecasNotas[i].deletado);
+            }
+        } else {
+            fprintf(exportacao, "\t\t<!-- Não há registros -->\n");
         }
         fprintf(exportacao, "\t</tabela>\n");
     }

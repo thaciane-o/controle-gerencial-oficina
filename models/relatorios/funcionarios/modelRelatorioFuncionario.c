@@ -14,7 +14,7 @@ void imprimirRelatorioFuncionario(struct ListaFuncionarios *listaFuncionarios, s
     if (listaFuncionarios->qtdFuncionarios > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
-            // Verifica se está não está deletado e aplica os filtros
+            // Verifica se não está deletado e aplica os filtros
             if (listaFuncionarios->listaFuncionarios[i].deletado == 0 &&
                 ((strlen(nome) > 0 && strstr(listaFuncionarios->listaFuncionarios[i].nome, nome) != NULL) ||
                  (id != 0 && listaFuncionarios->listaFuncionarios[i].id == id))) {
@@ -58,22 +58,27 @@ void armazenarRelatorioFuncionario(struct ListaFuncionarios *listaFuncionarios, 
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
-        if (listaFuncionarios->listaFuncionarios[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaFuncionarios->listaFuncionarios[i].nome, nome) != NULL) ||
-             (id != 0 && listaFuncionarios->listaFuncionarios[i].id == id))) {
-            fprintf(relatorioFuncionario, "%d;%s;%s;%s;%.2f;%s\n",
-                    listaFuncionarios->listaFuncionarios[i].id,
-                    listaFuncionarios->listaFuncionarios[i].nome,
-                    listaFuncionarios->listaFuncionarios[i].cpf,
-                    listaFuncionarios->listaFuncionarios[i].cargo,
-                    listaFuncionarios->listaFuncionarios[i].salario,
-                    listaOficinas->listaOficinas[listaFuncionarios->listaFuncionarios[i].idOficina - 1].nome);
-        }
-    }
 
-    printf("Relatório de funcionários realizado com sucesso!\n\n");
+    // Verifica se há pelo menos um registro
+    if (listaFuncionarios->qtdFuncionarios > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
+            if (listaFuncionarios->listaFuncionarios[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaFuncionarios->listaFuncionarios[i].nome, nome) != NULL) ||
+                 (id != 0 && listaFuncionarios->listaFuncionarios[i].id == id))) {
+                fprintf(relatorioFuncionario, "%d;%s;%s;%s;%.2f;%s\n",
+                        listaFuncionarios->listaFuncionarios[i].id,
+                        listaFuncionarios->listaFuncionarios[i].nome,
+                        listaFuncionarios->listaFuncionarios[i].cpf,
+                        listaFuncionarios->listaFuncionarios[i].cargo,
+                        listaFuncionarios->listaFuncionarios[i].salario,
+                        listaOficinas->listaOficinas[listaFuncionarios->listaFuncionarios[i].idOficina - 1].nome);
+            }
+        }
+        printf("Relatório de funcionários realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhum funcionário foi cadastrado.\n\n");
+    }
 
     // Fechando o arquivo
     fclose(relatorioFuncionario);

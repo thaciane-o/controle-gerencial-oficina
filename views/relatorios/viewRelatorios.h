@@ -46,6 +46,10 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
                               struct ListaPagamentosCliente *listaPagamentosCliente);
 
+void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
+                                  struct ListaAgendamentos *listaAgendamentos,
+                                  struct ListaFuncionarios *listafuncionarios);
+
 int formaDeImprimir();
 
 #endif //VIEWRELATORIOS_H

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 
+#include "modelRelatorioEstoque.h"
 #include "../../oficina/modelOficina.h"
 #include "../../fornecedores/modelFornecedores.h"
 #include "../../funcionarios/modelFuncionarios.h"
@@ -28,6 +29,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                               struct ListaPagamentosCliente *listaPagamentosCliente,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id) {
+    // Variavel de verificação de estoque
     int existeEstoque = 0;
 
 
@@ -36,6 +38,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
         existeEstoque = 1;
         switch (tipo) {
             case 1:
+            // Listagem baseada nas peças utilizadas no serviço
             for (int i = 0; i < listaPecas->qtdPecas; i++) {
                 for (int j = 0; j < listaAgendamentos->qtdAgendamentos; j++) {
                     if (listaPecas->listaPecas[i].deletado == 0) {
@@ -48,7 +51,8 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                            "PREÇO DE VENDA: $%.2f\n"
                            "QUANTIDADE EM ESTOQUE: %d\n"
                            "ESTOQUE MÍNIMO: %d\n"
-                           "FORNECEDOR: %d\n",
+                           "FORNECEDOR: %d\n"
+                           "SERVIÇO: %s\n",
                            listaPecas->listaPecas[i].id,
                            listaPecas->listaPecas[i].descricao,
                            listaPecas->listaPecas[i].fabricante,
@@ -56,7 +60,8 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                            listaPecas->listaPecas[i].precoVenda,
                            listaPecas->listaPecas[i].qtdEstoque,
                            listaPecas->listaPecas[i].estoqueMinimo,
-                           listaPecas->listaPecas[i].idFornecedor);
+                           listaPecas->listaPecas[i].idFornecedor,
+                           listaServicos->listaServicos[i].descricao);
                     }
                 }
             }

@@ -31,7 +31,7 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                          struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
                          struct ListaPecas *listaPecas, struct ListaPagamentosCliente *listaPagamentosCliente,
                          struct ListaAgendamentos *listaAgendamentos,
-                         struct ListaNotasFiscais *listaNotas, struct ListaOrdensServico *listaOrdensServico,
+                         struct ListaNotasFiscais *listaNotas, struct ListaOrdensServico *listaOrdensServicos,
                          struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
                          struct ListaPecasNotas *listaPecasNotas, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
@@ -72,8 +72,8 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
         if (listaNotas->qtdNotas == 0) {
             buscarDadosNotasFiscaisModel(listaNotas, opcaoArmazenamento);
         }
-        if (listaOrdensServico->qtdOrdensServico == 0) {
-            buscarDadosOrdensServicoModel(listaOrdensServico, opcaoArmazenamento);
+        if (listaOrdensServicos->qtdOrdensServico == 0) {
+            buscarDadosOrdensServicoModel(listaOrdensServicos, opcaoArmazenamento);
         }
         if (listaPagamentosFornecedor->qtdPagamentosFornecedor == 0) {
             buscarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
@@ -110,7 +110,7 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
             case 3:
                 filtroRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
+                              listaOrdensServicos, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente);
                 break;
             case 4:
@@ -174,10 +174,10 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                     listaNotas->qtdNotas = 0;
                 }
 
-                if (listaOrdensServico->qtdOrdensServico > 0) {
-                    free(listaOrdensServico->listaOrdensServico);
-                    listaOrdensServico->listaOrdensServico = NULL;
-                    listaOrdensServico->qtdOrdensServico = 0;
+                if (listaOrdensServicos->qtdOrdensServico > 0) {
+                    free(listaOrdensServicos->listaOrdensServico);
+                    listaOrdensServicos->listaOrdensServico = NULL;
+                    listaOrdensServicos->qtdOrdensServico = 0;
                 }
 
                 if (listaPagamentosFornecedor->qtdPagamentosFornecedor > 0) {

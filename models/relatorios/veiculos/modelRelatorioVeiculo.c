@@ -28,13 +28,13 @@ void imprimirRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct ListaC
                        "\nANO DE FABRICAÇÃO: %d"
                        "\nPLACA: %s"
                        "\nCHASSI: %s\n",
-                        listaVeiculos->listaVeiculos[i].id,
-                        listaClientes->listaClientes[listaVeiculos->listaVeiculos[i].id - 1].nome,
-                        listaVeiculos->listaVeiculos[i].modelo,
-                        listaVeiculos->listaVeiculos[i].marca,
-                        listaVeiculos->listaVeiculos[i].anoFabricacao,
-                        listaVeiculos->listaVeiculos[i].placa,
-                        listaVeiculos->listaVeiculos[i].chassi);
+                       listaVeiculos->listaVeiculos[i].id,
+                       listaClientes->listaClientes[listaVeiculos->listaVeiculos[i].id - 1].nome,
+                       listaVeiculos->listaVeiculos[i].modelo,
+                       listaVeiculos->listaVeiculos[i].marca,
+                       listaVeiculos->listaVeiculos[i].anoFabricacao,
+                       listaVeiculos->listaVeiculos[i].placa,
+                       listaVeiculos->listaVeiculos[i].chassi);
             }
         }
     }
@@ -47,7 +47,7 @@ void imprimirRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct ListaC
 
 // Armazena o relatório em arquivo
 void armazenarRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct ListaClientes *listaClientes, char *nome,
-                              int id) {
+                               int id) {
     // Abrindo ou criando arquivo para adicionar dados
     FILE *relatorioVeiculo;
 
@@ -60,23 +60,27 @@ void armazenarRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct Lista
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
-        if (listaVeiculos->listaVeiculos[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaVeiculos->listaVeiculos[i].modelo, nome) != NULL) ||
-             (id != 0 && listaVeiculos->listaVeiculos[i].id == id))) {
-            fprintf(relatorioVeiculo, "%d;%s;%s;%s;%d;%s;%s\n",
-                listaVeiculos->listaVeiculos[i].id,
-                listaClientes->listaClientes[listaVeiculos->listaVeiculos[i].id - 1].nome,
-                listaVeiculos->listaVeiculos[i].modelo,
-                listaVeiculos->listaVeiculos[i].marca,
-                listaVeiculos->listaVeiculos[i].anoFabricacao,
-                listaVeiculos->listaVeiculos[i].placa,
-                listaVeiculos->listaVeiculos[i].chassi);
+    // Verifica se há pelo menos um registro
+    if (listaVeiculos->qtdVeiculos > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
+            if (listaVeiculos->listaVeiculos[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaVeiculos->listaVeiculos[i].modelo, nome) != NULL) ||
+                 (id != 0 && listaVeiculos->listaVeiculos[i].id == id))) {
+                fprintf(relatorioVeiculo, "%d;%s;%s;%s;%d;%s;%s\n",
+                        listaVeiculos->listaVeiculos[i].id,
+                        listaClientes->listaClientes[listaVeiculos->listaVeiculos[i].id - 1].nome,
+                        listaVeiculos->listaVeiculos[i].modelo,
+                        listaVeiculos->listaVeiculos[i].marca,
+                        listaVeiculos->listaVeiculos[i].anoFabricacao,
+                        listaVeiculos->listaVeiculos[i].placa,
+                        listaVeiculos->listaVeiculos[i].chassi);
+            }
         }
+        printf("Relatório de veículos realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhum veículo foi cadastrado.\n\n");
     }
-
-    printf("Relatório de veículos realizado com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioVeiculo);

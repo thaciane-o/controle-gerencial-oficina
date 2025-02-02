@@ -61,24 +61,28 @@ void armazenarRelatorioCliente(struct ListaClientes *listaClientes, struct Lista
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaClientes->qtdClientes; i++) {
-        if (listaClientes->listaClientes[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaClientes->listaClientes[i].nome, nome) != NULL) ||
-             (id != 0 && listaClientes->listaClientes[i].id == id))) {
-            fprintf(relatorioCliente, "%d;%s;%s;%s;%s;%s;%s;%s\n",
-                    listaClientes->listaClientes[i].id,
-                    listaClientes->listaClientes[i].nome,
-                    listaClientes->listaClientes[i].ddd,
-                    listaClientes->listaClientes[i].telefone,
-                    listaClientes->listaClientes[i].cpf_cnpj,
-                    listaClientes->listaClientes[i].email,
-                    listaClientes->listaClientes[i].endereco,
-                    listaOficinas->listaOficinas[listaClientes->listaClientes[i].idOficina - 1].nome);
+    // Verifica se há pelo menos um registro
+    if (listaClientes->qtdClientes > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaClientes->qtdClientes; i++) {
+            if (listaClientes->listaClientes[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaClientes->listaClientes[i].nome, nome) != NULL) ||
+                 (id != 0 && listaClientes->listaClientes[i].id == id))) {
+                fprintf(relatorioCliente, "%d;%s;%s;%s;%s;%s;%s;%s\n",
+                        listaClientes->listaClientes[i].id,
+                        listaClientes->listaClientes[i].nome,
+                        listaClientes->listaClientes[i].ddd,
+                        listaClientes->listaClientes[i].telefone,
+                        listaClientes->listaClientes[i].cpf_cnpj,
+                        listaClientes->listaClientes[i].email,
+                        listaClientes->listaClientes[i].endereco,
+                        listaOficinas->listaOficinas[listaClientes->listaClientes[i].idOficina - 1].nome);
+            }
         }
+        printf("Relatório de clientes realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhum cliente foi cadastrado.\n\n");
     }
-
-    printf("Relatório de clientes realizado com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioCliente);

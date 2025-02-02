@@ -8,7 +8,7 @@
 
 // Imprime o relatório na tela
 void imprimirRelatorioPeca(struct ListaPecas *listaPecas, struct ListaFornecedores *listaFornecedores,
-                            struct ListaOficinas *listaOficinas, char *nome, int id) {
+                           struct ListaOficinas *listaOficinas, char *nome, int id) {
     int existePecas = 0;
 
     // Verifica se há pelo menos um registro
@@ -65,25 +65,29 @@ void armazenarRelatorioPeca(struct ListaPecas *listaPecas, struct ListaFornecedo
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaPecas->qtdPecas; i++) {
-        if (listaPecas->listaPecas[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaPecas->listaPecas[i].descricao, nome) != NULL) ||
-             (id != 0 && listaPecas->listaPecas[i].id == id))) {
-            fprintf(relatorioPeca, "%d;%s;%s;%.2f;%.2f;%d;%d;%s;%s\n",
-                    listaPecas->listaPecas[i].id,
-                    listaPecas->listaPecas[i].descricao,
-                    listaPecas->listaPecas[i].fabricante,
-                    listaPecas->listaPecas[i].precoCusto,
-                    listaPecas->listaPecas[i].precoVenda,
-                    listaPecas->listaPecas[i].qtdEstoque,
-                    listaPecas->listaPecas[i].estoqueMinimo,
-                    listaOficinas->listaOficinas[listaPecas->listaPecas[i].idOficina - 1].nome,
-                    listaFornecedores->listaFornecedores[listaPecas->listaPecas[i].idFornecedor - 1].nomeFantasia);
+    // Verifica se há pelo menos um registro
+    if (listaPecas->qtdPecas > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaPecas->qtdPecas; i++) {
+            if (listaPecas->listaPecas[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaPecas->listaPecas[i].descricao, nome) != NULL) ||
+                 (id != 0 && listaPecas->listaPecas[i].id == id))) {
+                fprintf(relatorioPeca, "%d;%s;%s;%.2f;%.2f;%d;%d;%s;%s\n",
+                        listaPecas->listaPecas[i].id,
+                        listaPecas->listaPecas[i].descricao,
+                        listaPecas->listaPecas[i].fabricante,
+                        listaPecas->listaPecas[i].precoCusto,
+                        listaPecas->listaPecas[i].precoVenda,
+                        listaPecas->listaPecas[i].qtdEstoque,
+                        listaPecas->listaPecas[i].estoqueMinimo,
+                        listaOficinas->listaOficinas[listaPecas->listaPecas[i].idOficina - 1].nome,
+                        listaFornecedores->listaFornecedores[listaPecas->listaPecas[i].idFornecedor - 1].nomeFantasia);
+            }
         }
+        printf("Relatório de peças realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhuma peça foi cadastrada.\n\n");
     }
-
-    printf("Relatório de peças realizado com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioPeca);

@@ -25,7 +25,6 @@ void imprimirRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServic
     if (listaOrdensServicos->qtdOrdensServico > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaOrdensServicos->qtdOrdensServico; i++) {
-            // Verificar se não está deletado, se foi finalizado e aplica os filtros
             idAgendamento = listaOrdensServicos->listaOrdensServico[i].idAgendamento;
 
             // Converter string para struct tm
@@ -48,6 +47,7 @@ void imprimirRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServic
             time_t tOS = mktime(&dataOS);
             time_t tAgendamento = mktime(&dataAgendamento);
 
+            // Verificar se não está deletado, se foi finalizado e aplica os filtros
             if (listaOrdensServicos->listaOrdensServico[i].deletado == 0 &&
                 (strcmp(listaOrdensServicos->listaOrdensServico[i].datahoraFinal, "NF") != 0) &&
                 ((listaAgendamentos->listaAgendamentos[idAgendamento - 1].idFuncionario == funcionario) ||
@@ -126,7 +126,6 @@ void armazenarRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServi
     if (listaOrdensServicos->qtdOrdensServico > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaOrdensServicos->qtdOrdensServico; i++) {
-            // Verificar se não está deletado, se foi finalizado e aplica os filtros
             idAgendamento = listaOrdensServicos->listaOrdensServico[i].idAgendamento;
 
             // Converter string para struct tm
@@ -149,6 +148,7 @@ void armazenarRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServi
             time_t tOS = mktime(&dataOS);
             time_t tAgendamento = mktime(&dataAgendamento);
 
+            // Verificar se não está deletado, se foi finalizado e aplica os filtros
             if (listaOrdensServicos->listaOrdensServico[i].deletado == 0 &&
                 (strcmp(listaOrdensServicos->listaOrdensServico[i].datahoraFinal, "NF") != 0) &&
                 ((listaAgendamentos->listaAgendamentos[idAgendamento - 1].idFuncionario == funcionario) ||

@@ -56,21 +56,25 @@ void armazenarRelatorioServico(struct ListaServicos *listaServicos, struct Lista
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaServicos->qtdServicos; i++) {
-        if (listaServicos->listaServicos[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaServicos->listaServicos[i].descricao, nome) != NULL) ||
-             (id != 0 && listaServicos->listaServicos[i].id == id))) {
-            fprintf(relatorioServico, "%d;%s;%.2f;%.2f;%s\n",
-                    listaServicos->listaServicos[i].id,
-                    listaServicos->listaServicos[i].descricao,
-                    listaServicos->listaServicos[i].preco,
-                    listaServicos->listaServicos[i].comissao,
-                    listaOficinas->listaOficinas[listaServicos->listaServicos[i].idOficina - 1].nome);
+    // Verifica se há pelo menos um registro
+    if (listaServicos->qtdServicos > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaServicos->qtdServicos; i++) {
+            if (listaServicos->listaServicos[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaServicos->listaServicos[i].descricao, nome) != NULL) ||
+                 (id != 0 && listaServicos->listaServicos[i].id == id))) {
+                fprintf(relatorioServico, "%d;%s;%.2f;%.2f;%s\n",
+                        listaServicos->listaServicos[i].id,
+                        listaServicos->listaServicos[i].descricao,
+                        listaServicos->listaServicos[i].preco,
+                        listaServicos->listaServicos[i].comissao,
+                        listaOficinas->listaOficinas[listaServicos->listaServicos[i].idOficina - 1].nome);
+            }
         }
+        printf("Relatório de serviços realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhum serviço foi cadastrado.\n\n");
     }
-
-    printf("Relatório de serviços realizado com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioServico);

@@ -60,25 +60,29 @@ void armazenarRelatorioFornecedor(struct ListaFornecedores *listaFornecedores, c
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaFornecedores->qtdFornecedores; i++) {
-        if (listaFornecedores->listaFornecedores[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaFornecedores->listaFornecedores[i].nomeFantasia, nome) != NULL) ||
-             (id != 0 && listaFornecedores->listaFornecedores[i].id == id))) {
-            fprintf(relatorioFornecedor, "%d;%s;%s;%s;%s;%s;%s;%s;%s\n",
-                    listaFornecedores->listaFornecedores[i].id,
-                    listaFornecedores->listaFornecedores[i].nomeFantasia,
-                    listaFornecedores->listaFornecedores[i].razaoSocial,
-                    listaFornecedores->listaFornecedores[i].inscricaoEstadual,
-                    listaFornecedores->listaFornecedores[i].cnpj,
-                    listaFornecedores->listaFornecedores[i].endereco,
-                    listaFornecedores->listaFornecedores[i].ddd,
-                    listaFornecedores->listaFornecedores[i].telefone,
-                    listaFornecedores->listaFornecedores[i].email);
+    // Verifica se há pelo menos um registro
+    if (listaFornecedores->qtdFornecedores > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaFornecedores->qtdFornecedores; i++) {
+            if (listaFornecedores->listaFornecedores[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaFornecedores->listaFornecedores[i].nomeFantasia, nome) != NULL) ||
+                 (id != 0 && listaFornecedores->listaFornecedores[i].id == id))) {
+                fprintf(relatorioFornecedor, "%d;%s;%s;%s;%s;%s;%s;%s;%s\n",
+                        listaFornecedores->listaFornecedores[i].id,
+                        listaFornecedores->listaFornecedores[i].nomeFantasia,
+                        listaFornecedores->listaFornecedores[i].razaoSocial,
+                        listaFornecedores->listaFornecedores[i].inscricaoEstadual,
+                        listaFornecedores->listaFornecedores[i].cnpj,
+                        listaFornecedores->listaFornecedores[i].endereco,
+                        listaFornecedores->listaFornecedores[i].ddd,
+                        listaFornecedores->listaFornecedores[i].telefone,
+                        listaFornecedores->listaFornecedores[i].email);
+            }
         }
+        printf("Relatório de fornecedores realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhum fornecedor foi cadastrado.\n\n");
     }
-
-    printf("Relatório de fornecedores realizado com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioFornecedor);

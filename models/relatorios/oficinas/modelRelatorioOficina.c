@@ -18,20 +18,20 @@ void imprimirRelatorioOficina(struct ListaOficinas *listaOficinas, char *nome, i
                  (id != 0 && listaOficinas->listaOficinas[i].id == id))) {
                 existeOficinas = 1;
                 printf("\n====================\n"
-                         "| OFICINA %d        |\n"
-                         "====================\n"
-                         "NOME: %s\n"
-                         "ENDEREÇO: %s\n"
-                         "TELEFONE: (%s) %s\n"
-                         "EMAIL: %s\n"
-                         "PORCENTAGEM DE LUCRO: %.2f\n",
-                         listaOficinas->listaOficinas[i].id,
-                         listaOficinas->listaOficinas[i].nome,
-                         listaOficinas->listaOficinas[i].endereco,
-                         listaOficinas->listaOficinas[i].ddd,
-                         listaOficinas->listaOficinas[i].telefone,
-                         listaOficinas->listaOficinas[i].email,
-                         listaOficinas->listaOficinas[i].porcentagemLucro);
+                       "| OFICINA %d        |\n"
+                       "====================\n"
+                       "NOME: %s\n"
+                       "ENDEREÇO: %s\n"
+                       "TELEFONE: (%s) %s\n"
+                       "EMAIL: %s\n"
+                       "PORCENTAGEM DE LUCRO: %.2f\n",
+                       listaOficinas->listaOficinas[i].id,
+                       listaOficinas->listaOficinas[i].nome,
+                       listaOficinas->listaOficinas[i].endereco,
+                       listaOficinas->listaOficinas[i].ddd,
+                       listaOficinas->listaOficinas[i].telefone,
+                       listaOficinas->listaOficinas[i].email,
+                       listaOficinas->listaOficinas[i].porcentagemLucro);
             }
         }
     }
@@ -56,23 +56,28 @@ void armazenarRelatorioOficina(struct ListaOficinas *listaOficinas, char *nome, 
         return;
     }
 
-    // Inserindo os dados no arquivo de relatório
-    for (int i = 0; i < listaOficinas->qtdOficinas; i++) {
-        if (listaOficinas->listaOficinas[i].deletado == 0 &&
-            ((strlen(nome) > 0 && strstr(listaOficinas->listaOficinas[i].nome, nome) != NULL) ||
-             (id != 0 && listaOficinas->listaOficinas[i].id == id))) {
-            fprintf(relatorioOficina, "%d;%s;%s;%s;%s;%s;%.2f\n",
-                listaOficinas->listaOficinas[i].id,
-                listaOficinas->listaOficinas[i].nome,
-                listaOficinas->listaOficinas[i].endereco,
-                listaOficinas->listaOficinas[i].ddd,
-                listaOficinas->listaOficinas[i].telefone,
-                listaOficinas->listaOficinas[i].email,
-                listaOficinas->listaOficinas[i].porcentagemLucro);
+    // Verifica se há pelo menos um registro
+    if (listaOficinas->qtdOficinas > 0) {
+        // Inserindo os dados no arquivo de relatório
+        for (int i = 0; i < listaOficinas->qtdOficinas; i++) {
+            if (listaOficinas->listaOficinas[i].deletado == 0 &&
+                ((strlen(nome) > 0 && strstr(listaOficinas->listaOficinas[i].nome, nome) != NULL) ||
+                 (id != 0 && listaOficinas->listaOficinas[i].id == id))) {
+                fprintf(relatorioOficina, "%d;%s;%s;%s;%s;%s;%.2f\n",
+                        listaOficinas->listaOficinas[i].id,
+                        listaOficinas->listaOficinas[i].nome,
+                        listaOficinas->listaOficinas[i].endereco,
+                        listaOficinas->listaOficinas[i].ddd,
+                        listaOficinas->listaOficinas[i].telefone,
+                        listaOficinas->listaOficinas[i].email,
+                        listaOficinas->listaOficinas[i].porcentagemLucro);
+            }
         }
+        printf("Relatório de oficinas realizado com sucesso!\n\n");
+    } else {
+        printf("Nenhuma oficina foi cadastrada.\n\n");
     }
 
-    printf("Relatório de oficinas realizado com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioOficina);

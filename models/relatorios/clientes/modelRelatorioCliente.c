@@ -14,7 +14,7 @@ void imprimirRelatorioCliente(struct ListaClientes *listaClientes, struct ListaO
     if (listaClientes->qtdClientes > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaClientes->qtdClientes; i++) {
-            // Verifica se está não está deletado e aplica os filtros
+            // Verifica se não está deletado e aplica os filtros
             if (listaClientes->listaClientes[i].deletado == 0 &&
                 ((strlen(nome) > 0 && strstr(listaClientes->listaClientes[i].nome, nome) != NULL) ||
                  (id != 0 && listaClientes->listaClientes[i].id == id))) {

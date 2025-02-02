@@ -14,7 +14,7 @@ void imprimirRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct ListaC
     if (listaVeiculos->qtdVeiculos > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaVeiculos->qtdVeiculos; i++) {
-            // Verifica se está não está deletado e aplica os filtros
+            // Verifica se não está deletado e aplica os filtros
             if (listaVeiculos->listaVeiculos[i].deletado == 0 &&
                 ((strlen(nome) > 0 && strstr(listaVeiculos->listaVeiculos[i].modelo, nome) != NULL) ||
                  (id != 0 && listaVeiculos->listaVeiculos[i].id == id))) {

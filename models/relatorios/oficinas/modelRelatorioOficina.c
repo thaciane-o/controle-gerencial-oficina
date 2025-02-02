@@ -12,7 +12,7 @@ void imprimirRelatorioOficina(struct ListaOficinas *listaOficinas, char *nome, i
     if (listaOficinas->qtdOficinas > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaOficinas->qtdOficinas; i++) {
-            // Verifica se está não está deletado e aplica os filtros
+            // Verifica se não está deletado e aplica os filtros
             if (listaOficinas->listaOficinas[i].deletado == 0 &&
                 ((strlen(nome) > 0 && strstr(listaOficinas->listaOficinas[i].nome, nome) != NULL) ||
                  (id != 0 && listaOficinas->listaOficinas[i].id == id))) {

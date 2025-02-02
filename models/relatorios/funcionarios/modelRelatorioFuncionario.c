@@ -14,7 +14,7 @@ void imprimirRelatorioFuncionario(struct ListaFuncionarios *listaFuncionarios, s
     if (listaFuncionarios->qtdFuncionarios > 0) {
         // Exibe todos os registros
         for (int i = 0; i < listaFuncionarios->qtdFuncionarios; i++) {
-            // Verifica se está não está deletado e aplica os filtros
+            // Verifica se não está deletado e aplica os filtros
             if (listaFuncionarios->listaFuncionarios[i].deletado == 0 &&
                 ((strlen(nome) > 0 && strstr(listaFuncionarios->listaFuncionarios[i].nome, nome) != NULL) ||
                  (id != 0 && listaFuncionarios->listaFuncionarios[i].id == id))) {

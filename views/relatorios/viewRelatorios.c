@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #include "./viewRelatorios.h"
 #include "../../models/relatorios/clientes/modelRelatorioCliente.h"
@@ -9,6 +10,7 @@
 #include "../../models/relatorios/servicos/modelRelatorioServico.h"
 #include "../../models/relatorios/fornecedores/modelRelatorioFornecedores.h"
 #include "../../models/relatorios/pecas/modelRelatorioPeca.h"
+#include "../../models/relatorios/produtividade/modelRelatorioProdutividade.h"
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
@@ -20,7 +22,8 @@
 void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
-                         struct ListaPecas *listaPecas, int opcaoArmazenamento) {
+                         struct ListaPecas *listaPecas, struct ListaOrdensServico *listaOrdensServicos,
+                         struct ListaAgendamentos *listaAgendamentos, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
 
     // Verifica tipo de armazenamento para buscar dados
@@ -53,6 +56,14 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
         if (listaPecas->qtdPecas == 0) {
             buscarDadosPecaModel(listaPecas, opcaoArmazenamento);
         }
+
+        if (listaOrdensServicos->qtdOrdensServico == 0) {
+            buscarDadosOrdensServicoModel(listaOrdensServicos, opcaoArmazenamento);
+        }
+
+        if (listaAgendamentos->qtdAgendamentos == 0) {
+            buscarDadosAgendamentosModel(listaAgendamentos, opcaoArmazenamento);
+        }
     }
 
     while (opcaoSubmenus != 6) {
@@ -79,6 +90,7 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
             case 3:
                 break;
             case 4:
+                filtroRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios);
                 break;
             case 5:
                 break;
@@ -125,6 +137,18 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                     listaPecas->listaPecas = NULL;
                     listaPecas->qtdPecas = 0;
                 }
+
+                if (listaOrdensServicos->qtdOrdensServico > 0) {
+                    free(listaOrdensServicos->listaOrdensServico);
+                    listaOrdensServicos->listaOrdensServico = NULL;
+                    listaOrdensServicos->qtdOrdensServico = 0;
+                }
+
+                if (listaAgendamentos->qtdAgendamentos > 0) {
+                    free(listaAgendamentos->listaAgendamentos);
+                    listaAgendamentos->listaAgendamentos = NULL;
+                    listaAgendamentos->qtdAgendamentos = 0;
+                }
                 return;
             default: printf("Opção inválida!\n\n");
                 break;
@@ -138,7 +162,7 @@ void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct Lista
                                struct ListaPecas *listaPecas) {
     int opcaoSubmenus = 0;
 
-    while (opcaoSubmenus != 6) {
+    while (opcaoSubmenus != 8) {
         printf("\n======================================\n"
             "|    RELATÓRIO DE CADASTRO BÁSICO    |\n"
             "======================================\n"
@@ -167,146 +191,231 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
                            struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
                            struct ListaPecas *listaPecas, int tipoRelatorio) {
-    int opcaoFiltro = 0;
+    int opcaoFiltro = 0, id = 0;
+    char nome[255] = {0};
 
-    while (opcaoFiltro != 3) {
-        int id = 0;
-        char nome[255] = {0};
+    printf("\n=================\n"
+        "|    FILTRAR    |\n"
+        "=================\n"
+        "|  1  | ID      |\n"
+        "|  2  | Nome    |\n"
+        "|  3  | Voltar  |\n"
+        "=================\n"
+        "Escolha uma forma de filtar: ");
+    scanf("%d", &opcaoFiltro);
 
-        printf("\n=================\n"
-            "|    FILTRAR    |\n"
-            "=================\n"
-            "|  1  | ID      |\n"
-            "|  2  | Nome    |\n"
-            "|  3  | Voltar  |\n"
-            "=================\n"
-            "Escolha uma forma de filtar: ");
-        scanf("%d", &opcaoFiltro);
+    switch (opcaoFiltro) {
+        case 1:
+            printf("Insira o ID:");
+            scanf("%d", &id);
 
-        switch (opcaoFiltro) {
-            case 1:
-                printf("Insira o ID:");
-                scanf("%d", &id);
+            switch (tipoRelatorio) {
+                case 1:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioOficina(listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioOficina(listaOficinas, nome, id);
+                    }
+                    break;
+                case 2:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioCliente(listaClientes, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioCliente(listaClientes, listaOficinas, nome, id);
+                    }
+                    break;
+                case 3:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
+                    } else {
+                        armazenarRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
+                    }
+                    break;
+                case 4:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
+                    }
+                    break;
+                case 5:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioServico(listaServicos, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioServico(listaServicos, listaOficinas, nome, id);
+                    }
+                    break;
+                case 6:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioFornecedor(listaFornecedores, nome, id);
+                    } else {
+                        armazenarRelatorioFornecedor(listaFornecedores, nome, id);
+                    }
+                    break;
+                case 7:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
+                    }
+                    break;
+                default: printf("Opção inválida!\n\n");
+                    break;
+            }
 
-                switch (tipoRelatorio) {
-                    case 1:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioOficina(listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioOficina(listaOficinas, nome, id);
-                        }
-                        break;
-                    case 2:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioCliente(listaClientes, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioCliente(listaClientes, listaOficinas, nome, id);
-                        }
-                        break;
-                    case 3:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
-                        } else {
-                            armazenarRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
-                        }
-                        break;
-                    case 4:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
-                        }
-                        break;
-                    case 5:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioServico(listaServicos, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioServico(listaServicos, listaOficinas, nome, id);
-                        }
-                        break;
-                    case 6:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioFornecedor(listaFornecedores, nome, id);
-                        } else {
-                            armazenarRelatorioFornecedor(listaFornecedores, nome, id);
-                        }
-                        break;
-                    case 7:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioPecas(listaPecas, listaFornecedores, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
-                        }
-                        break;
-                    default: printf("Opção inválida!\n\n");
-                        break;
-                }
+            break;
+        case 2:
+            printf("Insira o nome:");
+            setbuf(stdin, NULL);
+            scanf(" %[^\n]s", nome);
 
-                break;
-            case 2:
-                printf("Insira o nome:");
-                setbuf(stdin, NULL);
-                scanf(" %[^\n]s", nome);
+            switch (tipoRelatorio) {
+                case 1:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioOficina(listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioOficina(listaOficinas, nome, id);
+                    }
+                    break;
+                case 2:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioCliente(listaClientes, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioCliente(listaClientes, listaOficinas, nome, id);
+                    }
+                    break;
+                case 3:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
+                    } else {
+                        armazenarRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
+                    }
+                    break;
+                case 4:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
+                    }
+                    break;
+                case 5:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioServico(listaServicos, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioServico(listaServicos, listaOficinas, nome, id);
+                    }
+                    break;
+                case 6:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioFornecedor(listaFornecedores, nome, id);
+                    } else {
+                        armazenarRelatorioFornecedor(listaFornecedores, nome, id);
+                    }
+                    break;
+                case 7:
+                    if (formaDeImprimir() == 1) {
+                        imprimirRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
+                    } else {
+                        armazenarRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
+                    }
+                    break;
+                default: printf("Opção inválida!\n\n");
+                    break;
+            }
+            break;
+        case 3:
+            return;
+        default: printf("Opção inválida!\n\n");
+            break;
+    }
+}
 
-                switch (tipoRelatorio) {
-                    case 1:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioOficina(listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioOficina(listaOficinas, nome, id);
-                        }
-                        break;
-                    case 2:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioCliente(listaClientes, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioCliente(listaClientes, listaOficinas, nome, id);
-                        }
-                        break;
-                    case 3:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
-                        } else {
-                            armazenarRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
-                        }
-                        break;
-                    case 4:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
-                        }
-                        break;
-                    case 5:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioServico(listaServicos, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioServico(listaServicos, listaOficinas, nome, id);
-                        }
-                        break;
-                    case 6:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioFornecedor(listaFornecedores, nome, id);
-                        } else {
-                            armazenarRelatorioFornecedor(listaFornecedores, nome, id);
-                        }
-                        break;
-                    case 7:
-                        if (formaDeImprimir() == 1) {
-                            imprimirRelatorioPecas(listaPecas, listaFornecedores, listaOficinas, nome, id);
-                        } else {
-                            armazenarRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
-                        }
-                        break;
-                    default: printf("Opção inválida!\n\n");
-                        break;
-                }
-                break;
-            case 3:
+void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos,
+                                  struct ListaAgendamentos *listaAgendamentos,
+                                  struct ListaFuncionarios *listaFuncionarios) {
+    int opcaoFiltro = 0, funcionario = 0, servico = 0, diaInicio = 0, mesInicio = 0, anoInicio = 0, horaInicio = 0,
+            minInicio = 0, diaFim = 0, mesFim = 0, anoFim = 0, horaFim = 0, minFim = 0;
+    struct tm dataHoraInicial = {0};
+    struct tm dataHoraFinal = {0};
+
+    printf("\n=============================\n"
+        "|          FILTRAR          |\n"
+        "=============================\n"
+        "|  1  | Funcionário         |\n"
+        "|  2  | Serviço             |\n"
+        "|  3  | Intervalos de datas |\n"
+        "|  4  | Voltar              |\n"
+        "=============================\n"
+        "Escolha uma forma de filtar: ");
+    scanf("%d", &opcaoFiltro);
+
+    switch (opcaoFiltro) {
+        case 1:
+            printf("Insira o ID do funcionário:");
+            scanf("%d", &funcionario);
+            break;
+        case 2:
+            printf("Insira o ID do serviço:");
+            scanf("%d", &servico);
+            break;
+        case 3:
+            printf("Insira a data inicial (DD/MM/AAAA): ");
+            setbuf(stdin, NULL);
+            scanf("%d/%d/%d", &diaInicio, &mesInicio, &anoInicio);
+
+            printf("Insira a hora inicial (HH:MM): ");
+            setbuf(stdin, NULL);
+            scanf("%d:%d", &horaInicio, &minInicio);
+
+            dataHoraInicial.tm_mday = diaInicio;
+            dataHoraInicial.tm_mon = mesInicio - 1;
+            dataHoraInicial.tm_year = anoInicio - 1900;
+            dataHoraInicial.tm_hour = horaInicio;
+            dataHoraInicial.tm_min = minInicio;
+            dataHoraInicial.tm_sec = 0;
+
+            time_t tempoInicio = mktime(&dataHoraInicial);
+
+            if (tempoInicio == -1) {
+                printf("Erro ao converter a data e hora.\n");
                 return;
-            default: printf("Opção inválida!\n\n");
-                break;
-        }
+            }
+
+            printf("Insira a data final (DD/MM/AAAA): ");
+            setbuf(stdin, NULL);
+            scanf("%d/%d/%d", &diaFim, &mesFim, &anoFim);
+
+            printf("Insira a hora final (HH:MM): ");
+            setbuf(stdin, NULL);
+            scanf("%d:%d", &horaFim, &minFim);
+
+            dataHoraFinal.tm_mday = diaFim;
+            dataHoraFinal.tm_mon = mesFim - 1;
+            dataHoraFinal.tm_year = anoFim - 1900;
+            dataHoraFinal.tm_hour = horaFim;
+            dataHoraFinal.tm_min = minFim;
+            dataHoraFinal.tm_sec = 0;
+
+            time_t tempoFim = mktime(&dataHoraFinal);
+
+            if (tempoFim == -1) {
+                printf("Erro ao converter a data e hora.\n");
+                return;
+            }
+            break;
+        case 4:
+            return;
+            break;
+        default:
+            printf("Opção inválida!\n\n");
+    }
+
+    if (formaDeImprimir() == 1) {
+        imprimirRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios, funcionario,
+                                       servico, dataHoraInicial, dataHoraFinal);
+    } else {
+        armazenarRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios, funcionario,
+                                        servico, dataHoraInicial, dataHoraFinal);
     }
 }
 

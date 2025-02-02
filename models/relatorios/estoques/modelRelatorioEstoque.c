@@ -15,6 +15,7 @@
 #include "../../pecas/modelPecas.h"
 #include "../../pecasNotas/modelPecasNotas.h"
 #include "../../pagamentoCliente/modelPagamentoCliente.h"
+#include "../../veiculos/modelVeiculos.h"
 
 
 // Imprime o relatório na tela
@@ -27,6 +28,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                               struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
                               struct ListaPagamentosCliente *listaPagamentosCliente,
+                              struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id) {
     // Variavel de verificação de estoque
@@ -39,9 +41,215 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
         switch (tipo) {
             case 1:
             // Listagem baseada nas peças utilizadas no serviço
-            for (int i = 0; i < listaPecas->qtdPecas; i++) {
-                for (int j = 0; j < listaAgendamentos->qtdAgendamentos; j++) {
-                    if (listaPecas->listaPecas[i].deletado == 0) {
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                        for (int k = 0; k < listaServicos->qtdServicos; k++) {
+                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                                if (listaPecas->listaPecas[i].deletado == 0 && listaServicos->listaServicos[k].id == id &&
+                                    listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id
+                                    && listaAgendamentos->listaAgendamentos[l].id == listaOrdensServicos->listaOrdensServico[j].idAgendamento
+                                    && listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[k].id) {
+                                    printf("\n====================\n"
+                                       "| PEÇA %d           |\n"
+                                       "====================\n"
+                                       "DESCRIÇÃO: %s\n"
+                                       "FABRICANTE: %s\n"
+                                       "PREÇO DE CUSTO: $%.2f\n"
+                                       "PREÇO DE VENDA: $%.2f\n"
+                                       "QUANTIDADE EM ESTOQUE: %d\n"
+                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "SERVIÇO: %s\n\n",
+                                       listaPecas->listaPecas[i].id,
+                                       listaPecas->listaPecas[i].descricao,
+                                       listaPecas->listaPecas[i].fabricante,
+                                       listaPecas->listaPecas[i].precoCusto,
+                                       listaPecas->listaPecas[i].precoVenda,
+                                       listaPecas->listaPecas[i].qtdEstoque,
+                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaServicos->listaServicos[k].descricao);
+                                    }
+                            }
+                        }
+                    }
+                }
+            break;
+            case 2:
+
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                        for (int k = 0; k < listaClientes->qtdClientes; k++) {
+                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                                for (int m = 0; m < listaVeiculos->qtdVeiculos; m++) {
+                                    if (listaPecas->listaPecas[i].deletado == 0 && listaClientes->listaClientes[k].id == id &&
+                                        listaVeiculos->listaVeiculos[m].idProprietario == listaClientes->listaClientes[k].id
+                                        && listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[m].id
+                                        && listaOrdensServicos->listaOrdensServico[j].idAgendamento == listaAgendamentos->listaAgendamentos[l].id
+                                        && listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id) {
+
+                                        printf("\n====================\n"
+                                           "| PEÇA %d           |\n"
+                                           "====================\n"
+                                           "DESCRIÇÃO: %s\n"
+                                           "FABRICANTE: %s\n"
+                                           "PREÇO DE CUSTO: $%.2f\n"
+                                           "PREÇO DE VENDA: $%.2f\n"
+                                           "QUANTIDADE EM ESTOQUE: %d\n"
+                                           "ESTOQUE MÍNIMO: %d\n"
+                                           "CLIENTE: %s\n\n",
+                                           listaPecas->listaPecas[i].id,
+                                           listaPecas->listaPecas[i].descricao,
+                                           listaPecas->listaPecas[i].fabricante,
+                                           listaPecas->listaPecas[i].precoCusto,
+                                           listaPecas->listaPecas[i].precoVenda,
+                                           listaPecas->listaPecas[i].qtdEstoque,
+                                           listaPecas->listaPecas[i].estoqueMinimo,
+                                           listaClientes->listaClientes[k].nome);
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 3:
+
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                        for (int k = 0; k < listaFuncionarios->qtdFuncionarios; k++) {
+                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                                if (listaPecas->listaPecas[i].deletado == 0 && listaFuncionarios->listaFuncionarios[k].id == id &&
+                                    listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id
+                                    && listaAgendamentos->listaAgendamentos[l].id == listaOrdensServicos->listaOrdensServico[j].idAgendamento
+                                    && listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[k].id) {
+
+                                    printf("\n====================\n"
+                                       "| PEÇA %d           |\n"
+                                       "====================\n"
+                                       "DESCRIÇÃO: %s\n"
+                                       "FABRICANTE: %s\n"
+                                       "PREÇO DE CUSTO: $%.2f\n"
+                                       "PREÇO DE VENDA: $%.2f\n"
+                                       "QUANTIDADE EM ESTOQUE: %d\n"
+                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "FUNCIONÁRIO: %s\n\n",
+                                       listaPecas->listaPecas[i].id,
+                                       listaPecas->listaPecas[i].descricao,
+                                       listaPecas->listaPecas[i].fabricante,
+                                       listaPecas->listaPecas[i].precoCusto,
+                                       listaPecas->listaPecas[i].precoVenda,
+                                       listaPecas->listaPecas[i].qtdEstoque,
+                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaFuncionarios->listaFuncionarios[k].nome);
+                                    }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 4:
+                char *token;
+                token = malloc (sizeof(listaAgendamentos->listaAgendamentos->datahoraInicial));
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                        for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                            if (listaPecas->listaPecas[i].deletado == 0 &&
+                                listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id
+                                && listaAgendamentos->listaAgendamentos[l].id == listaOrdensServicos->listaOrdensServico[j].idAgendamento) {
+                                int diaVenda, mesVenda, anoVenda;
+
+                                token = strcpy(token, listaAgendamentos->listaAgendamentos[l].datahoraInicial);
+                                token = strtok(token, "/");
+
+                                if (token != NULL) {
+                                    diaVenda = atoi(token);
+                                    token = strtok(NULL, "/");
+                                }
+                                if (token != NULL) {
+                                    mesVenda = atoi(token);
+                                    token = strtok(NULL, " ");
+                                }
+                                if (token != NULL) {
+                                    anoVenda = atoi(token);
+                                }
+                                if (anoVenda > dataInicial.tm_year && anoVenda < dataFinal.tm_year) {
+                                    printf("\n====================\n"
+                                       "| PEÇA %d           |\n"
+                                       "====================\n"
+                                       "DESCRIÇÃO: %s\n"
+                                       "FABRICANTE: %s\n"
+                                       "PREÇO DE CUSTO: $%.2f\n"
+                                       "PREÇO DE VENDA: $%.2f\n"
+                                       "QUANTIDADE EM ESTOQUE: %d\n"
+                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "DATA DE USO: %s\n\n",
+                                       listaPecas->listaPecas[i].id,
+                                       listaPecas->listaPecas[i].descricao,
+                                       listaPecas->listaPecas[i].fabricante,
+                                       listaPecas->listaPecas[i].precoCusto,
+                                       listaPecas->listaPecas[i].precoVenda,
+                                       listaPecas->listaPecas[i].qtdEstoque,
+                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaAgendamentos->listaAgendamentos[j].datahoraInicial);
+                                }
+                                else if (anoVenda == dataInicial.tm_year && mesVenda > dataInicial.tm_mon || anoVenda ==
+                                         dataFinal.tm_year && mesVenda < dataFinal.tm_mon) {
+
+                                    printf("\n====================\n"
+                                       "| PEÇA %d           |\n"
+                                       "====================\n"
+                                       "DESCRIÇÃO: %s\n"
+                                       "FABRICANTE: %s\n"
+                                       "PREÇO DE CUSTO: $%.2f\n"
+                                       "PREÇO DE VENDA: $%.2f\n"
+                                       "QUANTIDADE EM ESTOQUE: %d\n"
+                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "DATA DE USO: %s\n\n",
+                                       listaPecas->listaPecas[i].id,
+                                       listaPecas->listaPecas[i].descricao,
+                                       listaPecas->listaPecas[i].fabricante,
+                                       listaPecas->listaPecas[i].precoCusto,
+                                       listaPecas->listaPecas[i].precoVenda,
+                                       listaPecas->listaPecas[i].qtdEstoque,
+                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaAgendamentos->listaAgendamentos[j].datahoraInicial);
+                                }
+                                else if (anoVenda == dataInicial.tm_year && mesVenda == dataInicial.tm_mon && diaVenda
+                                         >= dataInicial.tm_mday || anoVenda == dataFinal.tm_year && mesVenda == dataFinal
+                                         .tm_mon && diaVenda <= dataFinal.tm_mday) {
+                                    printf("\n====================\n"
+                                       "| PEÇA %d           |\n"
+                                       "====================\n"
+                                       "DESCRIÇÃO: %s\n"
+                                       "FABRICANTE: %s\n"
+                                       "PREÇO DE CUSTO: $%.2f\n"
+                                       "PREÇO DE VENDA: $%.2f\n"
+                                       "QUANTIDADE EM ESTOQUE: %d\n"
+                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "DATA DE USO: %s\n\n",
+                                       listaPecas->listaPecas[i].id,
+                                       listaPecas->listaPecas[i].descricao,
+                                       listaPecas->listaPecas[i].fabricante,
+                                       listaPecas->listaPecas[i].precoCusto,
+                                       listaPecas->listaPecas[i].precoVenda,
+                                       listaPecas->listaPecas[i].qtdEstoque,
+                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaAgendamentos->listaAgendamentos[j].datahoraInicial);
+
+                                }
+                            }
+                        }
+                    }
+                }
+                token = NULL;
+                free(token);
+
+                break;
+            case 5:
+                int temEstoqueMinimo = 1;
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    if (listaPecas->listaPecas[i].deletado == 0 && listaPecas->listaPecas[i].qtdEstoque < listaPecas->
+                        listaPecas[i].estoqueMinimo) {
+                        temEstoqueMinimo = 0;
                         printf("\n====================\n"
                            "| PEÇA %d           |\n"
                            "====================\n"
@@ -50,29 +258,19 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                            "PREÇO DE CUSTO: $%.2f\n"
                            "PREÇO DE VENDA: $%.2f\n"
                            "QUANTIDADE EM ESTOQUE: %d\n"
-                           "ESTOQUE MÍNIMO: %d\n"
-                           "FORNECEDOR: %d\n"
-                           "SERVIÇO: %s\n",
+                           "ESTOQUE MÍNIMO: %d\n\n",
                            listaPecas->listaPecas[i].id,
                            listaPecas->listaPecas[i].descricao,
                            listaPecas->listaPecas[i].fabricante,
                            listaPecas->listaPecas[i].precoCusto,
                            listaPecas->listaPecas[i].precoVenda,
                            listaPecas->listaPecas[i].qtdEstoque,
-                           listaPecas->listaPecas[i].estoqueMinimo,
-                           listaPecas->listaPecas[i].idFornecedor,
-                           listaServicos->listaServicos[i].descricao);
+                           listaPecas->listaPecas[i].estoqueMinimo);
                     }
                 }
-            }
-            break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
+                if (!temEstoqueMinimo) {
+                    printf("Nenhuma peça está abaixo do estoque mínimo!\n\n");
+                }
                 break;
             default:
                 break;
@@ -95,6 +293,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                               struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
                               struct ListaPagamentosCliente *listaPagamentosCliente,
+                              struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id) {
     // Abrindo ou criando arquivo para adicionar dados
@@ -113,29 +312,182 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
     switch (tipo){
         case 1:
             for (int i = 0; i < listaPecas->qtdPecas; i++) {
-                fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%d;%d;%d\n",
-                        listaPecas->listaPecas[i].id,
-                        listaPecas->listaPecas[i].descricao,
-                        listaPecas->listaPecas[i].fabricante,
-                        listaPecas->listaPecas[i].precoCusto,
-                        listaPecas->listaPecas[i].precoVenda,
-                        listaPecas->listaPecas[i].qtdEstoque,
-                        listaPecas->listaPecas[i].estoqueMinimo,
-                        listaPecas->listaPecas[i].idOficina,
-                        listaPecas->listaPecas[i].idFornecedor,
-                        listaPecas->listaPecas[i].deletado);
-            }
+                for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                    for (int k = 0; k < listaServicos->qtdServicos; k++) {
+                        for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                            if (listaPecas->listaPecas[i].deletado == 0 && listaServicos->listaServicos[k].id == id &&
+                                listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id
+                                && listaAgendamentos->listaAgendamentos[l].id == listaOrdensServicos->listaOrdensServico[j].idAgendamento
+                                && listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[k].id) {
+
+                                fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%s\n",
+                                    listaPecas->listaPecas[i].id,
+                                    listaPecas->listaPecas[i].descricao,
+                                    listaPecas->listaPecas[i].fabricante,
+                                    listaPecas->listaPecas[i].precoCusto,
+                                    listaPecas->listaPecas[i].precoVenda,
+                                    listaPecas->listaPecas[i].qtdEstoque,
+                                    listaPecas->listaPecas[i].estoqueMinimo,
+                                    listaServicos->listaServicos[k].descricao);
+                                }
+                            }
+                        }
+                    }
+                }
         break;
         case 2:
+
+            for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                    for (int k = 0; k < listaClientes->qtdClientes; k++) {
+                        for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                            for (int m = 0; m < listaVeiculos->qtdVeiculos; m++) {
+                                if (listaPecas->listaPecas[i].deletado == 0 && listaClientes->listaClientes[k].id == id &&
+                                    listaVeiculos->listaVeiculos[m].idProprietario == listaClientes->listaClientes[k].id
+                                    && listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[m].id
+                                    && listaOrdensServicos->listaOrdensServico[j].idAgendamento == listaAgendamentos->listaAgendamentos[l].id
+                                    && listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id) {
+
+                                    fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%s\n",
+                                        listaPecas->listaPecas[i].id,
+                                        listaPecas->listaPecas[i].descricao,
+                                        listaPecas->listaPecas[i].fabricante,
+                                        listaPecas->listaPecas[i].precoCusto,
+                                        listaPecas->listaPecas[i].precoVenda,
+                                        listaPecas->listaPecas[i].qtdEstoque,
+                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaClientes->listaClientes[k].nome);
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
             break;
-        case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        default:
-            break;
+            case 3:
+
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                        for (int k = 0; k < listaFuncionarios->qtdFuncionarios; k++) {
+                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                                if (listaPecas->listaPecas[i].deletado == 0 && listaFuncionarios->listaFuncionarios[k].id == id &&
+                                    listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id
+                                    && listaAgendamentos->listaAgendamentos[l].id == listaOrdensServicos->listaOrdensServico[j].idAgendamento
+                                    && listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[k].id) {
+
+                                    fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%s\n",
+                                        listaPecas->listaPecas[i].id,
+                                        listaPecas->listaPecas[i].descricao,
+                                        listaPecas->listaPecas[i].fabricante,
+                                        listaPecas->listaPecas[i].precoCusto,
+                                        listaPecas->listaPecas[i].precoVenda,
+                                        listaPecas->listaPecas[i].qtdEstoque,
+                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaFuncionarios->listaFuncionarios[k].nome);
+                                    }
+                            }
+                        }
+                    }
+                }
+                break;
+            case 4:
+                char *token;
+                token = malloc (sizeof(listaAgendamentos->listaAgendamentos->datahoraInicial));
+
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    for (int j = 0; j < listaOrdensServicos->qtdOrdensServico; j++) {
+                        for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
+                            if (listaPecas->listaPecas[i].deletado == 0 &&
+                                listaOrdensServicos->listaOrdensServico[j].idPecas == listaPecas->listaPecas[i].id
+                                && listaAgendamentos->listaAgendamentos[l].id == listaOrdensServicos->listaOrdensServico[j].idAgendamento) {
+                                int diaVenda, mesVenda, anoVenda;
+
+                                token = strcpy(token, listaAgendamentos->listaAgendamentos[l].datahoraInicial);
+                                token = strtok(token, "/");
+
+                                if (token != NULL) {
+                                    diaVenda = atoi(token);
+                                    token = strtok(NULL, "/");
+                                }
+                                if (token != NULL) {
+                                    mesVenda = atoi(token);
+                                    token = strtok(NULL, " ");
+                                }
+                                if (token != NULL) {
+                                    anoVenda = atoi(token);
+                                }
+
+                                if (anoVenda > dataInicial.tm_year && anoVenda < dataFinal.tm_year) {
+
+                                    fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%s\n",
+                                    listaPecas->listaPecas[i].id,
+                                    listaPecas->listaPecas[i].descricao,
+                                    listaPecas->listaPecas[i].fabricante,
+                                    listaPecas->listaPecas[i].precoCusto,
+                                    listaPecas->listaPecas[i].precoVenda,
+                                    listaPecas->listaPecas[i].qtdEstoque,
+                                    listaPecas->listaPecas[i].estoqueMinimo,
+                                    listaAgendamentos->listaAgendamentos[l].datahoraInicial);
+
+                                }
+                                else if (anoVenda == dataInicial.tm_year && mesVenda > dataInicial.tm_mon || anoVenda ==
+                                         dataFinal.tm_year && mesVenda < dataFinal.tm_mon) {
+
+                                    fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%s\n",
+                                        listaPecas->listaPecas[i].id,
+                                        listaPecas->listaPecas[i].descricao,
+                                        listaPecas->listaPecas[i].fabricante,
+                                        listaPecas->listaPecas[i].precoCusto,
+                                        listaPecas->listaPecas[i].precoVenda,
+                                        listaPecas->listaPecas[i].qtdEstoque,
+                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaAgendamentos->listaAgendamentos[l].datahoraInicial);
+
+                                }
+                                else if (anoVenda == dataInicial.tm_year && mesVenda == dataInicial.tm_mon && diaVenda
+                                         >= dataInicial.tm_mday || anoVenda == dataFinal.tm_year && mesVenda == dataFinal
+                                         .tm_mon && diaVenda <= dataFinal.tm_mday) {
+
+                                    fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d;%s\n",
+                                        listaPecas->listaPecas[i].id,
+                                        listaPecas->listaPecas[i].descricao,
+                                        listaPecas->listaPecas[i].fabricante,
+                                        listaPecas->listaPecas[i].precoCusto,
+                                        listaPecas->listaPecas[i].precoVenda,
+                                        listaPecas->listaPecas[i].qtdEstoque,
+                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaAgendamentos->listaAgendamentos[l].datahoraInicial);
+                                }
+                            }
+                        }
+                    }
+                }
+                token = NULL;
+                free(token);
+
+                break;
+            case 5:
+                int temEstoqueMinimo = 1;
+                for (int i = 0; i < listaPecas->qtdPecas; i++) {
+                    if (listaPecas->listaPecas[i].deletado == 0 && listaPecas->listaPecas[i].qtdEstoque < listaPecas->
+                        listaPecas[i].estoqueMinimo) {
+                        temEstoqueMinimo = 0;
+                        fprintf(relatorioEstoque, "%d;%s;%s;%.2f;%.2f;%d;%d\n",
+                                    listaPecas->listaPecas[i].id,
+                                    listaPecas->listaPecas[i].descricao,
+                                    listaPecas->listaPecas[i].fabricante,
+                                    listaPecas->listaPecas[i].precoCusto,
+                                    listaPecas->listaPecas[i].precoVenda,
+                                    listaPecas->listaPecas[i].qtdEstoque,
+                                    listaPecas->listaPecas[i].estoqueMinimo);
+                    }
+                }
+                if (!temEstoqueMinimo) {
+                    printf("Nenhuma peça está abaixo do estoque mínimo!\n\n");
+                }
+                break;
+            default:
+                break;
     }
 
     printf("Relatório de estoques realizado com sucesso!\n\n");

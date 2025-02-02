@@ -40,11 +40,11 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                               struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
-                              struct ListaOrdensServico *listaOrdensServicos,
+                              struct ListaOrdensServico *listaOrdensServico,
                               struct ListaFornecedores *listaFornecedores,
                               struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente);
+                              struct ListaPagamentosCliente *listaPagamentosCliente, struct ListaVeiculos *listaVeiculos);
 
 void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
                                   struct ListaAgendamentos *listaAgendamentos,

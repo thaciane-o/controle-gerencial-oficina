@@ -111,7 +111,7 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                 filtroRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServicos, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente);
+                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente, listaVeiculos);
                 break;
             case 4:
                 filtroRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios);
@@ -478,14 +478,14 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                               struct ListaFornecedores *listaFornecedores,
                               struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente) {
+                              struct ListaPagamentosCliente *listaPagamentosCliente, struct ListaVeiculos *listaVeiculos) {
     int opcaoFiltro = 0;
 
-    while (opcaoFiltro != 3) {
+    while (opcaoFiltro != 6) {
         int idServico = 0, idCliente = 0, idFuncionario = 0;
-        struct tm dataInicial, dataFinal;
+        struct tm dataInicial = {0}, dataFinal = {0};
 
-        printf("\n=================================\n"
+        printf("\n===================================\n"
             "|              FILTRAR             |\n"
             "====================================\n"
             "|  1  | Serviço                    |\n"
@@ -508,13 +508,13 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                     imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
+                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
                     armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
+                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
 
@@ -529,12 +529,14 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
+                              listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idCliente);
                 } else {
                     armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
+                              listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idCliente);
                 }
 
@@ -549,12 +551,14 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
+                              listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 } else {
                     armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
+                              listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 }
 
@@ -565,29 +569,26 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataInicial.tm_mday, &dataInicial.tm_mon, &dataInicial.tm_year);
 
-                dataInicial.tm_mon = dataInicial.tm_mon - 1;
-                dataInicial.tm_year = dataInicial.tm_year - 1900;
-
 
                 printf("Insira a data final (DD/MM/AAAA):");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataFinal.tm_mday, &dataFinal.tm_mon, &dataFinal.tm_year);
 
-                dataFinal.tm_mon = dataFinal.tm_mon - 1;
-                dataFinal.tm_year = dataFinal.tm_year - 1900;
 
                 if (formaDeImprimir() == 1) {
                     imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              dataInicial, dataFinal, opcaoFiltro, idCliente);
+                              listaVeiculos,
+                              dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
                     armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              dataInicial, dataFinal, opcaoFiltro, idCliente);
+                              listaVeiculos,
+                              dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
 
             break;
@@ -598,13 +599,15 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              dataInicial, dataFinal, opcaoFiltro, idCliente);
+                              listaVeiculos,
+                              dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
                     armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
                               listaPecas, listaClientes, listaServicos, listaAgendamentos,
                               listaOrdensServico, listaFornecedores,
                               listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              dataInicial, dataFinal, opcaoFiltro, idCliente);
+                              listaVeiculos,
+                              dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
 
 

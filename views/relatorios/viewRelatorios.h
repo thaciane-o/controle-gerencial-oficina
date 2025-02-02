@@ -12,7 +12,8 @@
 void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
-                         struct ListaPecas *listaPecas, int opcaoArmazenamento);
+                         struct ListaPecas *listaPecas, struct ListaOrdensServico *listaOrdensServico,
+                         struct ListaAgendamentos *listaAgendamentos, int opcaoArmazenamento);
 
 void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                                struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
@@ -23,6 +24,10 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
                            struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
                            struct ListaPecas *listaPecas, int tipoRelatorio);
+
+void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
+                                  struct ListaAgendamentos *listaAgendamentos,
+                                  struct ListaFuncionarios *listafuncionarios);
 
 int formaDeImprimir();
 

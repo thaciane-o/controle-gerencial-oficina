@@ -176,7 +176,8 @@ int main() {
             // Menu de relatórios
             case 5:
                 gerenciarRelatorios(&listaOficinas, &listaClientes, &listaVeiculos, &listaFuncionarios, &listaServicos,
-                                    &listaFornecedores, &listaPecas, opcaoArmazenamento);
+                                    &listaFornecedores, &listaPecas, &listaOrdensServico, &listaAgendamentos,
+                                    opcaoArmazenamento);
                 break;
 
             // Menu de importação/exportação

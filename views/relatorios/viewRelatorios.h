@@ -36,15 +36,11 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
                            struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
                            struct ListaPecas *listaPecas, int tipoRelatorio);
 
-void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPecasNotas *listaPecasNotas,
-                              struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
+void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaOrdensServico *listaOrdensServico,
-                              struct ListaFornecedores *listaFornecedores,
-                              struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
-                              struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente, struct ListaVeiculos *listaVeiculos);
+                              struct ListaFuncionarios *listaFuncionarios, struct ListaVeiculos *listaVeiculos);
 
 void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
                                   struct ListaAgendamentos *listaAgendamentos,

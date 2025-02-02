@@ -53,6 +53,10 @@ void buscarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opcaoAr
                     token = strtok(NULL, ";");
                 }
                 if (token != NULL) {
+                    lista->listaOrdensServico[i].qtdPecas = atoi(token);
+                    token = strtok(NULL, ";");
+                }
+                if (token != NULL) {
                     lista->listaOrdensServico[i].idAgendamento = atoi(token);
                     token = strtok(NULL, ";");
                 }
@@ -129,9 +133,10 @@ void armazenarDadosOrdensServicoModel(struct ListaOrdensServico *lista, int opca
             }
 
             for (int i = 0; i < lista->qtdOrdensServico; i++) {
-                fprintf(dadosOrdensServico, "%s;%d;%d;%.2f;%.2f;%s;%d\n",
+                fprintf(dadosOrdensServico, "%s;%d;%d;%d;%.2f;%.2f;%s;%d\n",
                         lista->listaOrdensServico[i].descricao,
                         lista->listaOrdensServico[i].idPecas,
+                        lista->listaOrdensServico[i].qtdPecas,
                         lista->listaOrdensServico[i].idAgendamento,
                         lista->listaOrdensServico[i].valorTotal,
                         lista->listaOrdensServico[i].tempoGasto,

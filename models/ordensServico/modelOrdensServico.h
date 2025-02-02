@@ -6,6 +6,7 @@
 struct OrdensServico {
     char descricao[255];
     int idPecas;
+    int qtdPecas;
     int idAgendamento;
     float valorTotal;
     float tempoGasto;

@@ -204,8 +204,10 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     int qtdPecasEstoque = getQtdEstoquePecaModel(listaPecas, idInputPecas);
                     int qtdPecasEstoqueMin = getQtdEstoqueMinimoPecaModel(listaPecas, idInputPecas);
                     if (qtdPecasEstoque >= qtdPecasEstoqueMin && qtdPecasEstoque != -1 && qtdPecasEstoqueMin != -1) {
+
                         valorAgendamento += getValorPecaPorIdModel(listaPecas, idInputPecas) * qtdPecasRequisitadas[
                             qtdPecas - 1];
+
                     } else {
                         qtdPecas--;
                     }
@@ -386,6 +388,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
                     int indicePeca = getIndiceVetorPorIdPecaModel(listaPecas, idPecas[j]);
 
                     ordensServico.valorTotal += listaPecas->listaPecas[indicePeca].precoVenda * qtdPecasRequisitadas[j];
+                    ordensServico.qtdPecas = qtdPecasRequisitadas[j];
                     ordensServico.idPecas = idPecas[j];
                     cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
                 }

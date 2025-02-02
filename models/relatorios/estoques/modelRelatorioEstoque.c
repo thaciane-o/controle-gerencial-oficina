@@ -19,15 +19,11 @@
 
 
 // Imprime o relatório na tela
-void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPecasNotas *listaPecasNotas,
-                              struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
+void imprimirRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaOrdensServico *listaOrdensServicos,
-                              struct ListaFornecedores *listaFornecedores,
-                              struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
-                              struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente,
+                              struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id) {
@@ -57,7 +53,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        "PREÇO DE CUSTO: $%.2f\n"
                                        "PREÇO DE VENDA: $%.2f\n"
                                        "QUANTIDADE EM ESTOQUE: %d\n"
-                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "QUANTIDADE UTILIZADA: %d\n"
                                        "SERVIÇO: %s\n\n",
                                        listaPecas->listaPecas[i].id,
                                        listaPecas->listaPecas[i].descricao,
@@ -65,7 +61,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        listaPecas->listaPecas[i].precoCusto,
                                        listaPecas->listaPecas[i].precoVenda,
                                        listaPecas->listaPecas[i].qtdEstoque,
-                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                        listaServicos->listaServicos[k].descricao);
                                     }
                             }
@@ -94,7 +90,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                            "PREÇO DE CUSTO: $%.2f\n"
                                            "PREÇO DE VENDA: $%.2f\n"
                                            "QUANTIDADE EM ESTOQUE: %d\n"
-                                           "ESTOQUE MÍNIMO: %d\n"
+                                           "QUANTIDADE UTILIZADA: %d\n"
                                            "CLIENTE: %s\n\n",
                                            listaPecas->listaPecas[i].id,
                                            listaPecas->listaPecas[i].descricao,
@@ -102,7 +98,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                            listaPecas->listaPecas[i].precoCusto,
                                            listaPecas->listaPecas[i].precoVenda,
                                            listaPecas->listaPecas[i].qtdEstoque,
-                                           listaPecas->listaPecas[i].estoqueMinimo,
+                                           listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                            listaClientes->listaClientes[k].nome);
                                         }
                                 }
@@ -130,7 +126,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        "PREÇO DE CUSTO: $%.2f\n"
                                        "PREÇO DE VENDA: $%.2f\n"
                                        "QUANTIDADE EM ESTOQUE: %d\n"
-                                       "ESTOQUE MÍNIMO: %d\n"
+                                       "QUANTIDADE UTILIZADA: %d\n"
                                        "FUNCIONÁRIO: %s\n\n",
                                        listaPecas->listaPecas[i].id,
                                        listaPecas->listaPecas[i].descricao,
@@ -138,7 +134,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        listaPecas->listaPecas[i].precoCusto,
                                        listaPecas->listaPecas[i].precoVenda,
                                        listaPecas->listaPecas[i].qtdEstoque,
-                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                        listaFuncionarios->listaFuncionarios[k].nome);
                                     }
                             }
@@ -188,7 +184,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        listaPecas->listaPecas[i].precoCusto,
                                        listaPecas->listaPecas[i].precoVenda,
                                        listaPecas->listaPecas[i].qtdEstoque,
-                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                        listaAgendamentos->listaAgendamentos[j].datahoraInicial);
                                 }
                                 else if (anoVenda == dataInicial.tm_year && mesVenda > dataInicial.tm_mon || anoVenda ==
@@ -210,7 +206,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        listaPecas->listaPecas[i].precoCusto,
                                        listaPecas->listaPecas[i].precoVenda,
                                        listaPecas->listaPecas[i].qtdEstoque,
-                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                        listaAgendamentos->listaAgendamentos[j].datahoraInicial);
                                 }
                                 else if (anoVenda == dataInicial.tm_year && mesVenda == dataInicial.tm_mon && diaVenda
@@ -232,7 +228,7 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
                                        listaPecas->listaPecas[i].precoCusto,
                                        listaPecas->listaPecas[i].precoVenda,
                                        listaPecas->listaPecas[i].qtdEstoque,
-                                       listaPecas->listaPecas[i].estoqueMinimo,
+                                       listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                        listaAgendamentos->listaAgendamentos[j].datahoraInicial);
 
                                 }
@@ -284,15 +280,11 @@ void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct Lista
 }
 
 // Armazena o relatório em arquivo
-void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPecasNotas *listaPecasNotas,
-                              struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
+void armazenarRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaOrdensServico *listaOrdensServicos,
-                              struct ListaFornecedores *listaFornecedores,
-                              struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
-                              struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente,
+                              struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id) {
@@ -327,7 +319,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                                     listaPecas->listaPecas[i].precoCusto,
                                     listaPecas->listaPecas[i].precoVenda,
                                     listaPecas->listaPecas[i].qtdEstoque,
-                                    listaPecas->listaPecas[i].estoqueMinimo,
+                                    listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                     listaServicos->listaServicos[k].descricao);
                                 }
                             }
@@ -355,7 +347,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                                         listaPecas->listaPecas[i].precoCusto,
                                         listaPecas->listaPecas[i].precoVenda,
                                         listaPecas->listaPecas[i].qtdEstoque,
-                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                         listaClientes->listaClientes[k].nome);
                                     }
                             }
@@ -382,7 +374,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                                         listaPecas->listaPecas[i].precoCusto,
                                         listaPecas->listaPecas[i].precoVenda,
                                         listaPecas->listaPecas[i].qtdEstoque,
-                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                         listaFuncionarios->listaFuncionarios[k].nome);
                                     }
                             }
@@ -426,7 +418,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                                     listaPecas->listaPecas[i].precoCusto,
                                     listaPecas->listaPecas[i].precoVenda,
                                     listaPecas->listaPecas[i].qtdEstoque,
-                                    listaPecas->listaPecas[i].estoqueMinimo,
+                                    listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                     listaAgendamentos->listaAgendamentos[l].datahoraInicial);
 
                                 }
@@ -440,7 +432,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                                         listaPecas->listaPecas[i].precoCusto,
                                         listaPecas->listaPecas[i].precoVenda,
                                         listaPecas->listaPecas[i].qtdEstoque,
-                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                         listaAgendamentos->listaAgendamentos[l].datahoraInicial);
 
                                 }
@@ -455,7 +447,7 @@ void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct List
                                         listaPecas->listaPecas[i].precoCusto,
                                         listaPecas->listaPecas[i].precoVenda,
                                         listaPecas->listaPecas[i].qtdEstoque,
-                                        listaPecas->listaPecas[i].estoqueMinimo,
+                                        listaOrdensServicos->listaOrdensServico[j].qtdPecas,
                                         listaAgendamentos->listaAgendamentos[l].datahoraInicial);
                                 }
                             }

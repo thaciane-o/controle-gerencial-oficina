@@ -108,10 +108,9 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
             case 2:
                 break;
             case 3:
-                filtroRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServicos, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente, listaVeiculos);
+                filtroRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServicos,
+                              listaFuncionarios, listaVeiculos);
                 break;
             case 4:
                 filtroRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios);
@@ -470,18 +469,15 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
 }
 
 
-void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPecasNotas *listaPecasNotas,
-                              struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
+void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaOrdensServico *listaOrdensServico,
-                              struct ListaFornecedores *listaFornecedores,
-                              struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
-                              struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente, struct ListaVeiculos *listaVeiculos) {
-    int opcaoFiltro = 0;
+                              struct ListaFuncionarios *listaFuncionarios, struct ListaVeiculos *listaVeiculos) {
+    int opcaoFiltro;
 
     while (opcaoFiltro != 6) {
+        opcaoFiltro = 0;
         int idServico = 0, idCliente = 0, idFuncionario = 0;
         struct tm dataInicial = {0}, dataFinal = {0};
 
@@ -505,16 +501,12 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                 scanf(" %d", &idServico);
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente, listaVeiculos,
+                    imprimirRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
-                    armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente, listaVeiculos,
+                    armazenarRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
 
@@ -525,18 +517,12 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                 scanf(" %d", &idCliente);
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    imprimirRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idCliente);
                 } else {
-                    armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    armazenarRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idCliente);
                 }
 
@@ -547,18 +533,12 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
                 scanf(" %d", &idFuncionario);
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    imprimirRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 } else {
-                    armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    armazenarRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 }
 
@@ -576,18 +556,12 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
 
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    imprimirRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
-                    armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    armazenarRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
 
@@ -595,18 +569,12 @@ void filtroRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPe
             case 5:
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    imprimirRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
-                    armazenarRelatorioEstoque(listaNotas, listaPecasNotas,
-                              listaPecas, listaClientes, listaServicos, listaAgendamentos,
-                              listaOrdensServico, listaFornecedores,
-                              listaFuncionarios, listaOficinas, listaPagamentosFornecedor, listaPagamentosCliente,
-                              listaVeiculos,
+                    armazenarRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
+                              listaOrdensServico, listaFuncionarios, listaVeiculos,
                               dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
 

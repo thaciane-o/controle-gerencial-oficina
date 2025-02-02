@@ -16,28 +16,20 @@
 #include "../../pecas/modelPecas.h"
 #include "../../pecasNotas/modelPecasNotas.h"
 
-void imprimirRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPecasNotas *listaPecasNotas,
-                              struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
+void imprimirRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaOrdensServico *listaOrdensServicos,
-                              struct ListaFornecedores *listaFornecedores,
-                              struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
-                              struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente,
+                              struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id);
 
-void armazenarRelatorioEstoque(struct ListaNotasFiscais *listaNotas, struct ListaPecasNotas *listaPecasNotas,
-                              struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
+void armazenarRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaOrdensServico *listaOrdensServicos,
-                              struct ListaFornecedores *listaFornecedores,
-                              struct ListaFuncionarios *listaFuncionarios, struct ListaOficinas *listaOficinas,
-                              struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                              struct ListaPagamentosCliente *listaPagamentosCliente,
+                              struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id);

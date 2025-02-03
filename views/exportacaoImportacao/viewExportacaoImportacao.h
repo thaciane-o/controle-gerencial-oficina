@@ -47,4 +47,20 @@ void gerenciarExportacao(struct ListaClientes *listaClientes,
                          struct ListaNotasFiscais *listaNotasFiscais,
                          struct ListaPecasNotas *listaPecasNotas);
 
+void gerenciarImportacao(struct ListaClientes *listaClientes,
+                         struct ListaVeiculos *listaVeiculos,
+                         struct ListaOficinas *listaOficinas,
+                         struct ListaPecas *listaPecas,
+                         struct ListaFornecedores *listaFornecedores,
+                         struct ListaServicos *listaServicos,
+                         struct ListaFuncionarios *listaFuncionarios,
+                         struct ListaCaixas *listaCaixas,
+                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                         struct ListaAgendamentos *listaAgendamentos,
+                         struct ListaOrdensServico *listaOrdensServico,
+                         struct ListaNotasFiscais *listaNotasFiscais,
+                         struct ListaPecasNotas *listaPecasNotas,
+                         int opcaoArmazenamento);
+
 #endif //VIEWEXPORTACAOIMPORTACAO_H

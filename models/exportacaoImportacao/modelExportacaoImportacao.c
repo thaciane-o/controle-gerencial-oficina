@@ -17,8 +17,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-// Armazena os dados das relações no arquivo
+// Escreve o arquivo XML com os dados escolhidos
 void exportaDadosModel(struct ListaClientes *listaClientes,
                        struct ListaVeiculos *listaVeiculos,
                        struct ListaOficinas *listaOficinas,
@@ -455,4 +456,106 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
     // Fehca o arquivo e confirma a exportação
     fclose(exportacao);
     printf("Dados exportados com sucesso!\n\n");
+}
+
+// Lê o arquivo de importação e trás os dados escolhidos
+void importaDadosModel(struct ListaClientes *listaClientes,
+                       struct ListaVeiculos *listaVeiculos,
+                       struct ListaOficinas *listaOficinas,
+                       struct ListaPecas *listaPecas,
+                       struct ListaFornecedores *listaFornecedores,
+                       struct ListaServicos *listaServicos,
+                       struct ListaFuncionarios *listaFuncionarios,
+                       struct ListaCaixas *listaCaixas,
+                       struct ListaPagamentosCliente *listaPagamentosCliente,
+                       struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                       struct ListaAgendamentos *listaAgendamentos,
+                       struct ListaOrdensServico *listaOrdensServico,
+                       struct ListaNotasFiscais *listaNotasFiscais,
+                       struct ListaPecasNotas *listaPecasNotas,
+                       FILE *arquivo,
+                       int *opcoesImportacao,
+                       int opcaoArmazenamento) {
+    // Variáveis para leitura
+    char linha[512];
+    int idTabela = -1;
+
+    // Variáveis de armazenamento
+    struct Clientes importaCliente;
+    struct Veiculos importaVeiculos;
+    struct Oficinas importaOficinas;
+    struct Pecas importaPecas;
+    struct Fornecedores importaFornecedores;
+    struct Servicos importaServicos;
+    struct Funcionarios importaFuncionarios;
+    struct Caixas importaCaixas;
+    struct PagamentosCliente importaPagamentosCliente;
+    struct PagamentosFornecedor importaPagamentosFornecedor;
+    struct Agendamentos importaAgendamentos;
+    struct OrdensServico importaOrdensServico;
+    struct NotasFiscais importaNotasFiscais;
+    struct PecasNotas importaPecasNotas;
+
+    // while (fgets(linha, 512, arquivo) != NULL) {
+    //     printf("%s", linha);
+    // }
+    //
+    // fseek(arquivo, 0, SEEK_SET);
+
+    // Lê todas as linhas do arquivo
+    while (fgets(linha, 512, arquivo) != NULL) {
+        // Ignora linha de inicialização
+        if (strcmp(linha, "<dados>") == 1) {
+            printf("INICIO\n");
+            continue;
+        }
+
+        // Ajusta o id da tabela que está sendo lida
+        if (strcmp(linha, "\t<tabela=cliente>") == 1) {
+            printf("INICIO TABELA DE CLIENTE\n");
+            idTabela = 0;
+            continue;
+        }
+
+        // TODO : Reseta variáveis para nova leitura de registro
+        if (strcmp(linha, "\t\t<registro>") == 1) {
+            continue;
+        }
+
+        // TODO : Armazena o dado que acabamos de ler
+        if (strcmp(linha, "\t\t</registro>") == 1) {
+            printf("FIM DE REGISTRO DA TABELA\n");
+            continue;
+        }
+
+        // Reinicia o id da tabela que estamos lendo
+        if (strcmp(linha, "\t</tabela>") == 1) {
+            printf("FIM TABELA\n");
+            idTabela = -1;
+            continue;
+        }
+
+        // Finaliza a leitura do arquivo
+        if (strcmp(linha, "</dados>") == 1) {
+            printf("FIM\n");
+            break;
+        }
+
+        // Lê campo de id
+        if (strncmp(linha, "\t\t\t<id>", 7) == 0) {
+            printf("LINHA DE ID: ");
+
+            switch (idTabela) {
+                // Insere na tabela de cliente
+                case 0:
+                    sscanf(linha, "\t\t\t<id>%d</id>", &importaCliente.id);
+                    printf("CLIENTE ID %d\n", importaCliente.id);
+                    break;
+            }
+
+            continue;
+        }
+    }
+
+    fclose(arquivo);
 }

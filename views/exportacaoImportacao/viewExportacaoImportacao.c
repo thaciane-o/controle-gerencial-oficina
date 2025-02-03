@@ -93,6 +93,21 @@ void gerenciarExportacaoImportacao(struct ListaClientes *listaClientes,
 
         switch (opcaoSubmenus) {
             case 1:
+                gerenciarImportacao(listaClientes,
+                                    listaVeiculos,
+                                    listaOficinas,
+                                    listaPecas,
+                                    listaFornecedores,
+                                    listaServicos,
+                                    listaFuncionarios,
+                                    listaCaixas,
+                                    listaPagamentosCliente,
+                                    listaPagamentosFornecedor,
+                                    listaAgendamentos,
+                                    listaOrdensServico,
+                                    listaNotasFiscais,
+                                    listaPecasNotas,
+                                    opcaoArmazenamento);
                 break;
             case 2:
                 gerenciarExportacao(listaClientes,
@@ -193,9 +208,6 @@ void gerenciarExportacaoImportacao(struct ListaClientes *listaClientes,
     } while (opcaoSubmenus != 3);
 }
 
-void gerenciarImportacao() {
-}
-
 void gerenciarExportacao(struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos,
                          struct ListaOficinas *listaOficinas,
@@ -275,6 +287,104 @@ void gerenciarExportacao(struct ListaClientes *listaClientes,
             default:
                 if (opcaoMenu > 0 && opcaoMenu < 15) {
                     exportar[opcaoMenu - 1] = 1;
+                    qtdSelecionados++;
+                } else {
+                    printf("Opção inválida.\n\n");
+                }
+                break;
+        }
+    } while (opcaoMenu != 0);
+}
+
+void gerenciarImportacao(struct ListaClientes *listaClientes,
+                         struct ListaVeiculos *listaVeiculos,
+                         struct ListaOficinas *listaOficinas,
+                         struct ListaPecas *listaPecas,
+                         struct ListaFornecedores *listaFornecedores,
+                         struct ListaServicos *listaServicos,
+                         struct ListaFuncionarios *listaFuncionarios,
+                         struct ListaCaixas *listaCaixas,
+                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                         struct ListaAgendamentos *listaAgendamentos,
+                         struct ListaOrdensServico *listaOrdensServico,
+                         struct ListaNotasFiscais *listaNotasFiscais,
+                         struct ListaPecasNotas *listaPecasNotas,
+                         int opcaoArmazenamento) {
+    int opcaoMenu = 0;
+    int qtdSelecionados = 0;
+    int importar[14] = {0};
+    char sel[2][2] = {" ", "X"};
+
+    // Abre o arquivo
+    FILE* arquivo = fopen("DadosImportacao.xml", "r");
+    if (arquivo == NULL) {
+        printf("Arquivo de importação não encontrado.\n\n");
+        return;
+    }
+
+    do {
+        printf("\n\n==========================================\n"
+               "|  Escolha as tabelas para a importação  |\n"
+               "==========================================\n"
+               "|  1 | Clientes                      (%s) |\n"
+               "|  2 | Veiculos                      (%s) |\n"
+               "|  3 | Oficinas                      (%s) |\n"
+               "|  4 | Pecas                         (%s) |\n"
+               "|  5 | Fornecedores                  (%s) |\n"
+               "|  6 | Servicos                      (%s) |\n"
+               "|  7 | Funcionarios                  (%s) |\n"
+               "|  8 | Caixas                        (%s) |\n"
+               "|  9 | Pagamentos de cliente         (%s) |\n"
+               "| 10 | Pagamentos de fornecedores    (%s) |\n"
+               "| 11 | Agendamentos                  (%s) |\n"
+               "| 12 | Ordens de serviços            (%s) |\n"
+               "| 13 | Notas fiscais                 (%s) |\n"
+               "| 14 | Peças em notas fiscais        (%s) |\n"
+               "| 15 | Selecionar todas as tabelas       |\n"
+               "|  0 | Confirmar                         |\n"
+               "==========================================\n",
+               sel[importar[0]], sel[importar[1]], sel[importar[2]],
+               sel[importar[3]], sel[importar[4]], sel[importar[5]],
+               sel[importar[6]], sel[importar[7]], sel[importar[8]],
+               sel[importar[9]], sel[importar[10]], sel[importar[11]],
+               sel[importar[12]], sel[importar[13]]);
+        printf("Insira a opção desejada: ");
+        scanf("%d", &opcaoMenu);
+
+        switch (opcaoMenu) {
+            case 0:
+                if (qtdSelecionados > 0) {
+                    importaDadosModel(listaClientes,
+                                      listaVeiculos,
+                                      listaOficinas,
+                                      listaPecas,
+                                      listaFornecedores,
+                                      listaServicos,
+                                      listaFuncionarios,
+                                      listaCaixas,
+                                      listaPagamentosCliente,
+                                      listaPagamentosFornecedor,
+                                      listaAgendamentos,
+                                      listaOrdensServico,
+                                      listaNotasFiscais,
+                                      listaPecasNotas,
+                                      arquivo,
+                                      importar,
+                                      opcaoArmazenamento);
+                } else {
+                    printf("Nenhuma tabela foi selecionada para importação.\n\n");
+                }
+                break;
+            case 15:
+                for (int i = 0; i < 14; i++) {
+                    importar[i] = 1;
+                    qtdSelecionados++;
+                }
+                break;
+            default:
+                if (opcaoMenu > 0 && opcaoMenu < 15) {
+                    importar[opcaoMenu - 1] = 1;
                     qtdSelecionados++;
                 } else {
                     printf("Opção inválida.\n\n");

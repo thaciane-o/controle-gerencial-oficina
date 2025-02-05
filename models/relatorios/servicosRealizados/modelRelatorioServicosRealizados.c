@@ -229,8 +229,8 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                                                    listaClientes->listaClientes[m].nome,
                                                    listaFuncionarios->listaFuncionarios[j].nome,
                                                    listaAgendamentos->listaAgendamentos[l].datahoraInicial);
+                                                 }
                                         }
-                                    }
                                 }
                             }
                         }

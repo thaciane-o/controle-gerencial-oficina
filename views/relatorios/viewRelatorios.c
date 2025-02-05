@@ -12,6 +12,7 @@
 #include "../../models/relatorios/pecas/modelRelatorioPeca.h"
 #include "../../models/relatorios/estoques/modelRelatorioEstoque.h"
 #include "../../models/relatorios/produtividade/modelRelatorioProdutividade.h"
+#include "../../models/relatorios/servicosRealizados/modelRelatorioServicosRealizados.h"
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
@@ -106,6 +107,8 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                                           listaFornecedores, listaPecas);
                 break;
             case 2:
+                filtroRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos);
                 break;
             case 3:
                 filtroRelatorioEstoque(listaPecas, listaClientes, listaServicos, listaAgendamentos,
@@ -584,6 +587,112 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
                 return;
             default: printf("Opção inválida!\n\n");
                 break;
+        }
+    }
+}
+
+void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
+                              struct ListaServicos *listaServicos,
+                              struct ListaAgendamentos *listaAgendamentos,
+                              struct ListaFuncionarios *listaFuncionarios,
+                              struct ListaVeiculos *listaVeiculos) {
+    int opcaoFiltro;
+
+    while (opcaoFiltro != 5) {
+        opcaoFiltro = 0;
+        int idServico = 0, idCliente = 0, idFuncionario = 0;
+        struct tm dataInicial = {0}, dataFinal = {0};
+
+        printf("\n===================================\n"
+            "|              FILTRAR             |\n"
+            "====================================\n"
+            "|  1  | Serviço                    |\n"
+            "|  2  | Cliente                    |\n"
+            "|  3  | Funcionario                |\n"
+            "|  4  | Intervalo de datas         |\n"
+            "|  5  | Voltar                     |\n"
+            "====================================\n"
+            "Escolha uma forma de filtar: ");
+        scanf("%d", &opcaoFiltro);
+
+        switch (opcaoFiltro) {
+            case 1:
+                printf("Insira o ID do serviço:");
+                setbuf(stdin, NULL);
+                scanf(" %d", &idServico);
+
+                if (formaDeImprimir() == 1) {
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idServico);
+                } else {
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idServico);
+                }
+
+                break;
+            case 2:
+                printf("Insira o ID do cliente:");
+                setbuf(stdin, NULL);
+                scanf(" %d", &idCliente);
+
+                if (formaDeImprimir() == 1) {
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idCliente);
+                } else {
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idCliente);
+                }
+
+            break;
+            case 3:
+                printf("Insira o ID do funcionario:");
+                setbuf(stdin, NULL);
+                scanf(" %d", &idFuncionario);
+
+                if (formaDeImprimir() == 1) {
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idFuncionario);
+                } else {
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idFuncionario);
+                }
+
+            break;
+            case 4:
+
+                printf("Insira a data inicial (DD/MM/AAAA):");
+                setbuf(stdin, NULL);
+                scanf("%d/%d/%d", &dataInicial.tm_mday, &dataInicial.tm_mon, &dataInicial.tm_year);
+
+
+                printf("Insira a data final (DD/MM/AAAA):");
+                setbuf(stdin, NULL);
+                scanf("%d/%d/%d", &dataFinal.tm_mday, &dataFinal.tm_mon, &dataFinal.tm_year);
+
+
+                if (formaDeImprimir() == 1) {
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idServico);
+                } else {
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                                                        listaFuncionarios, listaVeiculos,
+                                                        dataInicial, dataFinal, opcaoFiltro, idServico);
+                }
+
+            break;
+            case 5:
+
+                return;
+            default: printf("Opção inválida!\n\n");
+                break;
+
         }
     }
 }

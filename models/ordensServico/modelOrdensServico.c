@@ -191,7 +191,7 @@ int realocarOrdensServicoModel(struct ListaOrdensServico *lista, int qtdAlocada)
 }
 
 // Cadastra uma nova ordem de serviço
-void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico) {
+void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdOrdensServico == 0) {
@@ -207,9 +207,11 @@ void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct Ordens
     }
 
     // Cadastrando ordem de serviço na memória
-    strcpy(ordensServico->datahoraFinal, "NF");
-    ordensServico->tempoGasto = 0;
-    ordensServico->deletado = 0;
+    if (autoId == 1) {
+        strcpy(ordensServico->datahoraFinal, "NF");
+        ordensServico->tempoGasto = 0;
+        ordensServico->deletado = 0;
+    }
 
     lista->listaOrdensServico[lista->qtdOrdensServico - 1] = *ordensServico;
 }

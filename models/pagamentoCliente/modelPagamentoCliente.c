@@ -200,7 +200,7 @@ int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtd
 
 // Cadastro de pagamento de cliente
 void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento,
-                                     struct ListaCaixas *listaCaixas) {
+                                     struct ListaCaixas *listaCaixas, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdPagamentosCliente == 0) {
@@ -216,15 +216,17 @@ void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struc
     }
 
     // Cadastrando pagamento na memória
-    pagamento->id = lista->qtdPagamentosCliente;
-    pagamento->deletado = 0;
+    if (autoId == 1) {
+        pagamento->id = lista->qtdPagamentosCliente;
+        pagamento->deletado = 0;
+    }
 
     lista->listaPagamentosCliente[lista->qtdPagamentosCliente - 1] = *pagamento;
 
     printf("Pagamento cadastrado com sucesso!\n\n");
 
     // Se recebido, credita no caixa na hora
-    if (strcmp(pagamento->dataRecebimento, "Não pago") != 0) {
+    if (strcmp(pagamento->dataRecebimento, "Não pago") != 0 && autoId == 1) {
         creditarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
     }
 }

@@ -29,7 +29,7 @@ int alocarAgendamentosModel(struct ListaAgendamentos *lista);
 
 int realocarAgendamentosModel(struct ListaAgendamentos *lista, int qtdAlocada);
 
-void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendamentos *agendamento);
+void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendamentos *agendamento, int autoId);
 
 int verificarIDAgendamentoModel(struct ListaAgendamentos *lista, int id);
 

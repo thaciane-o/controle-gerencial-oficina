@@ -375,7 +375,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
             int indiceServico = getIndiceVetorPorIdServicoModel(listaServicos, idServicos[i]);
 
             agendamento.idServico = idServicos[i];
-            cadastrarAgendamentosModel(lista, &agendamento);
+            cadastrarAgendamentosModel(lista, &agendamento, 1);
             strcpy(ordensServico.descricao, listaServicos->listaServicos[indiceServico].descricao);
             ordensServico.idAgendamento = lista->qtdAgendamentos;
             ordensServico.valorTotal = listaServicos->listaServicos[indiceServico].preco;
@@ -387,7 +387,7 @@ void cadastrarAgendamentos(struct ListaAgendamentos *lista, struct ListaFunciona
 
                     ordensServico.valorTotal += listaPecas->listaPecas[indicePeca].precoVenda * qtdPecasRequisitadas[j];
                     ordensServico.idPecas = idPecas[j];
-                    cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico);
+                    cadastrarOrdensServicoModel(listaOrdensServico, &ordensServico, 1);
                 }
             }
         }
@@ -585,7 +585,7 @@ int cadastrarPagamentoClienteAgendamento(struct ListaPecas *listaPecas, struct L
     pagamento.idCliente = idClientePagando;
 
     // Cadastra o pagamento
-    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);
+    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas, 1);
 
     // Retorna com sucesso
     return 0;

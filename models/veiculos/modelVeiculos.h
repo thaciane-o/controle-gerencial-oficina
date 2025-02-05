@@ -27,7 +27,7 @@ int alocarVeiculosModel(struct ListaVeiculos *lista);
 
 int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada);
 
-void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *veiculo);
+void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *veiculo, int autoId);
 
 void deletarVeiculosModel(struct ListaVeiculos *lista, struct ListaAgendamentos *listaAgendamentos, int id);
 

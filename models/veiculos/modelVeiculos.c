@@ -194,7 +194,7 @@ int realocarVeiculosModel(struct ListaVeiculos *lista, int qtdAlocada) {
 }
 
 // Cadastra um novo veículo
-void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *cliente) {
+void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *cliente, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdVeiculos == 0) {
@@ -210,8 +210,10 @@ void cadastrarVeiculosModel(struct ListaVeiculos *lista, struct Veiculos *client
     }
 
     //Cadastrando veiculo na memória
-    cliente->id = lista->qtdVeiculos;
-    cliente->deletado = 0;
+    if (autoId == 1) {
+        cliente->id = lista->qtdVeiculos;
+        cliente->deletado = 0;
+    }
 
     lista->listaVeiculos[lista->qtdVeiculos - 1] = *cliente;
 

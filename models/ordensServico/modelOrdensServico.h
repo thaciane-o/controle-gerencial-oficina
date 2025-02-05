@@ -26,7 +26,7 @@ int alocarOrdensServicoModel(struct ListaOrdensServico *lista);
 
 int realocarOrdensServicoModel(struct ListaOrdensServico *lista, int qtdAlocada);
 
-void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico);
+void cadastrarOrdensServicoModel(struct ListaOrdensServico *lista, struct OrdensServico *ordensServico, int autoId);
 
 void listarOrdensServicoModel(struct ListaOrdensServico *lista, int id);
 

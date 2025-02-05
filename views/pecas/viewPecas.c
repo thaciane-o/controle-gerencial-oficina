@@ -134,7 +134,7 @@ void cadastrarPeca(struct ListaPecas *listaPecas, struct ListaOficinas *listaOfi
     setbuf(stdin, NULL);
     scanf("%d", &pecaCadastrando.estoqueMinimo);
 
-    cadastrarPecaModel(listaPecas, &pecaCadastrando);
+    cadastrarPecaModel(listaPecas, &pecaCadastrando, 1);
 }
 
 // Formulário de atualização de peças

@@ -458,6 +458,26 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
     printf("Dados exportados com sucesso!\n\n");
 }
 
+// Pega strings entre tags
+void extraiValorTagsModel(char *entrada, char *saida, char *tagAbre, char *tagFecha) {
+    char *inicio = strstr(entrada, tagAbre);
+    char *fim = strstr(entrada, tagFecha);
+
+    if (inicio && fim && inicio < fim) {
+        inicio += strlen(tagAbre); // Avança para depois da tag de abertura
+        size_t tamanho = fim - inicio;
+
+        if (tamanho >= 512) {
+            tamanho = 512 - 1; // Evita estouro do buffer
+        }
+
+        strncpy(saida, inicio, tamanho);
+        saida[tamanho] = '\0'; // Adiciona o terminador nulo
+    } else {
+        strcpy(saida, ""); // Se não encontrar, retorna string vazia
+    }
+}
+
 // Lê o arquivo de importação e trás os dados escolhidos
 void importaDadosModel(struct ListaClientes *listaClientes,
                        struct ListaVeiculos *listaVeiculos,
@@ -506,7 +526,6 @@ void importaDadosModel(struct ListaClientes *listaClientes,
     while (fgets(linha, 512, arquivo) != NULL) {
         // Ignora linha de inicialização
         if (strcmp(linha, "<dados>\n") == 0) {
-            printf("INICIO\n");
             continue;
         }
 
@@ -583,11 +602,11 @@ void importaDadosModel(struct ListaClientes *listaClientes,
             importaAgendamentos.deletado = -1;
             importaOrdensServico.deletado = -1;
             importaNotasFiscais.deletado = -1;
-            importaPecasNotas.deletado = -1;
+            importaPecasNotas.deletado = -1;            // tem algo errado
             continue;
         }
 
-        // TODO : Armazena o dado que acabamos de ler
+        // Armazena o dado que acabamos de ler
         if (strcmp(linha, "\t\t</registro>\n") == 0) {
             if (opcoesImportacao[idTabela] == 1) {
                 switch (idTabela) {
@@ -595,12 +614,75 @@ void importaDadosModel(struct ListaClientes *listaClientes,
                         if (importaCliente.deletado != -1) {
                             cadastrarClientesModel(listaClientes, &importaCliente, 0);
                         }
-                    break;
+                        break;
+                    case 1:
+                        if (importaVeiculos.deletado != -1) {
+                            cadastrarVeiculosModel(listaVeiculos, &importaVeiculos, 0);
+                        }
+                        break;
+                    case 2:
+                        if (importaOficinas.deletado != -1) {
+                            cadastrarOficinaModel(listaOficinas, &importaOficinas, listaCaixas, 0);
+                        }
+                        break;
+                    case 3:
+                        if (importaPecas.deletado != -1) {
+                            cadastrarPecaModel(listaPecas, &importaPecas, 0);
+                        }
+                        break;
+                    case 4:
+                        if (importaFornecedores.deletado != -1) {
+                            cadastrarFornecedoresModel(listaFornecedores, &importaFornecedores, 0);
+                        }
+                        break;
+                    case 5:
+                        if (importaServicos.deletado != -1) {
+                            cadastrarServicoModel(listaServicos, &importaServicos, 0);
+                        }
+                        break;
+                    case 6:
+                        if (importaFuncionarios.deletado != -1) {
+                            cadastrarFuncionariosModel(listaFuncionarios, &importaFuncionarios, 0);
+                        }
+                        break;
+                    case 7:
+                        if (importaCaixas.deletado != -1) {
+                            cadastrarCaixasModel(listaCaixas, &importaCaixas);
+                        }
+                        break;
+                    case 8:
+                        if (importaPagamentosCliente.deletado != -1) {
+                            cadastrarPagamentosClienteModel(listaPagamentosCliente, &importaPagamentosCliente,
+                                                            listaCaixas, 0);
+                        }
+                        break;
+                    case 9:
+                        if (importaPagamentosFornecedor.deletado != -1) {
+                            cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &importaPagamentosFornecedor,
+                                                               listaCaixas, 0);
+                        }
+                        break;
+                    case 10:
+                        if (importaAgendamentos.deletado != -1) {
+                            cadastrarAgendamentosModel(listaAgendamentos, &importaAgendamentos, 0);
+                        }
+                        break;
+                    case 11:
+                        if (importaOrdensServico.deletado != -1) {
+                            cadastrarOrdensServicoModel(listaOrdensServico, &importaOrdensServico, 0);
+                        }
+                        break;
+                    case 12:
+                        if (importaNotasFiscais.deletado != -1) {
+                            cadastrarNotasFiscaisModel(listaNotasFiscais, &importaNotasFiscais, listaPecas,
+                                                       listaOficinas, listaPecasNotas, 0, 0);
+                        }
+                        break;
                     case 13:
                         if (importaPecasNotas.deletado != -1) {
                             cadastrarPecaNotaModel(listaPecasNotas, &importaPecasNotas, 0);
                         }
-                    break;
+                        break;
                 }
             }
             continue;
@@ -614,7 +696,6 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Finaliza a leitura do arquivo
         if (strcmp(linha, "</dados>\n") == 0) {
-            printf("FIM\n");
             break;
         }
 
@@ -679,7 +760,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de ddd
         if (strncmp(linha, "\t\t\t<ddd>", 8) == 0) {
             char ddd[3];
-            sscanf(linha, "\t\t\t<ddd>%s</ddd>\n", ddd);
+            extraiValorTagsModel(linha, ddd, "<ddd>", "</ddd>");
             switch (idTabela) {
                 default:
                     break;
@@ -699,7 +780,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de telefone
         if (strncmp(linha, "\t\t\t<telefone>", 13) == 0) {
             char telefone[11];
-            sscanf(linha, "\t\t\t<telefone>%s</telefone>\n", telefone);
+            extraiValorTagsModel(linha, telefone, "<telefone>", "</telefone>");
 
             switch (idTabela) {
                 default:
@@ -720,7 +801,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de cpf_cnpj
         if (strncmp(linha, "\t\t\t<cpf_cnpj>", 13) == 0) {
             char cpf_cnpj[15];
-            sscanf(linha, "\t\t\t<cpf_cnpj>%s</cpf_cnpj>\n", cpf_cnpj);
+            extraiValorTagsModel(linha, cpf_cnpj, "<cpf_cnpj>", "</cpf_cnpj>");
 
             switch (idTabela) {
                 default:
@@ -735,7 +816,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de nome
         if (strncmp(linha, "\t\t\t<nome>", 9) == 0) {
             char nome[255];
-            sscanf(linha, "\t\t\t<nome>%s</nome>\n", &nome);
+            extraiValorTagsModel(linha, nome, "<nome>", "</nome>");
 
             switch (idTabela) {
                 default:
@@ -756,7 +837,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de email
         if (strncmp(linha, "\t\t\t<email>", 10) == 0) {
             char email[255];
-            sscanf(linha, "\t\t\t<email>%s</email>\n", email);
+            extraiValorTagsModel(linha, email, "<email>", "</email>");
 
             switch (idTabela) {
                 default:
@@ -777,7 +858,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de endereço
         if (strncmp(linha, "\t\t\t<endereco>", 13) == 0) {
             char endereco[255];
-            sscanf(linha, "\t\t\t<endereco>%s</endereco>\n", endereco);
+            extraiValorTagsModel(linha, endereco, "<endereco>", "</endereco>");
 
             switch (idTabela) {
                 default:
@@ -798,7 +879,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de modelo
         if (strncmp(linha, "\t\t\t<modelo>", 11) == 0) {
             char modelo[255];
-            sscanf(linha, "\t\t\t<modelo>%s</modelo>\n", modelo);
+            extraiValorTagsModel(linha, modelo, "<modelo>", "</modelo>");
 
             switch (idTabela) {
                 default:
@@ -813,7 +894,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de marca
         if (strncmp(linha, "\t\t\t<marca>", 10) == 0) {
             char marca[255];
-            sscanf(linha, "\t\t\t<marca>%s</marca>\n", marca);
+            extraiValorTagsModel(linha, marca, "<marca>", "</marca>");
 
             switch (idTabela) {
                 default:
@@ -828,7 +909,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de chassi
         if (strncmp(linha, "\t\t\t<chassi>", 11) == 0) {
             char chassi[255];
-            sscanf(linha, "\t\t\t<chassi>%s</chassi>\n", chassi);
+            extraiValorTagsModel(linha, chassi, "<chassi>", "</chassi>");
 
             switch (idTabela) {
                 default:
@@ -843,7 +924,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de placa
         if (strncmp(linha, "\t\t\t<placa>", 10) == 0) {
             char placa[255];
-            sscanf(linha, "\t\t\t<placa>%s</placa>\n", placa);
+            extraiValorTagsModel(linha, placa, "<placa>", "</placa>");
 
             switch (idTabela) {
                 default:
@@ -872,14 +953,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de porcentagem lucro
         if (strncmp(linha, "\t\t\t<porcentagemLucro>", 21) == 0) {
-            float porcentagemLucro;
-            sscanf(linha, "\t\t\t<porcentagemLucro>%f</porcentagemLucro>\n", porcentagemLucro);
+            float porcentagemLucro[255];
+            extraiValorTagsModel(linha, porcentagemLucro, "<porcentagemLucro>", "</porcentagemLucro>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 2:
-                    importaOficinas.porcentagemLucro = porcentagemLucro;
+                    importaOficinas.porcentagemLucro = atof(porcentagemLucro);
                     break;
             }
             continue;
@@ -888,7 +969,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de descricao
         if (strncmp(linha, "\t\t\t<descricao>", 14) == 0) {
             char descricao[255];
-            sscanf(linha, "\t\t\t<descricao>%s</descricao>\n", descricao);
+            extraiValorTagsModel(linha, descricao, "<descricao>", "</descricao>");
 
             switch (idTabela) {
                 default:
@@ -909,7 +990,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de fabricante
         if (strncmp(linha, "\t\t\t<fabricante>", 15) == 0) {
             char fabricante[255];
-            sscanf(linha, "\t\t\t<fabricante>%s</fabricante>\n", fabricante);
+            extraiValorTagsModel(linha, fabricante, "<fabricante>", "</fabricante>");
 
             switch (idTabela) {
                 default:
@@ -923,14 +1004,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de preco custo
         if (strncmp(linha, "\t\t\t<precoCusto>", 15) == 0) {
-            float precoCusto;
-            sscanf(linha, "\t\t\t<precoCusto>%f</precoCusto>\n", &precoCusto);
+            char precoCusto[255];
+            extraiValorTagsModel(linha, precoCusto, "<precoCusto>", "</precoCusto>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 3:
-                    importaPecas.precoCusto = precoCusto;
+                    importaPecas.precoCusto = atof(precoCusto);
                     break;
             }
             continue;
@@ -938,14 +1019,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de preco venda
         if (strncmp(linha, "\t\t\t<precoVenda>", 15) == 0) {
-            float precoVenda;
-            sscanf(linha, "\t\t\t<precoVenda>%f</precoVenda>\n", &precoVenda);
+            char precoVenda[255];
+            extraiValorTagsModel(linha, precoVenda, "<precoVenda>", "</precoVenda>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 3:
-                    importaPecas.precoVenda = precoVenda;
+                    importaPecas.precoVenda = atof(precoVenda);
                     break;
             }
             continue;
@@ -984,7 +1065,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de nome fantasia
         if (strncmp(linha, "\t\t\t<nomeFantasia>", 17) == 0) {
             char nomeFantasia[255];
-            sscanf(linha, "\t\t\t<nomeFantasia>%s</nomeFantasia>\n", nomeFantasia);
+            extraiValorTagsModel(linha, nomeFantasia, "<nomeFantasia>", "</nomeFantasia>");
 
             switch (idTabela) {
                 default:
@@ -999,7 +1080,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de razao social
         if (strncmp(linha, "\t\t\t<razaoSocial>", 16) == 0) {
             char razaoSocial[255];
-            sscanf(linha, "\t\t\t<razaoSocial>%s</razaoSocial>\n", razaoSocial);
+            extraiValorTagsModel(linha, razaoSocial, "<razaoSocial>", "</razaoSocial>");
 
             switch (idTabela) {
                 default:
@@ -1014,7 +1095,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de inscricao estadual
         if (strncmp(linha, "\t\t\t<inscricaoEstadual>", 16) == 0) {
             char inscricaoEstadual[255];
-            sscanf(linha, "\t\t\t<inscricaoEstadual>%s</inscricaoEstadual>\n", inscricaoEstadual);
+            extraiValorTagsModel(linha, inscricaoEstadual, "<inscricaoEstadual>", "</inscricaoEstadual>");
 
             switch (idTabela) {
                 default:
@@ -1029,7 +1110,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de cnpj
         if (strncmp(linha, "\t\t\t<cnpj>", 9) == 0) {
             char cnpj[15];
-            sscanf(linha, "\t\t\t<cnpj>%s</cnpj>\n", cnpj);
+            extraiValorTagsModel(linha, cnpj, "<cnpj>", "</cnpj>");
 
             switch (idTabela) {
                 default:
@@ -1043,14 +1124,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de preco
         if (strncmp(linha, "\t\t\t<preco>", 10) == 0) {
-            float preco;
-            sscanf(linha, "\t\t\t<preco>%f</preco>\n", &preco);
+            char preco[255];
+            extraiValorTagsModel(linha, preco, "<preco>", "</preco>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 5:
-                    importaServicos.preco = preco;
+                    importaServicos.preco = atof(preco);
                     break;
             }
             continue;
@@ -1058,14 +1139,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de comissao
         if (strncmp(linha, "\t\t\t<comissao>", 13) == 0) {
-            float comissao;
-            sscanf(linha, "\t\t\t<comissao>%f</comissao>\n", &comissao);
+            char comissao[255];
+            extraiValorTagsModel(linha, comissao, "<comissao>", "</comissao>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 5:
-                    importaServicos.comissao = comissao;
+                    importaServicos.comissao = atof(comissao);
                     break;
             }
             continue;
@@ -1074,7 +1155,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de cpf
         if (strncmp(linha, "\t\t\t<cpf>", 8) == 0) {
             char cpf[12];
-            sscanf(linha, "\t\t\t<cpf>%s</cpf>\n", cpf);
+            extraiValorTagsModel(linha, cpf, "<cpf>", "</cpf>");
 
             switch (idTabela) {
                 default:
@@ -1089,7 +1170,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de cargo
         if (strncmp(linha, "\t\t\t<cargo>", 10) == 0) {
             char cargo[255];
-            sscanf(linha, "\t\t\t<cargo>%s</cargo>\n", cargo);
+            extraiValorTagsModel(linha, cargo, "<cargo>", "</cargo>");
 
             switch (idTabela) {
                 default:
@@ -1103,14 +1184,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de salario
         if (strncmp(linha, "\t\t\t<salario>", 12) == 0) {
-            float salario;
-            sscanf(linha, "\t\t\t<salario>%f</salario>\n", &salario);
+            char salario[255];
+            extraiValorTagsModel(linha, salario, "<salario>", "</salario>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 6:
-                    importaFuncionarios.salario = salario;
+                    importaFuncionarios.salario = atof(salario);
                     break;
             }
             continue;
@@ -1118,14 +1199,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de valor caixa
         if (strncmp(linha, "\t\t\t<valorCaixa>", 15) == 0) {
-            float valorCaixa;
-            sscanf(linha, "\t\t\t<valorCaixa>%f</valorCaixa>\n", &valorCaixa);
+            char valorCaixa[255];
+            extraiValorTagsModel(linha, valorCaixa, "<valorCaixa>", "</valorCaixa>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 7:
-                    importaCaixas.valorCaixa = valorCaixa;
+                    importaCaixas.valorCaixa = atof(valorCaixa);
                     break;
             }
             continue;
@@ -1151,17 +1232,17 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de valor
         if (strncmp(linha, "\t\t\t<valor>", 10) == 0) {
-            float valor;
-            sscanf(linha, "\t\t\t<valor>%f</valor>\n", &valor);
+            char valor[255];
+            extraiValorTagsModel(linha, valor, "<valor>", "</valor>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 8:
-                    importaPagamentosCliente.valor = valor;
+                    importaPagamentosCliente.valor = atof(valor);
                     break;
                 case 9:
-                    importaPagamentosFornecedor.valor = valor;
+                    importaPagamentosFornecedor.valor = atof(valor);
                     break;
             }
             continue;
@@ -1170,7 +1251,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de data pagamento
         if (strncmp(linha, "\t\t\t<dataPagamento>", 18) == 0) {
             char dataPagamento[11];
-            sscanf(linha, "\t\t\t<dataPagamento>%s</dataPagamento>\n", dataPagamento);
+            extraiValorTagsModel(linha, dataPagamento, "<dataPagamento>", "</dataPagamento>");
 
             switch (idTabela) {
                 default:
@@ -1188,7 +1269,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de data a receber
         if (strncmp(linha, "\t\t\t<dataAReceber>", 17) == 0) {
             char dataAReceber[11];
-            sscanf(linha, "\t\t\t<dataAReceber>%s</dataAReceber>\n", dataAReceber);
+            extraiValorTagsModel(linha, dataAReceber, "<dataAReceber>", "</dataAReceber>");
 
             switch (idTabela) {
                 default:
@@ -1203,7 +1284,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de data recebimento
         if (strncmp(linha, "\t\t\t<dataRecebimento>", 20) == 0) {
             char dataRecebimento[11];
-            sscanf(linha, "\t\t\t<dataRecebimento>%s</dataRecebimento>\n", dataRecebimento);
+            extraiValorTagsModel(linha, dataRecebimento, "<dataRecebimento>", "</dataRecebimento>");
 
             switch (idTabela) {
                 default:
@@ -1218,7 +1299,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de data hora inicial
         if (strncmp(linha, "\t\t\t<datahoraInicial>", 20) == 0) {
             char datahoraInicial[17];
-            sscanf(linha, "\t\t\t<datahoraInicial>%s</datahoraInicial>\n", datahoraInicial);
+            extraiValorTagsModel(linha, datahoraInicial, "<datahoraInicial>", "</datahoraInicial>");
 
             switch (idTabela) {
                 default:
@@ -1233,7 +1314,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
         // Lê campo de data hora final
         if (strncmp(linha, "\t\t\t<datahoraFinal>", 18) == 0) {
             char datahoraFinal[17];
-            sscanf(linha, "\t\t\t<datahoraFinal>%s</datahoraFinal>\n", datahoraFinal);
+            extraiValorTagsModel(linha, datahoraFinal, "<datahoraFinal>", "</datahoraFinal>");
 
             switch (idTabela) {
                 default:
@@ -1262,14 +1343,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de valor total
         if (strncmp(linha, "\t\t\t<valorTotal>", 15) == 0) {
-            float valorTotal;
-            sscanf(linha, "\t\t\t<valorTotal>%f</valorTotal>\n", &valorTotal);
+            char valorTotal[255];
+            extraiValorTagsModel(linha, valorTotal, "<valorTotal>", "</valorTotal>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 11:
-                    importaOrdensServico.valorTotal = valorTotal;
+                    importaOrdensServico.valorTotal = atof(valorTotal);
                     break;
             }
             continue;
@@ -1277,14 +1358,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de tempo gasto
         if (strncmp(linha, "\t\t\t<tempoGasto>", 15) == 0) {
-            float tempoGasto;
-            sscanf(linha, "\t\t\t<tempoGasto>%f</tempoGasto>\n", &tempoGasto);
+            char tempoGasto[255];
+            extraiValorTagsModel(linha, tempoGasto, "<tempoGasto>", "</tempoGasto>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 11:
-                    importaOrdensServico.tempoGasto = tempoGasto;
+                    importaOrdensServico.tempoGasto = atof(tempoGasto);
                     break;
             }
             continue;
@@ -1292,14 +1373,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de frete
         if (strncmp(linha, "\t\t\t<frete>", 10) == 0) {
-            float frete;
-            sscanf(linha, "\t\t\t<frete>%f</frete>\n", &frete);
+            char frete[255];
+            extraiValorTagsModel(linha, frete, "<frete>", "</frete>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 12:
-                    importaNotasFiscais.frete = frete;
+                    importaNotasFiscais.frete = atof(frete);
                     break;
             }
             continue;
@@ -1307,14 +1388,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de imposto
         if (strncmp(linha, "\t\t\t<imposto>", 12) == 0) {
-            float imposto;
-            sscanf(linha, "\t\t\t<imposto>%f</imposto>\n", &imposto);
+            char imposto[255];
+            extraiValorTagsModel(linha, imposto, "<imposto>", "</imposto>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 12:
-                    importaNotasFiscais.imposto = imposto;
+                    importaNotasFiscais.imposto = atof(imposto);
                     break;
             }
             continue;
@@ -1322,14 +1403,14 @@ void importaDadosModel(struct ListaClientes *listaClientes,
 
         // Lê campo de total nota
         if (strncmp(linha, "\t\t\t<totalNota>", 14) == 0) {
-            float totalNota;
-            sscanf(linha, "\t\t\t<totalNota>%f</totalNota>\n", &totalNota);
+            char totalNota[255];
+            extraiValorTagsModel(linha, totalNota, "<totalNota>", "</totalNota>");
 
             switch (idTabela) {
                 default:
                     break;
                 case 12:
-                    importaNotasFiscais.totalNota = totalNota;
+                    importaNotasFiscais.totalNota = atof(totalNota);
                     break;
             }
             continue;

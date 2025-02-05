@@ -34,6 +34,8 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                        struct ListaPecasNotas *listaPecasNotas,
                        int *opcoesExportacao);
 
+void extraiValorTagsModel(char *entrada, char *saida, char *tagAbre, char *tagFecha);
+
 void importaDadosModel(struct ListaClientes *listaClientes,
                        struct ListaVeiculos *listaVeiculos,
                        struct ListaOficinas *listaOficinas,

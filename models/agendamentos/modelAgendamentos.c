@@ -191,7 +191,7 @@ int realocarAgendamentosModel(struct ListaAgendamentos *lista, int qtdAlocada) {
 }
 
 // Cadastra um novo agendamento
-void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendamentos *agendamento) {
+void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendamentos *agendamento, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdAgendamentos == 0) {
@@ -207,9 +207,11 @@ void cadastrarAgendamentosModel(struct ListaAgendamentos *lista, struct Agendame
     }
 
     //Cadastrando agendamento na memória
-    agendamento->id = lista->qtdAgendamentos;
-    agendamento->deletado = 0;
-    agendamento->finalizado = 0;
+    if (autoId == 1) {
+        agendamento->id = lista->qtdAgendamentos;
+        agendamento->deletado = 0;
+        agendamento->finalizado = 0;
+    }
 
     lista->listaAgendamentos[lista->qtdAgendamentos - 1] = *agendamento;
 }

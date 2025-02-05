@@ -200,8 +200,8 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
 
     if (autoId == 1) {
         pecaNotaCadastrando->id = lista->qtdPecasNotas;
+        pecaNotaCadastrando->deletado = 0;
     }
-    pecaNotaCadastrando->deletado = 0;
     lista->listaPecasNotas[lista->qtdPecasNotas - 1] = *pecaNotaCadastrando;
 }
 
@@ -251,6 +251,6 @@ void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *
 
     pecaNota->idPeca = listaPecas->qtdPecas + 1;
 
-    cadastrarPecaModel(listaPecas, &novaPeca);
+    cadastrarPecaModel(listaPecas, &novaPeca, 1);
 }
 

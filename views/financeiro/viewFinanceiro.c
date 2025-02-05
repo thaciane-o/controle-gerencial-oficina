@@ -341,7 +341,7 @@ void registrarRecebimentoCliente(struct ListaClientes *listaClientes, struct Lis
         }
     }
 
-    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas);
+    cadastrarPagamentosClienteModel(listaPagamentosCliente, &pagamento, listaCaixas, 1);
 }
 
 // Formulário para alterar forma de pagamento de um cliente
@@ -506,5 +506,5 @@ void efetuarPagamentoFornecedor(struct ListaPagamentosFornecedor *listaPagamento
         return;
     }
 
-    cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento, listaCaixas);
+    cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento, listaCaixas, 1);
 }

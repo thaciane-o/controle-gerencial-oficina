@@ -215,8 +215,8 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
     //Cadastrando cliente na memória
     if (autoId == 1) {
         cliente->id = lista->qtdClientes;
+        cliente->deletado = 0;
     }
-    cliente->deletado = 0;
 
     lista->listaClientes[lista->qtdClientes - 1] = *cliente;
 

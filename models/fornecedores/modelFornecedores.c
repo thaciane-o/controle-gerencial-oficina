@@ -200,7 +200,7 @@ int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada) {
 }
 
 // Cadastra um novo fornecedor
-void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor) {
+void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor, int autoId) {
     int resultAlocacao = 0;
     if (lista->qtdFornecedores == 0) {
         lista->qtdFornecedores++;
@@ -214,8 +214,10 @@ void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Forneced
         return;
     }
 
-    fornecedor->id = lista->qtdFornecedores;
-    fornecedor->deletado = 0;
+    if (autoId == 1) {
+        fornecedor->id = lista->qtdFornecedores;
+        fornecedor->deletado = 0;
+    }
 
     lista->listaFornecedores[lista->qtdFornecedores - 1] = *fornecedor;
 

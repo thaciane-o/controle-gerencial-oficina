@@ -200,7 +200,7 @@ int realocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdAlo
 // Cadastra uma nova nota
 void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct NotasFiscais *novaNotaFiscal,
                                 struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas,
-                                struct ListaPecasNotas *listaPecasNotas, int totalPecas) {
+                                struct ListaPecasNotas *listaPecasNotas, int totalPecas, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdNotas == 0) {
@@ -216,8 +216,10 @@ void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct NotasFis
         return;
     }
 
-    novaNotaFiscal->id = lista->qtdNotas;
-    novaNotaFiscal->deletado = 0;
+    if (autoId == 1) {
+        novaNotaFiscal->id = lista->qtdNotas;
+        novaNotaFiscal->deletado = 0;
+    }
 
     lista->listaNotas[lista->qtdNotas - 1] = *novaNotaFiscal;
 

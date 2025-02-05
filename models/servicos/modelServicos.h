@@ -25,7 +25,7 @@ int alocarMemoriaServicoModel(struct ListaServicos *lista);
 
 int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca);
 
-void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando);
+void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando, int autoId);
 
 void deletarServicoModel(struct ListaServicos *lista, struct ListaAgendamentos *listaAgendamentos, int id);
 

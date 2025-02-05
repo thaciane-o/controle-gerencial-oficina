@@ -26,6 +26,8 @@ int realocarCaixasModel(struct ListaCaixas *lista, int qtdAlocada);
 
 void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina);
 
+void cadastrarCaixasModel(struct ListaCaixas *lista, struct Caixas *caixa);
+
 void deletarCaixasModel(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente,
                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int idOficina);
 

@@ -505,54 +505,1106 @@ void importaDadosModel(struct ListaClientes *listaClientes,
     // Lê todas as linhas do arquivo
     while (fgets(linha, 512, arquivo) != NULL) {
         // Ignora linha de inicialização
-        if (strcmp(linha, "<dados>") == 1) {
+        if (strcmp(linha, "<dados>\n") == 0) {
             printf("INICIO\n");
             continue;
         }
 
         // Ajusta o id da tabela que está sendo lida
-        if (strcmp(linha, "\t<tabela=cliente>") == 1) {
-            printf("INICIO TABELA DE CLIENTE\n");
+        if (strcmp(linha, "\t<tabela=cliente>\n") == 0) {
             idTabela = 0;
             continue;
         }
+        if (strcmp(linha, "\t<tabela=veiculo>\n") == 0) {
+            idTabela = 1;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=oficina>\n") == 0) {
+            idTabela = 2;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=peca>\n") == 0) {
+            idTabela = 3;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=fornecedor>\n") == 0) {
+            idTabela = 4;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=servico>\n") == 0) {
+            idTabela = 5;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=funcionario>\n") == 0) {
+            idTabela = 6;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=caixa>\n") == 0) {
+            idTabela = 7;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=pagamentoCliente>\n") == 0) {
+            idTabela = 8;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=pagamentoFornecedor>\n") == 0) {
+            idTabela = 9;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=agendamento>\n") == 0) {
+            idTabela = 10;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=ordemServico>\n") == 0) {
+            idTabela = 11;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=notaFiscal>\n") == 0) {
+            idTabela = 12;
+            continue;
+        }
+        if (strcmp(linha, "\t<tabela=pecaNota>\n") == 0) {
+            idTabela = 13;
+            continue;
+        }
 
-        // TODO : Reseta variáveis para nova leitura de registro
-        if (strcmp(linha, "\t\t<registro>") == 1) {
+        // Reinicia structs
+        if (strcmp(linha, "\t\t<registro>\n") == 0) {
+            importaCliente.deletado = -1;
+            importaVeiculos.deletado = -1;
+            importaOficinas.deletado = -1;
+            importaPecas.deletado = -1;
+            importaFornecedores.deletado = -1;
+            importaServicos.deletado = -1;
+            importaFuncionarios.deletado = -1;
+            importaCaixas.deletado = -1;
+            importaPagamentosCliente.deletado = -1;
+            importaPagamentosFornecedor.deletado = -1;
+            importaAgendamentos.deletado = -1;
+            importaOrdensServico.deletado = -1;
+            importaNotasFiscais.deletado = -1;
+            importaPecasNotas.deletado = -1;
             continue;
         }
 
         // TODO : Armazena o dado que acabamos de ler
-        if (strcmp(linha, "\t\t</registro>") == 1) {
-            printf("FIM DE REGISTRO DA TABELA\n");
+        if (strcmp(linha, "\t\t</registro>\n") == 0) {
+            if (opcoesImportacao[idTabela] == 1) {
+                switch (idTabela) {
+                    case 0:
+                        if (importaCliente.deletado != -1) {
+                            cadastrarClientesModel(listaClientes, &importaCliente, 0);
+                        }
+                    break;
+                    case 13:
+                        if (importaPecasNotas.deletado != -1) {
+                            cadastrarPecaNotaModel(listaPecasNotas, &importaPecasNotas, 0);
+                        }
+                    break;
+                }
+            }
             continue;
         }
 
         // Reinicia o id da tabela que estamos lendo
-        if (strcmp(linha, "\t</tabela>") == 1) {
-            printf("FIM TABELA\n");
+        if (strcmp(linha, "\t</tabela>\n") == 0) {
             idTabela = -1;
             continue;
         }
 
         // Finaliza a leitura do arquivo
-        if (strcmp(linha, "</dados>") == 1) {
+        if (strcmp(linha, "</dados>\n") == 0) {
             printf("FIM\n");
             break;
         }
 
+        // Verifica se vai buscar os dados da tabela atual
+        if (idTabela != -1) {
+            if (opcoesImportacao[idTabela] == 0) {
+                continue;
+            }
+        }
+
         // Lê campo de id
         if (strncmp(linha, "\t\t\t<id>", 7) == 0) {
-            printf("LINHA DE ID: ");
+            int id;
+            sscanf(linha, "\t\t\t<id>%d</id>\n", &id);
 
             switch (idTabela) {
-                // Insere na tabela de cliente
+                default:
+                    break;
                 case 0:
-                    sscanf(linha, "\t\t\t<id>%d</id>", &importaCliente.id);
-                    printf("CLIENTE ID %d\n", importaCliente.id);
+                    importaCliente.id = id;
+                    break;
+                case 1:
+                    importaVeiculos.id = id;
+                    break;
+                case 2:
+                    importaOficinas.id = id;
+                    break;
+                case 3:
+                    importaPecas.id = id;
+                    break;
+                case 4:
+                    importaFornecedores.id = id;
+                    break;
+                case 5:
+                    importaServicos.id = id;
+                    break;
+                case 6:
+                    importaFuncionarios.id = id;
+                    break;
+                case 7:
+                    importaCaixas.id = id;
+                    break;
+                case 8:
+                    importaPagamentosCliente.id = id;
+                    break;
+                case 9:
+                    importaPagamentosFornecedor.id = id;
+                    break;
+                case 10:
+                    importaAgendamentos.id = id;
+                    break;
+                case 12:
+                    importaNotasFiscais.id = id;
+                    break;
+                case 13:
+                    importaPecasNotas.id = id;
                     break;
             }
+            continue;
+        }
 
+        // Lê campo de ddd
+        if (strncmp(linha, "\t\t\t<ddd>", 8) == 0) {
+            char ddd[3];
+            sscanf(linha, "\t\t\t<ddd>%s</ddd>\n", ddd);
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    strcpy(importaCliente.ddd, ddd);
+                    break;
+                case 2:
+                    strcpy(importaOficinas.ddd, ddd);
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.ddd, ddd);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de telefone
+        if (strncmp(linha, "\t\t\t<telefone>", 13) == 0) {
+            char telefone[11];
+            sscanf(linha, "\t\t\t<telefone>%s</telefone>\n", telefone);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    strcpy(importaCliente.telefone, telefone);
+                    break;
+                case 2:
+                    strcpy(importaOficinas.telefone, telefone);
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.telefone, telefone);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de cpf_cnpj
+        if (strncmp(linha, "\t\t\t<cpf_cnpj>", 13) == 0) {
+            char cpf_cnpj[15];
+            sscanf(linha, "\t\t\t<cpf_cnpj>%s</cpf_cnpj>\n", cpf_cnpj);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    strcpy(importaCliente.cpf_cnpj, cpf_cnpj);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de nome
+        if (strncmp(linha, "\t\t\t<nome>", 9) == 0) {
+            char nome[255];
+            sscanf(linha, "\t\t\t<nome>%s</nome>\n", &nome);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    strcpy(importaCliente.nome, nome);
+                    break;
+                case 2:
+                    strcpy(importaCliente.nome, nome);
+                    break;
+                case 6:
+                    strcpy(importaFuncionarios.nome, nome);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de email
+        if (strncmp(linha, "\t\t\t<email>", 10) == 0) {
+            char email[255];
+            sscanf(linha, "\t\t\t<email>%s</email>\n", email);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    strcpy(importaCliente.email, email);
+                    break;
+                case 2:
+                    strcpy(importaOficinas.email, email);
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.email, email);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de endereço
+        if (strncmp(linha, "\t\t\t<endereco>", 13) == 0) {
+            char endereco[255];
+            sscanf(linha, "\t\t\t<endereco>%s</endereco>\n", endereco);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    strcpy(importaCliente.endereco, endereco);
+                    break;
+                case 2:
+                    strcpy(importaOficinas.endereco, endereco);
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.endereco, endereco);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de modelo
+        if (strncmp(linha, "\t\t\t<modelo>", 11) == 0) {
+            char modelo[255];
+            sscanf(linha, "\t\t\t<modelo>%s</modelo>\n", modelo);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 1:
+                    strcpy(importaVeiculos.modelo, modelo);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de marca
+        if (strncmp(linha, "\t\t\t<marca>", 10) == 0) {
+            char marca[255];
+            sscanf(linha, "\t\t\t<marca>%s</marca>\n", marca);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 1:
+                    strcpy(importaVeiculos.marca, marca);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de chassi
+        if (strncmp(linha, "\t\t\t<chassi>", 11) == 0) {
+            char chassi[255];
+            sscanf(linha, "\t\t\t<chassi>%s</chassi>\n", chassi);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 1:
+                    strcpy(importaVeiculos.chassi, chassi);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de placa
+        if (strncmp(linha, "\t\t\t<placa>", 10) == 0) {
+            char placa[255];
+            sscanf(linha, "\t\t\t<placa>%s</placa>\n", placa);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 1:
+                    strcpy(importaVeiculos.placa, placa);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de ano fabricacao
+        if (strncmp(linha, "\t\t\t<anoFabricacao>", 18) == 0) {
+            int anoFabricacao;
+            sscanf(linha, "\t\t\t<anoFabricacao>%d</anoFabricacao>\n", &anoFabricacao);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 1:
+                    importaVeiculos.anoFabricacao = anoFabricacao;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de porcentagem lucro
+        if (strncmp(linha, "\t\t\t<porcentagemLucro>", 21) == 0) {
+            float porcentagemLucro;
+            sscanf(linha, "\t\t\t<porcentagemLucro>%f</porcentagemLucro>\n", porcentagemLucro);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 2:
+                    importaOficinas.porcentagemLucro = porcentagemLucro;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de descricao
+        if (strncmp(linha, "\t\t\t<descricao>", 14) == 0) {
+            char descricao[255];
+            sscanf(linha, "\t\t\t<descricao>%s</descricao>\n", descricao);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    strcpy(importaPecas.descricao, descricao);
+                    break;
+                case 5:
+                    strcpy(importaServicos.descricao, descricao);
+                    break;
+                case 11:
+                    strcpy(importaOrdensServico.descricao, descricao);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de fabricante
+        if (strncmp(linha, "\t\t\t<fabricante>", 15) == 0) {
+            char fabricante[255];
+            sscanf(linha, "\t\t\t<fabricante>%s</fabricante>\n", fabricante);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    strcpy(importaPecas.fabricante, fabricante);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de preco custo
+        if (strncmp(linha, "\t\t\t<precoCusto>", 15) == 0) {
+            float precoCusto;
+            sscanf(linha, "\t\t\t<precoCusto>%f</precoCusto>\n", &precoCusto);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    importaPecas.precoCusto = precoCusto;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de preco venda
+        if (strncmp(linha, "\t\t\t<precoVenda>", 15) == 0) {
+            float precoVenda;
+            sscanf(linha, "\t\t\t<precoVenda>%f</precoVenda>\n", &precoVenda);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    importaPecas.precoVenda = precoVenda;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de quantidade em estoque
+        if (strncmp(linha, "\t\t\t<qtdEstoque>", 15) == 0) {
+            int qtdEstoque;
+            sscanf(linha, "\t\t\t<qtdEstoque>%d</qtdEstoque>\n", &qtdEstoque);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    importaPecas.qtdEstoque = qtdEstoque;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de quantidade minima em estoque
+        if (strncmp(linha, "\t\t\t<estoqueMinimo>", 18) == 0) {
+            int estoqueMinimo;
+            sscanf(linha, "\t\t\t<estoqueMinimo>%d</estoqueMinimo>\n", &estoqueMinimo);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    importaPecas.estoqueMinimo = estoqueMinimo;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de nome fantasia
+        if (strncmp(linha, "\t\t\t<nomeFantasia>", 17) == 0) {
+            char nomeFantasia[255];
+            sscanf(linha, "\t\t\t<nomeFantasia>%s</nomeFantasia>\n", nomeFantasia);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.nomeFantasia, nomeFantasia);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de razao social
+        if (strncmp(linha, "\t\t\t<razaoSocial>", 16) == 0) {
+            char razaoSocial[255];
+            sscanf(linha, "\t\t\t<razaoSocial>%s</razaoSocial>\n", razaoSocial);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.razaoSocial, razaoSocial);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de inscricao estadual
+        if (strncmp(linha, "\t\t\t<inscricaoEstadual>", 16) == 0) {
+            char inscricaoEstadual[255];
+            sscanf(linha, "\t\t\t<inscricaoEstadual>%s</inscricaoEstadual>\n", inscricaoEstadual);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.inscricaoEstadual, inscricaoEstadual);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de cnpj
+        if (strncmp(linha, "\t\t\t<cnpj>", 9) == 0) {
+            char cnpj[15];
+            sscanf(linha, "\t\t\t<cnpj>%s</cnpj>\n", cnpj);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 4:
+                    strcpy(importaFornecedores.cnpj, cnpj);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de preco
+        if (strncmp(linha, "\t\t\t<preco>", 10) == 0) {
+            float preco;
+            sscanf(linha, "\t\t\t<preco>%f</preco>\n", &preco);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 5:
+                    importaServicos.preco = preco;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de comissao
+        if (strncmp(linha, "\t\t\t<comissao>", 13) == 0) {
+            float comissao;
+            sscanf(linha, "\t\t\t<comissao>%f</comissao>\n", &comissao);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 5:
+                    importaServicos.comissao = comissao;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de cpf
+        if (strncmp(linha, "\t\t\t<cpf>", 8) == 0) {
+            char cpf[12];
+            sscanf(linha, "\t\t\t<cpf>%s</cpf>\n", cpf);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 6:
+                    strcpy(importaFuncionarios.cpf, cpf);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de cargo
+        if (strncmp(linha, "\t\t\t<cargo>", 10) == 0) {
+            char cargo[255];
+            sscanf(linha, "\t\t\t<cargo>%s</cargo>\n", cargo);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 6:
+                    strcpy(importaFuncionarios.cargo, cargo);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de salario
+        if (strncmp(linha, "\t\t\t<salario>", 12) == 0) {
+            float salario;
+            sscanf(linha, "\t\t\t<salario>%f</salario>\n", &salario);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 6:
+                    importaFuncionarios.salario = salario;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de valor caixa
+        if (strncmp(linha, "\t\t\t<valorCaixa>", 15) == 0) {
+            float valorCaixa;
+            sscanf(linha, "\t\t\t<valorCaixa>%f</valorCaixa>\n", &valorCaixa);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 7:
+                    importaCaixas.valorCaixa = valorCaixa;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de tipo pagamento
+        if (strncmp(linha, "\t\t\t<tipoPagamento>", 18) == 0) {
+            int tipoPagamento;
+            sscanf(linha, "\t\t\t<tipoPagamento>%d</tipoPagamento>\n", &tipoPagamento);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    importaPagamentosCliente.tipoPagamento = tipoPagamento;
+                    break;
+                case 9:
+                    importaPagamentosFornecedor.tipoPagamento = tipoPagamento;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de valor
+        if (strncmp(linha, "\t\t\t<valor>", 10) == 0) {
+            float valor;
+            sscanf(linha, "\t\t\t<valor>%f</valor>\n", &valor);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    importaPagamentosCliente.valor = valor;
+                    break;
+                case 9:
+                    importaPagamentosFornecedor.valor = valor;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de data pagamento
+        if (strncmp(linha, "\t\t\t<dataPagamento>", 18) == 0) {
+            char dataPagamento[11];
+            sscanf(linha, "\t\t\t<dataPagamento>%s</dataPagamento>\n", dataPagamento);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    strcpy(importaPagamentosCliente.dataPagamento, dataPagamento);
+                    break;
+                case 9:
+                    strcpy(importaPagamentosFornecedor.dataPagamento, dataPagamento);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de data a receber
+        if (strncmp(linha, "\t\t\t<dataAReceber>", 17) == 0) {
+            char dataAReceber[11];
+            sscanf(linha, "\t\t\t<dataAReceber>%s</dataAReceber>\n", dataAReceber);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    strcpy(importaPagamentosCliente.dataAReceber, dataAReceber);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de data recebimento
+        if (strncmp(linha, "\t\t\t<dataRecebimento>", 20) == 0) {
+            char dataRecebimento[11];
+            sscanf(linha, "\t\t\t<dataRecebimento>%s</dataRecebimento>\n", dataRecebimento);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    strcpy(importaPagamentosCliente.dataRecebimento, dataRecebimento);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de data hora inicial
+        if (strncmp(linha, "\t\t\t<datahoraInicial>", 20) == 0) {
+            char datahoraInicial[17];
+            sscanf(linha, "\t\t\t<datahoraInicial>%s</datahoraInicial>\n", datahoraInicial);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 10:
+                    strcpy(importaAgendamentos.datahoraInicial, datahoraInicial);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de data hora final
+        if (strncmp(linha, "\t\t\t<datahoraFinal>", 18) == 0) {
+            char datahoraFinal[17];
+            sscanf(linha, "\t\t\t<datahoraFinal>%s</datahoraFinal>\n", datahoraFinal);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 11:
+                    strcpy(importaOrdensServico.datahoraFinal, datahoraFinal);
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de finalizado
+        if (strncmp(linha, "\t\t\t<finalizado>", 15) == 0) {
+            int finalizado;
+            sscanf(linha, "\t\t\t<finalizado>%d</finalizado>\n", &finalizado);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 10:
+                    importaAgendamentos.finalizado = finalizado;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de valor total
+        if (strncmp(linha, "\t\t\t<valorTotal>", 15) == 0) {
+            float valorTotal;
+            sscanf(linha, "\t\t\t<valorTotal>%f</valorTotal>\n", &valorTotal);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 11:
+                    importaOrdensServico.valorTotal = valorTotal;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de tempo gasto
+        if (strncmp(linha, "\t\t\t<tempoGasto>", 15) == 0) {
+            float tempoGasto;
+            sscanf(linha, "\t\t\t<tempoGasto>%f</tempoGasto>\n", &tempoGasto);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 11:
+                    importaOrdensServico.tempoGasto = tempoGasto;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de frete
+        if (strncmp(linha, "\t\t\t<frete>", 10) == 0) {
+            float frete;
+            sscanf(linha, "\t\t\t<frete>%f</frete>\n", &frete);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 12:
+                    importaNotasFiscais.frete = frete;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de imposto
+        if (strncmp(linha, "\t\t\t<imposto>", 12) == 0) {
+            float imposto;
+            sscanf(linha, "\t\t\t<imposto>%f</imposto>\n", &imposto);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 12:
+                    importaNotasFiscais.imposto = imposto;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de total nota
+        if (strncmp(linha, "\t\t\t<totalNota>", 14) == 0) {
+            float totalNota;
+            sscanf(linha, "\t\t\t<totalNota>%f</totalNota>\n", &totalNota);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 12:
+                    importaNotasFiscais.totalNota = totalNota;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de qtd pecas
+        if (strncmp(linha, "\t\t\t<qtdPecas>", 13) == 0) {
+            int qtdPecas;
+            sscanf(linha, "\t\t\t<qtdPecas>%d</qtdPecas>\n", &qtdPecas);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 13:
+                    importaPecasNotas.qtdPecas = qtdPecas;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id oficina
+        if (strncmp(linha, "\t\t\t<idOficina>", 14) == 0) {
+            int idOficina;
+            sscanf(linha, "\t\t\t<idOficina>%d</idOficina>\n", &idOficina);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    importaCliente.idOficina = idOficina;
+                    break;
+                case 3:
+                    importaPecas.idOficina = idOficina;
+                    break;
+                case 5:
+                    importaServicos.idOficina = idOficina;
+                    break;
+                case 6:
+                    importaFuncionarios.idOficina = idOficina;
+                    break;
+                case 7:
+                    importaCaixas.idOficina = idOficina;
+                    break;
+                case 12:
+                    importaNotasFiscais.idOficina = idOficina;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id proprietario
+        if (strncmp(linha, "\t\t\t<idProprietario>", 19) == 0) {
+            int idProprietario;
+            sscanf(linha, "\t\t\t<idProprietario>%d</idProprietario>\n", &idProprietario);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 1:
+                    importaVeiculos.idProprietario = idProprietario;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id fornecedor
+        if (strncmp(linha, "\t\t\t<idFornecedor>", 17) == 0) {
+            int idFornecedor;
+            sscanf(linha, "\t\t\t<idFornecedor>%d</idFornecedor>\n", &idFornecedor);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 3:
+                    importaPecas.idFornecedor = idFornecedor;
+                    break;
+                case 9:
+                    importaPagamentosFornecedor.idFornecedor = idFornecedor;
+                    break;
+                case 12:
+                    importaNotasFiscais.idFornecedor = idFornecedor;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id caixa
+        if (strncmp(linha, "\t\t\t<idCaixa>", 12) == 0) {
+            int idCaixa;
+            sscanf(linha, "\t\t\t<idCaixa>%d</idCaixa>\n", &idCaixa);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    importaPagamentosCliente.idCaixa = idCaixa;
+                    break;
+                case 9:
+                    importaPagamentosFornecedor.idCaixa = idCaixa;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id cliente
+        if (strncmp(linha, "\t\t\t<idCliente>", 14) == 0) {
+            int idCliente;
+            sscanf(linha, "\t\t\t<idCliente>%d</idCliente>\n", &idCliente);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 8:
+                    importaPagamentosCliente.idCliente = idCliente;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id veiculo
+        if (strncmp(linha, "\t\t\t<idVeiculo>", 14) == 0) {
+            int idVeiculo;
+            sscanf(linha, "\t\t\t<idVeiculo>%d</idVeiculo>\n", &idVeiculo);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 10:
+                    importaAgendamentos.idVeiculo = idVeiculo;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id servico
+        if (strncmp(linha, "\t\t\t<idServico>", 14) == 0) {
+            int idServico;
+            sscanf(linha, "\t\t\t<idServico>%d</idServico>\n", &idServico);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 10:
+                    importaAgendamentos.idServico = idServico;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id funcionario
+        if (strncmp(linha, "\t\t\t<idFuncionario>", 18) == 0) {
+            int idFuncionario;
+            sscanf(linha, "\t\t\t<idFuncionario>%d</idFuncionario>\n", &idFuncionario);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 10:
+                    importaAgendamentos.idFuncionario = idFuncionario;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id pecas
+        if (strncmp(linha, "\t\t\t<idPecas>", 12) == 0) {
+            int idPecas;
+            sscanf(linha, "\t\t\t<idPecas>%d</idPecas>\n", &idPecas);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 11:
+                    importaOrdensServico.idPecas = idPecas;
+                    break;
+                    continue;
+            }
+        }
+
+        // Lê campo de id agendamentos
+        if (strncmp(linha, "\t\t\t<idAgendamento>", 18) == 0) {
+            int idAgendamento;
+            sscanf(linha, "\t\t\t<idAgendamento>%d</idAgendamento>\n", &idAgendamento);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 11:
+                    importaOrdensServico.idAgendamento = idAgendamento;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id nota
+        if (strncmp(linha, "\t\t\t<idNota>", 11) == 0) {
+            int idNota;
+            sscanf(linha, "\t\t\t<idNota>%d</idNota>\n", &idNota);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 13:
+                    importaPecasNotas.idNota = idNota;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de id pecas em notas
+        if (strncmp(linha, "\t\t\t<idPeca>", 11) == 0) {
+            int idPeca;
+            sscanf(linha, "\t\t\t<idPeca>%d</idPeca>\n", &idPeca);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 13:
+                    importaPecasNotas.idPeca = idPeca;
+                    break;
+            }
+            continue;
+        }
+
+        // Lê campo de deletado
+        if (strncmp(linha, "\t\t\t<deletado>", 13) == 0) {
+            int deletado;
+            sscanf(linha, "\t\t\t<deletado>%d</deletado>\n", &deletado);
+
+            switch (idTabela) {
+                default:
+                    break;
+                case 0:
+                    importaCliente.deletado = deletado;
+                    break;
+                case 1:
+                    importaVeiculos.deletado = deletado;
+                    break;
+                case 2:
+                    importaOficinas.deletado = deletado;
+                    break;
+                case 3:
+                    importaPecas.deletado = deletado;
+                    break;
+                case 4:
+                    importaFornecedores.deletado = deletado;
+                    break;
+                case 5:
+                    importaServicos.deletado = deletado;
+                    break;
+                case 6:
+                    importaFuncionarios.deletado = deletado;
+                    break;
+                case 7:
+                    importaCaixas.deletado = deletado;
+                    break;
+                case 8:
+                    importaPagamentosCliente.deletado = deletado;
+                    break;
+                case 9:
+                    importaPagamentosFornecedor.deletado = deletado;
+                    break;
+                case 10:
+                    importaAgendamentos.deletado = deletado;
+                    break;
+                case 11:
+                    importaOrdensServico.deletado = deletado;
+                    break;
+                case 12:
+                    importaNotasFiscais.deletado = deletado;
+                    break;
+                case 13:
+                    importaPecasNotas.deletado = deletado;
+                    break;
+            }
             continue;
         }
     }

@@ -219,7 +219,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
             // Soma a quantidade de peças que foi pedida
             totalPecas += pecaNota.qtdPecas;
 
-            cadastrarPecaNotaModel(listaPecasNotas, &pecaNota);
+            cadastrarPecaNotaModel(listaPecasNotas, &pecaNota, 1);
             cadastrouPeca = 1;
         }
     } while (pecaNota.idPeca != 0);

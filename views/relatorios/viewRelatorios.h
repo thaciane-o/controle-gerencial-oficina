@@ -46,6 +46,12 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
                                   struct ListaAgendamentos *listaAgendamentos,
                                   struct ListaFuncionarios *listafuncionarios);
 
+void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
+                              struct ListaServicos *listaServicos,
+                              struct ListaAgendamentos *listaAgendamentos,
+                              struct ListaFuncionarios *listaFuncionarios,
+                              struct ListaVeiculos *listaVeiculos);
+
 int formaDeImprimir();
 
 #endif //VIEWRELATORIOS_H

@@ -36,7 +36,7 @@ void imprimirRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaCliente
 
     int idAgendamento = 0;
 
-    // Inserindo os dados no arquivo de relatório
+    // Filtrando tipo de relatorio
     switch (tipo){
             case 1:
                 servico = id;
@@ -81,9 +81,9 @@ void imprimirRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaCliente
 
             tAgendamento = mktime(&dataAgendamento);
 
-
-
+            // Percorre os registros de peças
             for (int j = 0; j < listaPecas->qtdPecas; j++) {
+
                 // Verificar se não está deletado, se foi finalizado e aplica os filtros
                 if (listaPecas->listaPecas[j].deletado  == 0 &&
                     listaOrdensServicos->listaOrdensServico[i].deletado == 0 &&
@@ -206,7 +206,7 @@ void armazenarRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClient
             tAgendamento = mktime(&dataAgendamento);
 
 
-
+            // Percorre os registros de peças
             for (int j = 0; j < listaPecas->qtdPecas; j++) {
                 // Verificar se não está deletado, se foi finalizado e aplica os filtros
                 if (listaPecas->listaPecas[j].deletado  == 0 &&

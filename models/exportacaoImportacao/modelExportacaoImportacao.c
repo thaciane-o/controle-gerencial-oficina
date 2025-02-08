@@ -602,7 +602,7 @@ void importaDadosModel(struct ListaClientes *listaClientes,
             importaAgendamentos.deletado = -1;
             importaOrdensServico.deletado = -1;
             importaNotasFiscais.deletado = -1;
-            importaPecasNotas.deletado = -1;            // tem algo errado
+            importaPecasNotas.deletado = -1;
             continue;
         }
 

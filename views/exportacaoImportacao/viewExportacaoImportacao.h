@@ -45,7 +45,8 @@ void gerenciarExportacao(struct ListaClientes *listaClientes,
                          struct ListaAgendamentos *listaAgendamentos,
                          struct ListaOrdensServico *listaOrdensServico,
                          struct ListaNotasFiscais *listaNotasFiscais,
-                         struct ListaPecasNotas *listaPecasNotas);
+                         struct ListaPecasNotas *listaPecasNotas,
+                         int opcaoArmazenamento);
 
 void gerenciarImportacao(struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos,

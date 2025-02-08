@@ -1,17 +1,13 @@
-//
-// Created by ferna on 07/02/2025.
-//
-
 #ifndef MODELRELATORIOFINANCEIRO_H
 #define MODELRELATORIOFINANCEIRO_H
 
 
-#include "../models/pagamentoCliente/modelPagamentoCliente.h"
-#include "../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
-#include "../models/oficina/modelOficina.h"
-#include "../models/caixas/modelCaixa.h"
-#include "../models/clientes/modelClientes.h"
-#include "../models/fornecedores/modelFornecedores.h"
+#include "../../models/oficina/modelOficina.h"
+#include "../../models/clientes/modelClientes.h"
+#include "../../models/fornecedores/modelFornecedores.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/caixas/modelCaixa.h"
 
 void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *listaOficinas,
                                  struct ListaPagamentosCliente *listaPagamentosCliente,

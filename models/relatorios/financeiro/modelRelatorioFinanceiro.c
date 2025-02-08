@@ -1,10 +1,10 @@
-#include "modelRelatorioFinanceiro.h"
-#include "../models/pagamentoCliente/modelPagamentoCliente.h"
-#include "../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
-#include "../models/oficina/modelOficina.h"
-#include "../models/caixas/modelCaixa.h"
-#include "../models/clientes/modelClientes.h"
-#include "../models/fornecedores/modelFornecedores.h"
+#include "./modelRelatorioFinanceiro.h"
+#include "../../models/oficina/modelOficina.h"
+#include "../../models/clientes/modelClientes.h"
+#include "../../models/fornecedores/modelFornecedores.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/caixas/modelCaixa.h"
 
 #include <float.h>
 #include <stdio.h>

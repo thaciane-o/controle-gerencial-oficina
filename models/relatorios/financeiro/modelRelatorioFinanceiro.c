@@ -26,10 +26,13 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
     time_t tFinal = 0;
     struct tm dataPagamento = {0};
 
+
+    // Filtrando o relatório
     switch (tipoFiltro) {
         case 1:
             cliente = id;
 
+            // Verifica se há pelo menos um registro
             if (listaCaixas->qtdCaixas > 0) {
                 // Exibe todos os registros
                 for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
@@ -40,8 +43,8 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
                         listaCaixas->listaCaixas[listaPagamentosCliente->listaPagamentosCliente[i].idCaixa - 1].deletado == 0 &&
                         ((listaPagamentosCliente->listaPagamentosCliente[i].idCliente == cliente))) {
                         existePagamento = 1;
-                        printf("\n====================\n"
-                               "| CONTA A RECEBER %d|\n"
+                        printf("\n=====================\n"
+                               "| CONTA A RECEBER %d |\n"
                                "=====================\n"
                                "VALOR: R$%.2f\n"
                                "CLIENTE: %s\n"
@@ -65,11 +68,16 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
         break;
         case 2:
             fornecedor = id;
+
+            // Verifica se há pelo menos um registro
             if (listaCaixas->qtdCaixas > 0) {
+
+                // Recebendo data e hora atual da maquina
                 time_t tAtual = time(NULL);
                 struct tm dataAtual = *localtime(&tAtual);
                 tAtual = mktime(&dataAtual);
 
+                // Exibe todos os registros
                 for (int i = 0; i < listaPagamentosFornecedor->qtdPagamentosFornecedor; i++) {
 
                     // Converter string para struct tm
@@ -90,9 +98,9 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
                         listaCaixas->listaCaixas[listaPagamentosFornecedor->listaPagamentosFornecedor[i].idCaixa - 1].deletado == 0 &&
                         ((listaPagamentosFornecedor->listaPagamentosFornecedor[i].idFornecedor == fornecedor))) {
                         existePagamento = 1;
-                        printf("\n======================\n"
+                        printf("\n====================\n"
                                "| CONTA A PAGAR %d  |\n"
-                               "=====================\n"
+                               "====================\n"
                                "VALOR: R$%.2f\n"
                                "FORNECEDOR: %s\n"
                                "OFICINA: %s\n"
@@ -116,11 +124,15 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
         case 3:
             tInicial = mktime(&dataHoraInicial);
             tFinal = mktime(&dataHoraFinal);
+
+                // Verifica se há pelo menos um registro
                 if (listaCaixas->qtdCaixas > 0) {
 
+                // Filtrando o tipo de conta do relatório
                 switch (tipoConta) {
-                    // Exibe todos os registros
                     case 1:
+
+                        // Exibe todos os registros
                         for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
 
                             // Converter string para struct tm
@@ -140,10 +152,10 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
                                 listaCaixas->listaCaixas[listaPagamentosCliente->listaPagamentosCliente[i].idCaixa - 1].deletado == 0 &&
                                 (tPagamento >= tInicial && tPagamento <= tFinal)) {
                                 existePagamento = 1;
-                                printf("\n====================\n"
-                                       "| CONTA A RECEBER %d  |\n"
-                                       "=======================\n"
-                                       "VALOR: R$%.2f"
+                                printf("\n=====================\n"
+                                       "| CONTA A RECEBER %d |\n"
+                                       "=====================\n"
+                                       "VALOR: R$%.2f\n"
                                        "CLIENTE: %s\n"
                                        "OFICINA: %s\n"
                                        "DATA A RECEBER: %s\n\n",
@@ -164,6 +176,7 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
                     break;
                     case 2:
 
+                        // Exibe todos os registros
                         for (int i = 0; i < listaPagamentosFornecedor->qtdPagamentosFornecedor; i++) {
 
                             // Converter string para struct tm
@@ -183,9 +196,9 @@ void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOf
                                 listaCaixas->listaCaixas[listaPagamentosFornecedor->listaPagamentosFornecedor[i].idCaixa - 1].deletado == 0 &&
                                 (tPagamento >= tInicial && tPagamento <= tFinal)) {
                                 existePagamento = 1;
-                                printf("\n=====================\n"
+                                printf("\n====================\n"
                                        "| CONTA A PAGAR %d  |\n"
-                                       "=====================\n"
+                                       "====================\n"
                                        "VALOR: R$%.2f\n"
                                        "FORNECEDOR: %s\n"
                                        "OFICINA: %s\n"
@@ -226,8 +239,10 @@ void armazenarRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaO
                                  struct ListaFornecedores *listaFornecedores, int id, int tipoConta, int tipoFiltro,
                                  struct tm dataHoraInicial,
                                  struct tm dataHoraFinal) {
+
     // Abrindo ou criando arquivo para adicionar dados
     FILE *relatorioProdutividade;
+
     int existePagamento = 0, cliente = 0, fornecedor = 0;
     time_t tInicial = 0;
     time_t tFinal = 0;
@@ -242,11 +257,15 @@ void armazenarRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaO
         return;
     }
 
+    // Filtrando o relatório
     switch (tipoFiltro) {
         case 1:
             cliente = id;
 
+        // Verifica se há pelo menos um registro
         if (listaCaixas->qtdCaixas > 0) {
+
+            // Busca todos os registros
             for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
 
                 // Converter string para struct tm
@@ -287,11 +306,15 @@ void armazenarRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaO
         case 2:
             fornecedor = id;
 
+        // Verifica se há pelo menos um registro
         if (listaCaixas->qtdCaixas > 0) {
+
+            // Recebendo data e hora atual da maquina
             time_t tAtual = time(NULL);
             struct tm dataAtual = *localtime(&tAtual);
             tAtual = mktime(&dataAtual);
 
+            // Busca todos os registros
             for (int i = 0; i < listaPagamentosFornecedor->qtdPagamentosFornecedor; i++) {
 
                 // Converter string para struct tm
@@ -336,8 +359,9 @@ void armazenarRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaO
             // Verifica se há pelo menos um registro
             if (listaCaixas->qtdCaixas > 0) {
                 switch (tipoConta) {
-                    // Exibe todos os registros
+
                     case 1:
+                        // Busca todos os registros
                         for (int i = 0; i < listaPagamentosCliente->qtdPagamentosCliente; i++) {
 
                             if (sscanf(listaPagamentosCliente->listaPagamentosCliente[i].dataAReceber, "%d/%d/%d",
@@ -374,10 +398,6 @@ void armazenarRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaO
                         }
                     break;
                     case 2:
-
-                        time_t tAtual = time(NULL);
-                        struct tm dataAtual = *localtime(&tAtual);
-                        tAtual = mktime(&dataAtual);
 
                         for (int i = 0; i < listaPagamentosFornecedor->qtdPagamentosFornecedor; i++) {
 

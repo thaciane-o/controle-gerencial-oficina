@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Includes dos .h dos relatorios
 #include "./viewRelatorios.h"
 #include "../../models/relatorios/clientes/modelRelatorioCliente.h"
 #include "../../models/relatorios/oficinas/modelRelatorioOficina.h"
@@ -13,6 +14,7 @@
 #include "../../models/relatorios/produtividade/modelRelatorioProdutividade.h"
 #include "../../models/relatorios/financeiro/modelRelatorioFinanceiro.h"
 
+// Includes dos .h das tabelas
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
@@ -24,6 +26,8 @@
 #include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 #include "../../models/caixas/modelCaixa.h"
 
+
+// Gerenciamento de relatorios
 void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
@@ -195,6 +199,8 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
     }
 }
 
+
+// Gerenciamento de cadastros basicos
 void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                                struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                                struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
@@ -226,6 +232,7 @@ void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct Lista
     }
 }
 
+// Filtro de cadastros basicos
 void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                            struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
@@ -369,6 +376,7 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
     }
 }
 
+// Filtro do relatorio de produtividade
 void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos,
                                   struct ListaAgendamentos *listaAgendamentos,
                                   struct ListaFuncionarios *listaFuncionarios) {
@@ -390,14 +398,18 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
 
     switch (opcaoFiltro) {
         case 1:
+            // Inserindo id do funcionario
             printf("Insira o ID do funcionário:");
             scanf("%d", &funcionario);
             break;
         case 2:
+            // Inserindo id do serviço
             printf("Insira o ID do serviço:");
             scanf("%d", &servico);
             break;
         case 3:
+
+            // Recebendo data inicial
             printf("Insira a data inicial (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &diaInicio, &mesInicio, &anoInicio);
@@ -415,11 +427,13 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
 
             time_t tempoInicio = mktime(&dataHoraInicial);
 
+            // Verificando conversão
             if (tempoInicio == -1) {
                 printf("Erro ao converter a data e hora.\n");
                 return;
             }
 
+            // Recebendo data final
             printf("Insira a data final (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &diaFim, &mesFim, &anoFim);
@@ -437,6 +451,7 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
 
             time_t tempoFim = mktime(&dataHoraFinal);
 
+            // Verificando conversão
             if (tempoFim == -1) {
                 printf("Erro ao converter a data e hora.\n");
                 return;
@@ -458,6 +473,8 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
     }
 }
 
+
+// Filtro de relatorio fincanceiro
 void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *listaOficinas,
                                struct ListaPagamentosCliente *listaPagamentosCliente,
                                struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
@@ -481,6 +498,8 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
 
     switch (opcaoFiltro) {
         case 1:
+
+            // Recebendo o id do cliente
             printf("Insira o ID do cliente a pagar:");
             scanf("%d", &cliente);
 
@@ -495,6 +514,8 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             }
             break;
         case 2:
+
+            // Recebendo id do fornecedor
             printf("Insira o ID do fornecedor a ser pago:");
             scanf("%d", &fornecedor);
 
@@ -510,7 +531,8 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             break;
         case 3:
 
-            printf("\n==========================\n"
+            // Decidindo o tipo de conta do relatório
+            printf("\n============================\n"
             "|       TIPO DE CONTA       |\n"
             "=============================\n"
             "|  1  | Contas a receber    |\n"
@@ -519,11 +541,13 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             "Escolha uma forma de filtar: ");
             scanf("%d", &tipoConta);
 
+            // Impedindo opções invalidas
             if (tipoConta != 1 && tipoConta != 2) {
                 printf("Digite uma opção valida!\n\n");
                 return;
             }
 
+            // Inserindo a data inicial
             printf("Insira a data inicial (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &dataHoraInicial.tm_mday, &dataHoraInicial.tm_mon, &dataHoraInicial.tm_year);
@@ -537,11 +561,13 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
 
             time_t tempoInicio = mktime(&dataHoraInicial);
 
+            // Verificando conversão
             if (tempoInicio == -1) {
                 printf("Erro ao converter a data e hora.\n");
                 return;
             }
 
+            // Inserindo a data final
             printf("Insira a data final (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &dataHoraFinal.tm_mday, &dataHoraFinal.tm_mon, &dataHoraFinal.tm_year);
@@ -556,6 +582,8 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
 
             time_t tempoFim = mktime(&dataHoraFinal);
 
+
+            // Verificando conversão
             if (tempoFim == -1) {
                 printf("Erro ao converter a data e hora.\n");
                 return;

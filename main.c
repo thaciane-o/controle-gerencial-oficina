@@ -177,6 +177,7 @@ int main() {
             case 5:
                 gerenciarRelatorios(&listaOficinas, &listaClientes, &listaVeiculos, &listaFuncionarios, &listaServicos,
                                     &listaFornecedores, &listaPecas, &listaOrdensServico, &listaAgendamentos,
+                                    &listaCaixas, &listaPagamentosCliente, &listaPagamentosFornecedor,
                                     opcaoArmazenamento);
                 break;
 

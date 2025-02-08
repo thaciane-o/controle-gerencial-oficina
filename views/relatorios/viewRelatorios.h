@@ -48,6 +48,7 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
 
 void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
+                              struct ListaOrdensServico *listaOrdensServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos);

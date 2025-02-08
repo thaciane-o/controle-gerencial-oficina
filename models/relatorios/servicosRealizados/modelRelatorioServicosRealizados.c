@@ -20,230 +20,95 @@
 
 
 // Imprime o relatório na tela
-void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes,
-                              struct ListaServicos *listaServicos,
+void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, struct ListaServicos *listaServicos,
+                              struct ListaOrdensServico *listaOrdensServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id) {
-    // Variavel de verificação de estoque
+    // Variavel de verificação de serviços
     int existeServico = 0;
 
+    time_t tInicial;
+    time_t tFinal;
+    int cliente = 0, funcionario = 0, servico = 0 ;
 
-    // Verifica se há pelo menos um registro
-    if (listaServicos->qtdServicos > 0) {
-        existeServico = 1;
-        switch (tipo) {
+    int idAgendamento = 0;
+
+    // Inserindo os dados no arquivo de relatório
+    switch (tipo){
             case 1:
-            // Listagem baseada nas peças utilizadas no serviço
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 && listaServicos->listaServicos[i].id == id &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        printf("\n====================\n"
-                                           "| SERVIÇO REALIZADO %d |\n"
-                                           "====================\n"
-                                           "DESCRIÇÃO: %s\n"
-                                           "PREÇO: $%.2f\n"
-                                           "COMISSÃO: $%.2f\n"
-                                           "CLIENTE: %s\n"
-                                           "FUNCIONARIO: %s\n"
-                                           "DATA: %s\n",
-                                           listaServicos->listaServicos[i].id,
-                                           listaServicos->listaServicos[i].descricao,
-                                           listaServicos->listaServicos[i].preco,
-                                           listaServicos->listaServicos[i].comissao,
-                                           listaClientes->listaClientes[m].nome,
-                                           listaFuncionarios->listaFuncionarios[j].nome,
-                                           listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
+                servico = id;
             break;
             case 2:
-                // Listagem baseada nas peças requisitadas pelo cliente
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 && listaClientes->listaClientes[m].id == id &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        printf("\n====================\n"
-                                           "| SERVIÇO REALIZADO %d |\n"
-                                           "====================\n"
-                                           "DESCRIÇÃO: %s\n"
-                                           "PREÇO: $%.2f\n"
-                                           "COMISSÃO: $%.2f\n"
-                                           "CLIENTE: %s\n"
-                                           "FUNCIONARIO: %s\n"
-                                           "DATA: %s\n",
-                                           listaServicos->listaServicos[i].id,
-                                           listaServicos->listaServicos[i].descricao,
-                                           listaServicos->listaServicos[i].preco,
-                                           listaServicos->listaServicos[i].comissao,
-                                           listaClientes->listaClientes[m].nome,
-                                           listaFuncionarios->listaFuncionarios[j].nome,
-                                           listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
+                cliente = id;
                 break;
             case 3:
-                // Listagem baseada nas peças utilizadas pelo funcionário
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 && listaFuncionarios->listaFuncionarios[j].id == id &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        printf("\n====================\n"
-                                           "| SERVIÇO REALIZADO %d |\n"
-                                           "====================\n"
-                                           "DESCRIÇÃO: %s\n"
-                                           "PREÇO: $%.2f\n"
-                                           "COMISSÃO: $%.2f\n"
-                                           "CLIENTE: %s\n"
-                                           "FUNCIONARIO: %s\n"
-                                           "DATA: %s\n",
-                                           listaServicos->listaServicos[i].id,
-                                           listaServicos->listaServicos[i].descricao,
-                                           listaServicos->listaServicos[i].preco,
-                                           listaServicos->listaServicos[i].comissao,
-                                           listaClientes->listaClientes[m].nome,
-                                           listaFuncionarios->listaFuncionarios[j].nome,
-                                           listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
+                funcionario = id;
                 break;
             case 4:
-                // Listagem baseada nas peças utilizadas em determinado intervalo de datas
-                char *token;
 
-                token = malloc (sizeof(listaAgendamentos->listaAgendamentos->datahoraInicial));
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        int diaVenda, mesVenda, anoVenda;
-
-                                        token = strcpy(token, listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        token = strtok(token, "/");
-
-                                        if (token != NULL) {
-                                            diaVenda = atoi(token);
-                                            token = strtok(NULL, "/");
-                                        }
-                                        if (token != NULL) {
-                                            mesVenda = atoi(token);
-                                            token = strtok(NULL, " ");
-                                        }
-                                        if (token != NULL) {
-                                            anoVenda = atoi(token);
-                                        }
-                                        if (anoVenda > dataInicial.tm_year && anoVenda < dataFinal.tm_year) {
-                                            printf("\n====================\n"
-                                                   "| SERVIÇO REALIZADO %d |\n"
-                                                   "====================\n"
-                                                   "DESCRIÇÃO: %s\n"
-                                                   "PREÇO: $%.2f\n"
-                                                   "COMISSÃO: $%.2f\n"
-                                                   "CLIENTE: %s\n"
-                                                   "FUNCIONARIO: %s\n"
-                                                   "DATA: %s\n",
-                                                   listaServicos->listaServicos[i].id,
-                                                   listaServicos->listaServicos[i].descricao,
-                                                   listaServicos->listaServicos[i].preco,
-                                                   listaServicos->listaServicos[i].comissao,
-                                                   listaClientes->listaClientes[m].nome,
-                                                   listaFuncionarios->listaFuncionarios[j].nome,
-                                                   listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                        else if (anoVenda == dataInicial.tm_year && mesVenda > dataInicial.tm_mon || anoVenda ==
-                                                 dataFinal.tm_year && mesVenda < dataFinal.tm_mon) {
-
-                                            printf("\n====================\n"
-                                                   "| SERVIÇO REALIZADO %d |\n"
-                                                   "====================\n"
-                                                   "DESCRIÇÃO: %s\n"
-                                                   "PREÇO: $%.2f\n"
-                                                   "COMISSÃO: $%.2f\n"
-                                                   "CLIENTE: %s\n"
-                                                   "FUNCIONARIO: %s\n"
-                                                   "DATA: %s\n",
-                                                   listaServicos->listaServicos[i].id,
-                                                   listaServicos->listaServicos[i].descricao,
-                                                   listaServicos->listaServicos[i].preco,
-                                                   listaServicos->listaServicos[i].comissao,
-                                                   listaClientes->listaClientes[m].nome,
-                                                   listaFuncionarios->listaFuncionarios[j].nome,
-                                                   listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                                 }
-                                        else if (anoVenda == dataInicial.tm_year && mesVenda == dataInicial.tm_mon && diaVenda
-                                                 >= dataInicial.tm_mday || anoVenda == dataFinal.tm_year && mesVenda == dataFinal
-                                                 .tm_mon && diaVenda <= dataFinal.tm_mday) {
-
-                                            printf("\n====================\n"
-                                                   "| SERVIÇO REALIZADO %d |\n"
-                                                   "====================\n"
-                                                   "DESCRIÇÃO: %s\n"
-                                                   "PREÇO: $%.2f\n"
-                                                   "COMISSÃO: $%.2f\n"
-                                                   "CLIENTE: %s\n"
-                                                   "FUNCIONARIO: %s\n"
-                                                   "DATA: %s\n",
-                                                   listaServicos->listaServicos[i].id,
-                                                   listaServicos->listaServicos[i].descricao,
-                                                   listaServicos->listaServicos[i].preco,
-                                                   listaServicos->listaServicos[i].comissao,
-                                                   listaClientes->listaClientes[m].nome,
-                                                   listaFuncionarios->listaFuncionarios[j].nome,
-                                                   listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                                 }
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
-                token = NULL;
-                free(token);
-
+                tInicial = mktime(&dataInicial);
+                tFinal = mktime(&dataFinal);
                 break;
             default:
-                break;
+                return;;
+    }
+
+    // Verifica se há pelo menos um registro
+    if (listaOrdensServicos->qtdOrdensServico > 0) {
+        // Exibe todos os registros
+        for (int i = 0; i < listaOrdensServicos->qtdOrdensServico; i++) {
+
+            idAgendamento = listaOrdensServicos->listaOrdensServico[i].idAgendamento;
+            time_t tOrdemServico;
+            struct tm dataOrdemServico;
+
+            // Converter string para struct tm
+
+            if (sscanf(listaOrdensServicos->listaOrdensServico[i].datahoraFinal, "%d/%d/%d %d:%d",
+                       &dataOrdemServico.tm_mday, &dataOrdemServico.tm_mon, &dataOrdemServico.tm_year,
+                       &dataOrdemServico.tm_hour, &dataOrdemServico.tm_min) != 5) {
+                continue;
+            }
+
+            dataOrdemServico.tm_mon -= 1;
+            dataOrdemServico.tm_year -= 1900;
+
+            tOrdemServico = mktime(&dataOrdemServico);
+
+
+            // Verificar se não está deletado, se foi finalizado e aplica os filtros
+            if (listaOrdensServicos->listaOrdensServico[i].deletado == 0 &&
+                (((listaAgendamentos->listaAgendamentos[idAgendamento - 1].idFuncionario == funcionario) ||
+                 (listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico == servico) ||
+                 (listaVeiculos->listaVeiculos[
+                      listaAgendamentos->listaAgendamentos[idAgendamento - 1].idVeiculo - 1].idProprietario
+                  == cliente)) ||
+                (tipo == 4 && tOrdemServico >= tInicial && tOrdemServico <= tFinal))) {
+
+                existeServico = 1;
+                printf("\n====================\n"
+                   "| SERVIÇO %d       |\n"
+                   "====================\n"
+                   "DESCRIÇÃO: %s\n"
+                   "PREÇO: $%.2f\n"
+                   "COMISSÃO: $%.2f\n"
+                   "CLIENTE: %s\n"
+                   "FUNCIONARIO: %s\n"
+                   "DATA DA REALIZAÇÃO: %s\n\n",
+                   listaServicos->listaServicos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico - 1].id,
+                   listaOrdensServicos->listaOrdensServico[i].descricao,
+                   listaOrdensServicos->listaOrdensServico[i].valorTotal,
+                   listaServicos->listaServicos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico - 1].comissao,
+                   listaClientes->listaClientes[listaVeiculos->listaVeiculos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idVeiculo - 1].idProprietario - 1].nome,
+                   listaFuncionarios->listaFuncionarios[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idFuncionario - 1].nome,
+                   listaOrdensServicos->listaOrdensServico[i].datahoraFinal);
+            }
         }
     }
+
 
     // Verifica se não há registros
     if (!existeServico) {
@@ -252,8 +117,8 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes,
 }
 
 // Armazena o relatório em arquivo
-void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes,
-                              struct ListaServicos *listaServicos,
+void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes, struct ListaServicos *listaServicos,
+                              struct ListaOrdensServico *listaOrdensServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
@@ -271,168 +136,86 @@ void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes,
         return;
     }
 
+    int existeServico = 0;
+
+    time_t tInicial;
+    time_t tFinal;
+    int cliente = 0, funcionario = 0, servico = 0 ;
+
+    int idAgendamento = 0;
+
     // Inserindo os dados no arquivo de relatório
     switch (tipo){
-        case 1:
-            // Listagem baseada nas peças utilizadas no serviço
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 && listaServicos->listaServicos[i].id == id &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        fprintf(relatorioOrdensServicos, "%d;%s;%.2f;%.2f;%s;%s;%s\n",
-                                           listaServicos->listaServicos[i].id,
-                                           listaServicos->listaServicos[i].descricao,
-                                           listaServicos->listaServicos[i].preco,
-                                           listaServicos->listaServicos[i].comissao,
-                                           listaClientes->listaClientes[m].nome,
-                                           listaFuncionarios->listaFuncionarios[j].nome,
-                                           listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
+            case 1:
+                servico = id;
             break;
             case 2:
-                // Listagem baseada nas peças requisitadas pelo cliente
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 && listaClientes->listaClientes[m].id == id &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        fprintf(relatorioOrdensServicos, "%d;%s;%.2f;%.2f;%s;%s;%s\n",
-                                           listaServicos->listaServicos[i].id,
-                                           listaServicos->listaServicos[i].descricao,
-                                           listaServicos->listaServicos[i].preco,
-                                           listaServicos->listaServicos[i].comissao,
-                                           listaClientes->listaClientes[m].nome,
-                                           listaFuncionarios->listaFuncionarios[j].nome,
-                                           listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
+                cliente = id;
                 break;
             case 3:
-                // Listagem baseada nas peças utilizadas pelo funcionário
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 && listaFuncionarios->listaFuncionarios[j].id == id &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-                                        fprintf(relatorioOrdensServicos, "%d;%s;%.2f;%.2f;%s;%s;%s\n",
-                                           listaServicos->listaServicos[i].id,
-                                           listaServicos->listaServicos[i].descricao,
-                                           listaServicos->listaServicos[i].preco,
-                                           listaServicos->listaServicos[i].comissao,
-                                           listaClientes->listaClientes[m].nome,
-                                           listaFuncionarios->listaFuncionarios[j].nome,
-                                           listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
+                funcionario = id;
                 break;
             case 4:
-                // Listagem baseada nas peças utilizadas em determinado intervalo de datas
-                char *token;
 
-                token = malloc (sizeof(listaAgendamentos->listaAgendamentos->datahoraInicial));
-                for (int i = 0; i < listaServicos->qtdServicos; i++) {
-                    for (int j = 0; j < listaFuncionarios->qtdFuncionarios; j++) {
-                        for (int k = 0; k < listaVeiculos->qtdVeiculos; k++) {
-                            for (int l = 0; l < listaAgendamentos->qtdAgendamentos; l++) {
-                                for (int m = 0; m < listaClientes->qtdClientes; m++) {
-                                    if (listaServicos->listaServicos[i].deletado == 0 &&
-                                        listaAgendamentos->listaAgendamentos[l].idFuncionario == listaFuncionarios->listaFuncionarios[j].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idVeiculo == listaVeiculos->listaVeiculos[k].id &&
-                                        listaVeiculos->listaVeiculos[k].idProprietario == listaClientes->listaClientes[m].id &&
-                                        listaAgendamentos->listaAgendamentos[l].idServico == listaServicos->listaServicos[i].id) {
-
-                                        int diaVenda, mesVenda, anoVenda;
-
-                                        token = strcpy(token, listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        token = strtok(token, "/");
-
-                                        if (token != NULL) {
-                                            diaVenda = atoi(token);
-                                            token = strtok(NULL, "/");
-                                        }
-                                        if (token != NULL) {
-                                            mesVenda = atoi(token);
-                                            token = strtok(NULL, " ");
-                                        }
-                                        if (token != NULL) {
-                                            anoVenda = atoi(token);
-                                        }
-                                        if (anoVenda > dataInicial.tm_year && anoVenda < dataFinal.tm_year) {
-
-                                            fprintf(relatorioOrdensServicos, "%d;%s;%.2f;%.2f;%s;%s;%s\n",
-                                               listaServicos->listaServicos[i].id,
-                                               listaServicos->listaServicos[i].descricao,
-                                               listaServicos->listaServicos[i].preco,
-                                               listaServicos->listaServicos[i].comissao,
-                                               listaClientes->listaClientes[m].nome,
-                                               listaFuncionarios->listaFuncionarios[j].nome,
-                                               listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                        else if (anoVenda == dataInicial.tm_year && mesVenda > dataInicial.tm_mon || anoVenda ==
-                                                 dataFinal.tm_year && mesVenda < dataFinal.tm_mon) {
-
-                                            fprintf(relatorioOrdensServicos, "%d;%s;%.2f;%.2f;%s;%s;%s\n",
-                                               listaServicos->listaServicos[i].id,
-                                               listaServicos->listaServicos[i].descricao,
-                                               listaServicos->listaServicos[i].preco,
-                                               listaServicos->listaServicos[i].comissao,
-                                               listaClientes->listaClientes[m].nome,
-                                               listaFuncionarios->listaFuncionarios[j].nome,
-                                               listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                        else if (anoVenda == dataInicial.tm_year && mesVenda == dataInicial.tm_mon && diaVenda
-                                                 >= dataInicial.tm_mday || anoVenda == dataFinal.tm_year && mesVenda == dataFinal
-                                                 .tm_mon && diaVenda <= dataFinal.tm_mday) {
-
-                                            fprintf(relatorioOrdensServicos, "%d;%s;%.2f;%.2f;%s;%s;%s\n",
-                                               listaServicos->listaServicos[i].id,
-                                               listaServicos->listaServicos[i].descricao,
-                                               listaServicos->listaServicos[i].preco,
-                                               listaServicos->listaServicos[i].comissao,
-                                               listaClientes->listaClientes[m].nome,
-                                               listaFuncionarios->listaFuncionarios[j].nome,
-                                               listaAgendamentos->listaAgendamentos[l].datahoraInicial);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                tInicial = mktime(&dataInicial);
+                tFinal = mktime(&dataFinal);
                 break;
             default:
-                break;
+                return;;
     }
-    fclose(relatorioOrdensServicos);
+
+    // Verifica se há pelo menos um registro
+    if (listaOrdensServicos->qtdOrdensServico > 0) {
+        // Exibe todos os registros
+        for (int i = 0; i < listaOrdensServicos->qtdOrdensServico; i++) {
+
+            idAgendamento = listaOrdensServicos->listaOrdensServico[i].idAgendamento;
+            time_t tOrdemServico;
+            struct tm dataOrdemServico;
+
+            // Converter string para struct tm
+            if (sscanf(listaOrdensServicos->listaOrdensServico[i].datahoraFinal, "%d/%d/%d %d:%d",
+                       &dataOrdemServico.tm_mday, &dataOrdemServico.tm_mon, &dataOrdemServico.tm_year,
+                       &dataOrdemServico.tm_hour, &dataOrdemServico.tm_min) != 5) {
+                continue;
+            }
+
+            dataOrdemServico.tm_mon -= 1;
+            dataOrdemServico.tm_year -= 1900;
+
+            tOrdemServico = mktime(&dataOrdemServico);
+
+
+            // Verificar se não está deletado, se foi finalizado e aplica os filtros
+            if (listaOrdensServicos->listaOrdensServico[i].deletado == 0 &&
+                strcmp(listaOrdensServicos->listaOrdensServico[i].datahoraFinal, "NF") != 0 &&
+                (((listaAgendamentos->listaAgendamentos[idAgendamento - 1].idFuncionario == funcionario) ||
+                 (listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico == servico) ||
+                 (listaVeiculos->listaVeiculos[
+                      listaAgendamentos->listaAgendamentos[idAgendamento - 1].idVeiculo - 1].idProprietario
+                  == cliente)) ||
+                (tipo == 4 && tOrdemServico >= tInicial && tOrdemServico <= tFinal))) {
+
+                existeServico = 1;
+                fprintf(relatorioOrdensServicos,"%d;%s;%.2f;%.2f;%s;%s;%s\n",
+                    listaServicos->listaServicos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico - 1].id,
+                    listaOrdensServicos->listaOrdensServico[i].descricao,
+                    listaOrdensServicos->listaOrdensServico[i].valorTotal,
+                    listaServicos->listaServicos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico - 1].comissao,
+                    listaClientes->listaClientes[listaVeiculos->listaVeiculos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idVeiculo - 1].idProprietario - 1].nome,
+                    listaFuncionarios->listaFuncionarios[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idFuncionario - 1].nome,
+                    listaOrdensServicos->listaOrdensServico[i].datahoraFinal);
+            }
+        }
+    }
+
+
+    // Verifica se não há registros
+    if (!existeServico) {
+        fclose(relatorioOrdensServicos);
+        printf("Nenhum serviço foi cadastrado ou realizado.\n\n");
+        return;
+    }
 
     printf("Relatório de estoques realizado com sucesso!\n\n");
 

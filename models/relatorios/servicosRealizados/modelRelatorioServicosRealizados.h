@@ -16,16 +16,16 @@
 #include "../../veiculos/modelVeiculos.h"
 
 
-void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes,
-                              struct ListaServicos *listaServicos,
+void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, struct ListaServicos *listaServicos,
+                              struct ListaOrdensServico *listaOrdensServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,
                               struct tm dataInicial, struct tm dataFinal, int tipo,
                               int id);
 
-void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes,
-                              struct ListaServicos *listaServicos,
+void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes, struct ListaServicos *listaServicos,
+                              struct ListaOrdensServico *listaOrdensServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos,

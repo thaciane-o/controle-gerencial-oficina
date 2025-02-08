@@ -107,7 +107,7 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                                           listaFornecedores, listaPecas);
                 break;
             case 2:
-                filtroRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                filtroRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos);
                 break;
             case 3:
@@ -593,6 +593,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
 
 void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,
+                              struct ListaOrdensServico *listaOrdensServicos,
                               struct ListaAgendamentos *listaAgendamentos,
                               struct ListaFuncionarios *listaFuncionarios,
                               struct ListaVeiculos *listaVeiculos) {
@@ -622,11 +623,11 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                 scanf(" %d", &idServico);
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
                                                         dataInicial, dataFinal, opcaoFiltro, idServico);
                 } else {
-                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
                                                         dataInicial, dataFinal, opcaoFiltro, idServico);
                 }
@@ -638,11 +639,11 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                 scanf(" %d", &idCliente);
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
                                                         dataInicial, dataFinal, opcaoFiltro, idCliente);
                 } else {
-                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
                                                         dataInicial, dataFinal, opcaoFiltro, idCliente);
                 }
@@ -654,11 +655,11 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                 scanf(" %d", &idFuncionario);
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
                                                         dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 } else {
-                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
                                                         dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 }
@@ -670,20 +671,36 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataInicial.tm_mday, &dataInicial.tm_mon, &dataInicial.tm_year);
 
+                printf("Insira o horario inicial (HH:MM): ");
+                setbuf(stdin, NULL);
+                scanf("%d:%d", &dataInicial.tm_min, &dataInicial.tm_sec);
 
                 printf("Insira a data final (DD/MM/AAAA):");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataFinal.tm_mday, &dataFinal.tm_mon, &dataFinal.tm_year);
 
+                printf("Insira o horario final (HH:MM): ");
+                setbuf(stdin, NULL);
+                scanf("%d:%d", &dataFinal.tm_min, &dataFinal.tm_sec);
+
+
+                dataInicial.tm_mon -= 1;
+                dataInicial.tm_year -= 1900;
+                dataInicial.tm_sec = 0;
+
+                dataFinal.tm_mon -= 1;
+                dataFinal.tm_year -= 1900;
+                dataFinal.tm_sec = 0;
+
 
                 if (formaDeImprimir() == 1) {
-                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    imprimirRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
-                                                        dataInicial, dataFinal, opcaoFiltro, idServico);
+                                                        dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 } else {
-                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaAgendamentos,
+                    armazenarRelatorioServicosRealizados(listaClientes, listaServicos, listaOrdensServicos, listaAgendamentos,
                                                         listaFuncionarios, listaVeiculos,
-                                                        dataInicial, dataFinal, opcaoFiltro, idServico);
+                                                        dataInicial, dataFinal, opcaoFiltro, idFuncionario);
                 }
 
             break;

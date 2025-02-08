@@ -36,7 +36,7 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, st
 
     int idAgendamento = 0;
 
-    // Inserindo os dados no arquivo de relatório
+    // Filtrando tipo de registro
     switch (tipo){
             case 1:
                 servico = id;
@@ -66,7 +66,6 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, st
             struct tm dataOrdemServico;
 
             // Converter string para struct tm
-
             if (sscanf(listaOrdensServicos->listaOrdensServico[i].datahoraFinal, "%d/%d/%d %d:%d",
                        &dataOrdemServico.tm_mday, &dataOrdemServico.tm_mon, &dataOrdemServico.tm_year,
                        &dataOrdemServico.tm_hour, &dataOrdemServico.tm_min) != 5) {
@@ -89,9 +88,9 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, st
                 (tipo == 4 && tOrdemServico >= tInicial && tOrdemServico <= tFinal))) {
 
                 existeServico = 1;
-                printf("\n====================\n"
+                printf("\n===================\n"
                    "| SERVIÇO %d       |\n"
-                   "====================\n"
+                   "===================\n"
                    "DESCRIÇÃO: %s\n"
                    "PREÇO: $%.2f\n"
                    "COMISSÃO: $%.2f\n"
@@ -144,7 +143,7 @@ void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes, s
 
     int idAgendamento = 0;
 
-    // Inserindo os dados no arquivo de relatório
+    // Filtrando tipo de registro
     switch (tipo){
             case 1:
                 servico = id;

@@ -604,7 +604,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
         int idServico = 0, idCliente = 0, idFuncionario = 0;
         struct tm dataInicial = {0}, dataFinal = {0};
 
-        printf("\n===================================\n"
+        printf("\n====================================\n"
             "|              FILTRAR             |\n"
             "====================================\n"
             "|  1  | Serviço                    |\n"
@@ -618,6 +618,8 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
 
         switch (opcaoFiltro) {
             case 1:
+
+                // Inserindo ID do serviço
                 printf("Insira o ID do serviço:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idServico);
@@ -634,6 +636,8 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
 
                 break;
             case 2:
+
+                // Inserindo ID do cliente
                 printf("Insira o ID do cliente:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idCliente);
@@ -650,6 +654,8 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
 
             break;
             case 3:
+
+                // Inserindo ID do funcionario
                 printf("Insira o ID do funcionario:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idFuncionario);
@@ -667,6 +673,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             break;
             case 4:
 
+                // Inserindo data inicial
                 printf("Insira a data inicial (DD/MM/AAAA):");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataInicial.tm_mday, &dataInicial.tm_mon, &dataInicial.tm_year);
@@ -675,6 +682,12 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                 setbuf(stdin, NULL);
                 scanf("%d:%d", &dataInicial.tm_min, &dataInicial.tm_sec);
 
+                dataInicial.tm_mon -= 1;
+                dataInicial.tm_year -= 1900;
+                dataInicial.tm_sec = 0;
+
+
+                // Inserindo data final
                 printf("Insira a data final (DD/MM/AAAA):");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataFinal.tm_mday, &dataFinal.tm_mon, &dataFinal.tm_year);
@@ -683,10 +696,6 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                 setbuf(stdin, NULL);
                 scanf("%d:%d", &dataFinal.tm_min, &dataFinal.tm_sec);
 
-
-                dataInicial.tm_mon -= 1;
-                dataInicial.tm_year -= 1900;
-                dataInicial.tm_sec = 0;
 
                 dataFinal.tm_mon -= 1;
                 dataFinal.tm_year -= 1900;
@@ -714,6 +723,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
     }
 }
 
+// Recebendo forma de impressão dos dados
 int formaDeImprimir() {
     int opcaoImprime = 0;
 

@@ -9,6 +9,9 @@
 #include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 #include "../../models/caixas/modelCaixa.h"
 
+#include <time.h>
+
+
 void imprimirRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *listaOficinas,
                                  struct ListaPagamentosCliente *listaPagamentosCliente,
                                  struct ListaPagamentosFornecedor *listaPagamentosFornecedor,

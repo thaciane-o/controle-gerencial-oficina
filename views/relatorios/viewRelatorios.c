@@ -112,6 +112,8 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                 filtroRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios);
                 break;
             case 5:
+                filtroRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores);
                 break;
             case 6:
                 // Limpa os ponteiros
@@ -476,15 +478,6 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
         "Escolha uma forma de filtar: ");
     scanf("%d", &opcaoFiltro);
 
-    printf("\n==========================\n"
-            "|       TIPO DE CONTA       |\n"
-            "=============================\n"
-            "|  1  | Contas a receber    |\n"
-            "|  2  | Contas a pagar      |\n"
-            "=============================\n"
-            "Escolha uma forma de filtar: ");
-    scanf("%d", &tipoConta);
-
 
     switch (opcaoFiltro) {
         case 1:
@@ -517,17 +510,30 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             break;
         case 3:
 
+            printf("\n==========================\n"
+            "|       TIPO DE CONTA       |\n"
+            "=============================\n"
+            "|  1  | Contas a receber    |\n"
+            "|  2  | Contas a pagar      |\n"
+            "=============================\n"
+            "Escolha uma forma de filtar: ");
+            scanf("%d", &tipoConta);
+
+            if (tipoConta != 1 && tipoConta != 2) {
+                printf("Digite uma opção valida!\n\n");
+                return;
+            }
+
             printf("Insira a data inicial (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &dataHoraInicial.tm_mday, &dataHoraInicial.tm_mon, &dataHoraInicial.tm_year);
 
-            printf("Insira a hora inicial (HH:MM): ");
-            setbuf(stdin, NULL);
-            scanf("%d:%d", &dataHoraInicial.tm_hour, &dataHoraInicial.tm_min);
 
             dataHoraInicial.tm_mon -= 1;
             dataHoraInicial.tm_year -= 1900;
             dataHoraInicial.tm_sec = 0;
+            dataHoraInicial.tm_min = 0;
+            dataHoraInicial.tm_hour = 0;
 
             time_t tempoInicio = mktime(&dataHoraInicial);
 
@@ -540,13 +546,13 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &dataHoraFinal.tm_mday, &dataHoraFinal.tm_mon, &dataHoraFinal.tm_year);
 
-            printf("Insira a hora final (HH:MM): ");
-            setbuf(stdin, NULL);
-            scanf("%d:%d", &dataHoraFinal.tm_hour, &dataHoraFinal.tm_min);
 
             dataHoraFinal.tm_mon -= 1;
             dataHoraFinal.tm_year -= 1900;
             dataHoraFinal.tm_sec = 0;
+            dataHoraFinal.tm_sec = 0;
+            dataHoraFinal.tm_min = 0;
+            dataHoraFinal.tm_hour = 0;
 
             time_t tempoFim = mktime(&dataHoraFinal);
 
@@ -566,9 +572,10 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             }
             break;
         case 4:
-            break;
+            return;
         default:
             printf("Opção inválida!\n\n");
+        break;
     }
 }
 

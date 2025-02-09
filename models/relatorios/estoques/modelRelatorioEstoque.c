@@ -128,7 +128,7 @@ void imprimirRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaCliente
 
     // Verifica se não há registros
     if (!existeEstoque) {
-        printf("Nenhuma peça foi cadastrado.\n\n");
+        printf("Nenhum estoque foi encontrado.\n\n");
         return;
     }
 }
@@ -240,7 +240,7 @@ void armazenarRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClient
 
     // Verifica se não há registros
     if (!existeEstoque) {
-        printf("Nenhuma peça foi cadastrado.\n\n");
+        printf("Nenhum estoque foi encontrado.\n\n");
         return;
     }
 

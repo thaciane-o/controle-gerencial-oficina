@@ -39,7 +39,7 @@ void imprimirRelatorioFuncionario(struct ListaFuncionarios *listaFuncionarios, s
 
     // Verifica se não há registros
     if (!existeFuncionarios) {
-        printf("Nenhum funcionário foi cadastrado.\n\n");
+        printf("Nenhum funcionário foi encontrado.\n\n");
     }
 }
 
@@ -77,7 +77,7 @@ void armazenarRelatorioFuncionario(struct ListaFuncionarios *listaFuncionarios, 
         }
         printf("Relatório de funcionários realizado com sucesso!\n\n");
     } else {
-        printf("Nenhum funcionário foi cadastrado.\n\n");
+        printf("Nenhum funcionário foi encontrado.\n\n");
     }
 
     // Fechando o arquivo

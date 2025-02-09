@@ -42,7 +42,7 @@ void imprimirRelatorioFornecedor(struct ListaFornecedores *listaFornecedores, ch
 
     // Verifica se não há registros
     if (!existeFornecedor) {
-        printf("Nenhum fornecedor foi cadastrado.\n\n");
+        printf("Nenhum fornecedor foi encontrado.\n\n");
     }
 }
 
@@ -81,7 +81,7 @@ void armazenarRelatorioFornecedor(struct ListaFornecedores *listaFornecedores, c
         }
         printf("Relatório de fornecedores realizado com sucesso!\n\n");
     } else {
-        printf("Nenhum fornecedor foi cadastrado.\n\n");
+        printf("Nenhum fornecedor foi encontrado.\n\n");
     }
 
     // Fechando o arquivo

@@ -46,7 +46,7 @@ void imprimirRelatorioPeca(struct ListaPecas *listaPecas, struct ListaFornecedor
 
     // Verifica se não há registros
     if (!existePecas) {
-        printf("Nenhuma peça foi cadastrada.\n\n");
+        printf("Nenhuma peça foi encontrada.\n\n");
     }
 }
 
@@ -86,7 +86,7 @@ void armazenarRelatorioPeca(struct ListaPecas *listaPecas, struct ListaFornecedo
         }
         printf("Relatório de peças realizado com sucesso!\n\n");
     } else {
-        printf("Nenhuma peça foi cadastrada.\n\n");
+        printf("Nenhuma peça foi encontrada.\n\n");
     }
 
     // Fechando o arquivo

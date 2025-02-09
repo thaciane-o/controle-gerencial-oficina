@@ -41,7 +41,7 @@ void imprimirRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct ListaC
 
     // Verifica se não há registros
     if (!existeVeiculo) {
-        printf("Nenhum veículo foi cadastrado.\n\n");
+        printf("Nenhum veículo foi encontrado.\n\n");
     }
 }
 
@@ -79,7 +79,7 @@ void armazenarRelatorioVeiculo(struct ListaVeiculos *listaVeiculos, struct Lista
         }
         printf("Relatório de veículos realizado com sucesso!\n\n");
     } else {
-        printf("Nenhum veículo foi cadastrado.\n\n");
+        printf("Nenhum veículo foi encontrado.\n\n");
     }
 
     // Fechando o arquivo

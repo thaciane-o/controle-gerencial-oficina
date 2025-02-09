@@ -111,7 +111,7 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, st
 
     // Verifica se não há registros
     if (!existeServico) {
-        printf("Nenhuma peça foi cadastrado.\n\n");
+        printf("Nenhum serviço realizado foi encontrado.\n\n");
     }
 }
 
@@ -212,11 +212,11 @@ void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes, s
     // Verifica se não há registros
     if (!existeServico) {
         fclose(relatorioOrdensServicos);
-        printf("Nenhum serviço foi cadastrado ou realizado.\n\n");
+        printf("Nenhum serviço realizado foi encontrado.\n\n");
         return;
     }
 
-    printf("Relatório de estoques realizado com sucesso!\n\n");
+    printf("Relatório de serviços realizados foi feito com sucesso!\n\n");
 
     // Fechando o arquivo
     fclose(relatorioOrdensServicos);

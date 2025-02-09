@@ -42,7 +42,7 @@ void imprimirRelatorioCliente(struct ListaClientes *listaClientes, struct ListaO
 
     // Verifica se não há registros
     if (!existeClientes) {
-        printf("Nenhum cliente foi cadastrado.\n\n");
+        printf("Nenhum cliente foi encontrado.\n\n");
     }
 }
 
@@ -81,7 +81,7 @@ void armazenarRelatorioCliente(struct ListaClientes *listaClientes, struct Lista
         }
         printf("Relatório de clientes realizado com sucesso!\n\n");
     } else {
-        printf("Nenhum cliente foi cadastrado.\n\n");
+        printf("Nenhum cliente foi encontrado.\n\n");
     }
 
     // Fechando o arquivo

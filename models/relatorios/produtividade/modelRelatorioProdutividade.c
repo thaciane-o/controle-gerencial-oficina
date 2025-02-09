@@ -94,7 +94,7 @@ void imprimirRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServic
 
     // Verifica se não há registros
     if (!existeOrdemServico) {
-        printf("Nenhuma ordem de serviço foi cadastrada.\n\n");
+        printf("Nenhuma ordem de serviço foi encontrada.\n\n");
     }
 }
 
@@ -184,7 +184,7 @@ void armazenarRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServi
 
         printf("Relatório de produtividade realizado com sucesso!\n\n");
     } else {
-        printf("Nenhuma ordem de serviço foi cadastrada.\n\n");
+        printf("Nenhuma ordem de serviço foi encontrada.\n\n");
     }
 
     // Fechando o arquivo

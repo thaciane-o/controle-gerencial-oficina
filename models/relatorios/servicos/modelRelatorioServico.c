@@ -37,7 +37,7 @@ void imprimirRelatorioServico(struct ListaServicos *listaServicos, struct ListaO
 
     // Verifica se não há registros
     if (!existeServicos) {
-        printf("Nenhum serviço foi cadastrado.\n\n");
+        printf("Nenhum serviço foi encontrado.\n\n");
     }
 }
 
@@ -73,7 +73,7 @@ void armazenarRelatorioServico(struct ListaServicos *listaServicos, struct Lista
         }
         printf("Relatório de serviços realizado com sucesso!\n\n");
     } else {
-        printf("Nenhum serviço foi cadastrado.\n\n");
+        printf("Nenhum serviço foi encontrado.\n\n");
     }
 
     // Fechando o arquivo

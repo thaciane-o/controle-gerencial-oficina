@@ -38,7 +38,7 @@ void imprimirRelatorioOficina(struct ListaOficinas *listaOficinas, char *nome, i
 
     // Verifica se não há registros
     if (!existeOficinas) {
-        printf("Nenhuma oficina foi cadastrada.\n\n");
+        printf("Nenhuma oficina foi encontrada.\n\n");
     }
 }
 
@@ -75,7 +75,7 @@ void armazenarRelatorioOficina(struct ListaOficinas *listaOficinas, char *nome, 
         }
         printf("Relatório de oficinas realizado com sucesso!\n\n");
     } else {
-        printf("Nenhuma oficina foi cadastrada.\n\n");
+        printf("Nenhuma oficina foi encontrada.\n\n");
     }
 
 

@@ -113,7 +113,7 @@ void cadastrarVeiculo(struct ListaClientes *listaProprietarios, struct ListaVeic
     scanf(" %d", &veiculo.anoFabricacao);
 
 
-    cadastrarVeiculosModel(lista, &veiculo);
+    cadastrarVeiculosModel(lista, &veiculo, 1);
 }
 
 // Formulário de atualização de veículos

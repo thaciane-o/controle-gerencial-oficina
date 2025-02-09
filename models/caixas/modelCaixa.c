@@ -201,6 +201,25 @@ void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina) {
     printf("Caixa cadastrado com sucesso!\n\n");
 }
 
+// Cadastra um caixa importado
+void cadastrarCaixasModel(struct ListaCaixas *lista, struct Caixas *caixa) {
+    int resultAlocacao = 0;
+
+    if (lista->qtdCaixas == 0) {
+        lista->qtdCaixas++;
+        resultAlocacao = alocarCaixasModel(lista);
+    } else {
+        resultAlocacao = realocarCaixasModel(lista, 1);
+    }
+
+    if (resultAlocacao == 0) {
+        printf("Erro: Não foi possível cadastrar o Caixa.\n\n");
+        return;
+    }
+
+    lista->listaCaixas[lista->qtdCaixas - 1] = *caixa;
+}
+
 // Deleta caixa ao deletar uma oficina
 void deletarCaixasModel(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente,
                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int idOficina) {

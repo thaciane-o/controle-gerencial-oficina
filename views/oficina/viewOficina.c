@@ -140,7 +140,7 @@ void cadastrarOficina(struct ListaOficinas *lista, struct ListaCaixas *listaCaix
     setbuf(stdin, NULL);
     scanf("%f", &oficinaCadastrando.porcentagemLucro);
 
-    cadastrarOficinaModel(lista, &oficinaCadastrando, listaCaixas);
+    cadastrarOficinaModel(lista, &oficinaCadastrando, listaCaixas, 1);
 }
 
 // Formulário de atualização de oficinas

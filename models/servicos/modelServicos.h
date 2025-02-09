@@ -2,6 +2,7 @@
 #define MODELSERVICOS_H
 
 #include "../../models/agendamentos/modelAgendamentos.h"
+#include "../../models/servicos/modelServicos.h"
 
 struct Servicos {
     int id;
@@ -25,7 +26,7 @@ int alocarMemoriaServicoModel(struct ListaServicos *lista);
 
 int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca);
 
-void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando);
+void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando, int autoId);
 
 void deletarServicoModel(struct ListaServicos *lista, struct ListaAgendamentos *listaAgendamentos, int id);
 

@@ -204,7 +204,7 @@ int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca) {
 }
 
 // Cadastra uma nova peca
-void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando) {
+void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdPecas == 0) {
@@ -220,8 +220,10 @@ void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando)
         return;
     }
 
-    pecaCadastrando->id = lista->qtdPecas;
-    pecaCadastrando->deletado = 0;
+    if (autoId == 1) {
+        pecaCadastrando->id = lista->qtdPecas;
+        pecaCadastrando->deletado = 0;
+    }
 
     lista->listaPecas[lista->qtdPecas - 1] = *pecaCadastrando;
 

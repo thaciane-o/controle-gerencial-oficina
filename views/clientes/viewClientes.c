@@ -120,7 +120,7 @@ void cadastrarCliente(struct ListaClientes *lista, struct ListaOficinas *listaOf
     setbuf(stdin, NULL);
     scanf(" %[^\n]", cliente.endereco);
 
-    cadastrarClientesModel(lista, &cliente);
+    cadastrarClientesModel(lista, &cliente, 1);
 }
 
 // Formulário de atualização de clientes

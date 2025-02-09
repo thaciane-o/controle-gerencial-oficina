@@ -1,6 +1,8 @@
 #ifndef MODELEXPORTACAO_H
 #define MODELEXPORTACAO_H
 
+#include <stdio.h>
+
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
 #include "../../models/oficina/modelOficina.h"
@@ -31,5 +33,25 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                        struct ListaNotasFiscais *listaNotasFiscais,
                        struct ListaPecasNotas *listaPecasNotas,
                        int *opcoesExportacao);
+
+void extraiValorTagsModel(char *entrada, char *saida, char *tagAbre, char *tagFecha);
+
+void importaDadosModel(struct ListaClientes *listaClientes,
+                       struct ListaVeiculos *listaVeiculos,
+                       struct ListaOficinas *listaOficinas,
+                       struct ListaPecas *listaPecas,
+                       struct ListaFornecedores *listaFornecedores,
+                       struct ListaServicos *listaServicos,
+                       struct ListaFuncionarios *listaFuncionarios,
+                       struct ListaCaixas *listaCaixas,
+                       struct ListaPagamentosCliente *listaPagamentosCliente,
+                       struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                       struct ListaAgendamentos *listaAgendamentos,
+                       struct ListaOrdensServico *listaOrdensServico,
+                       struct ListaNotasFiscais *listaNotasFiscais,
+                       struct ListaPecasNotas *listaPecasNotas,
+                       FILE* arquivo,
+                       int *opcoesImportacao,
+                       int opcaoArmazenamento);
 
 #endif //MODELEXPORTACAO_H

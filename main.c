@@ -34,8 +34,15 @@
 #include "./models/caixas/modelCaixa.h"
 #include "./models/pagamentoCliente/modelPagamentoCliente.h"
 #include "./models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "./views/financeiro/viewFinanceiro.h"
+
+#include "./views/agendamentos/viewAgendamentos.h"
+#include "./models/agendamentos/modelAgendamentos.h"
+
+#include "./models/ordensServico/modelOrdensServico.h"
 
 #include "./views/estoques/viewEstoques.h"
+
 #include "./models/notasFiscais/modelNotasFiscais.h"
 #include "./models/pecasNotas/modelPecasNotas.h"
 #include "views/exportacaoImportacao/viewExportacaoImportacao.h"
@@ -178,6 +185,8 @@ int main() {
                 gerenciarRelatorios(&listaOficinas, &listaClientes, &listaVeiculos, &listaFuncionarios, &listaServicos,
                                     &listaFornecedores, &listaPecas, &listaOrdensServico, &listaAgendamentos,
                                     &listaCaixas, &listaPagamentosCliente, &listaPagamentosFornecedor,
+                                    &listaFornecedores, &listaPecas, &listaPagamentosCliente, &listaAgendamentos, &listaNotasFiscais,
+                                    &listaOrdensServico, &listaPagamentosFornecedor, &listaPecasNotas,
                                     opcaoArmazenamento);
                 break;
 

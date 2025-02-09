@@ -183,7 +183,7 @@ int realocarMemoriaServicoModel(struct ListaServicos *lista, int qtdAloca) {
 }
 
 // Cadastra um novo serviço
-void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando) {
+void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servicoCadastrando, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdServicos == 0) {
@@ -199,8 +199,10 @@ void cadastrarServicoModel(struct ListaServicos *lista, struct Servicos *servico
         return;
     }
 
-    servicoCadastrando->id = lista->qtdServicos;
-    servicoCadastrando->deletado = 0;
+    if (autoId == 1) {
+        servicoCadastrando->id = lista->qtdServicos;
+        servicoCadastrando->deletado = 0;
+    }
 
     lista->listaServicos[lista->qtdServicos - 1] = *servicoCadastrando;
 

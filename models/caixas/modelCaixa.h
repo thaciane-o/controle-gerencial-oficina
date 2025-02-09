@@ -1,8 +1,8 @@
 #ifndef MODELCAIXA_H
 #define MODELCAIXA_H
 
-#include "../pagamentoCliente/modelPagamentoCliente.h"
-#include "../pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 
 struct Caixas {
     int id;
@@ -25,6 +25,8 @@ int alocarCaixasModel(struct ListaCaixas *lista);
 int realocarCaixasModel(struct ListaCaixas *lista, int qtdAlocada);
 
 void iniciarCaixasModel(struct ListaCaixas *lista, int idOficina);
+
+void cadastrarCaixasModel(struct ListaCaixas *lista, struct Caixas *caixa);
 
 void deletarCaixasModel(struct ListaCaixas *lista, struct ListaPagamentosCliente *listaPagamentosCliente,
                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int idOficina);

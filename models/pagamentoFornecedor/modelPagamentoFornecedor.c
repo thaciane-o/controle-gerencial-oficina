@@ -193,7 +193,7 @@ int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, i
 
 // Cadastro de pagamento a fornecedor
 int cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
-                                       struct ListaCaixas *listaCaixas) {
+                                       struct ListaCaixas *listaCaixas, int autoId) {
     float saldoCaixa = getSaldoCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa);
     if (saldoCaixa == -1) {
         return -1;
@@ -218,15 +218,19 @@ int cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, 
     }
 
     // Cadastrando pagamento na memória
-    pagamento->id = lista->qtdPagamentosFornecedor;
-    pagamento->deletado = 0;
+    if (autoId == 1) {
+        pagamento->id = lista->qtdPagamentosFornecedor;
+        pagamento->deletado = 0;
+    }
 
     lista->listaPagamentosFornecedor[lista->qtdPagamentosFornecedor - 1] = *pagamento;
 
     printf("Pagamento cadastrado com sucesso!\n\n");
 
     // Debita o valor do pagamento
-    debitarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
+    if (autoId == 1) {
+        debitarDinheiroCaixaPorCaixaModel(listaCaixas, pagamento->idCaixa, pagamento->valor);
+    }
 
     return 0;
 }

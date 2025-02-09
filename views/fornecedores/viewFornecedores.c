@@ -106,7 +106,7 @@ void cadastrarFornecedor(struct ListaFornecedores *lista) {
     setbuf(stdin, NULL);
     scanf(" %[^\n]", fornecedor.email);
 
-    cadastrarFornecedoresModel(lista, &fornecedor);
+    cadastrarFornecedoresModel(lista, &fornecedor, 1);
 }
 
 // Formulário de atualização de fornecedores

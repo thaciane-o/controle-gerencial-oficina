@@ -1,7 +1,7 @@
 #ifndef MODELPAGAMENTOFORNECEDOR_H
 #define MODELPAGAMENTOFORNECEDOR_H
 
-#include "../caixas/modelCaixa.h"
+#include "../../models/caixas/modelCaixa.h"
 
 struct PagamentosFornecedor {
     int id;
@@ -27,7 +27,7 @@ int alocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista);
 int realocarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, int qtdAlocada);
 
 int cadastrarPagamentosFornecedorModel(struct ListaPagamentosFornecedor *lista, struct PagamentosFornecedor *pagamento,
-                                       struct ListaCaixas *listaCaixas);
+                                       struct ListaCaixas *listaCaixas, int autoId);
 
 void listaPagamentosFornecedorPorOficinaModel(struct ListaPagamentosFornecedor *lista, struct ListaCaixas *listaCaixas,
                                               int idOficina);

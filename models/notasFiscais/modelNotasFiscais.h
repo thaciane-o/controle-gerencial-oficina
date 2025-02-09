@@ -32,7 +32,7 @@ int realocarMemoriaNotasFiscaisModel(struct ListaNotasFiscais *lista, int qtdAlo
 
 void cadastrarNotasFiscaisModel(struct ListaNotasFiscais *lista, struct NotasFiscais *novaNotaFiscal,
                                 struct ListaPecas *listaPecas, struct ListaOficinas *listaOficinas,
-                                struct ListaPecasNotas *listaPecasNotas, int totalPecas);
+                                struct ListaPecasNotas *listaPecasNotas, int totalPecas, int autoId);
 
 
 void listarTodasNotasFiscaisModel(struct ListaNotasFiscais *lista, struct ListaPecasNotas *listaPecasNotas,

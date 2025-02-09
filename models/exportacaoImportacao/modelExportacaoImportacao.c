@@ -378,6 +378,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                 fprintf(exportacao, "\t\t<registro>\n"
                         "\t\t\t<descricao>%s</descricao>\n"
                         "\t\t\t<idPecas>%d</idPecas>\n"
+                        "\t\t\t<qtdPecas>%d</qtdPecas>\n"
                         "\t\t\t<idAgendamento>%d</idAgendamento>\n"
                         "\t\t\t<valorTotal>%.2f</valorTotal>\n"
                         "\t\t\t<tempoGasto>%.2f</tempoGasto>\n"
@@ -386,6 +387,7 @@ void exportaDadosModel(struct ListaClientes *listaClientes,
                         "\t\t</registro>\n",
                         listaOrdensServico->listaOrdensServico[i].descricao,
                         listaOrdensServico->listaOrdensServico[i].idPecas,
+                        listaOrdensServico->listaOrdensServico[i].qtdPecas,
                         listaOrdensServico->listaOrdensServico[i].idAgendamento,
                         listaOrdensServico->listaOrdensServico[i].valorTotal,
                         listaOrdensServico->listaOrdensServico[i].tempoGasto,
@@ -1424,6 +1426,8 @@ void importaDadosModel(struct ListaClientes *listaClientes,
             switch (idTabela) {
                 default:
                     break;
+                case 11:
+                    importaOrdensServico.qtdPecas = qtdPecas;
                 case 13:
                     importaPecasNotas.qtdPecas = qtdPecas;
                     break;

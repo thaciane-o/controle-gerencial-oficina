@@ -29,7 +29,7 @@ int alocarPagamentosClienteModel(struct ListaPagamentosCliente *lista);
 int realocarPagamentosClienteModel(struct ListaPagamentosCliente *lista, int qtdAlocada);
 
 void cadastrarPagamentosClienteModel(struct ListaPagamentosCliente *lista, struct PagamentosCliente *pagamento,
-                                     struct ListaCaixas *listaCaixas);
+                                     struct ListaCaixas *listaCaixas, int autoId);
 
 void atualizarFormaPagamentoClienteModel(struct ListaPagamentosCliente *lista, int idPagamento,
     int tipoPagamento, char dataPagamento[11], char dataRecebimento[11], char dataAReceber[11]);

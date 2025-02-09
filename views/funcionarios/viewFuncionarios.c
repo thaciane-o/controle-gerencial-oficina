@@ -111,7 +111,7 @@ void cadastrarFuncionario(struct ListaFuncionarios *lista, struct ListaOficinas 
     setbuf(stdin, NULL);
     scanf("%f", &funcionario.salario);
 
-    cadastrarFuncionariosModel(lista, &funcionario);
+    cadastrarFuncionariosModel(lista, &funcionario, 1);
 }
 
 // Formulário de atualização de funcionários

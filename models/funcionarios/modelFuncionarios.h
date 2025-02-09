@@ -26,7 +26,7 @@ int alocarFuncionariosModel(struct ListaFuncionarios *lista);
 
 int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada);
 
-void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario);
+void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario, int autoId);
 
 void deletarFuncionariosModel(struct ListaFuncionarios *lista, struct ListaAgendamentos *listaAgendamentos, int id);
 

@@ -219,7 +219,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
             // Soma a quantidade de peças que foi pedida
             totalPecas += pecaNota.qtdPecas;
 
-            cadastrarPecaNotaModel(listaPecasNotas, &pecaNota);
+            cadastrarPecaNotaModel(listaPecasNotas, &pecaNota, 1);
             cadastrouPeca = 1;
         }
     } while (pecaNota.idPeca != 0);
@@ -265,7 +265,7 @@ void realizarPedidoEstoque(struct ListaNotasFiscais *lista, struct ListaPecasNot
         }
 
         // Cadastra a nova nota fiscal
-        cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, listaPecasNotas, totalPecas);
+        cadastrarNotasFiscaisModel(lista, &notaFiscal, listaPecas, listaOficinas, listaPecasNotas, totalPecas, 1);
     } else {
         printf("\nPor favor, informe as peças que serão compradas\n");
     }
@@ -378,7 +378,7 @@ int cadastrarPagamentoFornecedorEstoque(struct ListaPagamentosFornecedor *listaP
 
     pagamento.idFornecedor = idFornecedor;
 
-    if (cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento, listaCaixas) == -1) {
+    if (cadastrarPagamentosFornecedorModel(listaPagamentosFornecedor, &pagamento, listaCaixas, 1) == -1) {
         return -1;
     };
 

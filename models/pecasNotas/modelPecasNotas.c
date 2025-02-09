@@ -182,7 +182,7 @@ int realocarMemoriaPecaNotaModel(struct ListaPecasNotas *lista, int qtdAloca) {
 }
 
 // Cadastra uma nova relação peça/nota
-void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pecaNotaCadastrando) {
+void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pecaNotaCadastrando, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdPecasNotas == 0) {
@@ -198,8 +198,10 @@ void cadastrarPecaNotaModel(struct ListaPecasNotas *lista, struct PecasNotas *pe
         return;
     }
 
-    pecaNotaCadastrando->id = lista->qtdPecasNotas;
-    pecaNotaCadastrando->deletado = 0;
+    if (autoId == 1) {
+        pecaNotaCadastrando->id = lista->qtdPecasNotas;
+        pecaNotaCadastrando->deletado = 0;
+    }
     lista->listaPecasNotas[lista->qtdPecasNotas - 1] = *pecaNotaCadastrando;
 }
 
@@ -249,6 +251,6 @@ void cadastrarNovaPecaModel(struct ListaPecas *listaPecas, struct NotasFiscais *
 
     pecaNota->idPeca = listaPecas->qtdPecas + 1;
 
-    cadastrarPecaModel(listaPecas, &novaPeca);
+    cadastrarPecaModel(listaPecas, &novaPeca, 1);
 }
 

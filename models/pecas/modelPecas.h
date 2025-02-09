@@ -28,7 +28,7 @@ int alocarMemoriaPecaModel(struct ListaPecas *lista);
 
 int realocarMemoriaPecaModel(struct ListaPecas *lista, int qtdAloca);
 
-void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando);
+void cadastrarPecaModel(struct ListaPecas *lista, struct Pecas *pecaCadastrando, int autoId);
 
 void deletarPecaModel(struct ListaPecas *lista, int id, struct ListaOrdensServico *listaOrdensServico);
 

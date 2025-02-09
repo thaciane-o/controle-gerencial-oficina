@@ -32,7 +32,7 @@ int alocarMemoriaOficinaModel(struct ListaOficinas *lista);
 int realocarMemoriaOficinaModel(struct ListaOficinas *oficinas, int qtdAloca);
 
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando,
-                           struct ListaCaixas *listaCaixas);
+                           struct ListaCaixas *listaCaixas, int autoId);
 
 void deletarOficinaModel(struct ListaOficinas *lista, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaClientes *listaClientes,

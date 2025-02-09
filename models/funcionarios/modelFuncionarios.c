@@ -184,7 +184,7 @@ int realocarFuncionariosModel(struct ListaFuncionarios *lista, int qtdAlocada) {
 }
 
 // Cadastra um novo funcionário
-void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario) {
+void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funcionarios *funcionario, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdFuncionarios == 0) {
@@ -199,8 +199,10 @@ void cadastrarFuncionariosModel(struct ListaFuncionarios *lista, struct Funciona
         return;
     }
 
-    funcionario->id = lista->qtdFuncionarios;
-    funcionario->deletado = 0;
+    if (autoId == 1) {
+        funcionario->id = lista->qtdFuncionarios;
+        funcionario->deletado = 0;
+    }
 
     lista->listaFuncionarios[lista->qtdFuncionarios - 1] = *funcionario;
 

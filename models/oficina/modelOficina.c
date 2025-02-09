@@ -198,7 +198,7 @@ int realocarMemoriaOficinaModel(struct ListaOficinas *lista, int qtdAloca) {
 
 // Cadastra uma nova oficina
 void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficinaCadastrando,
-                           struct ListaCaixas *listaCaixas) {
+                           struct ListaCaixas *listaCaixas, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdOficinas == 0) {
@@ -214,15 +214,19 @@ void cadastrarOficinaModel(struct ListaOficinas *lista, struct Oficinas *oficina
         return;
     }
 
-    oficinaCadastrando->id = lista->qtdOficinas;
-    oficinaCadastrando->deletado = 0;
+    if (autoId == 1) {
+        oficinaCadastrando->id = lista->qtdOficinas;
+        oficinaCadastrando->deletado = 0;
+    }
 
     lista->listaOficinas[lista->qtdOficinas - 1] = *oficinaCadastrando;
 
     printf("\nOficina cadastrada com sucesso!\n");
 
     // Cadastra caixa para a oficina
-    iniciarCaixasModel(listaCaixas, oficinaCadastrando->id);
+    if (autoId == 1) {
+        iniciarCaixasModel(listaCaixas, oficinaCadastrando->id);
+    }
 }
 
 // Verifica se o ID que deseja atualizar existe

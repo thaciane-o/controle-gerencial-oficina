@@ -197,7 +197,7 @@ int realocarClientesModel(struct ListaClientes *lista, int qtdAlocada) {
 }
 
 // Cadastra um novo cliente
-void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente) {
+void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *cliente, int autoId) {
     int resultAlocacao = 0;
 
     if (lista->qtdClientes == 0) {
@@ -213,8 +213,10 @@ void cadastrarClientesModel(struct ListaClientes *lista, struct Clientes *client
     }
 
     //Cadastrando cliente na memória
-    cliente->id = lista->qtdClientes;
-    cliente->deletado = 0;
+    if (autoId == 1) {
+        cliente->id = lista->qtdClientes;
+        cliente->deletado = 0;
+    }
 
     lista->listaClientes[lista->qtdClientes - 1] = *cliente;
 

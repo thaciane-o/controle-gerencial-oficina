@@ -31,7 +31,7 @@ int alocarFornecedoresModel(struct ListaFornecedores *lista);
 int realocarFornecedoresModel(struct ListaFornecedores *lista, int qtdAlocada);
 
 // Controles de CRUD
-void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor);
+void cadastrarFornecedoresModel(struct ListaFornecedores *lista, struct Fornecedores *fornecedor, int autoId);
 
 void deletarFornecedoresModel(struct ListaFornecedores *lista, struct ListaPecas *pecasRelacionadas, int id);
 

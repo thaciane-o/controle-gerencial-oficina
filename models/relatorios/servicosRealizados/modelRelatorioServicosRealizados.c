@@ -95,7 +95,7 @@ void imprimirRelatorioServicosRealizados(struct ListaClientes *listaClientes, st
                    "PREÇO: $%.2f\n"
                    "COMISSÃO: $%.2f\n"
                    "CLIENTE: %s\n"
-                   "FUNCIONARIO: %s\n"
+                   "FUNCIONÁRIO: %s\n"
                    "DATA DA REALIZAÇÃO: %s\n\n",
                    listaServicos->listaServicos[listaAgendamentos->listaAgendamentos[idAgendamento - 1].idServico - 1].id,
                    listaOrdensServicos->listaOrdensServico[i].descricao,

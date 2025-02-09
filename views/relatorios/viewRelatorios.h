@@ -9,6 +9,9 @@
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "../../models/pecas/modelPecas.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/caixas/modelCaixa.h"
 #include "../../models/pecasNotas/modelPecasNotas.h"
 #include "../../models/notasFiscais/modelNotasFiscais.h"
 #include "../../models/ordensServico/modelOrdensServico.h"
@@ -18,11 +21,10 @@
 void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
-                         struct ListaPecas *listaPecas, struct ListaPagamentosCliente *listaPagamentosCliente,
-                         struct ListaAgendamentos *listaAgendamentos,
-                         struct ListaNotasFiscais *listaNotas, struct ListaOrdensServico *listaOrdensServico,
-                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                         struct ListaPecasNotas *listaPecasNotas, int opcaoArmazenamento);
+                         struct ListaPecas *listaPecas, struct ListaOrdensServico *listaOrdensServicos,
+                         struct ListaAgendamentos *listaAgendamentos, struct ListaCaixas *listaCaixas,
+                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int opcaoArmazenamento);
 
 void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                                struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
@@ -45,6 +47,13 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
 void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdemServicos,
                                   struct ListaAgendamentos *listaAgendamentos,
                                   struct ListaFuncionarios *listafuncionarios);
+
+void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *listaOficinas,
+                               struct ListaPagamentosCliente *listaPagamentosCliente,
+                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                               struct ListaClientes *listaClientes,
+                               struct ListaFornecedores *listaFornecedores);
+
 
 void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
                               struct ListaServicos *listaServicos,

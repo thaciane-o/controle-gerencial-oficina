@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Includes dos .h dos relatorios
 #include "./viewRelatorios.h"
 #include "../../models/relatorios/clientes/modelRelatorioCliente.h"
 #include "../../models/relatorios/oficinas/modelRelatorioOficina.h"
@@ -13,6 +14,9 @@
 #include "../../models/relatorios/estoques/modelRelatorioEstoque.h"
 #include "../../models/relatorios/produtividade/modelRelatorioProdutividade.h"
 #include "../../models/relatorios/servicosRealizados/modelRelatorioServicosRealizados.h"
+#include "../../models/relatorios/financeiro/modelRelatorioFinanceiro.h"
+
+// Includes dos .h das tabelas
 #include "../../models/oficina/modelOficina.h"
 #include "../../models/clientes/modelClientes.h"
 #include "../../models/veiculos/modelVeiculos.h"
@@ -20,6 +24,9 @@
 #include "../../models/servicos/modelServicos.h"
 #include "../../models/fornecedores/modelFornecedores.h"
 #include "../../models/pecas/modelPecas.h"
+#include "../../models/pagamentoCliente/modelPagamentoCliente.h"
+#include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
+#include "../../models/caixas/modelCaixa.h"
 #include "../../models/pecasNotas/modelPecasNotas.h"
 #include "../../models/notasFiscais/modelNotasFiscais.h"
 #include "../../models/ordensServico/modelOrdensServico.h"
@@ -27,14 +34,15 @@
 #include "../../models/pagamentoFornecedor/modelPagamentoFornecedor.h"
 #include "../../models/pagamentoCliente/modelPagamentoCliente.h"
 
+
+// Gerenciamento de relatorios
 void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                          struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                          struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
-                         struct ListaPecas *listaPecas, struct ListaPagamentosCliente *listaPagamentosCliente,
-                         struct ListaAgendamentos *listaAgendamentos,
-                         struct ListaNotasFiscais *listaNotas, struct ListaOrdensServico *listaOrdensServicos,
-                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
-                         struct ListaPecasNotas *listaPecasNotas, int opcaoArmazenamento) {
+                         struct ListaPecas *listaPecas, struct ListaOrdensServico *listaOrdensServicos,
+                         struct ListaAgendamentos *listaAgendamentos, struct ListaCaixas *listaCaixas,
+                         struct ListaPagamentosCliente *listaPagamentosCliente,
+                         struct ListaPagamentosFornecedor *listaPagamentosFornecedor, int opcaoArmazenamento) {
     int opcaoSubmenus = 0;
 
     // Verifica tipo de armazenamento para buscar dados
@@ -70,20 +78,27 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
         if (listaAgendamentos->qtdAgendamentos == 0) {
             buscarDadosAgendamentosModel(listaAgendamentos, opcaoArmazenamento);
         }
-        if (listaNotas->qtdNotas == 0) {
-            buscarDadosNotasFiscaisModel(listaNotas, opcaoArmazenamento);
-        }
+
         if (listaOrdensServicos->qtdOrdensServico == 0) {
             buscarDadosOrdensServicoModel(listaOrdensServicos, opcaoArmazenamento);
         }
         if (listaPagamentosFornecedor->qtdPagamentosFornecedor == 0) {
             buscarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
         }
-        if (listaPecasNotas->qtdPecasNotas == 0) {
-            buscarDadosPecaNotaModel(listaPecasNotas, opcaoArmazenamento);
-        }
         if (listaPagamentosCliente->qtdPagamentosCliente == 0) {
             buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+        }
+
+        if (listaPagamentosCliente->qtdPagamentosCliente == 0) {
+            buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
+        }
+
+        if (listaPagamentosFornecedor->qtdPagamentosFornecedor == 0) {
+            buscarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
+        }
+
+        if (listaCaixas->qtdCaixas == 0) {
+            buscarDadosCaixasModel(listaCaixas, opcaoArmazenamento);
         }
     }
 
@@ -119,6 +134,8 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                 filtroRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios);
                 break;
             case 5:
+                filtroRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores);
                 break;
             case 6:
                 // Limpa os ponteiros
@@ -170,12 +187,6 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                     listaAgendamentos->qtdAgendamentos = 0;
                 }
 
-                if (listaNotas->qtdNotas > 0) {
-                    free(listaNotas->listaNotas);
-                    listaNotas->listaNotas = NULL;
-                    listaNotas->qtdNotas = 0;
-                }
-
                 if (listaOrdensServicos->qtdOrdensServico > 0) {
                     free(listaOrdensServicos->listaOrdensServico);
                     listaOrdensServicos->listaOrdensServico = NULL;
@@ -194,13 +205,23 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                     listaPagamentosCliente->qtdPagamentosCliente = 0;
                 }
 
-                if (listaPecasNotas->qtdPecasNotas > 0) {
-                    free(listaPecasNotas->listaPecasNotas);
-                    listaPecasNotas->listaPecasNotas = NULL;
-                    listaPecasNotas->qtdPecasNotas = 0;
+                if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
+                    free(listaPagamentosCliente->listaPagamentosCliente);
+                    listaPagamentosCliente->listaPagamentosCliente = NULL;
+                    listaPagamentosCliente->qtdPagamentosCliente = 0;
                 }
 
+                if (listaPagamentosFornecedor->qtdPagamentosFornecedor > 0) {
+                    free(listaPagamentosFornecedor->listaPagamentosFornecedor);
+                    listaPagamentosFornecedor->listaPagamentosFornecedor = NULL;
+                    listaPagamentosFornecedor->qtdPagamentosFornecedor = 0;
+                }
 
+                if (listaCaixas->qtdCaixas > 0) {
+                    free(listaCaixas->listaCaixas);
+                    listaCaixas->listaCaixas = NULL;
+                    listaCaixas->qtdCaixas = 0;
+                }
                 return;
             default: printf("Opção inválida!\n\n");
                 break;
@@ -208,6 +229,8 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
     }
 }
 
+
+// Gerenciamento de cadastros basicos
 void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                                struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                                struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
@@ -239,6 +262,7 @@ void gerenciarCadastrosBasicos(struct ListaOficinas *listaOficinas, struct Lista
     }
 }
 
+// Filtro de cadastros basicos
 void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClientes *listaClientes,
                            struct ListaVeiculos *listaVeiculos, struct ListaFuncionarios *listaFuncionarios,
                            struct ListaServicos *listaServicos, struct ListaFornecedores *listaFornecedores,
@@ -246,19 +270,20 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
     int opcaoFiltro = 0, id = 0;
     char nome[255] = {0};
 
-    printf("\n=================\n"
-        "|    FILTRAR    |\n"
-        "=================\n"
-        "|  1  | ID      |\n"
-        "|  2  | Nome    |\n"
-        "|  3  | Voltar  |\n"
-        "=================\n"
-        "Escolha uma forma de filtar: ");
-    scanf("%d", &opcaoFiltro);
+    while (opcaoFiltro != 3) {
+        printf("\n=================\n"
+            "|    FILTRAR    |\n"
+            "=================\n"
+            "|  1  | ID      |\n"
+            "|  2  | Nome    |\n"
+            "|  3  | Voltar  |\n"
+            "=================\n"
+            "Escolha uma forma de filtar: ");
+        scanf("%d", &opcaoFiltro);
 
-    switch (opcaoFiltro) {
-        case 1:
-            printf("Insira o ID:");
+        switch (opcaoFiltro) {
+            case 1:
+                printf("Insira o ID:");
             scanf("%d", &id);
 
             switch (tipoRelatorio) {
@@ -268,56 +293,56 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
                     } else {
                         armazenarRelatorioOficina(listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 2:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioCliente(listaClientes, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioCliente(listaClientes, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 3:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
                     } else {
                         armazenarRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
                     }
-                    break;
+                break;
                 case 4:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 5:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioServico(listaServicos, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioServico(listaServicos, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 6:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioFornecedor(listaFornecedores, nome, id);
                     } else {
                         armazenarRelatorioFornecedor(listaFornecedores, nome, id);
                     }
-                    break;
+                break;
                 case 7:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 default: printf("Opção inválida!\n\n");
-                    break;
+                break;
             }
 
             break;
-        case 2:
-            printf("Insira o nome:");
+            case 2:
+                printf("Insira o nome:");
             setbuf(stdin, NULL);
             scanf(" %[^\n]s", nome);
 
@@ -328,60 +353,62 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
                     } else {
                         armazenarRelatorioOficina(listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 2:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioCliente(listaClientes, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioCliente(listaClientes, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 3:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
                     } else {
                         armazenarRelatorioVeiculo(listaVeiculos, listaClientes, nome, id);
                     }
-                    break;
+                break;
                 case 4:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioFuncionario(listaFuncionarios, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 5:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioServico(listaServicos, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioServico(listaServicos, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 case 6:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioFornecedor(listaFornecedores, nome, id);
                     } else {
                         armazenarRelatorioFornecedor(listaFornecedores, nome, id);
                     }
-                    break;
+                break;
                 case 7:
                     if (formaDeImprimir() == 1) {
                         imprimirRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
                     } else {
                         armazenarRelatorioPeca(listaPecas, listaFornecedores, listaOficinas, nome, id);
                     }
-                    break;
+                break;
                 default: printf("Opção inválida!\n\n");
-                    break;
+                break;
             }
             break;
-        case 3:
-            return;
-        default: printf("Opção inválida!\n\n");
+            case 3:
+                return;
+            default: printf("Opção inválida!\n\n");
             break;
+        }
     }
 }
 
+// Filtro do relatorio de produtividade
 void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos,
                                   struct ListaAgendamentos *listaAgendamentos,
                                   struct ListaFuncionarios *listaFuncionarios) {
@@ -390,28 +417,33 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
     struct tm dataHoraInicial = {0};
     struct tm dataHoraFinal = {0};
 
-    printf("\n=============================\n"
-        "|          FILTRAR          |\n"
-        "=============================\n"
-        "|  1  | Funcionário         |\n"
-        "|  2  | Serviço             |\n"
-        "|  3  | Intervalos de datas |\n"
-        "|  4  | Voltar              |\n"
-        "=============================\n"
-        "Escolha uma forma de filtar: ");
-    scanf("%d", &opcaoFiltro);
+    while (opcaoFiltro != 4) {
+        printf("\n=============================\n"
+            "|          FILTRAR          |\n"
+            "=============================\n"
+            "|  1  | Funcionário         |\n"
+            "|  2  | Serviço             |\n"
+            "|  3  | Intervalos de datas |\n"
+            "|  4  | Voltar              |\n"
+            "=============================\n"
+            "Escolha uma forma de filtar: ");
+        scanf("%d", &opcaoFiltro);
 
-    switch (opcaoFiltro) {
-        case 1:
-            printf("Insira o ID do funcionário:");
+        switch (opcaoFiltro) {
+            case 1:
+                // Inserindo id do funcionario
+                    printf("Insira o ID do funcionário:");
             scanf("%d", &funcionario);
             break;
-        case 2:
-            printf("Insira o ID do serviço:");
+            case 2:
+                // Inserindo id do serviço
+                    printf("Insira o ID do serviço:");
             scanf("%d", &servico);
             break;
-        case 3:
-            printf("Insira a data inicial (DD/MM/AAAA): ");
+            case 3:
+
+                // Recebendo data inicial
+                    printf("Insira a data inicial (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &diaInicio, &mesInicio, &anoInicio);
 
@@ -428,11 +460,13 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
 
             time_t tempoInicio = mktime(&dataHoraInicial);
 
+            // Verificando conversão
             if (tempoInicio == -1) {
                 printf("Erro ao converter a data e hora.\n");
                 return;
             }
 
+            // Recebendo data final
             printf("Insira a data final (DD/MM/AAAA): ");
             setbuf(stdin, NULL);
             scanf("%d/%d/%d", &diaFim, &mesFim, &anoFim);
@@ -450,24 +484,162 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
 
             time_t tempoFim = mktime(&dataHoraFinal);
 
+            // Verificando conversão
             if (tempoFim == -1) {
                 printf("Erro ao converter a data e hora.\n");
                 return;
             }
             break;
-        case 4:
-            return;
+            case 4:
+                return;
             break;
-        default:
-            printf("Opção inválida!\n\n");
-    }
+            default:
+                printf("Opção inválida!\n\n");
+        }
 
-    if (formaDeImprimir() == 1) {
-        imprimirRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios, funcionario,
-                                       servico, dataHoraInicial, dataHoraFinal);
-    } else {
-        armazenarRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios, funcionario,
-                                        servico, dataHoraInicial, dataHoraFinal);
+        if (formaDeImprimir() == 1) {
+            imprimirRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios, funcionario,
+                                           servico, dataHoraInicial, dataHoraFinal);
+        } else {
+            armazenarRelatorioProdutividade(listaOrdensServicos, listaAgendamentos, listaFuncionarios, funcionario,
+                                            servico, dataHoraInicial, dataHoraFinal);
+        }
+    }
+}
+
+
+// Filtro de relatorio fincanceiro
+void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOficinas *listaOficinas,
+                               struct ListaPagamentosCliente *listaPagamentosCliente,
+                               struct ListaPagamentosFornecedor *listaPagamentosFornecedor,
+                               struct ListaClientes *listaClientes,
+                               struct ListaFornecedores *listaFornecedores) {
+    int opcaoFiltro = 0, tipoConta = 0, cliente = 0, fornecedor = 0;
+    struct tm dataHoraInicial = {0};
+    struct tm dataHoraFinal = {0};
+
+    while (opcaoFiltro != 4) {
+        printf("\n=============================\n"
+            "|          FILTRAR          |\n"
+            "=============================\n"
+            "|  1  | Cliente             |\n"
+            "|  2  | Fornecedor          |\n"
+            "|  3  | Intervalo de Datas  |\n"
+            "|  4  | Voltar              |\n"
+            "=============================\n"
+            "Escolha uma forma de filtar: ");
+        scanf("%d", &opcaoFiltro);
+
+
+        switch (opcaoFiltro) {
+            case 1:
+
+                // Recebendo o id do cliente
+                    printf("Insira o ID do cliente a pagar:");
+            scanf("%d", &cliente);
+
+            if (formaDeImprimir() == 1) {
+                imprimirRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores, cliente,
+                                            tipoConta, opcaoFiltro, dataHoraInicial, dataHoraFinal);
+            } else {
+                armazenarRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores, cliente,
+                                            tipoConta, opcaoFiltro, dataHoraInicial, dataHoraFinal);
+            }
+            break;
+            case 2:
+
+                // Recebendo id do fornecedor
+                    printf("Insira o ID do fornecedor a ser pago:");
+            scanf("%d", &fornecedor);
+
+            if (formaDeImprimir() == 1) {
+                imprimirRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores, fornecedor,
+                                            tipoConta, opcaoFiltro, dataHoraInicial, dataHoraFinal);
+            } else {
+                armazenarRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores, fornecedor,
+                                            tipoConta, opcaoFiltro, dataHoraInicial, dataHoraFinal);
+            }
+            break;
+            case 3:
+
+                // Decidindo o tipo de conta do relatório
+                    printf("\n============================\n"
+                    "|       TIPO DE CONTA       |\n"
+                    "=============================\n"
+                    "|  1  | Contas a receber    |\n"
+                    "|  2  | Contas a pagar      |\n"
+                    "=============================\n"
+                    "Escolha uma forma de filtar: ");
+            scanf("%d", &tipoConta);
+
+            // Impedindo opções invalidas
+            if (tipoConta != 1 && tipoConta != 2) {
+                printf("Digite uma opção valida!\n\n");
+                return;
+            }
+
+            // Inserindo a data inicial
+            printf("Insira a data inicial (DD/MM/AAAA): ");
+            setbuf(stdin, NULL);
+            scanf("%d/%d/%d", &dataHoraInicial.tm_mday, &dataHoraInicial.tm_mon, &dataHoraInicial.tm_year);
+
+
+            dataHoraInicial.tm_mon -= 1;
+            dataHoraInicial.tm_year -= 1900;
+            dataHoraInicial.tm_sec = 0;
+            dataHoraInicial.tm_min = 0;
+            dataHoraInicial.tm_hour = 0;
+
+            time_t tempoInicio = mktime(&dataHoraInicial);
+
+            // Verificando conversão
+            if (tempoInicio == -1) {
+                printf("Erro ao converter a data e hora.\n");
+                return;
+            }
+
+            // Inserindo a data final
+            printf("Insira a data final (DD/MM/AAAA): ");
+            setbuf(stdin, NULL);
+            scanf("%d/%d/%d", &dataHoraFinal.tm_mday, &dataHoraFinal.tm_mon, &dataHoraFinal.tm_year);
+
+
+            dataHoraFinal.tm_mon -= 1;
+            dataHoraFinal.tm_year -= 1900;
+            dataHoraFinal.tm_sec = 0;
+            dataHoraFinal.tm_sec = 0;
+            dataHoraFinal.tm_min = 0;
+            dataHoraFinal.tm_hour = 0;
+
+            time_t tempoFim = mktime(&dataHoraFinal);
+
+
+            // Verificando conversão
+            if (tempoFim == -1) {
+                printf("Erro ao converter a data e hora.\n");
+                return;
+            }
+
+            if (formaDeImprimir() == 1) {
+                imprimirRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores, fornecedor,
+                                            tipoConta, opcaoFiltro, dataHoraInicial, dataHoraFinal);
+            } else {
+                armazenarRelatorioFinanceiro(listaCaixas, listaOficinas, listaPagamentosCliente,
+                                            listaPagamentosFornecedor, listaClientes, listaFornecedores, fornecedor,
+                                            tipoConta, opcaoFiltro, dataHoraInicial, dataHoraFinal);
+            }
+            break;
+            case 4:
+                return;
+            default:
+                printf("Opção inválida!\n\n");
+            break;
+        }
     }
 }
 
@@ -489,7 +661,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
             "====================================\n"
             "|  1  | Serviço                    |\n"
             "|  2  | Cliente                    |\n"
-            "|  3  | Funcionario                |\n"
+            "|  3  | Funcionário                |\n"
             "|  4  | Intervalo de datas         |\n"
             "|  5  | Produtos em estoque mínimo |\n"
             "|  6  | Voltar                     |\n"
@@ -630,7 +802,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             "====================================\n"
             "|  1  | Serviço                    |\n"
             "|  2  | Cliente                    |\n"
-            "|  3  | Funcionario                |\n"
+            "|  3  | Funcionário                |\n"
             "|  4  | Intervalo de datas         |\n"
             "|  5  | Voltar                     |\n"
             "====================================\n"
@@ -677,7 +849,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             case 3:
 
                 // Inserindo ID do funcionario
-                printf("Insira o ID do funcionario:");
+                printf("Insira o ID do funcionário:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idFuncionario);
 

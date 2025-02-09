@@ -484,7 +484,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
         int idServico = 0, idCliente = 0, idFuncionario = 0;
         struct tm dataInicial = {0}, dataFinal = {0};
 
-        printf("\n===================================\n"
+        printf("\n====================================\n"
             "|              FILTRAR             |\n"
             "====================================\n"
             "|  1  | Serviço                    |\n"
@@ -499,6 +499,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
 
         switch (opcaoFiltro) {
             case 1:
+                // Recebe o ID do serviço
                 printf("Insira o ID do serviço:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idServico);
@@ -515,6 +516,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
 
                 break;
             case 2:
+                // Recebe o ID do cliente
                 printf("Insira o ID do cliente:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idCliente);
@@ -531,7 +533,8 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
 
             break;
             case 3:
-                printf("Insira o ID do funcionario:");
+                // Recebe o ID do funcionário
+                printf("Insira o ID do funcionário:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idFuncionario);
 
@@ -548,14 +551,32 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
             break;
             case 4:
 
-                printf("Insira a data inicial (DD/MM/AAAA):");
+                // Recebe a data inicial
+                printf("Insira a data inicial (DD/MM/AAAA): ");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataInicial.tm_mday, &dataInicial.tm_mon, &dataInicial.tm_year);
 
+                printf("Insira o horario inicial (HH:MM): ");
+                setbuf(stdin, NULL);
+                scanf("%d:%d", &dataInicial.tm_hour, &dataInicial.tm_min);
 
-                printf("Insira a data final (DD/MM/AAAA):");
+                dataInicial.tm_mon -= 1;
+                dataInicial.tm_year -= 1900;
+                dataFinal.tm_sec = 0;
+
+                // Recebe a data final
+                printf("Insira a data final (DD/MM/AAAA): ");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataFinal.tm_mday, &dataFinal.tm_mon, &dataFinal.tm_year);
+
+                printf("Insira o horario final (HH:MM): ");
+                setbuf(stdin, NULL);
+                scanf("%d:%d", &dataFinal.tm_hour, &dataFinal.tm_min);
+
+
+                dataFinal.tm_mon -= 1;
+                dataFinal.tm_year -= 1900;
+                dataInicial.tm_sec = 0;
 
 
                 if (formaDeImprimir() == 1) {

@@ -78,17 +78,12 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
         if (listaAgendamentos->qtdAgendamentos == 0) {
             buscarDadosAgendamentosModel(listaAgendamentos, opcaoArmazenamento);
         }
-        if (listaNotas->qtdNotas == 0) {
-            buscarDadosNotasFiscaisModel(listaNotas, opcaoArmazenamento);
-        }
+
         if (listaOrdensServicos->qtdOrdensServico == 0) {
             buscarDadosOrdensServicoModel(listaOrdensServicos, opcaoArmazenamento);
         }
         if (listaPagamentosFornecedor->qtdPagamentosFornecedor == 0) {
             buscarDadosPagamentosFornecedorModel(listaPagamentosFornecedor, opcaoArmazenamento);
-        }
-        if (listaPecasNotas->qtdPecasNotas == 0) {
-            buscarDadosPecaNotaModel(listaPecasNotas, opcaoArmazenamento);
         }
         if (listaPagamentosCliente->qtdPagamentosCliente == 0) {
             buscarDadosPagamentosClienteModel(listaPagamentosCliente, opcaoArmazenamento);
@@ -192,12 +187,6 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                     listaAgendamentos->qtdAgendamentos = 0;
                 }
 
-                if (listaNotas->qtdNotas > 0) {
-                    free(listaNotas->listaNotas);
-                    listaNotas->listaNotas = NULL;
-                    listaNotas->qtdNotas = 0;
-                }
-
                 if (listaOrdensServicos->qtdOrdensServico > 0) {
                     free(listaOrdensServicos->listaOrdensServico);
                     listaOrdensServicos->listaOrdensServico = NULL;
@@ -215,14 +204,6 @@ void gerenciarRelatorios(struct ListaOficinas *listaOficinas, struct ListaClient
                     listaPagamentosCliente->listaPagamentosCliente = NULL;
                     listaPagamentosCliente->qtdPagamentosCliente = 0;
                 }
-
-                if (listaPecasNotas->qtdPecasNotas > 0) {
-                    free(listaPecasNotas->listaPecasNotas);
-                    listaPecasNotas->listaPecasNotas = NULL;
-                    listaPecasNotas->qtdPecasNotas = 0;
-                }
-
-
 
                 if (listaPagamentosCliente->qtdPagamentosCliente > 0) {
                     free(listaPagamentosCliente->listaPagamentosCliente);

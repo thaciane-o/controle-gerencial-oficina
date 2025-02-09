@@ -211,8 +211,8 @@ void armazenarRelatorioServicosRealizados(struct ListaClientes *listaClientes, s
 
     // Verifica se não há registros
     if (!existeServico) {
-        fclose(relatorioOrdensServicos);
         printf("Nenhum serviço foi cadastrado ou realizado.\n\n");
+        fclose(relatorioOrdensServicos);
         return;
     }
 

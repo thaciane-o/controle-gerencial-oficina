@@ -241,6 +241,8 @@ void armazenarRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClient
     // Verifica se não há registros
     if (!existeEstoque) {
         printf("Nenhuma peça foi cadastrado.\n\n");
+        // Fechando o arquivo
+        fclose(relatorioEstoque);
         return;
     }
 

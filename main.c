@@ -182,11 +182,9 @@ int main() {
 
             // Menu de relatórios
             case 5:
-                gerenciarRelatorios(&listaOficinas, &listaClientes, &listaVeiculos, &listaFuncionarios, &listaServicos,
-                                    &listaFornecedores, &listaPecas, &listaOrdensServico, &listaAgendamentos,
-                                    &listaCaixas, &listaPagamentosCliente, &listaPagamentosFornecedor,
-                                    &listaFornecedores, &listaPecas, &listaPagamentosCliente, &listaAgendamentos, &listaNotasFiscais,
-                                    &listaOrdensServico, &listaPagamentosFornecedor, &listaPecasNotas,
+                gerenciarRelatorios(&listaOficinas, &listaClientes, &listaVeiculos, &listaFuncionarios, &listaServicos, &listaFornecedores,
+                                 &listaPecas, &listaOrdensServico,
+                                 &listaAgendamentos, &listaCaixas, &listaPagamentosCliente, &listaPagamentosFornecedor,
                                     opcaoArmazenamento);
                 break;
 

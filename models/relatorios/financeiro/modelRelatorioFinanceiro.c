@@ -446,6 +446,10 @@ void armazenarRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaO
 
     }
 
+    if (existePagamento) {
+        printf("Relatório armazenado com sucesso.\n\n");
+    }
+
     // Fechando o arquivo
     fclose(relatorioProdutividade);
 }

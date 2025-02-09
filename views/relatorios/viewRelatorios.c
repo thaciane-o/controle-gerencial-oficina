@@ -661,7 +661,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
             "====================================\n"
             "|  1  | Serviço                    |\n"
             "|  2  | Cliente                    |\n"
-            "|  3  | Funcionario                |\n"
+            "|  3  | Funcionário                |\n"
             "|  4  | Intervalo de datas         |\n"
             "|  5  | Produtos em estoque mínimo |\n"
             "|  6  | Voltar                     |\n"
@@ -802,7 +802,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             "====================================\n"
             "|  1  | Serviço                    |\n"
             "|  2  | Cliente                    |\n"
-            "|  3  | Funcionario                |\n"
+            "|  3  | Funcionário                |\n"
             "|  4  | Intervalo de datas         |\n"
             "|  5  | Voltar                     |\n"
             "====================================\n"
@@ -849,7 +849,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             case 3:
 
                 // Inserindo ID do funcionario
-                printf("Insira o ID do funcionario:");
+                printf("Insira o ID do funcionário:");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idFuncionario);
 

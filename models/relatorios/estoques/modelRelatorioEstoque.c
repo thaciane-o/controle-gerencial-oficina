@@ -106,7 +106,7 @@ void imprimirRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaCliente
                        "ESTOQUE MÍNIMO: %d\n"
                        "QUANTIDADE UTILIZADA: %d\n"
                        "CLIENTE: %s\n"
-                       "FUNCIONARIO: %s\n"
+                       "FUNCIONÁRIO: %s\n"
                        "SERVIÇO: %s\n"
                        "DATA DE USO: %s\n\n",
                        listaPecas->listaPecas[j].id,

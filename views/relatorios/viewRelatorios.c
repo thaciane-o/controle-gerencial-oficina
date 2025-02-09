@@ -278,7 +278,7 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
             "|  2  | Nome    |\n"
             "|  3  | Voltar  |\n"
             "=================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
@@ -426,7 +426,7 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
             "|  3  | Intervalos de datas |\n"
             "|  4  | Voltar              |\n"
             "=============================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
@@ -527,7 +527,7 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             "|  3  | Intervalo de Datas  |\n"
             "|  4  | Voltar              |\n"
             "=============================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
 
@@ -573,7 +573,7 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
                     "|  1  | Contas a receber    |\n"
                     "|  2  | Contas a pagar      |\n"
                     "=============================\n"
-                    "Escolha uma forma de filtar: ");
+                    "Escolha uma forma de filtrar: ");
             scanf("%d", &tipoConta);
 
             // Impedindo opções invalidas
@@ -666,7 +666,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
             "|  5  | Produtos em estoque mínimo |\n"
             "|  6  | Voltar                     |\n"
             "====================================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
@@ -806,7 +806,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             "|  4  | Intervalo de datas         |\n"
             "|  5  | Voltar                     |\n"
             "====================================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {

@@ -278,12 +278,12 @@ void filtroRelatorioBasico(struct ListaOficinas *listaOficinas, struct ListaClie
             "|  2  | Nome    |\n"
             "|  3  | Voltar  |\n"
             "=================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
             case 1:
-                printf("Insira o ID:");
+                printf("Insira o ID: ");
             scanf("%d", &id);
 
             switch (tipoRelatorio) {
@@ -426,18 +426,18 @@ void filtroRelatorioProdutividade(struct ListaOrdensServico *listaOrdensServicos
             "|  3  | Intervalos de datas |\n"
             "|  4  | Voltar              |\n"
             "=============================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
             case 1:
                 // Inserindo id do funcionario
-                    printf("Insira o ID do funcionário:");
+                    printf("Insira o ID do funcionário: ");
             scanf("%d", &funcionario);
             break;
             case 2:
                 // Inserindo id do serviço
-                    printf("Insira o ID do serviço:");
+                    printf("Insira o ID do serviço: ");
             scanf("%d", &servico);
             break;
             case 3:
@@ -527,7 +527,7 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             "|  3  | Intervalo de Datas  |\n"
             "|  4  | Voltar              |\n"
             "=============================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
 
@@ -535,7 +535,7 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             case 1:
 
                 // Recebendo o id do cliente
-                    printf("Insira o ID do cliente a pagar:");
+                    printf("Insira o ID do cliente a pagar: ");
             scanf("%d", &cliente);
 
             if (formaDeImprimir() == 1) {
@@ -551,7 +551,7 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
             case 2:
 
                 // Recebendo id do fornecedor
-                    printf("Insira o ID do fornecedor a ser pago:");
+                    printf("Insira o ID do fornecedor a ser pago: ");
             scanf("%d", &fornecedor);
 
             if (formaDeImprimir() == 1) {
@@ -573,7 +573,7 @@ void filtroRelatorioFinanceiro(struct ListaCaixas *listaCaixas, struct ListaOfic
                     "|  1  | Contas a receber    |\n"
                     "|  2  | Contas a pagar      |\n"
                     "=============================\n"
-                    "Escolha uma forma de filtar: ");
+                    "Escolha uma forma de filtrar: ");
             scanf("%d", &tipoConta);
 
             // Impedindo opções invalidas
@@ -666,13 +666,13 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
             "|  5  | Produtos em estoque mínimo |\n"
             "|  6  | Voltar                     |\n"
             "====================================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
             case 1:
                 // Recebe o ID do serviço
-                printf("Insira o ID do serviço:");
+                printf("Insira o ID do serviço: ");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idServico);
 
@@ -689,7 +689,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
                 break;
             case 2:
                 // Recebe o ID do cliente
-                printf("Insira o ID do cliente:");
+                printf("Insira o ID do cliente: ");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idCliente);
 
@@ -706,7 +706,7 @@ void filtroRelatorioEstoque(struct ListaPecas *listaPecas, struct ListaClientes 
             break;
             case 3:
                 // Recebe o ID do funcionário
-                printf("Insira o ID do funcionário:");
+                printf("Insira o ID do funcionário: ");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idFuncionario);
 
@@ -806,14 +806,14 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             "|  4  | Intervalo de datas         |\n"
             "|  5  | Voltar                     |\n"
             "====================================\n"
-            "Escolha uma forma de filtar: ");
+            "Escolha uma forma de filtrar: ");
         scanf("%d", &opcaoFiltro);
 
         switch (opcaoFiltro) {
             case 1:
 
                 // Inserindo ID do serviço
-                printf("Insira o ID do serviço:");
+                printf("Insira o ID do serviço: ");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idServico);
 
@@ -831,7 +831,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             case 2:
 
                 // Inserindo ID do cliente
-                printf("Insira o ID do cliente:");
+                printf("Insira o ID do cliente: ");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idCliente);
 
@@ -849,7 +849,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             case 3:
 
                 // Inserindo ID do funcionario
-                printf("Insira o ID do funcionário:");
+                printf("Insira o ID do funcionário: ");
                 setbuf(stdin, NULL);
                 scanf(" %d", &idFuncionario);
 
@@ -867,7 +867,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
             case 4:
 
                 // Inserindo data inicial
-                printf("Insira a data inicial (DD/MM/AAAA):");
+                printf("Insira a data inicial (DD/MM/AAAA): ");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataInicial.tm_mday, &dataInicial.tm_mon, &dataInicial.tm_year);
 
@@ -881,7 +881,7 @@ void filtroRelatorioServicosRealizados(struct ListaClientes *listaClientes,
 
 
                 // Inserindo data final
-                printf("Insira a data final (DD/MM/AAAA):");
+                printf("Insira a data final (DD/MM/AAAA): ");
                 setbuf(stdin, NULL);
                 scanf("%d/%d/%d", &dataFinal.tm_mday, &dataFinal.tm_mon, &dataFinal.tm_year);
 
